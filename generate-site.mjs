@@ -53,6 +53,38 @@ const ADS_LIVE = false;
 const adWide = ADS_LIVE ? `<div class="ad-slot ad-slot-wide" aria-label="Advertisement">Advertisement</div>` : "";
 const adTall = ADS_LIVE ? `<div class="ad-slot ad-slot-tall" aria-label="Advertisement">Advertisement</div>` : "";
 
+// Long-form, topic-specific content for high-intent / high-ad-value pages, keyed by
+// tool slug. When a slug has an entry here, it replaces the generic "About / How it
+// works" block on that tool page (the privacy callout, "Important" disclaimer, and
+// Support note still wrap around it). Pages without an entry keep the generic block.
+// Section headings should mirror the tool's real calculator inputs so the article and
+// the tool reinforce each other. Avoid asserting specific dollar figures as fact;
+// describe cost drivers and frame any number as a range to verify.
+const toolContent = {
+  "real-cost-of-owning-a-boat": `
+                <h2>What it really costs to own a boat</h2>
+                <p>The purchase price is the smallest decision you will make. The real cost of owning a boat is the recurring annual spend, and for many owners the yearly carrying cost adds up to a meaningful share of the boat's value before the loan payment is even counted. This calculator totals the categories below so you can see that number before you buy rather than discover it afterward.</p>
+                <h2>Financing</h2>
+                <p>If you borrow to buy, the monthly payment is usually the largest single line in the budget. Boat loans often run longer than car loans, which lowers the payment but increases total interest, and boats tend to depreciate, so it is common to owe more than the boat is worth for the first few years. Enter your loan amount, rate, and term to see the financed cost alongside the running costs instead of in isolation.</p>
+                <h2>Storage or slip fees</h2>
+                <p>Where you keep the boat frequently costs more than fuel. A wet slip at a marina in a high-demand coastal area sits at the expensive end, dry-stack storage is in the middle, and keeping a trailerable boat at home is the cheapest option. Liveaboard fees, winter haul-out, and shrink-wrapping add to this category in colder climates.</p>
+                <h2>Fuel</h2>
+                <p>Fuel depends on engine size, how many hours you run each season, and cruising speed. Larger engines and faster cruising burn disproportionately more, so two owners with the same boat can spend very differently. Estimating realistic hours on the water is the single biggest lever on this line.</p>
+                <h2>Insurance, registration, and taxes</h2>
+                <p>Insurance varies with hull value, horsepower, your boating history, and where and how far you cruise. Registration fees and, in some states, annual personal-property or use taxes are separate from insurance and are easy to forget. Check your own state and marina, because these differ widely by location.</p>
+                <h2>Maintenance and the costs owners forget</h2>
+                <p>Routine maintenance includes oil and impeller changes, bottom paint, zinc anodes, detailing, and end-of-season winterization, and an older boat or a saltwater environment raises all of them. A widely cited rule of thumb among boaters is to budget roughly ten percent of the boat's value per year for upkeep, but treat that as a starting point and adjust it to your boat's age, size, and use. Set aside a repairs reserve so a failed pump or a gelcoat repair is a budgeted event rather than a surprise.</p>
+                <h2>How to use this calculator</h2>
+                <p>Enter your best estimate for each category and adjust the financing inputs to match your loan. The tool adds them into an annual and monthly figure you can compare against your budget. Everything is calculated in your browser; nothing you type is sent to us or stored on a server.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>What is the most expensive part of owning a boat?</h3>
+                <p>For most owners it is either the loan payment or storage, not fuel. Owners who pay cash and trailer the boat at home shift the largest cost to maintenance instead.</p>
+                <h3>How much should I budget for boat maintenance each year?</h3>
+                <p>A common starting point is around ten percent of the boat's value annually, adjusted up for older boats, larger engines, and saltwater use, and down for newer, smaller, freshwater boats. Use the maintenance and repairs fields to set your own figure.</p>
+                <h3>Is owning a boat worth it?</h3>
+                <p>That depends on how often you will realistically use it against the total annual cost this calculator produces. Comparing the all-in yearly number to the cost of renting or a peer-to-peer charter for the days you would actually be on the water is the clearest way to decide.</p>`
+};
+
 // Privacy-policy wording follows the actual deployed state. With both IDs blank it
 // keeps the original "no analytics or advertising" promise; once either is set it
 // discloses the Google services, cookies, and consent controls those require.
@@ -426,10 +458,11 @@ for (const category of categories) {
                   <h2>Your data never reaches us</h2>
                   <p>${SITE_NAME} has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
+                ${toolContent[slug] || `
                 <h2>About this ${escapeHtml(name).toLowerCase()}</h2>
                 <p>${escapeHtml(description)} Use it free without creating an account or uploading data to ${SITE_NAME}.</p>
                 <h2>How it works</h2>
-                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>
+                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>`}
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>
