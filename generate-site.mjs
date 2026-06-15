@@ -16,7 +16,7 @@ const pageSupportNote = `<p class="support-note">Spotted a problem or have a sug
 //   GA4_MEASUREMENT_ID:   from analytics.google.com → Admin → Data streams (e.g. "G-XXXXXXXXXX")
 //   ADSENSE_PUBLISHER_ID: from adsense.google.com after approval (e.g. "ca-pub-1234567890123456")
 const GA4_MEASUREMENT_ID = "G-FMSJ4HRY7L";
-const ADSENSE_PUBLISHER_ID = "";
+const ADSENSE_PUBLISHER_ID = "ca-pub-2401477533817135";
 
 // Google Analytics 4 with Consent Mode v2: every storage type is denied by default.
 // A Google-certified consent platform (e.g. AdSense "Privacy & messaging") grants
