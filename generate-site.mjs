@@ -46,6 +46,13 @@ const adsTags = ADSENSE_PUBLISHER_ID ? `
 const headTags = `${analyticsTags}${adsTags}`;
 const analyticsEnabled = Boolean(GA4_MEASUREMENT_ID || ADSENSE_PUBLISHER_ID);
 
+// Flip to true once AdSense approves the site and you're ready to show live ads.
+// While false, the grey "Advertisement" placeholder boxes are not rendered, so
+// neither visitors nor the AdSense reviewer see empty labeled boxes during review.
+const ADS_LIVE = false;
+const adWide = ADS_LIVE ? `<div class="ad-slot ad-slot-wide" aria-label="Advertisement">Advertisement</div>` : "";
+const adTall = ADS_LIVE ? `<div class="ad-slot ad-slot-tall" aria-label="Advertisement">Advertisement</div>` : "";
+
 // Privacy-policy wording follows the actual deployed state. With both IDs blank it
 // keeps the original "no analytics or advertising" promise; once either is set it
 // discloses the Google services, cookies, and consent controls those require.
@@ -314,7 +321,7 @@ const homeBody = `
       <p>This is a static site with no backend, database, accounts, or submission endpoint. Files and entries are processed on your device and never sent to us.</p>
     </aside>
   </section>
-  <div class="ad-slot ad-slot-wide" aria-label="Advertisement placeholder">Advertisement</div>
+  ${adWide}
   <section class="directory" aria-labelledby="directory-title">
     <div class="section-heading">
       <div><p class="eyebrow">Tool directory</p><h2 id="directory-title">Browse by category</h2></div>
@@ -360,7 +367,7 @@ for (const category of categories) {
           <h1>${escapeHtml(category.name)}</h1>
           <p>${escapeHtml(category.description)}</p>
         </section>
-        <div class="ad-slot ad-slot-wide" aria-label="Advertisement placeholder">Advertisement</div>
+        ${adWide}
         <section class="directory compact-directory">
           <div class="tool-grid">${toolCards(category.tools, "")}</div>
         </section>
@@ -430,7 +437,7 @@ for (const category of categories) {
               </section>
             </article>
             <aside class="tool-sidebar">
-              <div class="ad-slot ad-slot-tall" aria-label="Advertisement placeholder">Advertisement</div>
+              ${adTall}
               <div class="sidebar-card"><strong>Nothing is sent to us</strong><p>This static site has no server endpoint or database capable of receiving your files or entries.</p></div>
             </aside>
           </div>
