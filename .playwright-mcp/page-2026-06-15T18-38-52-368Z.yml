@@ -1,0 +1,61 @@
+- generic [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - link "PlainTools home" [ref=e5] [cursor=pointer]:
+        - /url: ../index.html
+        - generic [ref=e6]: PT
+        - generic [ref=e7]: PlainTools
+      - navigation "Main navigation" [ref=e8]:
+        - link "Finance" [ref=e9] [cursor=pointer]:
+          - /url: ../finance/index.html
+        - link "Spreadsheet" [ref=e10] [cursor=pointer]:
+          - /url: ../spreadsheet/index.html
+        - link "Documents" [ref=e11] [cursor=pointer]:
+          - /url: ../documents/index.html
+        - link "Homeowner / Life" [ref=e12] [cursor=pointer]:
+          - /url: ../homeowner/index.html
+        - link "Business" [ref=e13] [cursor=pointer]:
+          - /url: ../business/index.html
+        - link "Weirdly Useful" [ref=e14] [cursor=pointer]:
+          - /url: ../useful/index.html
+    - main [ref=e15]:
+      - generic [ref=e16]:
+        - article [ref=e17]:
+          - paragraph [ref=e18]:
+            - link "All tools" [ref=e19] [cursor=pointer]:
+              - /url: ../index.html
+            - generic [ref=e20]: /
+            - link "Finance / CSV" [ref=e21] [cursor=pointer]:
+              - /url: index.html
+          - generic [ref=e22]:
+            - paragraph [ref=e23]: Finance / CSV
+            - heading "Bank Statement Cleaner" [level=1] [ref=e24]
+            - paragraph [ref=e25]: Standardize dates, amounts, descriptions, and blank rows in statement CSVs.
+            - generic [ref=e26]: Runs in your browser
+          - generic [ref=e28]:
+            - generic [ref=e30]:
+              - strong [ref=e31]: Choose a file
+              - button "Choose a file" [active] [ref=e32]
+            - paragraph [ref=e33]: Best results come from a CSV with date, description, and amount columns. Debit and credit columns are also supported.
+            - button "Analyze statement" [ref=e35] [cursor=pointer]
+          - generic [ref=e36]:
+            - heading "How it works" [level=2] [ref=e37]
+            - paragraph [ref=e38]: Enter or select your information, review the result, then download or print it when available. Inputs remain on this device unless the page clearly says otherwise.
+            - heading "Important" [level=2] [ref=e39]
+            - paragraph [ref=e40]: This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.
+        - complementary [ref=e41]:
+          - generic "Advertisement placeholder" [ref=e42]: Advertisement
+          - generic [ref=e43]:
+            - strong [ref=e44]: Private by design
+            - paragraph [ref=e45]: Processing happens locally. Closing the tab clears inputs unless a tool explicitly saves them.
+    - contentinfo [ref=e46]:
+      - generic [ref=e47]:
+        - strong [ref=e48]: PlainTools
+        - text: Useful files stay on your device.
+      - generic [ref=e49]:
+        - link "Privacy" [ref=e50] [cursor=pointer]:
+          - /url: ../privacy.html
+        - link "About" [ref=e51] [cursor=pointer]:
+          - /url: ../about.html

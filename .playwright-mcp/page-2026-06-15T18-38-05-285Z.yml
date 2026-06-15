@@ -1,0 +1,83 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - link "PlainTools home" [ref=e5] [cursor=pointer]:
+        - /url: ../index.html
+        - generic [ref=e6]: PT
+        - generic [ref=e7]: PlainTools
+      - navigation "Main navigation" [ref=e8]:
+        - link "Finance" [ref=e9] [cursor=pointer]:
+          - /url: ../finance/index.html
+        - link "Spreadsheet" [ref=e10] [cursor=pointer]:
+          - /url: ../spreadsheet/index.html
+        - link "Documents" [ref=e11] [cursor=pointer]:
+          - /url: ../documents/index.html
+        - link "Homeowner / Life" [ref=e12] [cursor=pointer]:
+          - /url: ../homeowner/index.html
+        - link "Business" [ref=e13] [cursor=pointer]:
+          - /url: ../business/index.html
+        - link "Weirdly Useful" [ref=e14] [cursor=pointer]:
+          - /url: ../useful/index.html
+    - main [ref=e15]:
+      - generic [ref=e16]:
+        - article [ref=e17]:
+          - paragraph [ref=e18]:
+            - link "All tools" [ref=e19] [cursor=pointer]:
+              - /url: ../index.html
+            - generic [ref=e20]: /
+            - link "Business" [ref=e21] [cursor=pointer]:
+              - /url: index.html
+          - generic [ref=e22]:
+            - paragraph [ref=e23]: Business
+            - heading "Profit Margin Calculator" [level=1] [ref=e24]
+            - paragraph [ref=e25]: Calculate gross profit, margin, markup, and target sale price.
+            - generic [ref=e26]: Runs in your browser
+          - generic [ref=e28]:
+            - generic [ref=e29]:
+              - generic [ref=e30]:
+                - generic [ref=e31]:
+                  - generic [ref=e32]: Sale price / revenue
+                  - spinbutton "Sale price / revenue" [ref=e33]: "1000"
+                - generic [ref=e34]:
+                  - generic [ref=e35]: Cost
+                  - spinbutton "Cost" [ref=e36]: "600"
+                - generic [ref=e37]:
+                  - generic [ref=e38]: Target margin (%)
+                  - spinbutton "Target margin (%)" [ref=e39]: "40"
+              - generic [ref=e40]:
+                - button "Calculate" [ref=e41] [cursor=pointer]
+                - button "Reset" [ref=e42] [cursor=pointer]
+            - generic [ref=e43]:
+              - heading "Estimate" [level=2] [ref=e44]
+              - generic [ref=e45]:
+                - generic [ref=e46]:
+                  - generic [ref=e47]: Gross profit
+                  - strong [ref=e48]: $400.00
+                - generic [ref=e49]:
+                  - generic [ref=e50]: Margin
+                  - strong [ref=e51]: 40%
+                - generic [ref=e52]:
+                  - generic [ref=e53]: Markup
+                  - strong [ref=e54]: 66.67%
+              - paragraph [ref=e55]: "Price needed for a 40% margin: $1,000.00."
+          - generic [ref=e56]:
+            - heading "How it works" [level=2] [ref=e57]
+            - paragraph [ref=e58]: Enter or select your information, review the result, then download or print it when available. Inputs remain on this device unless the page clearly says otherwise.
+            - heading "Important" [level=2] [ref=e59]
+            - paragraph [ref=e60]: This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.
+        - complementary [ref=e61]:
+          - generic "Advertisement placeholder" [ref=e62]: Advertisement
+          - generic [ref=e63]:
+            - strong [ref=e64]: Private by design
+            - paragraph [ref=e65]: Processing happens locally. Closing the tab clears inputs unless a tool explicitly saves them.
+    - contentinfo [ref=e66]:
+      - generic [ref=e67]:
+        - strong [ref=e68]: PlainTools
+        - text: Useful files stay on your device.
+      - generic [ref=e69]:
+        - link "Privacy" [ref=e70] [cursor=pointer]:
+          - /url: ../privacy.html
+        - link "About" [ref=e71] [cursor=pointer]:
+          - /url: ../about.html

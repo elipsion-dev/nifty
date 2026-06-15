@@ -1,0 +1,221 @@
+- generic [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - link "PlainTools home" [ref=e5] [cursor=pointer]:
+        - /url: index.html
+        - generic [ref=e6]: PT
+        - generic [ref=e7]: PlainTools
+      - button "Menu" [expanded] [active] [ref=e8]
+      - navigation "Main navigation" [ref=e175]:
+        - link "Finance" [ref=e176] [cursor=pointer]:
+          - /url: finance/index.html
+        - link "Spreadsheet" [ref=e177] [cursor=pointer]:
+          - /url: spreadsheet/index.html
+        - link "Documents" [ref=e178] [cursor=pointer]:
+          - /url: documents/index.html
+        - link "Homeowner / Life" [ref=e179] [cursor=pointer]:
+          - /url: homeowner/index.html
+        - link "Business" [ref=e180] [cursor=pointer]:
+          - /url: business/index.html
+        - link "Weirdly Useful" [ref=e181] [cursor=pointer]:
+          - /url: useful/index.html
+    - main [ref=e9]:
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - paragraph [ref=e12]: Free browser-based utilities
+          - heading "Get the small job done." [level=1] [ref=e13]
+          - paragraph [ref=e14]: Clean a bank statement, compare a purchase, generate a receipt, or fix a spreadsheet. No account. No upload queue.
+          - generic [ref=e15]:
+            - generic [ref=e16]: Search all tools
+            - searchbox "Search all tools /" [ref=e17]
+            - generic [ref=e18]: /
+        - complementary [ref=e19]:
+          - strong [ref=e21]: Local by default
+          - paragraph [ref=e22]: Files are processed in your browser whenever the tool permits. Look for the privacy note on each page.
+      - generic "Advertisement placeholder" [ref=e23]: Advertisement
+      - region "Browse by category" [ref=e24]:
+        - generic [ref=e25]:
+          - generic [ref=e26]:
+            - paragraph [ref=e27]: Tool directory
+            - heading "Browse by category" [level=2] [ref=e28]
+          - paragraph [ref=e29]: 60 tools, zero sign-ups
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - generic [ref=e32]:
+              - generic [ref=e33]:
+                - heading "Finance / CSV" [level=2] [ref=e34]
+                - paragraph [ref=e35]: Clean statements, inspect spending, and plan debt without uploading financial data.
+              - link "View all 10" [ref=e36] [cursor=pointer]:
+                - /url: finance/index.html
+            - generic [ref=e37]:
+              - link "Bank Statement Cleaner Standardize dates, amounts, descriptions, and blank rows in statement CSVs." [ref=e38] [cursor=pointer]:
+                - /url: finance/bank-statement-cleaner.html
+                - generic [ref=e39]: ↗
+                - heading "Bank Statement Cleaner" [level=3] [ref=e40]
+                - paragraph [ref=e41]: Standardize dates, amounts, descriptions, and blank rows in statement CSVs.
+              - link "Recurring Subscription Finder Find merchants and charges that appear on a repeating schedule." [ref=e42] [cursor=pointer]:
+                - /url: finance/recurring-subscription-finder.html
+                - generic [ref=e43]: ↗
+                - heading "Recurring Subscription Finder" [level=3] [ref=e44]
+                - paragraph [ref=e45]: Find merchants and charges that appear on a repeating schedule.
+              - link "Merchant Name Normalizer Turn noisy transaction descriptions into consistent merchant names." [ref=e46] [cursor=pointer]:
+                - /url: finance/merchant-name-normalizer.html
+                - generic [ref=e47]: ↗
+                - heading "Merchant Name Normalizer" [level=3] [ref=e48]
+                - paragraph [ref=e49]: Turn noisy transaction descriptions into consistent merchant names.
+              - link "Personal Spending Categorizer Assign common spending categories using editable keyword rules." [ref=e50] [cursor=pointer]:
+                - /url: finance/personal-spending-categorizer.html
+                - generic [ref=e51]: ↗
+                - heading "Personal Spending Categorizer" [level=3] [ref=e52]
+                - paragraph [ref=e53]: Assign common spending categories using editable keyword rules.
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - generic [ref=e56]:
+                - heading "Spreadsheet / Data" [level=2] [ref=e57]
+                - paragraph [ref=e58]: Repair, reshape, compare, and convert everyday data files.
+              - link "View all 10" [ref=e59] [cursor=pointer]:
+                - /url: spreadsheet/index.html
+            - generic [ref=e60]:
+              - link "Merge CSV Files Combine multiple CSV files that share the same columns." [ref=e61] [cursor=pointer]:
+                - /url: spreadsheet/merge-csv-files.html
+                - generic [ref=e62]: ↗
+                - heading "Merge CSV Files" [level=3] [ref=e63]
+                - paragraph [ref=e64]: Combine multiple CSV files that share the same columns.
+              - link "Split CSV Files Break a large CSV into smaller files by row count." [ref=e65] [cursor=pointer]:
+                - /url: spreadsheet/split-csv-files.html
+                - generic [ref=e66]: ↗
+                - heading "Split CSV Files" [level=3] [ref=e67]
+                - paragraph [ref=e68]: Break a large CSV into smaller files by row count.
+              - link "Remove Duplicate Rows Remove repeated rows using all columns or selected columns." [ref=e69] [cursor=pointer]:
+                - /url: spreadsheet/remove-duplicate-rows.html
+                - generic [ref=e70]: ↗
+                - heading "Remove Duplicate Rows" [level=3] [ref=e71]
+                - paragraph [ref=e72]: Remove repeated rows using all columns or selected columns.
+              - link "Compare Two CSVs Find rows that were added, removed, or kept between two files." [ref=e73] [cursor=pointer]:
+                - /url: spreadsheet/compare-two-csvs.html
+                - generic [ref=e74]: ↗
+                - heading "Compare Two CSVs" [level=3] [ref=e75]
+                - paragraph [ref=e76]: Find rows that were added, removed, or kept between two files.
+          - generic [ref=e77]:
+            - generic [ref=e78]:
+              - generic [ref=e79]:
+                - heading "Documents" [level=2] [ref=e80]
+                - paragraph [ref=e81]: Create practical records and printable forms from straightforward inputs.
+              - link "View all 10" [ref=e82] [cursor=pointer]:
+                - /url: documents/index.html
+            - generic [ref=e83]:
+              - link "Bill of Sale Generator Create a printable general-purpose bill of sale." [ref=e84] [cursor=pointer]:
+                - /url: documents/bill-of-sale-generator.html
+                - generic [ref=e85]: ↗
+                - heading "Bill of Sale Generator" [level=3] [ref=e86]
+                - paragraph [ref=e87]: Create a printable general-purpose bill of sale.
+              - link "Rent Receipt Generator Create a clean receipt for a rent payment." [ref=e88] [cursor=pointer]:
+                - /url: documents/rent-receipt-generator.html
+                - generic [ref=e89]: ↗
+                - heading "Rent Receipt Generator" [level=3] [ref=e90]
+                - paragraph [ref=e91]: Create a clean receipt for a rent payment.
+              - link "Mileage Log Generator Build and export a mileage log for business trips." [ref=e92] [cursor=pointer]:
+                - /url: documents/mileage-log-generator.html
+                - generic [ref=e93]: ↗
+                - heading "Mileage Log Generator" [level=3] [ref=e94]
+                - paragraph [ref=e95]: Build and export a mileage log for business trips.
+              - link "Equipment Inventory Generator Record equipment, serial numbers, locations, and values." [ref=e96] [cursor=pointer]:
+                - /url: documents/equipment-inventory-generator.html
+                - generic [ref=e97]: ↗
+                - heading "Equipment Inventory Generator" [level=3] [ref=e98]
+                - paragraph [ref=e99]: Record equipment, serial numbers, locations, and values.
+          - generic [ref=e100]:
+            - generic [ref=e101]:
+              - generic [ref=e102]:
+                - heading "Homeowner / Life" [level=2] [ref=e103]
+                - paragraph [ref=e104]: Estimate major ownership, housing, travel, and shared-living costs.
+              - link "View all 10" [ref=e105] [cursor=pointer]:
+                - /url: homeowner/index.html
+            - generic [ref=e106]:
+              - link "Rent vs Buy Calculator Compare estimated monthly and long-term renting and buying costs." [ref=e107] [cursor=pointer]:
+                - /url: homeowner/rent-vs-buy-calculator.html
+                - generic [ref=e108]: ↗
+                - heading "Rent vs Buy Calculator" [level=3] [ref=e109]
+                - paragraph [ref=e110]: Compare estimated monthly and long-term renting and buying costs.
+              - link "Lease vs Buy Calculator Compare the estimated net cost of leasing and buying a vehicle." [ref=e111] [cursor=pointer]:
+                - /url: homeowner/lease-vs-buy-calculator.html
+                - generic [ref=e112]: ↗
+                - heading "Lease vs Buy Calculator" [level=3] [ref=e113]
+                - paragraph [ref=e114]: Compare the estimated net cost of leasing and buying a vehicle.
+              - link "Real Cost of Owning a Pool Estimate annual pool chemicals, energy, service, and repair costs." [ref=e115] [cursor=pointer]:
+                - /url: homeowner/real-cost-of-owning-a-pool.html
+                - generic [ref=e116]: ↗
+                - heading "Real Cost of Owning a Pool" [level=3] [ref=e117]
+                - paragraph [ref=e118]: Estimate annual pool chemicals, energy, service, and repair costs.
+              - link "Real Cost of Owning a Boat Estimate financing, fuel, storage, insurance, and maintenance." [ref=e119] [cursor=pointer]:
+                - /url: homeowner/real-cost-of-owning-a-boat.html
+                - generic [ref=e120]: ↗
+                - heading "Real Cost of Owning a Boat" [level=3] [ref=e121]
+                - paragraph [ref=e122]: Estimate financing, fuel, storage, insurance, and maintenance.
+          - generic [ref=e123]:
+            - generic [ref=e124]:
+              - generic [ref=e125]:
+                - heading "Business" [level=2] [ref=e126]
+                - paragraph [ref=e127]: Model pricing, profitability, labor, sales, and customer economics.
+              - link "View all 10" [ref=e128] [cursor=pointer]:
+                - /url: business/index.html
+            - generic [ref=e129]:
+              - link "Lead Value Calculator Estimate the expected revenue and profit value of each lead." [ref=e130] [cursor=pointer]:
+                - /url: business/lead-value-calculator.html
+                - generic [ref=e131]: ↗
+                - heading "Lead Value Calculator" [level=3] [ref=e132]
+                - paragraph [ref=e133]: Estimate the expected revenue and profit value of each lead.
+              - link "Customer Lifetime Value Calculator Estimate customer value using revenue, margin, churn, and acquisition cost." [ref=e134] [cursor=pointer]:
+                - /url: business/customer-lifetime-value-calculator.html
+                - generic [ref=e135]: ↗
+                - heading "Customer Lifetime Value Calculator" [level=3] [ref=e136]
+                - paragraph [ref=e137]: Estimate customer value using revenue, margin, churn, and acquisition cost.
+              - link "Cost of Missed Calls Calculator Estimate revenue lost when customer calls go unanswered." [ref=e138] [cursor=pointer]:
+                - /url: business/cost-of-missed-calls-calculator.html
+                - generic [ref=e139]: ↗
+                - heading "Cost of Missed Calls Calculator" [level=3] [ref=e140]
+                - paragraph [ref=e141]: Estimate revenue lost when customer calls go unanswered.
+              - link "Cost of Employee Turnover Calculator Estimate recruiting, vacancy, training, and productivity costs." [ref=e142] [cursor=pointer]:
+                - /url: business/cost-of-employee-turnover-calculator.html
+                - generic [ref=e143]: ↗
+                - heading "Cost of Employee Turnover Calculator" [level=3] [ref=e144]
+                - paragraph [ref=e145]: Estimate recruiting, vacancy, training, and productivity costs.
+          - generic [ref=e146]:
+            - generic [ref=e147]:
+              - generic [ref=e148]:
+                - heading "Weirdly Useful" [level=2] [ref=e149]
+                - paragraph [ref=e150]: Small browser utilities for images, filenames, codes, and awkward one-off jobs.
+              - link "View all 10" [ref=e151] [cursor=pointer]:
+                - /url: useful/index.html
+            - generic [ref=e152]:
+              - link "Screenshot to CSV Extract text from a screenshot and arrange detected lines as CSV." [ref=e153] [cursor=pointer]:
+                - /url: useful/screenshot-to-csv.html
+                - generic [ref=e154]: ↗
+                - heading "Screenshot to CSV" [level=3] [ref=e155]
+                - paragraph [ref=e156]: Extract text from a screenshot and arrange detected lines as CSV.
+              - link "Screenshot Table Extractor Use in-browser OCR to turn a table image into editable rows." [ref=e157] [cursor=pointer]:
+                - /url: useful/screenshot-table-extractor.html
+                - generic [ref=e158]: ↗
+                - heading "Screenshot Table Extractor" [level=3] [ref=e159]
+                - paragraph [ref=e160]: Use in-browser OCR to turn a table image into editable rows.
+              - link "Image Dimensions Inspector Inspect pixel size, aspect ratio, file type, and file size." [ref=e161] [cursor=pointer]:
+                - /url: useful/image-dimensions-inspector.html
+                - generic [ref=e162]: ↗
+                - heading "Image Dimensions Inspector" [level=3] [ref=e163]
+                - paragraph [ref=e164]: Inspect pixel size, aspect ratio, file type, and file size.
+              - link "Bulk File Renamer Preview cleaned, numbered filenames and download renamed copies." [ref=e165] [cursor=pointer]:
+                - /url: useful/bulk-file-renamer.html
+                - generic [ref=e166]: ↗
+                - heading "Bulk File Renamer" [level=3] [ref=e167]
+                - paragraph [ref=e168]: Preview cleaned, numbered filenames and download renamed copies.
+    - contentinfo [ref=e169]:
+      - generic [ref=e170]:
+        - strong [ref=e171]: PlainTools
+        - text: Useful files stay on your device.
+      - generic [ref=e172]:
+        - link "Privacy" [ref=e173] [cursor=pointer]:
+          - /url: privacy.html
+        - link "About" [ref=e174] [cursor=pointer]:
+          - /url: about.html

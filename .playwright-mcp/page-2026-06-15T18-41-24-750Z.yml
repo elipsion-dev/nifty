@@ -1,0 +1,64 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - link "PlainTools home" [ref=e5] [cursor=pointer]:
+        - /url: ../index.html
+        - generic [ref=e6]: PT
+        - generic [ref=e7]: PlainTools
+      - navigation "Main navigation" [ref=e8]:
+        - link "Finance" [ref=e9] [cursor=pointer]:
+          - /url: ../finance/index.html
+        - link "Spreadsheet" [ref=e10] [cursor=pointer]:
+          - /url: ../spreadsheet/index.html
+        - link "Documents" [ref=e11] [cursor=pointer]:
+          - /url: ../documents/index.html
+        - link "Homeowner / Life" [ref=e12] [cursor=pointer]:
+          - /url: ../homeowner/index.html
+        - link "Business" [ref=e13] [cursor=pointer]:
+          - /url: ../business/index.html
+        - link "Weirdly Useful" [ref=e14] [cursor=pointer]:
+          - /url: ../useful/index.html
+    - main [ref=e15]:
+      - generic [ref=e16]:
+        - article [ref=e17]:
+          - paragraph [ref=e18]:
+            - link "All tools" [ref=e19] [cursor=pointer]:
+              - /url: ../index.html
+            - generic [ref=e20]: /
+            - link "Finance / CSV" [ref=e21] [cursor=pointer]:
+              - /url: index.html
+          - generic [ref=e22]:
+            - paragraph [ref=e23]: Finance / CSV
+            - heading "Bank Statement Cleaner" [level=1] [ref=e24]
+            - paragraph [ref=e25]: Standardize dates, amounts, descriptions, and blank rows in statement CSVs.
+            - generic [ref=e26]: No data sent or stored
+          - generic [ref=e28]:
+            - generic [ref=e30]:
+              - strong [ref=e31]: Choose a file
+              - button "Choose a file" [ref=e32]
+            - paragraph [ref=e33]: Best results come from a CSV with date, description, and amount columns. Debit and credit columns are also supported.
+            - button "Analyze statement" [ref=e35] [cursor=pointer]
+          - generic [ref=e36]:
+            - generic [ref=e37]:
+              - heading "Your data never reaches us" [level=2] [ref=e38]
+              - paragraph [ref=e39]: PlainTools has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.
+            - heading "How it works" [level=2] [ref=e40]
+            - paragraph [ref=e41]: Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.
+            - heading "Important" [level=2] [ref=e42]
+            - paragraph [ref=e43]: This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.
+        - complementary [ref=e44]:
+          - generic "Advertisement placeholder" [ref=e45]: Advertisement
+          - generic [ref=e46]:
+            - strong [ref=e47]: Nothing is sent to us
+            - paragraph [ref=e48]: This static site has no server endpoint or database capable of receiving your files or entries.
+    - contentinfo [ref=e49]:
+      - generic [ref=e50]:
+        - strong [ref=e51]: PlainTools
+        - text: No backend. No database. Your tool data stays on your device.
+      - generic [ref=e52]:
+        - link "Privacy" [ref=e53] [cursor=pointer]:
+          - /url: ../privacy.html
+        - link "About" [ref=e54] [cursor=pointer]:
+          - /url: ../about.html

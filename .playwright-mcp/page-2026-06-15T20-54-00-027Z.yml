@@ -1,0 +1,87 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - link "Nifty Utilities home" [ref=e5] [cursor=pointer]:
+        - /url: ../index.html
+        - img "Nifty Utilities" [ref=e6]
+      - navigation "Main navigation" [ref=e7]:
+        - link "Finance" [ref=e8] [cursor=pointer]:
+          - /url: ../finance/index.html
+        - link "Spreadsheet" [ref=e9] [cursor=pointer]:
+          - /url: ../spreadsheet/index.html
+        - link "Documents" [ref=e10] [cursor=pointer]:
+          - /url: ../documents/index.html
+        - link "Homeowner / Life" [ref=e11] [cursor=pointer]:
+          - /url: ../homeowner/index.html
+        - link "Business" [ref=e12] [cursor=pointer]:
+          - /url: ../business/index.html
+        - link "Weirdly Useful" [ref=e13] [cursor=pointer]:
+          - /url: ../useful/index.html
+    - main [ref=e14]:
+      - generic [ref=e15]:
+        - article [ref=e16]:
+          - paragraph [ref=e17]:
+            - link "All tools" [ref=e18] [cursor=pointer]:
+              - /url: ../index.html
+            - generic [ref=e19]: /
+            - link "Business" [ref=e20] [cursor=pointer]:
+              - /url: index.html
+          - generic [ref=e21]:
+            - paragraph [ref=e22]: Business
+            - heading "Profit Margin Calculator" [level=1] [ref=e23]
+            - paragraph [ref=e24]: Calculate gross profit, margin, markup, and target sale price.
+            - generic [ref=e25]: No data sent or stored
+          - generic [ref=e27]:
+            - generic [ref=e28]:
+              - generic [ref=e29]:
+                - generic [ref=e30]:
+                  - generic [ref=e31]: Sale price / revenue
+                  - spinbutton "Sale price / revenue" [ref=e32]: "1000"
+                - generic [ref=e33]:
+                  - generic [ref=e34]: Cost
+                  - spinbutton "Cost" [ref=e35]: "600"
+                - generic [ref=e36]:
+                  - generic [ref=e37]: Target margin (%)
+                  - spinbutton "Target margin (%)" [ref=e38]: "40"
+              - generic [ref=e39]:
+                - button "Calculate" [ref=e40] [cursor=pointer]
+                - button "Reset" [ref=e41] [cursor=pointer]
+            - generic [ref=e42]:
+              - heading "Estimate" [level=2] [ref=e43]
+              - generic [ref=e44]:
+                - generic [ref=e45]:
+                  - generic [ref=e46]: Gross profit
+                  - strong [ref=e47]: $400.00
+                - generic [ref=e48]:
+                  - generic [ref=e49]: Margin
+                  - strong [ref=e50]: 40%
+                - generic [ref=e51]:
+                  - generic [ref=e52]: Markup
+                  - strong [ref=e53]: 66.67%
+              - paragraph [ref=e54]: "Price needed for a 40% margin: $1,000.00."
+          - generic [ref=e55]:
+            - generic [ref=e56]:
+              - heading "Your data never reaches us" [level=2] [ref=e57]
+              - paragraph [ref=e58]: Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.
+            - heading "About this profit margin calculator" [level=2] [ref=e59]
+            - paragraph [ref=e60]: Calculate gross profit, margin, markup, and target sale price. Use it free without creating an account or uploading data to Nifty Utilities.
+            - heading "How it works" [level=2] [ref=e61]
+            - paragraph [ref=e62]: Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.
+            - heading "Important" [level=2] [ref=e63]
+            - paragraph [ref=e64]: This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.
+        - complementary [ref=e65]:
+          - generic "Advertisement placeholder" [ref=e66]: Advertisement
+          - generic [ref=e67]:
+            - strong [ref=e68]: Nothing is sent to us
+            - paragraph [ref=e69]: This static site has no server endpoint or database capable of receiving your files or entries.
+    - contentinfo [ref=e70]:
+      - generic [ref=e71]:
+        - strong [ref=e72]: Nifty Utilities
+        - text: No backend. No database. Your tool data stays on your device.
+      - generic [ref=e73]:
+        - link "Privacy" [ref=e74] [cursor=pointer]:
+          - /url: ../privacy.html
+        - link "About" [ref=e75] [cursor=pointer]:
+          - /url: ../about.html

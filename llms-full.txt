@@ -1,0 +1,100 @@
+# Nifty Utilities: Complete Tool Directory
+
+Nifty Utilities is a free collection of 60 practical web utilities. No account is required. The website has no application backend, upload endpoint, or database capable of receiving tool inputs. Processing happens in the visitor's browser.
+
+## Finance / CSV
+
+Clean statements, inspect spending, and plan debt without uploading financial data.
+
+- [Bank Statement Cleaner](https://niftyutilities.com/finance/bank-statement-cleaner.html): Standardize dates, amounts, descriptions, and blank rows in statement CSVs.
+- [Recurring Subscription Finder](https://niftyutilities.com/finance/recurring-subscription-finder.html): Find merchants and charges that appear on a repeating schedule.
+- [Merchant Name Normalizer](https://niftyutilities.com/finance/merchant-name-normalizer.html): Turn noisy transaction descriptions into consistent merchant names.
+- [Personal Spending Categorizer](https://niftyutilities.com/finance/personal-spending-categorizer.html): Assign common spending categories using editable keyword rules.
+- [Duplicate Transaction Finder](https://niftyutilities.com/finance/duplicate-transaction-finder.html): Flag transactions with matching dates, amounts, and descriptions.
+- [CSV Bank Format Converter](https://niftyutilities.com/finance/csv-bank-format-converter.html): Map statement columns into a simple date, description, amount format.
+- [Credit Card Statement Analyzer](https://niftyutilities.com/finance/credit-card-statement-analyzer.html): Summarize charges by category and merchant from a CSV statement.
+- [Debt Snowball Calculator](https://niftyutilities.com/finance/debt-snowball-calculator.html): Estimate a payoff schedule using smallest-balance-first payments.
+- [Debt Avalanche Calculator](https://niftyutilities.com/finance/debt-avalanche-calculator.html): Estimate a payoff schedule using highest-interest-first payments.
+- [Net Worth Tracker](https://niftyutilities.com/finance/net-worth-tracker.html): Track assets and liabilities locally in this browser.
+
+## Spreadsheet / Data
+
+Repair, reshape, compare, and convert everyday data files.
+
+- [Merge CSV Files](https://niftyutilities.com/spreadsheet/merge-csv-files.html): Combine multiple CSV files that share the same columns.
+- [Split CSV Files](https://niftyutilities.com/spreadsheet/split-csv-files.html): Break a large CSV into smaller files by row count.
+- [Remove Duplicate Rows](https://niftyutilities.com/spreadsheet/remove-duplicate-rows.html): Remove repeated rows using all columns or selected columns.
+- [Compare Two CSVs](https://niftyutilities.com/spreadsheet/compare-two-csvs.html): Find rows that were added, removed, or kept between two files.
+- [Excel to CSV Cleaner](https://niftyutilities.com/spreadsheet/excel-to-csv-cleaner.html): Convert an Excel sheet to clean CSV in your browser.
+- [Column Mapper](https://niftyutilities.com/spreadsheet/column-mapper.html): Rename and reorder columns into a target schema.
+- [CSV Formula Generator](https://niftyutilities.com/spreadsheet/csv-formula-generator.html): Build spreadsheet formulas from a plain-English recipe.
+- [Spreadsheet Error Finder](https://niftyutilities.com/spreadsheet/spreadsheet-error-finder.html): Scan CSV data for blanks, inconsistent widths, and suspicious values.
+- [Delimiter Converter](https://niftyutilities.com/spreadsheet/delimiter-converter.html): Convert comma, tab, semicolon, or pipe-delimited data.
+- [JSON ↔ CSV Converter](https://niftyutilities.com/spreadsheet/json-csv-converter.html): Convert arrays of JSON objects to CSV and CSV back to JSON.
+
+## Documents
+
+Create practical records and printable forms from straightforward inputs.
+
+- [Bill of Sale Generator](https://niftyutilities.com/documents/bill-of-sale-generator.html): Create a printable general-purpose bill of sale.
+- [Rent Receipt Generator](https://niftyutilities.com/documents/rent-receipt-generator.html): Create a clean receipt for a rent payment.
+- [Mileage Log Generator](https://niftyutilities.com/documents/mileage-log-generator.html): Build and export a mileage log for business trips.
+- [Equipment Inventory Generator](https://niftyutilities.com/documents/equipment-inventory-generator.html): Record equipment, serial numbers, locations, and values.
+- [Invoice Number Generator](https://niftyutilities.com/documents/invoice-number-generator.html): Generate sequential, dated, or random invoice numbers.
+- [Business Asset Register](https://niftyutilities.com/documents/business-asset-register.html): Create a downloadable register of business assets.
+- [Home Inventory Generator](https://niftyutilities.com/documents/home-inventory-generator.html): Catalog household belongings and estimated replacement values.
+- [Estate Inventory Worksheet](https://niftyutilities.com/documents/estate-inventory-worksheet.html): Organize estate assets, debts, accounts, and notes.
+- [Affidavit Generator](https://niftyutilities.com/documents/affidavit-generator.html): Draft a basic affidavit worksheet for review and notarization.
+- [Printable Receipt Generator](https://niftyutilities.com/documents/printable-receipt-generator.html): Create a simple printable receipt for a payment or sale.
+
+## Homeowner / Life
+
+Estimate major ownership, housing, travel, and shared-living costs.
+
+- [Rent vs Buy Calculator](https://niftyutilities.com/homeowner/rent-vs-buy-calculator.html): Compare estimated monthly and long-term renting and buying costs.
+- [Lease vs Buy Calculator](https://niftyutilities.com/homeowner/lease-vs-buy-calculator.html): Compare the estimated net cost of leasing and buying a vehicle.
+- [Real Cost of Owning a Pool](https://niftyutilities.com/homeowner/real-cost-of-owning-a-pool.html): Estimate annual pool chemicals, energy, service, and repair costs.
+- [Real Cost of Owning a Boat](https://niftyutilities.com/homeowner/real-cost-of-owning-a-boat.html): Estimate financing, fuel, storage, insurance, and maintenance.
+- [Real Cost of Owning an RV](https://niftyutilities.com/homeowner/real-cost-of-owning-an-rv.html): Estimate financing, campsites, fuel, storage, and maintenance.
+- [Moving Cost Estimator](https://niftyutilities.com/homeowner/moving-cost-estimator.html): Estimate truck, movers, mileage, supplies, lodging, and other costs.
+- [Roommate Expense Splitter](https://niftyutilities.com/homeowner/roommate-expense-splitter.html): Split shared expenses evenly or by custom percentages.
+- [Home Maintenance Budget Calculator](https://niftyutilities.com/homeowner/home-maintenance-budget-calculator.html): Build an annual maintenance reserve from home value, age, and systems.
+- [Property Tax Estimator](https://niftyutilities.com/homeowner/property-tax-estimator.html): Estimate annual and monthly property tax from assessed value and rate.
+- [Vacation Budget Planner](https://niftyutilities.com/homeowner/vacation-budget-planner.html): Plan transportation, lodging, food, activities, and contingency spending.
+
+## Business
+
+Model pricing, profitability, labor, sales, and customer economics.
+
+- [Lead Value Calculator](https://niftyutilities.com/business/lead-value-calculator.html): Estimate the expected revenue and profit value of each lead.
+- [Customer Lifetime Value Calculator](https://niftyutilities.com/business/customer-lifetime-value-calculator.html): Estimate customer value using revenue, margin, churn, and acquisition cost.
+- [Cost of Missed Calls Calculator](https://niftyutilities.com/business/cost-of-missed-calls-calculator.html): Estimate revenue lost when customer calls go unanswered.
+- [Cost of Employee Turnover Calculator](https://niftyutilities.com/business/cost-of-employee-turnover-calculator.html): Estimate recruiting, vacancy, training, and productivity costs.
+- [Hourly Rate Calculator](https://niftyutilities.com/business/hourly-rate-calculator.html): Turn income goals and business costs into a sustainable hourly rate.
+- [Profit Margin Calculator](https://niftyutilities.com/business/profit-margin-calculator.html): Calculate gross profit, margin, markup, and target sale price.
+- [Break-Even Calculator](https://niftyutilities.com/business/break-even-calculator.html): Find the units and revenue needed to cover fixed costs.
+- [Job Cost Calculator](https://niftyutilities.com/business/job-cost-calculator.html): Calculate labor, materials, overhead, markup, and job price.
+- [Service Pricing Calculator](https://niftyutilities.com/business/service-pricing-calculator.html): Price a service from time, costs, overhead, and desired margin.
+- [Sales Commission Calculator](https://niftyutilities.com/business/sales-commission-calculator.html): Calculate tiered or flat sales commissions.
+
+## Weirdly Useful
+
+Small browser utilities for images, filenames, codes, and awkward one-off jobs.
+
+- [Screenshot to CSV](https://niftyutilities.com/useful/screenshot-to-csv.html): Extract text from a screenshot and arrange detected lines as CSV.
+- [Screenshot Table Extractor](https://niftyutilities.com/useful/screenshot-table-extractor.html): Use in-browser OCR to turn a table image into editable rows.
+- [Image Dimensions Inspector](https://niftyutilities.com/useful/image-dimensions-inspector.html): Inspect pixel size, aspect ratio, file type, and file size.
+- [Bulk File Renamer](https://niftyutilities.com/useful/bulk-file-renamer.html): Preview cleaned, numbered filenames and download renamed copies.
+- [Filename Cleaner](https://niftyutilities.com/useful/filename-cleaner.html): Remove clutter, normalize spacing, and standardize filename casing.
+- [Duplicate Photo Detector](https://niftyutilities.com/useful/duplicate-photo-detector.html): Find exact duplicate images using local file hashes.
+- [QR Batch Generator](https://niftyutilities.com/useful/qr-batch-generator.html): Generate multiple downloadable QR codes from lines of text.
+- [Barcode Generator](https://niftyutilities.com/useful/barcode-generator.html): Generate a printable CODE128 barcode in the browser.
+- [UPC Validator](https://niftyutilities.com/useful/upc-validator.html): Validate UPC-A check digits or calculate a missing check digit.
+- [VIN Decoder](https://niftyutilities.com/useful/vin-decoder.html): Validate a VIN and decode its year and basic structure locally.
+
+## Usage notes
+
+- Financial calculations are estimates and are not financial or tax advice.
+- Generated forms are general-purpose drafts and are not legal advice.
+- Uploaded files remain in the browser and are not transmitted to Nifty Utilities.
+- The Net Worth Tracker may save information only in the visitor's own browser local storage.
