@@ -1,0 +1,126 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - link "Nifty Utilities home" [ref=e5] [cursor=pointer]:
+        - /url: ../index.html
+        - img "Nifty Utilities" [ref=e6]
+      - navigation "Main navigation" [ref=e7]:
+        - link "Finance" [ref=e8] [cursor=pointer]:
+          - /url: ../finance/index.html
+        - link "Spreadsheet" [ref=e9] [cursor=pointer]:
+          - /url: ../spreadsheet/index.html
+        - link "Documents" [ref=e10] [cursor=pointer]:
+          - /url: ../documents/index.html
+        - link "Homeowner / Life" [ref=e11] [cursor=pointer]:
+          - /url: ../homeowner/index.html
+        - link "Business" [ref=e12] [cursor=pointer]:
+          - /url: ../business/index.html
+        - link "Weirdly Useful" [ref=e13] [cursor=pointer]:
+          - /url: ../useful/index.html
+    - main [ref=e14]:
+      - generic [ref=e15]:
+        - article [ref=e16]:
+          - paragraph [ref=e17]:
+            - link "All tools" [ref=e18] [cursor=pointer]:
+              - /url: ../index.html
+            - generic [ref=e19]: /
+            - link "Homeowner / Life" [ref=e20] [cursor=pointer]:
+              - /url: index.html
+          - generic [ref=e21]:
+            - paragraph [ref=e22]: Homeowner / Life
+            - heading "Real Cost of Owning a Cat" [level=1] [ref=e23]
+            - paragraph [ref=e24]: Estimate annual food, litter, vet, and supply costs for a cat.
+            - generic [ref=e25]: No data sent or stored
+          - generic [ref=e27]:
+            - paragraph [ref=e28]: Cats have a reputation for being low-maintenance pets, and compared to dogs they often are. But annual ownership costs are real and can add up well beyond the initial adoption or purchase price. Understanding the recurring expenses before bringing a cat home gives you a clearer picture of the ongoing commitment.
+            - paragraph [ref=e29]: This calculator totals the six main cost categories for cat ownership so you can see an annual figure, a monthly average, and a five-year projection based on your own estimates rather than a national average that may not fit your situation.
+          - generic [ref=e30]:
+            - generic [ref=e31]:
+              - generic [ref=e32]:
+                - generic [ref=e33]:
+                  - generic [ref=e34]: Annual food and treats
+                  - spinbutton "Annual food and treats" [ref=e35]: "450"
+                - generic [ref=e36]:
+                  - generic [ref=e37]: Annual litter
+                  - spinbutton "Annual litter" [ref=e38]: "250"
+                - generic [ref=e39]:
+                  - generic [ref=e40]: Annual routine vet and vaccines
+                  - spinbutton "Annual routine vet and vaccines" [ref=e41]: "350"
+                - generic [ref=e42]:
+                  - generic [ref=e43]: Annual flea and parasite control
+                  - spinbutton "Annual flea and parasite control" [ref=e44]: "150"
+                - generic [ref=e45]:
+                  - generic [ref=e46]: Annual supplies and toys
+                  - spinbutton "Annual supplies and toys" [ref=e47]: "150"
+                - generic [ref=e48]:
+                  - generic [ref=e49]: Annual pet insurance
+                  - spinbutton "Annual pet insurance" [ref=e50]: "300"
+              - generic [ref=e51]:
+                - button "Calculate" [ref=e52] [cursor=pointer]
+                - button "Reset" [ref=e53] [cursor=pointer]
+            - generic [ref=e54]:
+              - heading "Estimate" [level=2] [ref=e55]
+              - generic [ref=e56]:
+                - generic [ref=e57]:
+                  - generic [ref=e58]: Annual cost
+                  - strong [ref=e59]: $1,650.00
+                - generic [ref=e60]:
+                  - generic [ref=e61]: Monthly average
+                  - strong [ref=e62]: $137.50
+                - generic [ref=e63]:
+                  - generic [ref=e64]: Five-year cost
+                  - strong [ref=e65]: $8,250.00
+              - paragraph [ref=e66]: This estimate excludes the purchase or installation cost of the cat.
+          - generic [ref=e68]: 🐈
+          - generic [ref=e69]:
+            - generic [ref=e70]:
+              - heading "Your data never reaches us" [level=2] [ref=e71]
+              - paragraph [ref=e72]: Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.
+            - heading "Annual operating costs vs. the one-time adoption fee" [level=2] [ref=e73]
+            - paragraph [ref=e74]: "The adoption or purchase cost is a single upfront expense that varies from a modest rehoming fee at a shelter to a higher amount for a pedigreed breed from a registered breeder. That figure is not what this calculator covers. What the calculator addresses is the recurring annual cost: the spending that continues every year of the cat's life. Over a typical 15-year lifespan the cumulative total of annual operating costs tends to be many times larger than the initial acquisition price, which is why it deserves its own analysis before you commit."
+            - heading "Food and treats" [level=2] [ref=e75]
+            - paragraph [ref=e76]: Food is usually the most predictable cat expense and often the easiest to control through brand and formula choices. Annual spending depends on whether you feed dry food, wet food, or a combination, the quality tier of the brand, and how much your cat eats. Cats with dietary restrictions or prescription diets cost more to feed than healthy adults on standard formulas. Treats are a modest add-on for most owners but can become a meaningful line if they are used frequently for enrichment or training.
+            - heading "Litter" [level=2] [ref=e77]
+            - paragraph [ref=e78]: Litter is a distinctly cat-specific expense with no dog equivalent. Annual cost varies based on the type of litter you use, clumping versus non-clumping, clay versus silica crystal versus biodegradable, how many cats share the boxes, and how frequently you change or top off. Owners with multiple cats go through litter faster, and premium formulas can cost significantly more than standard clay. Self-cleaning litter box systems may reduce ongoing litter purchases but add an upfront equipment cost.
+            - heading "Routine vet and vaccines" [level=2] [ref=e79]
+            - paragraph [ref=e80]: An annual wellness visit covers a physical exam and any vaccines due that year. Core vaccines for cats include rabies and the combination feline distemper vaccine; your veterinarian may recommend additional vaccines based on lifestyle and risk. Exam and vaccine fees vary by region, clinic type, and whether your cat is an indoor-only or indoor-outdoor pet. Dental cleanings, which require anesthesia and are often recommended annually for adult cats, are not included in a basic wellness visit and represent an additional cost if your cat needs one.
+            - heading "Flea and parasite control" [level=2] [ref=e81]
+            - paragraph [ref=e82]: Even indoor cats benefit from flea prevention, particularly in warmer climates or in households that also have dogs. Monthly topical or oral preventatives are the most common approach and carry an annual cost that varies by the product and your cat's weight. Cats allowed outdoor access also face a higher risk of intestinal parasites and may need periodic deworming on top of routine prevention. Ask your veterinarian which products are appropriate; some over-the-counter flea treatments are not safe for cats and should be avoided.
+            - heading "Supplies and toys" [level=2] [ref=e83]
+            - paragraph [ref=e84]: Cats need a litter box, food and water dishes, a carrier, scratching surfaces, and some form of environmental enrichment. Most of these are one-time purchases that depreciate over several years, but replacement and expansion spending continues. Scratching posts and pads wear out and need replacement. Enrichment toys, cat trees, and window perches fall into a category that can be as small or as large as you choose. A cat that is left alone during the day often benefits from more environmental complexity, which tends to mean more ongoing supply spending.
+            - heading "Pet insurance" [level=2] [ref=e85]
+            - paragraph [ref=e86]: Pet insurance premiums vary based on your cat's age, breed, the deductible and reimbursement level you choose, and what is covered. Accident-and-illness plans cover a broader range of conditions than accident-only plans and cost more. Premiums typically increase as a cat ages. Some breeds are predisposed to specific conditions, such as hypertrophic cardiomyopathy in Maine Coons and Ragdolls or polycystic kidney disease in Persians, which may affect coverage terms or premiums. Whether insurance makes financial sense depends on your risk tolerance and whether you have the liquidity to cover a large unexpected vet bill out of pocket.
+            - heading "How indoor vs. outdoor living and your cat's age affect costs" [level=2] [ref=e87]
+            - paragraph [ref=e88]: An indoor-only cat generally has lower vet costs than one allowed outside because the outdoor lifestyle increases exposure to infectious disease, parasites, injuries from other animals, and trauma. Indoor cats tend to live longer on average, which extends the total years of annual operating costs but often reduces the per-year medical spending in middle age. A kitten in its first year has higher initial costs from spay or neuter surgery, initial vaccine series, and first-year supplies that are not captured in this calculator's recurring cost structure. A senior cat, generally considered to be a cat over eleven, often needs more frequent vet visits, dental care, or management of age-related conditions such as hyperthyroidism or kidney disease, which can push the vet category meaningfully higher.
+            - heading "How to use this calculator" [level=2] [ref=e89]
+            - paragraph [ref=e90]: Enter your best estimate for each of the six cost categories. If you already own a cat, use what you actually spend. If you are researching before adopting, your veterinarian's office can give you estimates on exam and vaccine fees for your area, and a quick look at retail prices for food and litter will calibrate those inputs. The calculator produces an annual total, a monthly average, and a five-year projection so you can see the long-run picture alongside the near-term budget impact. Everything runs in your browser and nothing you enter is sent to a server.
+            - heading "Frequently asked questions" [level=2] [ref=e91]
+            - heading "How much does it cost to own a cat per year?" [level=3] [ref=e92]
+            - paragraph [ref=e93]: Annual costs vary widely depending on the cat's health, your food and litter choices, whether you carry pet insurance, and where you live. The only reliable number is one built from your own real inputs, which is exactly what this calculator produces. Combining your actual or estimated spending across all six categories gives you a figure you can trust rather than a national average that may not reflect your situation at all.
+            - heading "Is it cheaper to own a cat than a dog?" [level=3] [ref=e94]
+            - paragraph [ref=e95]: For most owners, yes. Cats typically require less food, no professional grooming, no boarding or dog walker costs for short trips away, and no dog license in most jurisdictions. The litter category has no equivalent on the dog side. Vet costs for healthy adults in both species are similar, but dogs tend to have higher dental, grooming, and boarding costs that push total annual spending higher. Comparing the outputs of the cat and dog calculators on this site with your own inputs will show the difference specific to your situation.
+            - heading "Important" [level=2] [ref=e96]
+            - paragraph [ref=e97]: This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.
+            - heading "Support" [level=2] [ref=e98]
+            - paragraph [ref=e99]:
+              - text: Problem with this tool or suggestions for improvement? Please email
+              - link "support@niftyutilities.com" [ref=e100] [cursor=pointer]:
+                - /url: mailto:support@niftyutilities.com
+              - text: .
+        - complementary [ref=e101]:
+          - generic [ref=e102]:
+            - strong [ref=e103]: Nothing is sent to us
+            - paragraph [ref=e104]: This static site has no server endpoint or database capable of receiving your files or entries.
+    - contentinfo [ref=e105]:
+      - generic [ref=e106]:
+        - strong [ref=e107]: Nifty Utilities
+        - text: No backend. No database. Your tool data stays on your device.
+      - generic [ref=e108]:
+        - link "Privacy" [ref=e109] [cursor=pointer]:
+          - /url: ../privacy.html
+        - link "About" [ref=e110] [cursor=pointer]:
+          - /url: ../about.html
+        - link "Support" [ref=e111] [cursor=pointer]:
+          - /url: mailto:support@niftyutilities.com

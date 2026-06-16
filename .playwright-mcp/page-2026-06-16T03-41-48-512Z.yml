@@ -1,0 +1,131 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - link "Nifty Utilities home" [ref=e5] [cursor=pointer]:
+        - /url: ../index.html
+        - img "Nifty Utilities" [ref=e6]
+      - navigation "Main navigation" [ref=e7]:
+        - link "Finance" [ref=e8] [cursor=pointer]:
+          - /url: ../finance/index.html
+        - link "Spreadsheet" [ref=e9] [cursor=pointer]:
+          - /url: ../spreadsheet/index.html
+        - link "Documents" [ref=e10] [cursor=pointer]:
+          - /url: ../documents/index.html
+        - link "Homeowner / Life" [ref=e11] [cursor=pointer]:
+          - /url: ../homeowner/index.html
+        - link "Business" [ref=e12] [cursor=pointer]:
+          - /url: ../business/index.html
+        - link "Weirdly Useful" [ref=e13] [cursor=pointer]:
+          - /url: ../useful/index.html
+    - main [ref=e14]:
+      - generic [ref=e15]:
+        - article [ref=e16]:
+          - paragraph [ref=e17]:
+            - link "All tools" [ref=e18] [cursor=pointer]:
+              - /url: ../index.html
+            - generic [ref=e19]: /
+            - link "Homeowner / Life" [ref=e20] [cursor=pointer]:
+              - /url: index.html
+          - generic [ref=e21]:
+            - paragraph [ref=e22]: Homeowner / Life
+            - heading "Real Cost of Owning a Horse" [level=1] [ref=e23]
+            - paragraph [ref=e24]: Estimate annual boarding, feed, farrier, vet, and training costs.
+            - generic [ref=e25]: No data sent or stored
+          - generic [ref=e28]: 🐴
+          - generic [ref=e29]:
+            - paragraph [ref=e30]: Horses are among the most expensive animals to own, and the purchase price is often the least of it. The ongoing annual cost — boarding or pasture, feed, farrier visits, veterinary care, insurance, tack, and training — typically far exceeds what most buyers expect before signing the bill of sale.
+            - paragraph [ref=e31]: This calculator adds up your real recurring costs and shows an annual total, a monthly average, and a five-year projection, so you can see the full picture before you buy or use it to benchmark what you are already spending.
+          - generic [ref=e32]:
+            - generic [ref=e33]:
+              - generic [ref=e34]:
+                - generic [ref=e35]:
+                  - generic [ref=e36]: Annual boarding or pasture
+                  - spinbutton "Annual boarding or pasture" [ref=e37]: "6000"
+                - generic [ref=e38]:
+                  - generic [ref=e39]: Annual feed and hay
+                  - spinbutton "Annual feed and hay" [ref=e40]: "1800"
+                - generic [ref=e41]:
+                  - generic [ref=e42]: Annual farrier (hoof care)
+                  - spinbutton "Annual farrier (hoof care)" [ref=e43]: "1500"
+                - generic [ref=e44]:
+                  - generic [ref=e45]: Annual routine vet and dental
+                  - spinbutton "Annual routine vet and dental" [ref=e46]: "1200"
+                - generic [ref=e47]:
+                  - generic [ref=e48]: Annual insurance
+                  - spinbutton "Annual insurance" [ref=e49]: "600"
+                - generic [ref=e50]:
+                  - generic [ref=e51]: Annual tack and equipment
+                  - spinbutton "Annual tack and equipment" [ref=e52]: "500"
+                - generic [ref=e53]:
+                  - generic [ref=e54]: Annual training or lessons
+                  - spinbutton "Annual training or lessons" [ref=e55]: "1800"
+              - generic [ref=e56]:
+                - button "Calculate" [ref=e57] [cursor=pointer]
+                - button "Reset" [ref=e58] [cursor=pointer]
+            - generic [ref=e59]:
+              - heading "Estimate" [level=2] [ref=e60]
+              - generic [ref=e61]:
+                - generic [ref=e62]:
+                  - generic [ref=e63]: Annual cost
+                  - strong [ref=e64]: $13,400.00
+                - generic [ref=e65]:
+                  - generic [ref=e66]: Monthly average
+                  - strong [ref=e67]: $1,116.67
+                - generic [ref=e68]:
+                  - generic [ref=e69]: Five-year cost
+                  - strong [ref=e70]: $67,000.00
+              - paragraph [ref=e71]: This estimate excludes the purchase or installation cost of the horse.
+          - generic [ref=e72]:
+            - generic [ref=e73]:
+              - heading "Your data never reaches us" [level=2] [ref=e74]
+              - paragraph [ref=e75]: Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.
+            - heading "Annual ownership costs versus the purchase price" [level=2] [ref=e76]
+            - paragraph [ref=e77]: When people compare horses to other purchases, they often anchor on what the animal cost to acquire. That figure can range from a few hundred dollars for a rescue or grade horse to six figures for a well-bred sport horse. But the purchase price is a one-time event. The annual carrying cost — what you spend every year simply to keep a horse alive, sound, and usable — repeats indefinitely, and for most owners it dwarfs the acquisition cost within a few years. Understanding the annual number before you buy is far more useful than knowing the sticker price.
+            - heading "Boarding or pasture" [level=2] [ref=e78]
+            - paragraph [ref=e79]: Where you keep your horse is almost always the largest single line in the budget. Full-care board at a well-staffed facility, where the barn staff handles all feeding, stall cleaning, and turnout, sits at the high end. Partial or self-care board, where you do some or all of the daily work yourself, reduces the cost but increases your time commitment significantly. Keeping a horse on your own property eliminates board fees but introduces property costs, fencing, shelter construction and maintenance, water infrastructure, and manure management that must be accounted for separately. Rates vary widely by region, facility quality, and what services are included.
+            - heading "Feed and hay" [level=2] [ref=e80]
+            - paragraph [ref=e81]: An average-sized horse consumes a substantial amount of forage daily — primarily hay when pasture is limited or unavailable — plus any grain or concentrated feed required based on workload, age, and metabolic needs. Hay prices fluctuate with regional drought conditions, the time of year, and whether you buy in bulk at cutting time or purchase by the bale from a feed store. Horses with medical conditions such as Cushing's disease, insulin resistance, or ulcers often require specialized or restricted diets that change the cost profile. Supplements for joint support, hoof quality, or digestive health add to this category and can accumulate quickly.
+            - heading "Farrier (hoof care)" [level=2] [ref=e82]
+            - paragraph [ref=e83]: "Horses require regular hoof care every six to eight weeks regardless of whether they are shod or kept barefoot. A horse in shoes typically visits the farrier more frequently and at higher cost than one managed barefoot, and therapeutic or corrective shoeing for horses with hoof or limb issues costs more still. Geography matters: farrier rates vary considerably by region and by the individual farrier's experience and reputation. Skipping or delaying farrier appointments is one of the fastest ways to cause lameness, so this is a non-negotiable recurring expense."
+            - heading "Routine vet and dental" [level=2] [ref=e84]
+            - paragraph [ref=e85]: Annual veterinary costs include at a minimum a wellness exam, core vaccinations, and a Coggins test for equine infectious anemia. Many horses also require a spring and fall deworming program, though fecal egg counts are increasingly used to target treatment more precisely. Dental care — floating sharp points and checking for abnormalities — is typically performed once or twice a year by either a veterinarian or an equine dental technician. Emergency calls, lameness evaluations, and diagnostics such as radiographs or ultrasound sit on top of routine costs and can be significant. Setting aside a veterinary reserve for unexpected illness or injury is prudent.
+            - heading "Insurance" [level=2] [ref=e86]
+            - paragraph [ref=e87]: Equine insurance covers major medical and surgical expenses and, for horses with meaningful value, mortality coverage. Major medical premiums depend on the horse's age, purchase price or appraised value, intended use, and the coverage limits you select. Older horses and horses used in high-risk disciplines typically cost more to insure. Mortality coverage is generally a percentage of the insured value annually. Not every owner insures, but for horses with significant financial or competitive value, insurance can prevent a single emergency surgery from becoming a catastrophic out-of-pocket expense.
+            - heading "Tack and equipment" [level=2] [ref=e88]
+            - paragraph [ref=e89]: Saddles, bridles, blankets, leg protection, grooming supplies, and first-aid materials are recurring costs that vary based on discipline and how hard the equipment is used. A well-fitted saddle is the single most expensive piece of tack and may need adjustment or replacement as a horse's topline changes with age and fitness. Blankets wear out and are seasonally necessary in most climates. Budget a realistic annual amount for replacing worn or damaged equipment rather than treating tack as a one-time purchase.
+            - heading "Training or lessons" [level=2] [ref=e90]
+            - paragraph [ref=e91]: Ongoing professional training — whether for a horse in a full training program with a trainer or for the owner taking regular lessons — is one of the larger variable costs and one of the most commonly cut when budgets tighten. A horse in professional training for competition or rehabilitation can cost as much per month as a full-care board situation layered on top. Regular lessons for the rider are important for safety and progress and should be budgeted as a routine expense rather than an occasional luxury. The cost depends heavily on the discipline, the trainer's experience, and your geographic market.
+            - heading "How to use this calculator" [level=2] [ref=e92]
+            - paragraph [ref=e93]: Enter your actual or estimated annual cost for each category. If you board, enter your monthly board rate and the tool will annualize it. Use your best estimate for feed and hay based on what you spend or what local suppliers charge. For the farrier and vet fields, multiply your per-visit cost by the expected number of visits per year. The calculator produces an annual total, a monthly average to compare against your budget, and a five-year cost projection so you can see the long-term commitment in one number. Everything is calculated in your browser; nothing you type is sent to us or stored on a server.
+            - heading "Frequently asked questions" [level=2] [ref=e94]
+            - heading "What does it actually cost to own a horse per year?" [level=3] [ref=e95]
+            - paragraph [ref=e96]: The honest answer is that it depends enormously on where you live, where you keep the horse, and how you use it. A horse kept on your own pasture in a low-cost rural area with minimal training costs sits at a very different point than a competition horse in full board and training in a high-cost metropolitan market. The only number worth trusting is one built from your specific boarding situation, local farrier and vet rates, and realistic feed costs — which is exactly what this calculator is designed to produce.
+            - heading "Is it cheaper to keep a horse at home than to board?" [level=3] [ref=e97]
+            - paragraph [ref=e98]: It can be, but the comparison is less straightforward than it appears. Eliminating board fees saves money, but owning property suitable for horses requires fencing, shelter, water systems, hay storage, and manure management, all of which carry upfront and ongoing costs. You also take on the full daily labor yourself, which has a real time cost even if it does not show up as a dollar figure. For owners who already have appropriate land and infrastructure, home keeping often pencils out favorably over time. For those who would need to build or purchase that infrastructure, the break-even can take years.
+            - heading "What are the biggest hidden costs of horse ownership?" [level=3] [ref=e99]
+            - paragraph [ref=e100]: Emergency veterinary care is the expense that catches most owners off guard. Colic surgery, fracture repair, and intensive treatment for conditions such as laminitis can run into the tens of thousands of dollars for a single episode, and horses are accident-prone animals. Dental care is frequently overlooked in initial budgets. Trailer ownership or the ongoing cost of renting transport for vet visits, shows, and trail outings adds up steadily. Finally, the cost of a layup period — when a horse is injured and cannot be worked — does not reduce most of the fixed costs while removing any competitive or recreational value for the duration.
+            - heading "Important" [level=2] [ref=e101]
+            - paragraph [ref=e102]: This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.
+            - heading "Support" [level=2] [ref=e103]
+            - paragraph [ref=e104]:
+              - text: Problem with this tool or suggestions for improvement? Please email
+              - link "support@niftyutilities.com" [ref=e105] [cursor=pointer]:
+                - /url: mailto:support@niftyutilities.com
+              - text: .
+        - complementary [ref=e106]:
+          - generic [ref=e107]:
+            - strong [ref=e108]: Nothing is sent to us
+            - paragraph [ref=e109]: This static site has no server endpoint or database capable of receiving your files or entries.
+    - contentinfo [ref=e110]:
+      - generic [ref=e111]:
+        - strong [ref=e112]: Nifty Utilities
+        - text: No backend. No database. Your tool data stays on your device.
+      - generic [ref=e113]:
+        - link "Privacy" [ref=e114] [cursor=pointer]:
+          - /url: ../privacy.html
+        - link "About" [ref=e115] [cursor=pointer]:
+          - /url: ../about.html
+        - link "Support" [ref=e116] [cursor=pointer]:
+          - /url: mailto:support@niftyutilities.com

@@ -1,0 +1,71 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - link "Nifty Utilities home" [ref=e5] [cursor=pointer]:
+        - /url: ../index.html
+        - img "Nifty Utilities" [ref=e6]
+      - navigation "Main navigation" [ref=e7]:
+        - link "Finance" [ref=e8] [cursor=pointer]:
+          - /url: ../finance/index.html
+        - link "Spreadsheet" [ref=e9] [cursor=pointer]:
+          - /url: ../spreadsheet/index.html
+        - link "Documents" [ref=e10] [cursor=pointer]:
+          - /url: ../documents/index.html
+        - link "Homeowner / Life" [ref=e11] [cursor=pointer]:
+          - /url: ../homeowner/index.html
+        - link "Business" [ref=e12] [cursor=pointer]:
+          - /url: ../business/index.html
+        - link "Weirdly Useful" [ref=e13] [cursor=pointer]:
+          - /url: ../useful/index.html
+    - main [ref=e14]:
+      - generic [ref=e15]:
+        - article [ref=e16]:
+          - paragraph [ref=e17]:
+            - link "All tools" [ref=e18] [cursor=pointer]:
+              - /url: ../index.html
+            - generic [ref=e19]: /
+            - link "Weirdly Useful" [ref=e20] [cursor=pointer]:
+              - /url: index.html
+          - generic [ref=e21]:
+            - paragraph [ref=e22]: Weirdly Useful
+            - heading "Screenshot Measurement Calculator" [level=1] [ref=e23]
+            - paragraph [ref=e24]: Draw on a photo, set one known length, and estimate wall lengths, dimensions, and floor area.
+            - generic [ref=e25]: No data sent or stored
+          - generic [ref=e27]:
+            - generic [ref=e29]:
+              - strong [ref=e30]: Choose a file
+              - button "Choose a file" [ref=e31]
+            - paragraph [ref=e32]: Upload a straight-on photo or screenshot. Draw one line over something whose real length you know, enter that length, then draw more lines or a box to measure the rest. This is a flat 2D scale — it is accurate only for objects in the same plane as your reference, photographed straight on. Treat results as estimates.
+          - generic [ref=e33]:
+            - generic [ref=e34]:
+              - heading "Your data never reaches us" [level=2] [ref=e35]
+              - paragraph [ref=e36]: Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.
+            - heading "About this screenshot measurement calculator" [level=2] [ref=e37]
+            - paragraph [ref=e38]: Draw on a photo, set one known length, and estimate wall lengths, dimensions, and floor area. Use it free without creating an account or uploading data to Nifty Utilities.
+            - heading "How it works" [level=2] [ref=e39]
+            - paragraph [ref=e40]: Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.
+            - heading "Important" [level=2] [ref=e41]
+            - paragraph [ref=e42]: This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.
+            - heading "Support" [level=2] [ref=e43]
+            - paragraph [ref=e44]:
+              - text: Problem with this tool or suggestions for improvement? Please email
+              - link "support@niftyutilities.com" [ref=e45] [cursor=pointer]:
+                - /url: mailto:support@niftyutilities.com
+              - text: .
+        - complementary [ref=e46]:
+          - generic [ref=e47]:
+            - strong [ref=e48]: Nothing is sent to us
+            - paragraph [ref=e49]: This static site has no server endpoint or database capable of receiving your files or entries.
+    - contentinfo [ref=e50]:
+      - generic [ref=e51]:
+        - strong [ref=e52]: Nifty Utilities
+        - text: No backend. No database. Your tool data stays on your device.
+      - generic [ref=e53]:
+        - link "Privacy" [ref=e54] [cursor=pointer]:
+          - /url: ../privacy.html
+        - link "About" [ref=e55] [cursor=pointer]:
+          - /url: ../about.html
+        - link "Support" [ref=e56] [cursor=pointer]:
+          - /url: mailto:support@niftyutilities.com

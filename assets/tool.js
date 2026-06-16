@@ -105,6 +105,92 @@
     "real-cost-of-owning-an-rv": financedOwnershipCalculator("RV", [
       ["storage", "Storage", 1200], ["fuel", "Trip fuel", 2500], ["insurance", "Insurance", 1100], ["maintenance", "Maintenance", 1800], ["campsites", "Campsites", 2200]
     ]),
+    "real-cost-of-owning-a-horse": ownershipCalculator("horse", [
+      ["boarding", "Boarding or pasture", 6000], ["feed", "Feed and hay", 1800], ["farrier", "Farrier (hoof care)", 1500], ["vet", "Routine vet and dental", 1200], ["insurance", "Insurance", 600], ["tack", "Tack and equipment", 500], ["training", "Training or lessons", 1800]
+    ]),
+    "real-cost-of-owning-a-dog": ownershipCalculator("dog", [
+      ["food", "Food and treats", 700], ["vet", "Routine vet and vaccines", 500], ["preventatives", "Flea, tick, and heartworm", 250], ["grooming", "Grooming", 300], ["supplies", "Supplies and toys", 200], ["insurance", "Pet insurance", 400], ["boarding", "Boarding or daycare", 400]
+    ]),
+    "real-cost-of-owning-a-cat": ownershipCalculator("cat", [
+      ["food", "Food and treats", 450], ["litter", "Litter", 250], ["vet", "Routine vet and vaccines", 350], ["preventatives", "Flea and parasite control", 150], ["supplies", "Supplies and toys", 150], ["insurance", "Pet insurance", 300]
+    ]),
+    "real-cost-of-owning-a-hot-tub": ownershipCalculator("hot tub", [
+      ["energy", "Electricity to heat and run", 600], ["chemicals", "Chemicals and test supplies", 300], ["water", "Water and refills", 120], ["filters", "Filters and parts", 150], ["service", "Service and repairs reserve", 400], ["insurance", "Insurance increase", 100]
+    ]),
+    "real-cost-of-owning-a-car": financedOwnershipCalculator("car", [
+      ["fuel", "Fuel", 2000], ["insurance", "Insurance", 1600], ["maintenance", "Maintenance and repairs", 1200], ["registration", "Registration, taxes, and fees", 400], ["parking", "Parking and tolls", 600]
+    ], { price: 38000, down: 5000, apr: 7, years: 6 }),
+    "real-cost-of-raising-backyard-chickens": ownershipCalculator("flock", [
+      ["feed", "Feed", 400], ["bedding", "Bedding and litter", 120], ["health", "Health and supplements", 80], ["supplies", "Supplies and replacements", 100], ["utilities", "Coop electricity for heat and light", 60]
+    ]),
+    "real-cost-of-lawn-care": ownershipCalculator("lawn", [
+      ["mowing", "Mowing or lawn service", 1200], ["fertilizer", "Fertilizer and treatments", 300], ["seed", "Seed, soil, and overseeding", 150], ["irrigation", "Irrigation and water", 400], ["equipment", "Equipment maintenance and fuel", 250], ["pest", "Weed and pest control", 200]
+    ]),
+    "real-cost-of-owning-a-septic-system": ownershipCalculator("septic system", [
+      ["pumping", "Pumping (amortized per year)", 150], ["inspection", "Inspection", 120], ["additives", "Additives and maintenance", 60], ["repairs", "Repairs reserve", 400], ["drainfield", "Drainfield reserve", 300]
+    ]),
+    "real-cost-of-owning-a-motorcycle": financedOwnershipCalculator("motorcycle", [
+      ["fuel", "Fuel", 300], ["insurance", "Insurance", 600], ["maintenance", "Maintenance and tires", 700], ["registration", "Registration and fees", 150], ["gear", "Riding gear reserve", 250]
+    ], { price: 12000, down: 2000, apr: 9, years: 5 }),
+    "solar-panel-payback-calculator": {
+      fields: [
+        { id: "cost", label: "Gross system cost", value: 25000 }, { id: "incentive", label: "Tax credits and rebates (%)", value: 30 },
+        { id: "bill", label: "Current monthly electric bill", value: 160 }, { id: "offset", label: "Bill offset by solar (%)", value: 90 }
+      ],
+      calculate(v) {
+        const net = num(v.cost) * (1 - num(v.incentive) / 100);
+        const annual = num(v.bill) * 12 * num(v.offset) / 100;
+        const payback = annual > 0 ? net / annual : 0;
+        const lifetime = annual * 25 - net;
+        return { metrics: [["Net cost after incentives", money.format(net)], ["Estimated annual savings", money.format(annual)], ["Payback period", annual > 0 ? `${number.format(payback)} years` : "—"], ["Estimated 25-year net savings", money.format(lifetime)]], note: "Actual results depend on local electricity rates, sunlight, system performance, and future rate changes not modeled here." };
+      }
+    },
+    "real-cost-of-owning-a-rental-property": {
+      fields: [
+        { id: "price", label: "Purchase price", value: 280000 }, { id: "down", label: "Down payment", value: 56000 },
+        { id: "apr", label: "Mortgage APR (%)", value: 7 }, { id: "years", label: "Loan term (years)", value: 30 },
+        { id: "rent", label: "Monthly rent", value: 2100 }, { id: "vacancy", label: "Vacancy allowance (%)", value: 6 },
+        { id: "tax", label: "Annual property tax", value: 3200 }, { id: "insurance", label: "Annual insurance", value: 1400 },
+        { id: "maintenance", label: "Annual maintenance and repairs", value: 2500 }, { id: "management", label: "Property management (% of rent)", value: 8 }
+      ],
+      calculate(v) {
+        const principal = num(v.price) - num(v.down);
+        const r = num(v.apr) / 1200;
+        const n = num(v.years) * 12;
+        const payment = r ? principal * r * (1 + r) ** n / ((1 + r) ** n - 1) : principal / n;
+        const grossRent = num(v.rent) * 12;
+        const effectiveRent = grossRent * (1 - num(v.vacancy) / 100);
+        const mgmt = effectiveRent * num(v.management) / 100;
+        const operating = num(v.tax) + num(v.insurance) + num(v.maintenance) + mgmt;
+        const annualCost = payment * 12 + operating;
+        const cashFlow = effectiveRent - annualCost;
+        return { metrics: [["Monthly loan payment", money.format(payment)], ["Effective annual rent", money.format(effectiveRent)], ["Annual operating + financing cost", money.format(annualCost)], ["Annual cash flow", money.format(cashFlow)], ["Monthly cash flow", money.format(cashFlow / 12)]], note: cashFlow >= 0 ? "Positive cash flow shown is before income taxes, depreciation, and appreciation, none of which are modeled here." : "This scenario shows negative cash flow before any tax effects or appreciation; the property costs more each year than it brings in." };
+      }
+    },
+    "real-cost-of-owning-an-electric-car": financedOwnershipCalculator("electric car", [
+      ["charging", "Home and public charging", 700], ["insurance", "Insurance", 1700], ["maintenance", "Maintenance and repairs", 700], ["tires", "Tires", 500], ["registration", "Registration, taxes, and fees", 450]
+    ], { price: 47000, down: 6000, apr: 7, years: 6 }),
+    "real-cost-of-owning-a-jet-ski": ownershipCalculator("personal watercraft", [
+      ["storage", "Storage and trailer upkeep", 600], ["fuel", "Fuel", 500], ["insurance", "Insurance", 350], ["maintenance", "Maintenance and winterization", 600], ["registration", "Registration and launch fees", 150]
+    ]),
+    "real-cost-of-owning-a-second-home": {
+      fields: [
+        { id: "price", label: "Purchase price", value: 320000 }, { id: "down", label: "Down payment", value: 64000 },
+        { id: "apr", label: "Mortgage APR (%)", value: 7 }, { id: "years", label: "Loan term (years)", value: 30 },
+        { id: "tax", label: "Annual property tax", value: 4200 }, { id: "insurance", label: "Annual insurance", value: 2200 },
+        { id: "utilities", label: "Annual utilities", value: 2400 }, { id: "maintenance", label: "Annual maintenance and HOA", value: 3600 },
+        { id: "travel", label: "Annual travel to the property", value: 1500 }
+      ],
+      calculate(v) {
+        const principal = num(v.price) - num(v.down);
+        const r = num(v.apr) / 1200;
+        const n = num(v.years) * 12;
+        const payment = r ? principal * r * (1 + r) ** n / ((1 + r) ** n - 1) : principal / n;
+        const carrying = num(v.tax) + num(v.insurance) + num(v.utilities) + num(v.maintenance) + num(v.travel);
+        const annual = payment * 12 + carrying;
+        return { metrics: [["Monthly mortgage payment", money.format(payment)], ["Annual carrying cost (excl. mortgage)", money.format(carrying)], ["Total annual cost", money.format(annual)], ["Total monthly cost", money.format(annual / 12)]], note: "This is the cost of holding a second home for personal use; it excludes any rental income, and changes in the home's value over time are not modeled here." };
+      }
+    },
     "moving-cost-estimator": {
       fields: [
         { id: "movers", label: "Movers (hours)", value: 6 }, { id: "moverRate", label: "Mover hourly rate", value: 180 },
@@ -139,6 +225,41 @@
         const assessed = Math.max(0, num(v.market) * num(v.ratio) / 100 - num(v.exemption));
         const annual = assessed * num(v.rate) / 100;
         return { metrics: [["Taxable assessed value", money.format(assessed)], ["Estimated annual tax", money.format(annual)], ["Estimated monthly tax", money.format(annual / 12)]], note: "Local assessment rules, millage rates, and special levies may change the actual bill." };
+      }
+    },
+    "property-tax-appeal-estimator": {
+      fields: [
+        { id: "assessed", label: "Current assessed value", value: 400000, help: "From your latest assessment or tax notice." },
+        { id: "purchase", label: "Recent purchase price", value: 350000, help: "Leave 0 if you have not bought recently." },
+        { id: "comps", label: "Average value of comparable homes", value: 355000, help: "Average recent sale or assessed value of similar nearby homes." },
+        { id: "rate", label: "Effective tax rate (%)", value: 1.2, help: "Annual property tax divided by assessed value, as a percent." }
+      ],
+      calculate(v) {
+        const assessed = num(v.assessed);
+        const evidence = [num(v.purchase), num(v.comps)].filter((value) => value > 0);
+        const supported = evidence.length ? evidence.reduce((sum, value) => sum + value, 0) / evidence.length : 0;
+        const gap = assessed - supported;
+        const gapPct = assessed > 0 ? gap / assessed : 0;
+        const annualSavings = gap > 0 ? gap * num(v.rate) / 100 : 0;
+        let likelihood = "Unlikely";
+        if (gapPct >= 0.1) likelihood = "High";
+        else if (gapPct >= 0.05) likelihood = "Moderate";
+        else if (gapPct > 0.0) likelihood = "Low";
+        const note = supported <= 0
+          ? "Enter a purchase price or comparable home value so the estimate has evidence to compare against your assessment."
+          : gap > 0
+            ? `Your assessment looks about ${number.format(Math.round(gapPct * 1000) / 10)}% above your supported value of ${money.format(supported)}. Bring documented comparable sales to your appeal; assessors weigh evidence, so a larger, well-supported gap improves your odds.`
+            : `Your assessment is at or below your supported value of ${money.format(supported)}, so an appeal is unlikely to lower it and could prompt a review.`;
+        return {
+          metrics: [
+            ["Supported market value", supported > 0 ? money.format(supported) : "—"],
+            ["Possible over-assessment", gap > 0 ? money.format(gap) : money.format(0)],
+            ["Appeal success likelihood", likelihood],
+            ["Estimated annual savings", money.format(annualSavings)],
+            ["Estimated 3-year savings", money.format(annualSavings * 3)]
+          ],
+          note
+        };
       }
     },
     "vacation-budget-planner": sumCalculator([
@@ -277,11 +398,11 @@
     };
   }
 
-  function financedOwnershipCalculator(label, costs) {
+  function financedOwnershipCalculator(label, costs, base = {}) {
     return {
       fields: [
-        { id: "price", label: `Purchase price`, value: 65000 }, { id: "down", label: "Down payment", value: 10000 },
-        { id: "apr", label: "Loan APR (%)", value: 7 }, { id: "years", label: "Loan term (years)", value: 10 },
+        { id: "price", label: `Purchase price`, value: base.price ?? 65000 }, { id: "down", label: "Down payment", value: base.down ?? 10000 },
+        { id: "apr", label: "Loan APR (%)", value: base.apr ?? 7 }, { id: "years", label: "Loan term (years)", value: base.years ?? 10 },
         ...costs.map(([id, name, value]) => ({ id, label: `Annual ${name.toLowerCase()}`, value }))
       ],
       calculate(v) {
@@ -886,6 +1007,283 @@
     };
   }
 
+  const pad2 = (value) => String(value).padStart(2, "0");
+  const isoDate = (date) => `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
+  const compactDate = (date) => `${date.getFullYear()}${pad2(date.getMonth() + 1)}${pad2(date.getDate())}`;
+  const parseIso = (value) => {
+    const parts = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+    return parts ? new Date(Number(parts[1]), Number(parts[2]) - 1, Number(parts[3])) : null;
+  };
+  const addMonths = (date, months) => {
+    const result = new Date(date.getTime());
+    const day = result.getDate();
+    result.setMonth(result.getMonth() + months);
+    if (result.getDate() < day) result.setDate(0);
+    return result;
+  };
+
+  function guessReceiptFields(text) {
+    const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+    const months = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
+    let date = "";
+    for (const line of lines) {
+      let match = /\b(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})\b/.exec(line);
+      if (match) {
+        let [, a, b, year] = match;
+        year = year.length === 2 ? `20${year}` : year;
+        const parsed = new Date(Number(year), Number(a) - 1, Number(b));
+        if (!Number.isNaN(parsed.getTime())) { date = isoDate(parsed); break; }
+      }
+      match = /\b(\d{4})-(\d{2})-(\d{2})\b/.exec(line);
+      if (match) { date = `${match[1]}-${match[2]}-${match[3]}`; break; }
+      match = /\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2}),?\s+(\d{4})\b/i.exec(line);
+      if (match) {
+        const parsed = new Date(Number(match[3]), months[match[1].toLowerCase()], Number(match[2]));
+        if (!Number.isNaN(parsed.getTime())) { date = isoDate(parsed); break; }
+      }
+    }
+    let amount = "";
+    const totalLine = lines.find((line) => /\b(grand\s+total|total|amount\s+due|balance\s+due)\b/i.test(line) && /\d/.test(line) && !/subtotal/i.test(line));
+    const pickAmount = (line) => {
+      const found = [...line.matchAll(/\$?\s?(\d[\d,]*\.\d{2})/g)].map((m) => Number(m[1].replace(/,/g, "")));
+      return found.length ? Math.max(...found) : null;
+    };
+    if (totalLine) { const value = pickAmount(totalLine); if (value !== null) amount = value.toFixed(2); }
+    if (!amount) {
+      const all = lines.flatMap((line) => [...line.matchAll(/\$?\s?(\d[\d,]*\.\d{2})/g)].map((m) => Number(m[1].replace(/,/g, ""))));
+      if (all.length) amount = Math.max(...all).toFixed(2);
+    }
+    const merchant = lines.find((line) => /[a-z]/i.test(line) && line.replace(/[^a-z]/gi, "").length >= 3 && !/receipt|invoice|order|thank/i.test(line)) || "";
+    return { date, amount, merchant: titleCase(merchant.replace(/[^a-z0-9 &'.-]/gi, "").trim()).slice(0, 60) };
+  }
+
+  function renderWarranty() {
+    const warrantyOptions = [["3", "3 months"], ["6", "6 months"], ["12", "1 year"], ["24", "2 years"], ["36", "3 years"], ["60", "5 years"], ["120", "10 years"]];
+    root.innerHTML = `
+      ${fileInput(false, "image/*")}
+      <p class="notice">Optional: scan a receipt photo to pre-fill the fields below. OCR runs in your browser after a recognition library downloads. You can also skip the scan and type the details in directly.</p>
+      <div class="actions"><button id="scan-receipt" class="button">Scan receipt</button></div>
+      <div id="scan-status"></div>
+      <div class="form-grid" style="margin-top:1rem">
+        ${fieldHtml({ id: "merchant", label: "Merchant or item", type: "text", placeholder: "e.g. Acme Appliances — Washer", full: true })}
+        ${fieldHtml({ id: "date", label: "Purchase date", type: "date", value: today() })}
+        ${fieldHtml({ id: "amount", label: "Amount paid", type: "number", placeholder: "0.00" })}
+        ${fieldHtml({ id: "length", label: "Warranty length", type: "select", options: warrantyOptions })}
+      </div>
+      <div class="actions"><button id="make-warranty" class="button primary">Create warranty reminder</button></div>
+      ${resultPanel()}`;
+    const status = root.querySelector("#scan-status");
+    root.querySelector("#scan-receipt").onclick = async () => {
+      const file = root.querySelector("#file-input").files[0];
+      if (!file) { status.innerHTML = `<p class="notice">Choose a receipt image first.</p>`; return; }
+      status.innerHTML = `<p class="notice">Reading receipt… this can take a minute on the first run.</p>`;
+      try {
+        await loadScript("https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js", "Tesseract");
+        const result = await Tesseract.recognize(file, "eng", { logger: (message) => {
+          if (message.progress) status.querySelector("p").textContent = `${titleCase(message.status)}: ${Math.round(message.progress * 100)}%`;
+        }});
+        const guess = guessReceiptFields(result.data.text);
+        if (guess.merchant) root.querySelector("#field-merchant").value = guess.merchant;
+        if (guess.date) root.querySelector("#field-date").value = guess.date;
+        if (guess.amount) root.querySelector("#field-amount").value = guess.amount;
+        status.innerHTML = `<p class="notice">Receipt scanned. Check the fields below and correct anything OCR misread before creating the reminder.</p>`;
+      } catch { status.innerHTML = `<p class="notice">OCR could not load or read this image. You can still enter the details by hand below.</p>`; }
+    };
+    root.querySelector("#make-warranty").onclick = () => {
+      const panel = root.querySelector("#result");
+      const merchant = root.querySelector("#field-merchant").value.trim() || "Purchase";
+      const amount = num(root.querySelector("#field-amount").value);
+      const purchase = parseIso(root.querySelector("#field-date").value);
+      if (!purchase) return showError(panel, "Enter a valid purchase date.");
+      const months = num(root.querySelector("#field-length").value);
+      const expires = addMonths(purchase, months);
+      const reminderEnd = new Date(expires.getTime()); reminderEnd.setDate(reminderEnd.getDate() + 1);
+      const title = `Warranty expires: ${merchant}`;
+      const details = [
+        `Warranty expiration reminder from Nifty Utilities.`,
+        `Item: ${merchant}`,
+        amount ? `Amount paid: ${money.format(amount)}` : "",
+        `Purchased: ${isoDate(purchase)}`,
+        `Warranty length: ${months} month${months === 1 ? "" : "s"}`,
+        `Keep your receipt and proof of purchase to make a claim.`
+      ].filter(Boolean).join("\n");
+      const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${compactDate(expires)}/${compactDate(reminderEnd)}&details=${encodeURIComponent(details)}`;
+      const ics = [
+        "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Nifty Utilities//Warranty Tracker//EN", "CALSCALE:GREGORIAN",
+        "BEGIN:VEVENT",
+        `UID:${compactDate(expires)}-${slugify(merchant) || "warranty"}@niftyutilities.com`,
+        `DTSTAMP:${compactDate(new Date())}T000000Z`,
+        `DTSTART;VALUE=DATE:${compactDate(expires)}`,
+        `DTEND;VALUE=DATE:${compactDate(reminderEnd)}`,
+        `SUMMARY:${title.replace(/([,;\\])/g, "\\$1")}`,
+        `DESCRIPTION:${details.replace(/\n/g, "\\n").replace(/([,;\\])/g, "\\$1")}`,
+        "BEGIN:VALARM", "TRIGGER:-P7D", "ACTION:DISPLAY", `DESCRIPTION:${title.replace(/([,;\\])/g, "\\$1")}`, "END:VALARM",
+        "END:VEVENT", "END:VCALENDAR"
+      ].join("\r\n");
+      panel.innerHTML = `<h2>Warranty reminder ready</h2>${metricsHtml([
+        ["Item", merchant],
+        ["Purchased", isoDate(purchase)],
+        ["Warranty expires", isoDate(expires)],
+        ...(amount ? [["Amount paid", money.format(amount)]] : [])
+      ])}<div class="actions"><a class="button primary" href="${esc(gcalUrl)}" target="_blank" rel="noopener">Add to Google Calendar</a><button id="download-ics" class="button">Download .ics file</button></div><p class="notice">The calendar event is all-day on the expiration date with a reminder 7 days earlier. The .ics file works with Apple Calendar, Outlook, and most other apps.</p>`;
+      panel.hidden = false;
+      panel.querySelector("#download-ics").onclick = () => download(ics, `${slugify(merchant) || "warranty"}-expires-${compactDate(expires)}.ics`, "text/calendar");
+    };
+  }
+
+  function renderMeasure() {
+    root.innerHTML = `
+      ${fileInput(false, "image/*")}
+      <p class="notice">Upload a straight-on photo or screenshot. Draw one line over something whose real length you know, enter that length, then draw more lines or a box to measure the rest. This is a flat 2D scale — it is accurate only for objects in the same plane as your reference, photographed straight on. Treat results as estimates.</p>
+      <div id="measure-stage" hidden>
+        <div class="form-grid" style="margin-bottom:.75rem">
+          ${fieldHtml({ id: "known", label: "Known length of reference line", type: "number", value: 36, placeholder: "36" })}
+          ${fieldHtml({ id: "unit", label: "Unit", type: "select", options: [["in", "inches"], ["ft", "feet"], ["cm", "centimeters"], ["m", "meters"]] })}
+          ${fieldHtml({ id: "mode", label: "Drawing mode", type: "select", options: [["reference", "Set reference line"], ["line", "Measure a line"], ["area", "Measure a box (area)"]] })}
+        </div>
+        <div class="actions" style="margin-bottom:.75rem"><button id="measure-clear" class="button" type="button">Clear drawings</button></div>
+        <div style="overflow:auto;border:1px solid var(--border,#d8dee6);border-radius:8px"><canvas id="measure-canvas" style="display:block;max-width:100%;touch-action:none;cursor:crosshair"></canvas></div>
+      </div>
+      ${resultPanel()}`;
+    const stage = root.querySelector("#measure-stage");
+    const canvas = root.querySelector("#measure-canvas");
+    const ctx = canvas.getContext("2d");
+    const panel = root.querySelector("#result");
+    let image = null;
+    let reference = null; // {a, b} in canvas pixels
+    const shapes = []; // {type:'line'|'area', a, b}
+    let drawing = null;
+    let unitsPerPixel = 0;
+
+    const refLen = () => num(root.querySelector("#field-known").value);
+    const unit = () => root.querySelector("#field-unit").value;
+    const mode = () => root.querySelector("#field-mode").value;
+    const pixelLen = (a, b) => Math.hypot(b.x - a.x, b.y - a.y);
+
+    const pointFromEvent = (event) => {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      return { x: (event.clientX - rect.left) * scaleX, y: (event.clientY - rect.top) * scaleY };
+    };
+
+    const recalc = () => {
+      unitsPerPixel = reference && pixelLen(reference.a, reference.b) > 0 ? refLen() / pixelLen(reference.a, reference.b) : 0;
+    };
+
+    const redraw = () => {
+      if (!image) return;
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const lineWidth = Math.max(2, canvas.width / 400);
+      const fontSize = Math.max(14, Math.round(canvas.width / 45));
+      ctx.lineWidth = lineWidth;
+      ctx.font = `${fontSize}px sans-serif`;
+      ctx.textBaseline = "bottom";
+      const label = (text, x, y, color) => {
+        ctx.font = `${fontSize}px sans-serif`;
+        const width = ctx.measureText(text).width;
+        ctx.fillStyle = "rgba(255,255,255,0.85)";
+        ctx.fillRect(x, y - fontSize - 4, width + 8, fontSize + 6);
+        ctx.fillStyle = color;
+        ctx.fillText(text, x + 4, y - 2);
+      };
+      const drawSeg = (a, b, color) => {
+        ctx.strokeStyle = color;
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        for (const point of [a, b]) { ctx.fillStyle = color; ctx.beginPath(); ctx.arc(point.x, point.y, lineWidth * 1.8, 0, Math.PI * 2); ctx.fill(); }
+      };
+      if (reference) {
+        drawSeg(reference.a, reference.b, "#0085ff");
+        label(`ref: ${number.format(refLen())} ${unit()}`, (reference.a.x + reference.b.x) / 2, (reference.a.y + reference.b.y) / 2, "#0085ff");
+      }
+      for (const shape of shapes) {
+        if (shape.type === "line") {
+          drawSeg(shape.a, shape.b, "#e0383e");
+          const text = unitsPerPixel ? `${number.format(Math.round(pixelLen(shape.a, shape.b) * unitsPerPixel * 100) / 100)} ${unit()}` : "set reference first";
+          label(text, (shape.a.x + shape.b.x) / 2, (shape.a.y + shape.b.y) / 2, "#e0383e");
+        } else {
+          const x = Math.min(shape.a.x, shape.b.x), y = Math.min(shape.a.y, shape.b.y);
+          const w = Math.abs(shape.b.x - shape.a.x), h = Math.abs(shape.b.y - shape.a.y);
+          ctx.strokeStyle = "#1c8a4d"; ctx.strokeRect(x, y, w, h);
+          ctx.fillStyle = "rgba(28,138,77,0.12)"; ctx.fillRect(x, y, w, h);
+          const text = unitsPerPixel ? `${number.format(Math.round(w * unitsPerPixel * 100) / 100)} × ${number.format(Math.round(h * unitsPerPixel * 100) / 100)} ${unit()}` : "set reference first";
+          label(text, x, y + fontSize + 4, "#1c8a4d");
+        }
+      }
+      if (drawing) {
+        const color = drawing.type === "reference" ? "#0085ff" : drawing.type === "area" ? "#1c8a4d" : "#e0383e";
+        if (drawing.type === "area") { const x = Math.min(drawing.a.x, drawing.b.x), y = Math.min(drawing.a.y, drawing.b.y); ctx.strokeStyle = color; ctx.strokeRect(x, y, Math.abs(drawing.b.x - drawing.a.x), Math.abs(drawing.b.y - drawing.a.y)); }
+        else drawSeg(drawing.a, drawing.b, color);
+      }
+    };
+
+    const showResults = () => {
+      recalc();
+      if (!unitsPerPixel) { panel.hidden = true; redraw(); return; }
+      const u = unit();
+      const metrics = [];
+      shapes.forEach((shape, index) => {
+        if (shape.type === "line") {
+          metrics.push([`Line ${index + 1}`, `${number.format(Math.round(pixelLen(shape.a, shape.b) * unitsPerPixel * 100) / 100)} ${u}`]);
+        } else {
+          const w = Math.abs(shape.b.x - shape.a.x) * unitsPerPixel, h = Math.abs(shape.b.y - shape.a.y) * unitsPerPixel;
+          metrics.push([`Box ${index + 1}`, `${number.format(Math.round(w * 100) / 100)} × ${number.format(Math.round(h * 100) / 100)} ${u} = ${number.format(Math.round(w * h * 100) / 100)} ${u}²`]);
+        }
+      });
+      if (!metrics.length) { panel.hidden = true; redraw(); return; }
+      panel.innerHTML = `<h2>Measurements</h2>${metricsHtml(metrics)}<p class="notice">Estimates from a flat 2D scale relative to your reference line. Accuracy depends on a straight-on photo and a correct reference length.</p>`;
+      panel.hidden = false;
+      redraw();
+    };
+
+    root.querySelector("#file-input").onchange = (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      const img = new Image();
+      img.onload = () => {
+        image = img;
+        const maxWidth = 1200;
+        const scale = img.naturalWidth > maxWidth ? maxWidth / img.naturalWidth : 1;
+        canvas.width = Math.round(img.naturalWidth * scale);
+        canvas.height = Math.round(img.naturalHeight * scale);
+        reference = null; shapes.length = 0; drawing = null; unitsPerPixel = 0;
+        stage.hidden = false; panel.hidden = true;
+        redraw();
+        URL.revokeObjectURL(img.src);
+      };
+      img.src = URL.createObjectURL(file);
+    };
+
+    canvas.addEventListener("pointerdown", (event) => {
+      if (!image) return;
+      event.preventDefault();
+      canvas.setPointerCapture(event.pointerId);
+      const point = pointFromEvent(event);
+      drawing = { type: mode(), a: point, b: point };
+    });
+    canvas.addEventListener("pointermove", (event) => {
+      if (!drawing) return;
+      drawing.b = pointFromEvent(event);
+      redraw();
+    });
+    const finish = (event) => {
+      if (!drawing) return;
+      drawing.b = pointFromEvent(event);
+      if (pixelLen(drawing.a, drawing.b) >= 4) {
+        if (drawing.type === "reference") reference = { a: drawing.a, b: drawing.b };
+        else shapes.push(drawing);
+      }
+      drawing = null;
+      showResults();
+    };
+    canvas.addEventListener("pointerup", finish);
+    canvas.addEventListener("pointercancel", () => { drawing = null; redraw(); });
+
+    root.querySelector("#field-known").addEventListener("input", showResults);
+    root.querySelector("#field-unit").addEventListener("change", showResults);
+    root.querySelector("#measure-clear").onclick = () => { reference = null; shapes.length = 0; drawing = null; unitsPerPixel = 0; panel.hidden = true; redraw(); };
+  }
+
   const financeUploaders = new Set([
     "bank-statement-cleaner", "recurring-subscription-finder", "merchant-name-normalizer", "personal-spending-categorizer",
     "duplicate-transaction-finder", "csv-bank-format-converter", "credit-card-statement-analyzer"
@@ -907,6 +1305,8 @@
   else if (documentConfigs[slug]) renderDocument(documentConfigs[slug]);
   else if (inventories.has(slug)) renderInventory();
   else if (slug === "invoice-number-generator") renderInvoiceNumber();
+  else if (slug === "receipt-warranty-tracker") renderWarranty();
+  else if (slug === "screenshot-measurement-calculator") renderMeasure();
   else if (useful.has(slug)) renderUseful();
   else root.innerHTML = `<p class="error">This tool could not be loaded.</p>`;
 })();

@@ -112,6 +112,29 @@ h2 { letter-spacing: -0.03em; }
 .tool-help h2 { margin-top: 2rem; color: var(--ink); font-size: 1.1rem; }
 .tool-help h2:first-child { margin-top: 0; }
 .support-note { color: var(--muted); }
+
+/* Per-tool accent: defaults to brand blue, overridden by inline --tool-accent. */
+.tool-page { --tool-accent: var(--blue); }
+.tool-page .eyebrow { color: var(--tool-accent); }
+.tool-page .tool-title h1 { color: var(--ink); }
+.tool-page.layout-feature .tool-title h1 { color: var(--tool-accent); }
+
+/* Hero media — emoji or inline SVG, tinted with the tool accent. */
+.tool-hero { display: flex; align-items: center; justify-content: center; margin: 0 0 1.5rem; padding: clamp(1.4rem, 5vw, 2.6rem); border-radius: 14px; background: color-mix(in srgb, var(--tool-accent) 10%, white); border: 1px solid color-mix(in srgb, var(--tool-accent) 22%, white); color: var(--tool-accent); }
+.tool-hero-bottom { margin: 2rem 0 0; }
+.tool-hero-emoji span { font-size: clamp(3.2rem, 12vw, 5.5rem); line-height: 1; filter: drop-shadow(0 4px 10px rgba(20,34,50,.14)); }
+.tool-hero-svg svg { width: clamp(120px, 40vw, 190px); height: auto; }
+
+/* Optional intro block rendered above the tool when content uses <!--more-->. */
+.tool-intro { margin: 0 0 1.6rem; font-size: 1.05rem; line-height: 1.65; color: var(--ink); }
+.tool-intro h2 { margin: 1.2rem 0 .5rem; font-size: 1.25rem; color: var(--tool-accent); }
+.tool-intro p { margin: 0 0 .9rem; }
+.tool-intro > :first-child { margin-top: 0; }
+
+/* Browsers without color-mix get a readable solid fallback. */
+@supports not (background: color-mix(in srgb, red 10%, white)) {
+  .tool-hero { background: var(--blue-soft); border-color: var(--line); }
+}
 .directory > .support-note { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line); text-align: center; font-size: .95rem; }
 .privacy-callout { margin-bottom: 2rem; padding: 1.2rem; color: #126445; border: 1px solid #a9d8c5; border-radius: 8px; background: #edf8f3; }
 .privacy-callout h2 { margin: 0 0 .45rem; color: #126445; }

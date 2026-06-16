@@ -1,6 +1,6 @@
 # Nifty Utilities: Complete Tool Directory
 
-Nifty Utilities is a free collection of 60 practical web utilities. No account is required. The website has no application backend, upload endpoint, or database capable of receiving tool inputs. Processing happens in the visitor's browser.
+Nifty Utilities is a free collection of 77 practical web utilities. No account is required. The website has no application backend, upload endpoint, or database capable of receiving tool inputs. Processing happens in the visitor's browser.
 
 ## Finance / CSV
 
@@ -56,10 +56,25 @@ Estimate major ownership, housing, travel, and shared-living costs.
 - [Real Cost of Owning a Pool](https://niftyutilities.com/homeowner/real-cost-of-owning-a-pool.html): Estimate annual pool chemicals, energy, service, and repair costs.
 - [Real Cost of Owning a Boat](https://niftyutilities.com/homeowner/real-cost-of-owning-a-boat.html): Estimate financing, fuel, storage, insurance, and maintenance.
 - [Real Cost of Owning an RV](https://niftyutilities.com/homeowner/real-cost-of-owning-an-rv.html): Estimate financing, campsites, fuel, storage, and maintenance.
+- [Real Cost of Owning a Horse](https://niftyutilities.com/homeowner/real-cost-of-owning-a-horse.html): Estimate annual boarding, feed, farrier, vet, and training costs.
+- [Real Cost of Owning a Dog](https://niftyutilities.com/homeowner/real-cost-of-owning-a-dog.html): Estimate annual food, vet, grooming, insurance, and boarding costs.
+- [Real Cost of Owning a Cat](https://niftyutilities.com/homeowner/real-cost-of-owning-a-cat.html): Estimate annual food, litter, vet, and supply costs for a cat.
+- [Real Cost of Owning a Hot Tub](https://niftyutilities.com/homeowner/real-cost-of-owning-a-hot-tub.html): Estimate annual energy, chemicals, water, and service costs.
+- [Real Cost of Owning a Car](https://niftyutilities.com/homeowner/real-cost-of-owning-a-car.html): Estimate financing, fuel, insurance, maintenance, and registration costs.
+- [Real Cost of Raising Backyard Chickens](https://niftyutilities.com/homeowner/real-cost-of-raising-backyard-chickens.html): Estimate annual feed, bedding, health, and coop costs for a flock.
+- [Real Cost of Lawn Care](https://niftyutilities.com/homeowner/real-cost-of-lawn-care.html): Estimate annual mowing, fertilizer, irrigation, and equipment costs.
+- [Real Cost of Owning a Septic System](https://niftyutilities.com/homeowner/real-cost-of-owning-a-septic-system.html): Estimate annual pumping, inspection, repair, and drainfield reserve costs.
+- [Real Cost of Owning a Motorcycle](https://niftyutilities.com/homeowner/real-cost-of-owning-a-motorcycle.html): Estimate financing, fuel, insurance, tires, gear, and registration costs.
+- [Solar Panel Payback Calculator](https://niftyutilities.com/homeowner/solar-panel-payback-calculator.html): Estimate net system cost after incentives, annual savings, and payback period.
+- [Real Cost of Owning a Rental Property](https://niftyutilities.com/homeowner/real-cost-of-owning-a-rental-property.html): Estimate mortgage, operating costs, vacancy, and annual rental cash flow.
+- [Real Cost of Owning an Electric Car](https://niftyutilities.com/homeowner/real-cost-of-owning-an-electric-car.html): Estimate financing, charging, insurance, tires, maintenance, and registration costs.
+- [Real Cost of Owning a Jet Ski](https://niftyutilities.com/homeowner/real-cost-of-owning-a-jet-ski.html): Estimate annual storage, fuel, insurance, winterization, and registration costs.
+- [Real Cost of Owning a Second Home](https://niftyutilities.com/homeowner/real-cost-of-owning-a-second-home.html): Estimate mortgage, property tax, insurance, utilities, upkeep, and travel costs.
 - [Moving Cost Estimator](https://niftyutilities.com/homeowner/moving-cost-estimator.html): Estimate truck, movers, mileage, supplies, lodging, and other costs.
 - [Roommate Expense Splitter](https://niftyutilities.com/homeowner/roommate-expense-splitter.html): Split shared expenses evenly or by custom percentages.
 - [Home Maintenance Budget Calculator](https://niftyutilities.com/homeowner/home-maintenance-budget-calculator.html): Build an annual maintenance reserve from home value, age, and systems.
 - [Property Tax Estimator](https://niftyutilities.com/homeowner/property-tax-estimator.html): Estimate annual and monthly property tax from assessed value and rate.
+- [Property Tax Appeal Estimator](https://niftyutilities.com/homeowner/property-tax-appeal-estimator.html): Gauge appeal success odds and tax savings from your assessment, purchase price, and comparable homes.
 - [Vacation Budget Planner](https://niftyutilities.com/homeowner/vacation-budget-planner.html): Plan transportation, lodging, food, activities, and contingency spending.
 
 ## Business
@@ -81,6 +96,8 @@ Model pricing, profitability, labor, sales, and customer economics.
 
 Small browser utilities for images, filenames, codes, and awkward one-off jobs.
 
+- [Screenshot Measurement Calculator](https://niftyutilities.com/useful/screenshot-measurement-calculator.html): Draw on a photo, set one known length, and estimate wall lengths, dimensions, and floor area.
+- [Receipt Scanner & Warranty Tracker](https://niftyutilities.com/useful/receipt-warranty-tracker.html): Scan a receipt, capture the purchase, and create a warranty expiration reminder for your calendar.
 - [Screenshot to CSV](https://niftyutilities.com/useful/screenshot-to-csv.html): Extract text from a screenshot and arrange detected lines as CSV.
 - [Screenshot Table Extractor](https://niftyutilities.com/useful/screenshot-table-extractor.html): Use in-browser OCR to turn a table image into editable rows.
 - [Image Dimensions Inspector](https://niftyutilities.com/useful/image-dimensions-inspector.html): Inspect pixel size, aspect ratio, file type, and file size.

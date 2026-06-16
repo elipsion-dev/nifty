@@ -1,0 +1,107 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - link "Nifty Utilities home" [ref=e5] [cursor=pointer]:
+        - /url: ../index.html
+        - img "Nifty Utilities" [ref=e6]
+      - navigation "Main navigation" [ref=e7]:
+        - link "Finance" [ref=e8] [cursor=pointer]:
+          - /url: ../finance/index.html
+        - link "Spreadsheet" [ref=e9] [cursor=pointer]:
+          - /url: ../spreadsheet/index.html
+        - link "Documents" [ref=e10] [cursor=pointer]:
+          - /url: ../documents/index.html
+        - link "Homeowner / Life" [ref=e11] [cursor=pointer]:
+          - /url: ../homeowner/index.html
+        - link "Business" [ref=e12] [cursor=pointer]:
+          - /url: ../business/index.html
+        - link "Weirdly Useful" [ref=e13] [cursor=pointer]:
+          - /url: ../useful/index.html
+    - main [ref=e14]:
+      - generic [ref=e15]:
+        - article [ref=e16]:
+          - paragraph [ref=e17]:
+            - link "All tools" [ref=e18] [cursor=pointer]:
+              - /url: ../index.html
+            - generic [ref=e19]: /
+            - link "Homeowner / Life" [ref=e20] [cursor=pointer]:
+              - /url: index.html
+          - generic [ref=e21]:
+            - paragraph [ref=e22]: Homeowner / Life
+            - heading "Property Tax Appeal Estimator" [level=1] [ref=e23]
+            - paragraph [ref=e24]: Gauge appeal success odds and tax savings from your assessment, purchase price, and comparable homes.
+            - generic [ref=e25]: No data sent or stored
+          - generic [ref=e27]:
+            - generic [ref=e28]:
+              - generic [ref=e29]:
+                - generic [ref=e30]:
+                  - generic [ref=e31]: Current assessed value
+                  - spinbutton "Current assessed value" [ref=e32]: "400000"
+                  - generic [ref=e33]: From your latest assessment or tax notice.
+                - generic [ref=e34]:
+                  - generic [ref=e35]: Recent purchase price
+                  - spinbutton "Recent purchase price" [ref=e36]: "350000"
+                  - generic [ref=e37]: Leave 0 if you have not bought recently.
+                - generic [ref=e38]:
+                  - generic [ref=e39]: Average value of comparable homes
+                  - spinbutton "Average value of comparable homes" [ref=e40]: "355000"
+                  - generic [ref=e41]: Average recent sale or assessed value of similar nearby homes.
+                - generic [ref=e42]:
+                  - generic [ref=e43]: Effective tax rate (%)
+                  - spinbutton "Effective tax rate (%)" [ref=e44]: "1.2"
+                  - generic [ref=e45]: Annual property tax divided by assessed value, as a percent.
+              - generic [ref=e46]:
+                - button "Calculate" [ref=e47] [cursor=pointer]
+                - button "Reset" [ref=e48] [cursor=pointer]
+            - generic [ref=e49]:
+              - heading "Estimate" [level=2] [ref=e50]
+              - generic [ref=e51]:
+                - generic [ref=e52]:
+                  - generic [ref=e53]: Supported market value
+                  - strong [ref=e54]: $352,500.00
+                - generic [ref=e55]:
+                  - generic [ref=e56]: Possible over-assessment
+                  - strong [ref=e57]: $47,500.00
+                - generic [ref=e58]:
+                  - generic [ref=e59]: Appeal success likelihood
+                  - strong [ref=e60]: High
+                - generic [ref=e61]:
+                  - generic [ref=e62]: Estimated annual savings
+                  - strong [ref=e63]: $570.00
+                - generic [ref=e64]:
+                  - generic [ref=e65]: Estimated 3-year savings
+                  - strong [ref=e66]: $1,710.00
+              - paragraph [ref=e67]: Your assessment looks about 11.9% above your supported value of $352,500.00. Bring documented comparable sales to your appeal; assessors weigh evidence, so a larger, well-supported gap improves your odds.
+          - generic [ref=e68]:
+            - generic [ref=e69]:
+              - heading "Your data never reaches us" [level=2] [ref=e70]
+              - paragraph [ref=e71]: Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.
+            - heading "About this property tax appeal estimator" [level=2] [ref=e72]
+            - paragraph [ref=e73]: Gauge appeal success odds and tax savings from your assessment, purchase price, and comparable homes. Use it free without creating an account or uploading data to Nifty Utilities.
+            - heading "How it works" [level=2] [ref=e74]
+            - paragraph [ref=e75]: Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.
+            - heading "Important" [level=2] [ref=e76]
+            - paragraph [ref=e77]: This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.
+            - heading "Support" [level=2] [ref=e78]
+            - paragraph [ref=e79]:
+              - text: Problem with this tool or suggestions for improvement? Please email
+              - link "support@niftyutilities.com" [ref=e80] [cursor=pointer]:
+                - /url: mailto:support@niftyutilities.com
+              - text: .
+        - complementary [ref=e81]:
+          - generic [ref=e82]:
+            - strong [ref=e83]: Nothing is sent to us
+            - paragraph [ref=e84]: This static site has no server endpoint or database capable of receiving your files or entries.
+    - contentinfo [ref=e85]:
+      - generic [ref=e86]:
+        - strong [ref=e87]: Nifty Utilities
+        - text: No backend. No database. Your tool data stays on your device.
+      - generic [ref=e88]:
+        - link "Privacy" [ref=e89] [cursor=pointer]:
+          - /url: ../privacy.html
+        - link "About" [ref=e90] [cursor=pointer]:
+          - /url: ../about.html
+        - link "Support" [ref=e91] [cursor=pointer]:
+          - /url: mailto:support@niftyutilities.com

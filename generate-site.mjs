@@ -1079,7 +1079,136 @@ const toolContent = {
                 <h3>Does this tool look up vehicle details like make, model, or trim?</h3>
                 <p>No. The tool decodes the structural sections of the VIN and validates the check digit using the standard algorithm. It does not connect to any manufacturer or government database, so it cannot return vehicle specifications, recall information, ownership history, or title status.</p>
                 <h3>What does it mean if the check digit is invalid?</h3>
-                <p>An invalid check digit means either the VIN was entered incorrectly, contains a typo, or the VIN itself is not genuine. It is a useful first signal that something is wrong, but a valid check digit does not guarantee the VIN is authentic or has not been altered.</p>`
+                <p>An invalid check digit means either the VIN was entered incorrectly, contains a typo, or the VIN itself is not genuine. It is a useful first signal that something is wrong, but a valid check digit does not guarantee the VIN is authentic or has not been altered.</p>`,
+
+  "property-tax-appeal-estimator": `
+                <h2>Should you appeal your property tax assessment?</h2>
+                <p>Local assessors value thousands of homes at once, often with limited information about any single property, so over-assessments are common. If your assessed value is higher than what your home would realistically sell for, you may be paying more tax than your fair share. This estimator compares your assessment against the evidence you can actually document, then gives you a rough sense of whether an appeal is worth the effort and what it might save.</p>
+                <h2>Current assessed value</h2>
+                <p>This is the value your county or municipality has placed on your home, shown on your assessment notice or property tax bill. It is the number an appeal seeks to lower. Make sure you are entering the assessed or appraised market value the tax is based on, not the separate "taxable value" after exemptions, since this tool compares the assessment to market evidence.</p>
+                <h2>Recent purchase price</h2>
+                <p>If you bought the home recently, the price you paid in an arm's-length sale is some of the strongest evidence of its market value. Assessors and appeal boards give recent sale prices significant weight. If you have owned the home for many years, a recent purchase price is less relevant and comparable sales matter more, so you can leave it at zero and rely on comparables instead.</p>
+                <h2>Average value of comparable homes</h2>
+                <p>Comparable homes, or "comps," are similar properties near yours in size, age, condition, and location that sold recently. The average of several good comps is the backbone of most successful appeals. Pull three to five genuine matches and average their sale prices. The closer the comps are to your home in characteristics and the more recent the sales, the more persuasive your case will be.</p>
+                <h2>Effective tax rate</h2>
+                <p>Your effective tax rate is your annual property tax divided by your assessed value, expressed as a percent. It converts a reduction in assessed value into real dollar savings. You can find it on your tax bill or calculate it directly. The estimator uses it to turn any over-assessment into an estimated annual and three-year savings figure.</p>
+                <h2>How the likelihood estimate works</h2>
+                <p>The tool averages whatever evidence you provide, your purchase price and your comparable average, into a single supported market value, then measures how far your assessment sits above it. A larger, well-documented gap generally means a stronger appeal, so the likelihood label rises from Unlikely to Low, Moderate, and High as the percentage gap grows. This is a simplified guide, not a prediction; real outcomes depend on local rules, the quality of your evidence, and the board reviewing your case.</p>
+                <h2>How to use this estimator</h2>
+                <p>Enter your assessed value, your purchase price if recent, and the average value of solid comparable homes, then your effective tax rate. Review the supported value, the possible over-assessment, and the estimated savings. Everything is calculated in your browser; nothing you type is sent to us or stored on a server.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>Is appealing my property taxes worth it?</h3>
+                <p>It depends on the size of the over-assessment and the savings against the time and any filing cost involved. A small gap may not justify the effort, while a large, well-documented gap can pay off for years because the lower assessment carries forward. Use the estimated savings here to weigh it against the work of assembling evidence and filing.</p>
+                <h3>What evidence do I need for a property tax appeal?</h3>
+                <p>The most persuasive evidence is recent comparable sales of similar nearby homes and, if applicable, your own recent purchase price. Photos documenting condition issues, a recent independent appraisal, and corrections to any factual errors on your property record can also help. Check your jurisdiction's specific requirements and deadlines before filing.</p>
+                <h3>Can my assessment go up if I appeal?</h3>
+                <p>In most jurisdictions an appeal reviews whether your assessment is too high, but the board can also conclude it is correct or, occasionally, too low. If your supported value is at or above your assessment, this tool flags that an appeal is unlikely to help and could invite a closer review. Appeal when the evidence clearly supports a lower value.</p>`,
+
+  "receipt-warranty-tracker": `
+                <h2>Never miss a warranty expiration again</h2>
+                <p>Manufacturer and store warranties are easy to forget until something breaks the week after coverage ends. This tool reads a photo of your receipt, pulls out the merchant, purchase date, and amount, and turns them into a calendar reminder set for the day your warranty expires, with an alert a week before. You keep the proof of purchase organized and get a nudge while you can still make a claim.</p>
+                <h2>Scanning the receipt</h2>
+                <p>Upload a clear, well-lit photo or screenshot of your receipt and the tool runs optical character recognition entirely in your browser to read the text. It then makes its best guess at the merchant name, the purchase date, and the total amount. OCR is never perfect, especially on faded thermal receipts, so every field stays editable. Always check the extracted details and correct anything that came through wrong before creating the reminder. You can also skip scanning and type the details in by hand.</p>
+                <h2>Choosing a warranty length</h2>
+                <p>Pick the coverage period that matches your product, from ninety days to ten years. Standard manufacturer warranties are often one year, while appliances, electronics, and tools sometimes carry longer terms or extended plans you purchased separately. The tool adds the period you choose to the purchase date to calculate the exact expiration date.</p>
+                <h2>Adding the reminder to your calendar</h2>
+                <p>Once the details are set, you get two options. "Add to Google Calendar" opens a prefilled all-day event on the expiration date in your Google account, with a reminder seven days earlier. The "Download .ics file" option produces a standard calendar file that imports into Apple Calendar, Outlook, and most other calendar apps. Either way, the event includes the item, amount, and purchase date so you have the key details when a claim comes up.</p>
+                <h2>Your receipt stays on your device</h2>
+                <p>The receipt image is read inside your browser using a recognition library that downloads to your device; the photo itself is never uploaded to us. The Google Calendar link is just a prefilled web address built in your browser, and the .ics file is generated locally and downloaded directly to your device. Nothing you scan or enter is sent to or stored on a server.</p>
+                <h2>How to use this tool</h2>
+                <p>Upload a receipt and scan it, or enter the details by hand. Confirm the merchant, date, and amount, choose the warranty length, and create the reminder. Then add it to Google Calendar or download the .ics file for your calendar app.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>Does the receipt photo get uploaded anywhere?</h3>
+                <p>No. The optical character recognition runs in your browser after a recognition library loads, and the image is processed on your device. The calendar link and .ics file are also created locally, so your receipt and its details are never sent to or stored on our servers.</p>
+                <h3>Why didn't it read my receipt correctly?</h3>
+                <p>Faded thermal paper, wrinkles, glare, and unusual fonts all make OCR harder, so some receipts read poorly. Try a flatter, brighter, more tightly cropped photo, and correct any fields by hand. The merchant, date, and amount are always editable before you create the reminder.</p>
+                <h3>Will the reminder work in calendars other than Google?</h3>
+                <p>Yes. Use the "Download .ics file" button to get a standard calendar file that imports into Apple Calendar, Microsoft Outlook, and most other calendar applications. The Google Calendar button is a convenience for people who use Google Calendar.</p>`,
+
+  "screenshot-measurement-calculator": `
+                <h2>Measure real-world distances from a photo</h2>
+                <p>When you have a photo of a room, a wall, or an object but no tape measure handy, you can still estimate real dimensions if you know the size of one thing in the image. This tool lets you draw a line over something whose length you already know, tell it that length, and then measure anything else in the same photo by drawing more lines or a box. It is a quick way to estimate wall lengths, object dimensions, and floor area without being on site.</p>
+                <h2>Setting a reference line</h2>
+                <p>Accuracy starts with the reference. Draw a line over an object whose real length you know with confidence, a standard doorway, a countertop, a piece of trim, or anything you can verify. Then enter that exact length and choose the unit. The tool uses the pixel length of your reference line and its real length to work out a scale, so a longer, more carefully placed reference line generally gives better results than a short one.</p>
+                <h2>Measuring lines and area</h2>
+                <p>Switch to line mode to measure distances such as wall lengths or the width of a window, and the tool reports each line's estimated real length. Switch to box mode to drag a rectangle over a floor or surface, and it reports the width, height, and area. You can place several measurements on the same photo, and the reference line stays in place so every measurement uses the same scale.</p>
+                <h2>Why this is an estimate, not a survey</h2>
+                <p>This is a flat two-dimensional scale, not a perspective-corrected measurement. It is most accurate when the photo is taken straight on and the things you measure lie in the same plane as your reference, like a single flat wall photographed face-on. Objects at different depths, wide-angle lens distortion, and angled shots all introduce error. Treat the numbers as useful estimates for planning, not as exact figures for ordering materials or construction.</p>
+                <h2>Useful for contractors, DIYers, and real estate</h2>
+                <p>Contractors and tradespeople can rough out measurements from a customer's photo before an on-site visit. DIYers can check whether furniture will fit or estimate paint and flooring needs. Real estate professionals can sanity-check room dimensions from listing photos. In every case the result is a fast estimate that should be confirmed with a real measurement before any commitment.</p>
+                <h2>How to use this tool</h2>
+                <p>Upload a straight-on photo, draw your reference line and enter its known length, then draw additional lines or boxes to measure. Everything runs in your browser; the image is never uploaded to us, and nothing you measure is sent to or stored on a server.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>How accurate is measuring from a photo?</h3>
+                <p>Accuracy depends almost entirely on the photo and the reference. A straight-on shot with a long, well-placed reference line over an object whose length you know precisely can give surprisingly good estimates for things in the same plane. Angled photos, lens distortion, and objects at different depths reduce accuracy, so always verify important measurements in person.</p>
+                <h3>Does the photo get uploaded to a server?</h3>
+                <p>No. The image is loaded into a canvas in your browser and all measuring happens on your device. The photo is never sent to or stored on our servers.</p>
+                <h3>Can it measure area for flooring or paint?</h3>
+                <p>It can estimate the area of a rectangular region you draw, which is helpful for rough planning. Because it is a flat 2D scale, treat the result as an estimate and confirm with an on-site measurement before buying materials.</p>`
+};
+
+// --- Per-tool rich content + layout, authored as standalone files ---------------
+// Each content/<slug>.html file holds one tool's article. It may begin with a
+// metadata comment that controls hero media, accent color, and structure:
+//   <!--meta {"hero":{"type":"emoji","value":"🐴"},"heroPosition":"top","accent":"#a0522d","layout":"feature"}-->
+// An optional <!--more--> marker inside the article splits it: everything before the
+// marker renders as a short intro ABOVE the calculator; everything after renders as
+// the deep-dive BELOW it. With no marker the whole article renders below the tool.
+// Files here populate the same `toolContent` map used above, so inline entries keep
+// working and each new tool can be one self-contained file — which lets parallel
+// content agents each own a single file with zero merge conflicts.
+// Inline layout/hero defaults for existing tools whose articles live in the
+// toolContent map above. A content/<slug>.html file (with its own <!--meta-->) will
+// override the matching entry here.
+const toolMeta = {
+  "real-cost-of-owning-a-boat": { hero: { type: "emoji", value: "⛵" }, heroPosition: "top", accent: "#1f6f8b", layout: "feature" },
+  "real-cost-of-owning-an-rv": { hero: { type: "emoji", value: "🚐" }, heroPosition: "bottom", accent: "#9a6a2f" },
+  "real-cost-of-owning-a-pool": { hero: { type: "emoji", value: "🏊" }, heroPosition: "top", accent: "#2f8fa6" },
+  "property-tax-appeal-estimator": { hero: { type: "svg", id: "house" }, heroPosition: "top", accent: "#3a6ea5" },
+  "property-tax-estimator": { hero: { type: "svg", id: "coins" }, heroPosition: "bottom", accent: "#3a6ea5" },
+  "receipt-warranty-tracker": { hero: { type: "svg", id: "calendar" }, heroPosition: "top", accent: "#7a5cad" },
+  "screenshot-measurement-calculator": { hero: { type: "emoji", value: "📐" }, heroPosition: "top", accent: "#c2693a" }
+};
+const CONTENT_DIR = "content";
+if (fs.existsSync(CONTENT_DIR)) {
+  for (const file of fs.readdirSync(CONTENT_DIR)) {
+    if (!file.endsWith(".html")) continue;
+    const slug = file.replace(/\.html$/, "");
+    let raw = fs.readFileSync(path.join(CONTENT_DIR, file), "utf8");
+    const metaMatch = raw.match(/^﻿?\s*<!--meta([\s\S]*?)-->/);
+    if (metaMatch) {
+      try { toolMeta[slug] = JSON.parse(metaMatch[1].trim()); }
+      catch (error) { throw new Error(`Invalid <!--meta--> JSON in content/${file}: ${error.message}`); }
+      raw = raw.slice(metaMatch.index + metaMatch[0].length);
+    } else {
+      toolMeta[slug] = {};
+    }
+    toolContent[slug] = raw.trim();
+  }
+}
+
+// Inline SVG hero illustrations, keyed by id and driven by currentColor so each
+// tool's accent flows through. Emoji heroes need no entry here. Add ids as needed.
+const heroSvgs = {
+  house: `<svg viewBox="0 0 120 90" role="img" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><path d="M14 44 60 12l46 32"/><path d="M24 40v36h72V40"/><rect x="50" y="52" width="20" height="24"/><path d="M82 30V18h10v19"/></svg>`,
+  paw: `<svg viewBox="0 0 120 90" role="img" fill="currentColor"><ellipse cx="60" cy="62" rx="22" ry="17"/><circle cx="34" cy="40" r="9"/><circle cx="52" cy="28" r="9"/><circle cx="68" cy="28" r="9"/><circle cx="86" cy="40" r="9"/></svg>`,
+  wheel: `<svg viewBox="0 0 120 90" role="img" fill="none" stroke="currentColor" stroke-width="4"><circle cx="60" cy="45" r="30"/><circle cx="60" cy="45" r="9" fill="currentColor"/><path d="M60 15v12M60 63v12M30 45h12M78 45h12M39 24l8 8M73 58l8 8M81 24l-8 8M47 58l-8 8"/></svg>`,
+  document: `<svg viewBox="0 0 120 90" role="img" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><path d="M40 10h28l16 16v54H40z"/><path d="M68 10v16h16"/><path d="M48 40h28M48 52h28M48 64h18"/></svg>`,
+  calendar: `<svg viewBox="0 0 120 90" role="img" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><rect x="28" y="20" width="64" height="56" rx="4"/><path d="M28 36h64M44 12v14M76 12v14"/><circle cx="48" cy="52" r="4" fill="currentColor" stroke="none"/><circle cx="72" cy="52" r="4" fill="currentColor" stroke="none"/></svg>`,
+  coins: `<svg viewBox="0 0 120 90" role="img" fill="none" stroke="currentColor" stroke-width="4"><ellipse cx="60" cy="30" rx="26" ry="11"/><path d="M34 30v14c0 6 12 11 26 11s26-5 26-11V30"/><path d="M34 44v14c0 6 12 11 26 11s26-5 26-11V44"/></svg>`
+};
+
+const heroHtml = (meta) => {
+  const hero = meta && meta.hero;
+  if (!hero) return "";
+  const position = meta.heroPosition === "bottom" ? " tool-hero-bottom" : " tool-hero-top";
+  if (hero.type === "emoji" && hero.value) {
+    return `<div class="tool-hero tool-hero-emoji${position}" aria-hidden="true"><span>${hero.value}</span></div>`;
+  }
+  if (hero.type === "svg" && heroSvgs[hero.id]) {
+    return `<div class="tool-hero tool-hero-svg${position}" aria-hidden="true">${heroSvgs[hero.id]}</div>`;
+  }
+  return "";
 };
 
 // Privacy-policy wording follows the actual deployed state. With both IDs blank it
@@ -1159,10 +1288,25 @@ const categories = [
       ["real-cost-of-owning-a-pool", "Real Cost of Owning a Pool", "Estimate annual pool chemicals, energy, service, and repair costs."],
       ["real-cost-of-owning-a-boat", "Real Cost of Owning a Boat", "Estimate financing, fuel, storage, insurance, and maintenance."],
       ["real-cost-of-owning-an-rv", "Real Cost of Owning an RV", "Estimate financing, campsites, fuel, storage, and maintenance."],
+      ["real-cost-of-owning-a-horse", "Real Cost of Owning a Horse", "Estimate annual boarding, feed, farrier, vet, and training costs."],
+      ["real-cost-of-owning-a-dog", "Real Cost of Owning a Dog", "Estimate annual food, vet, grooming, insurance, and boarding costs."],
+      ["real-cost-of-owning-a-cat", "Real Cost of Owning a Cat", "Estimate annual food, litter, vet, and supply costs for a cat."],
+      ["real-cost-of-owning-a-hot-tub", "Real Cost of Owning a Hot Tub", "Estimate annual energy, chemicals, water, and service costs."],
+      ["real-cost-of-owning-a-car", "Real Cost of Owning a Car", "Estimate financing, fuel, insurance, maintenance, and registration costs."],
+      ["real-cost-of-raising-backyard-chickens", "Real Cost of Raising Backyard Chickens", "Estimate annual feed, bedding, health, and coop costs for a flock."],
+      ["real-cost-of-lawn-care", "Real Cost of Lawn Care", "Estimate annual mowing, fertilizer, irrigation, and equipment costs."],
+      ["real-cost-of-owning-a-septic-system", "Real Cost of Owning a Septic System", "Estimate annual pumping, inspection, repair, and drainfield reserve costs."],
+      ["real-cost-of-owning-a-motorcycle", "Real Cost of Owning a Motorcycle", "Estimate financing, fuel, insurance, tires, gear, and registration costs."],
+      ["solar-panel-payback-calculator", "Solar Panel Payback Calculator", "Estimate net system cost after incentives, annual savings, and payback period."],
+      ["real-cost-of-owning-a-rental-property", "Real Cost of Owning a Rental Property", "Estimate mortgage, operating costs, vacancy, and annual rental cash flow."],
+      ["real-cost-of-owning-an-electric-car", "Real Cost of Owning an Electric Car", "Estimate financing, charging, insurance, tires, maintenance, and registration costs."],
+      ["real-cost-of-owning-a-jet-ski", "Real Cost of Owning a Jet Ski", "Estimate annual storage, fuel, insurance, winterization, and registration costs."],
+      ["real-cost-of-owning-a-second-home", "Real Cost of Owning a Second Home", "Estimate mortgage, property tax, insurance, utilities, upkeep, and travel costs."],
       ["moving-cost-estimator", "Moving Cost Estimator", "Estimate truck, movers, mileage, supplies, lodging, and other costs."],
       ["roommate-expense-splitter", "Roommate Expense Splitter", "Split shared expenses evenly or by custom percentages."],
       ["home-maintenance-budget-calculator", "Home Maintenance Budget Calculator", "Build an annual maintenance reserve from home value, age, and systems."],
       ["property-tax-estimator", "Property Tax Estimator", "Estimate annual and monthly property tax from assessed value and rate."],
+      ["property-tax-appeal-estimator", "Property Tax Appeal Estimator", "Gauge appeal success odds and tax savings from your assessment, purchase price, and comparable homes."],
       ["vacation-budget-planner", "Vacation Budget Planner", "Plan transportation, lodging, food, activities, and contingency spending."]
     ]
   },
@@ -1188,6 +1332,8 @@ const categories = [
     name: "Weirdly Useful",
     description: "Small browser utilities for images, filenames, codes, and awkward one-off jobs.",
     tools: [
+      ["screenshot-measurement-calculator", "Screenshot Measurement Calculator", "Draw on a photo, set one known length, and estimate wall lengths, dimensions, and floor area."],
+      ["receipt-warranty-tracker", "Receipt Scanner & Warranty Tracker", "Scan a receipt, capture the purchase, and create a warranty expiration reminder for your calendar."],
       ["screenshot-to-csv", "Screenshot to CSV", "Extract text from a screenshot and arrange detected lines as CSV."],
       ["screenshot-table-extractor", "Screenshot Table Extractor", "Use in-browser OCR to turn a table image into editable rows."],
       ["image-dimensions-inspector", "Image Dimensions Inspector", "Inspect pixel size, aspect ratio, file type, and file size."],
@@ -1404,6 +1550,21 @@ for (const category of categories) {
   }));
 
   for (const [slug, name, description] of category.tools) {
+    const meta = toolMeta[slug] || {};
+    const accentStyle = meta.accent ? ` style="--tool-accent:${meta.accent}"` : "";
+    const layoutClass = meta.layout ? ` layout-${meta.layout}` : "";
+    const hero = heroHtml(meta);
+    const heroTop = meta.heroPosition !== "bottom" ? hero : "";
+    const heroBottom = meta.heroPosition === "bottom" ? hero : "";
+    // Optional <!--more--> split: lead paragraph(s) above the tool, deep dive below.
+    const article = toolContent[slug] || `
+                <h2>About this ${escapeHtml(name).toLowerCase()}</h2>
+                <p>${escapeHtml(description)} Use it free without creating an account or uploading data to ${SITE_NAME}.</p>
+                <h2>How it works</h2>
+                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device.</p>`;
+    const splitIndex = article.indexOf("<!--more-->");
+    const introHtml = splitIndex >= 0 ? `<section class="tool-intro">${article.slice(0, splitIndex)}</section>` : "";
+    const bodyHtml = splitIndex >= 0 ? article.slice(splitIndex + "<!--more-->".length) : article;
     fs.writeFileSync(path.join(category.slug, `${slug}.html`), page({
       title: `Free ${name}`,
       description: `Free online ${name.toLowerCase()}. ${description} No sign-up; processing stays in your browser.`,
@@ -1439,7 +1600,7 @@ for (const category of categories) {
       body: `
         <main id="main">
           <div class="tool-layout">
-            <article class="tool-page">
+            <article class="tool-page${layoutClass}"${accentStyle}>
               <p class="breadcrumbs"><a href="../index.html">All tools</a><span>/</span><a href="index.html">${escapeHtml(category.name)}</a></p>
               <header class="tool-title">
                 <p class="eyebrow">${escapeHtml(category.name)}</p>
@@ -1447,19 +1608,18 @@ for (const category of categories) {
                 <p>${escapeHtml(description)}</p>
                 <div class="local-badge"><span class="status-light"></span>No data sent or stored</div>
               </header>
+              ${heroTop}
+              ${introHtml}
               <section id="tool-root" class="tool-workspace" data-tool="${slug}">
                 <div class="loading-state">Loading tool…</div>
               </section>
+              ${heroBottom}
               <section class="tool-help">
                 <div class="privacy-callout">
                   <h2>Your data never reaches us</h2>
                   <p>${SITE_NAME} has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
-                ${toolContent[slug] || `
-                <h2>About this ${escapeHtml(name).toLowerCase()}</h2>
-                <p>${escapeHtml(description)} Use it free without creating an account or uploading data to ${SITE_NAME}.</p>
-                <h2>How it works</h2>
-                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>`}
+                ${bodyHtml}
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>
