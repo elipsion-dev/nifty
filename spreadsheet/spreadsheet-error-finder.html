@@ -86,10 +86,17 @@
                   <p>Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 
-                <h2>About this spreadsheet error finder</h2>
-                <p>Scan CSV data for blanks, inconsistent widths, and suspicious values. Use it free without creating an account or uploading data to Nifty Utilities.</p>
-                <h2>How it works</h2>
-                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>
+                <h2>How do you find errors and data quality problems in a CSV file?</h2>
+                <p>Bad data in a CSV can break imports, skew calculations, and cause failures that are hard to trace back to their source. This tool scans your CSV for common structural and data quality problems: blank cells, rows with the wrong number of columns, and cells containing spreadsheet error values such as those that appear when a formula fails.</p>
+                <h2>How to use it</h2>
+                <p>Upload your CSV file and click Process file. The tool checks every row and every cell against the expected column count and flags anything that looks wrong. The output is a separate CSV listing each issue with its row number, column name, the type of issue, and the cell value. A count of total issues found appears as a summary. Download the issues file to review in a spreadsheet. Everything is processed in your browser and never uploaded to or stored by this site.</p>
+                <h2>Tips</h2>
+                <p>The tool flags blank cells as potential issues, but not all blank cells are errors depending on your data. Use the downloaded issues file to review each flagged item in context rather than treating every finding as a definitive problem. A high count of blank cells in one column often points to an optional field or a systematic data gap worth investigating. Spreadsheet error values like division-by-zero errors or broken references are flagged unconditionally, as they almost never belong in a data file.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>What specific error values does the tool detect?</h3>
+                <p>The tool flags cells containing common spreadsheet error strings including REF, VALUE, DIV/0, N/A, and NAME errors. These patterns indicate formula errors that were pasted as values when the CSV was exported from a spreadsheet.</p>
+                <h3>Does the tool fix the errors it finds?</h3>
+                <p>No. The tool identifies and reports issues; it does not modify your data. Use the issues report to locate the problems in your source data and fix them before reprocessing.</p>
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>

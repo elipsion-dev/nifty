@@ -86,10 +86,17 @@
                   <p>Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 
-                <h2>About this remove duplicate rows</h2>
-                <p>Remove repeated rows using all columns or selected columns. Use it free without creating an account or uploading data to Nifty Utilities.</p>
-                <h2>How it works</h2>
-                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>
+                <h2>How do you remove duplicate rows from a CSV file?</h2>
+                <p>Duplicate rows accumulate when data is exported multiple times, merged from overlapping sources, or collected through a process that occasionally logs the same record twice. This tool scans your CSV and removes rows where every column value is identical to a row already seen, giving you a clean file with only unique records.</p>
+                <h2>How to use it</h2>
+                <p>Upload your CSV file and click Process file. The tool compares rows across all columns, treating a row as a duplicate when every cell matches after trimming surrounding whitespace. A preview of the deduplicated data appears along with a count of how many duplicate rows were removed, and you can download the clean result. Everything is processed in your browser and never uploaded to or stored by this site.</p>
+                <h2>Tips</h2>
+                <p>Comparison is exact and case-sensitive, so "Apple" and "apple" in the same column are treated as different values. If inconsistent capitalization is causing rows that should be duplicates to survive the dedup, standardize the text in those columns first. Similarly, extra spaces inside cell values, not just surrounding them, will prevent a match, so check for internal spacing differences if you expect more duplicates to be removed than the tool finds.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>Can I deduplicate based on just one or two columns instead of all columns?</h3>
+                <p>This tool uses all columns for the comparison. If you need to deduplicate on a subset of columns, such as removing rows with a repeated ID column regardless of what other columns say, that requires a different approach such as a spreadsheet formula or a scripted solution.</p>
+                <h3>Which duplicate is kept when there are multiple copies of a row?</h3>
+                <p>The first occurrence is kept and all subsequent duplicates are removed. Rows are processed in the order they appear in the file, so the earliest copy survives.</p>
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>

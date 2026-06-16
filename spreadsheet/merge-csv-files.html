@@ -86,10 +86,17 @@
                   <p>Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 
-                <h2>About this merge csv files</h2>
-                <p>Combine multiple CSV files that share the same columns. Use it free without creating an account or uploading data to Nifty Utilities.</p>
-                <h2>How it works</h2>
-                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>
+                <h2>How do you combine multiple CSV files into one?</h2>
+                <p>When the same data comes in as separate monthly exports, regional files, or batch outputs that all share the same column structure, merging them by hand in a spreadsheet is tedious and error-prone. This tool combines two or more CSV files that share the same columns into a single file in one step, keeping the header row from the first file and stacking the data rows from all subsequent files.</p>
+                <h2>How to use it</h2>
+                <p>Select two or more CSV files using the file picker. The files should have the same columns in the same order. Click Process files and the tool merges them in the order you selected, dropping duplicate header rows if the other files include them. A preview of the merged data appears, and you can download the result as a single CSV. Everything is processed in your browser and never uploaded to or stored by this site.</p>
+                <h2>Tips</h2>
+                <p>Column order must be consistent across all files for the merge to produce useful results. If your files were exported from different systems or time periods where a column was added or removed, align the columns first using the Column Mapper tool before merging. Files with different delimiters, such as one comma-separated and one tab-separated, should be converted to the same delimiter first using the Delimiter Converter tool.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>Does the tool handle files with different column orders?</h3>
+                <p>No. The merge stacks rows directly and uses the column order from the first file. If your files have the same columns but in a different order, the data will land in the wrong columns. Standardize column order before merging.</p>
+                <h3>What happens if multiple files all include a header row?</h3>
+                <p>The tool detects when a subsequent file's first row matches the header from the first file and skips it. If headers do not match exactly but are still column headers, they may be included as data rows, so review the result before use.</p>
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>

@@ -86,10 +86,17 @@
                   <p>Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 
-                <h2>About this column mapper</h2>
-                <p>Rename and reorder columns into a target schema. Use it free without creating an account or uploading data to Nifty Utilities.</p>
-                <h2>How it works</h2>
-                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>
+                <h2>How do you rename CSV columns to match a target schema?</h2>
+                <p>When you receive data from one system and need to import it into another, the column names rarely match. This tool renames the columns in your CSV to whatever names you provide, in the order you provide them, so the output matches the header row your target system expects.</p>
+                <h2>How to use it</h2>
+                <p>Upload your CSV file. In the column names field, enter the new column names separated by commas in the order you want them to appear, for example: Date, Description, Amount. Click Process file and the tool applies your names to the columns in positional order, left to right. If you provide fewer names than columns, the extra columns are dropped. If you provide more, the extra names get empty columns. Download the remapped CSV when done. Everything is processed in your browser and never uploaded to or stored by this site.</p>
+                <h2>Tips</h2>
+                <p>The mapping is purely positional: the first name you enter replaces the first column header, the second name replaces the second, and so on. This means you can also use the tool to reduce a wide file to only the columns you need by entering fewer names than the file has. To see the current column names before entering your replacements, leave the field blank and click Process file once; the tool will populate the field with the existing headers for you to edit.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>Can I reorder columns, not just rename them?</h3>
+                <p>Reordering is not supported by this tool. It renames columns in their existing order. If you also need to change column order, do that in a spreadsheet application before using this tool, or after downloading the remapped file.</p>
+                <h3>What if my file has more columns than I want to keep?</h3>
+                <p>Enter only the names for the columns you want to keep. The tool drops any columns beyond the number of names you provide, so supplying fewer names than columns is the intended way to reduce the column set.</p>
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>

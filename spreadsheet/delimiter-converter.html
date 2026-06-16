@@ -86,10 +86,17 @@
                   <p>Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 
-                <h2>About this delimiter converter</h2>
-                <p>Convert comma, tab, semicolon, or pipe-delimited data. Use it free without creating an account or uploading data to Nifty Utilities.</p>
-                <h2>How it works</h2>
-                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>
+                <h2>How do you convert between comma, tab, semicolon, and pipe-delimited files?</h2>
+                <p>CSV is the most common format, but many systems export with a tab, semicolon, or pipe as the separator instead of a comma. Other tools may require a specific delimiter to import correctly. This tool detects the delimiter in your file and converts the data to whichever output delimiter you choose.</p>
+                <h2>How to use it</h2>
+                <p>Upload your delimited text file. Choose the output delimiter from the dropdown: Comma, Tab, Semicolon, or Pipe. Click Process file and the tool parses your file using its detected delimiter and rewrites it using the one you selected. The converted data appears in a text area you can copy or download. Everything is processed in your browser and never uploaded to or stored by this site.</p>
+                <h2>Tips</h2>
+                <p>The tool auto-detects the input delimiter by scanning the file, so you do not need to specify it manually. If your data contains the target delimiter as a character within a field value, those values should be enclosed in quotes in the output to avoid breaking the format. Review the converted result before use, particularly if your data contains special characters or embedded line breaks.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>Why would I need a tab-delimited file instead of CSV?</h3>
+                <p>Some database tools, older import systems, and certain government data formats use tab-delimited files. Tab-delimited format also avoids issues with comma characters appearing inside field values, which require quoting in CSV. If an import is failing because of commas in your data, switching to tab-delimited often resolves it.</p>
+                <h3>Can the tool handle files where values contain the delimiter character?</h3>
+                <p>Yes, as long as those values are properly quoted in the source file. The parser respects standard CSV quoting rules, where a field value containing the delimiter is wrapped in double quotes. Unquoted delimiter characters inside values will cause parsing errors regardless of the tool used.</p>
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>

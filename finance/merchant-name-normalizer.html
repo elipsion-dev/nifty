@@ -86,10 +86,17 @@
                   <p>Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 
-                <h2>About this merchant name normalizer</h2>
-                <p>Turn noisy transaction descriptions into consistent merchant names. Use it free without creating an account or uploading data to Nifty Utilities.</p>
-                <h2>How it works</h2>
-                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>
+                <h2>How do you clean up messy merchant names in a bank statement CSV?</h2>
+                <p>Transaction descriptions exported from a bank are often cluttered with authorization codes, location numbers, and transaction type prefixes that make the same merchant appear as dozens of different entries. This tool strips that noise and produces a normalized merchant name alongside the original description, making grouping and analysis far easier.</p>
+                <h2>How to use it</h2>
+                <p>Upload your transaction CSV. The tool reads the description column, removes common bank transaction codes and prefixes such as POS, DEBIT, PURCHASE, and ACH, strips standalone number sequences, and collapses extra spaces to produce a cleaner name. The output CSV contains the original date, the original description, the normalized merchant name, and the amount. Your financial data is processed entirely in your browser and is never uploaded to or stored by this site.</p>
+                <h2>Tips</h2>
+                <p>Normalization removes common noise but cannot perfectly interpret every bank's proprietary transaction format. Review the normalized column for any entries that still look garbled, and treat the output as a starting point for analysis rather than a definitive merchant name. The normalized names are in uppercase, which makes grouping in a spreadsheet more consistent since case differences no longer cause the same merchant to appear as two different entries.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>Does normalization change the original transaction data?</h3>
+                <p>No. The original description is preserved in its own column in the output. The normalized merchant name is added as a separate column. You can compare the two columns to verify the normalization looks reasonable for your data.</p>
+                <h3>Can I use the normalized output with other tools on this site?</h3>
+                <p>Yes. The output format is a standard CSV with date, description, normalized merchant name, and amount columns. It works well as input for the Recurring Subscription Finder and the Personal Spending Categorizer.</p>
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>

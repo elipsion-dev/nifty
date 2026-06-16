@@ -86,10 +86,17 @@
                   <p>Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 
-                <h2>About this upc validator</h2>
-                <p>Validate UPC-A check digits or calculate a missing check digit. Use it free without creating an account or uploading data to Nifty Utilities.</p>
-                <h2>How it works</h2>
-                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>
+                <h2>How do you validate a UPC-A check digit?</h2>
+                <p>Every UPC-A barcode includes a twelfth check digit calculated from the first eleven digits. A single transposition or misprint in a barcode makes the check digit wrong, which causes scanners to reject the code. This tool validates whether a 12-digit UPC-A has the correct check digit, or calculates the correct check digit from 11 digits when you are building or verifying a barcode before printing.</p>
+                <h2>How to use it</h2>
+                <p>Enter a UPC-A code in the input field. Enter 12 digits to validate an existing code, or enter 11 digits to calculate what the check digit should be. Click Validate UPC and the tool shows whether the code is valid, displays the correct check digit, and shows the complete 12-digit UPC. Everything runs in your browser and nothing you enter is sent to or stored by this site.</p>
+                <h2>Tips</h2>
+                <p>Non-digit characters are stripped automatically, so you can paste a code with spaces or dashes without cleaning it first. The check digit calculation uses the standard UPC-A algorithm: multiply alternating digits by 3 and 1, sum them, and take the complement to 10. If a barcode is scanning incorrectly, verifying the check digit is a quick first diagnostic step.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>Does the tool look up the product associated with a UPC?</h3>
+                <p>No. This tool only validates or calculates the check digit using the UPC-A algorithm. It does not connect to any product database or return product names, brands, or other details.</p>
+                <h3>Does this work for EAN-13 barcodes?</h3>
+                <p>EAN-13 uses the same check digit algorithm as UPC-A, and a UPC-A is a subset of EAN-13. Entering the 12-digit UPC-A validates it correctly. Full 13-digit EAN validation would require entering all 13 digits, but this tool is designed for 11 or 12 digit inputs.</p>
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>

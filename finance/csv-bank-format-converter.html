@@ -86,10 +86,17 @@
                   <p>Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 
-                <h2>About this csv bank format converter</h2>
-                <p>Map statement columns into a simple date, description, amount format. Use it free without creating an account or uploading data to Nifty Utilities.</p>
-                <h2>How it works</h2>
-                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>
+                <h2>How do you convert a bank CSV into a standard date, description, amount format?</h2>
+                <p>Every bank exports statement data with slightly different column names, column orders, and formatting conventions. When you want to combine statements from multiple banks or import into a tool that expects a specific layout, the inconsistencies get in the way. This tool maps your bank's CSV to a clean three-column format with a date column, a description column, and a single signed amount column, regardless of what your source file calls those fields.</p>
+                <h2>How to use it</h2>
+                <p>Upload your bank statement CSV. The tool scans the header row for column names that match common bank conventions for date, description, and amount, including files with separate debit and credit columns. It maps those columns to the standardized output format, strips currency symbols from amounts, trims description whitespace, and drops blank rows. Your financial data is processed entirely in your browser and is never uploaded to or stored by this site.</p>
+                <h2>Tips</h2>
+                <p>This tool and the Bank Statement Cleaner use the same column detection and produce the same output format. Use either one based on which label makes more sense for your workflow. If your file uses column names that are very different from the common conventions, the tool may pick the wrong columns; check the preview before downloading. After converting, the standardized output works as consistent input for the other finance CSV tools on this site.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>Does the tool work with statements from any bank?</h3>
+                <p>It works with any CSV that has column headers recognizable as date, description, and amount fields. Very unusual or proprietary column names may not be detected automatically. If detection fails, rename the columns to Date, Description, and Amount in a text editor or spreadsheet before uploading.</p>
+                <h3>How does the tool handle files with separate debit and credit columns?</h3>
+                <p>Files with separate debit and credit columns are supported. The tool combines them into a single signed amount: credit values become positive and debit values become negative in the output.</p>
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>

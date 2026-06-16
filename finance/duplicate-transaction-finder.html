@@ -86,10 +86,17 @@
                   <p>Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 
-                <h2>About this duplicate transaction finder</h2>
-                <p>Flag transactions with matching dates, amounts, and descriptions. Use it free without creating an account or uploading data to Nifty Utilities.</p>
-                <h2>How it works</h2>
-                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>
+                <h2>How do you find duplicate transactions in a bank statement CSV?</h2>
+                <p>Duplicate charges sometimes appear in bank exports due to processing errors, double imports, or statement overlaps when you concatenate multiple exports. This tool flags any transaction where the date, description, and amount all match a transaction that appeared earlier in the file, so you can review them and decide which to remove.</p>
+                <h2>How to use it</h2>
+                <p>Upload your transaction CSV. The tool compares each row to all previous rows on the combination of date, description, and amount. When all three match, the later row is flagged as a potential duplicate and the output records which earlier row it duplicates. The output CSV includes all flagged rows with a column showing the row number of the first occurrence. Your financial data is processed entirely in your browser and is never uploaded to or stored by this site.</p>
+                <h2>Tips</h2>
+                <p>The comparison is exact on all three fields, so a transaction with the same amount and description but a one-day difference in the date will not be flagged. If you are merging statements that slightly differ in how they record the date, clean and standardize dates first. Not every flagged row is a genuine error; some merchants legitimately charge the same amount on the same day (for example, two separate purchases at the same store). Review each flagged transaction in context before removing it.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>Does the tool remove the duplicates automatically?</h3>
+                <p>No. The output shows which rows are potential duplicates without altering your data. Review the flagged rows and remove the ones you confirm are genuine duplicates using a spreadsheet application.</p>
+                <h3>What if my file has legitimate repeat charges on the same day?</h3>
+                <p>Those will be flagged if date, description, and amount all match. Use the row reference in the output to compare the flagged transaction against the first occurrence and decide whether it is a real duplicate or a valid separate charge.</p>
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>

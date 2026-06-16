@@ -86,10 +86,17 @@
                   <p>Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 
-                <h2>About this bank statement cleaner</h2>
-                <p>Standardize dates, amounts, descriptions, and blank rows in statement CSVs. Use it free without creating an account or uploading data to Nifty Utilities.</p>
-                <h2>How it works</h2>
-                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>
+                <h2>How do you clean a bank statement CSV for analysis?</h2>
+                <p>Bank statement exports are rarely ready to use without some cleanup. Column names vary by institution, amounts may include currency symbols, description fields often contain trailing spaces, and blank rows appear between sections. This tool normalizes a bank statement CSV into a clean three-column format with a consistent date, description, and amount column, stripping noise and dropping blank rows so the data is ready to sort, filter, or import.</p>
+                <h2>How to use it</h2>
+                <p>Upload your bank statement CSV file. The tool automatically detects your date, description, and amount columns by scanning the header names. It strips currency symbols and commas from amount values, trims whitespace from descriptions, and removes rows with no content. The clean output uses standard lowercase column names and can be downloaded as a new CSV. Your financial data is processed entirely in your browser and is never uploaded to or stored by this site.</p>
+                <h2>Tips</h2>
+                <p>Banks use many different column name conventions. The tool looks for common patterns such as "date," "posted," "description," "memo," "amount," "debit," and "credit." If your file uses very unusual column names, the tool may map the wrong column; review the preview before downloading. Files with separate debit and credit columns are supported: the tool combines them into a single signed amount column.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>Does the tool reformat the date values in the output?</h3>
+                <p>No. Date values are passed through as they appear in the source file. The tool standardizes the column structure but does not reparse or reformat date strings. If you need a specific date format, reformat the date column in a spreadsheet application after downloading the cleaned file.</p>
+                <h3>Is it safe to upload bank data to this tool?</h3>
+                <p>Your file is never uploaded anywhere. All processing happens locally in your browser using JavaScript, and the data does not leave your device. No information from the file is sent to any server.</p>
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>

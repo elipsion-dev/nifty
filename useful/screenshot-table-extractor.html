@@ -86,10 +86,17 @@
                   <p>Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 
-                <h2>About this screenshot table extractor</h2>
-                <p>Use in-browser OCR to turn a table image into editable rows. Use it free without creating an account or uploading data to Nifty Utilities.</p>
-                <h2>How it works</h2>
-                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>
+                <h2>How do you turn a table in a screenshot into editable rows?</h2>
+                <p>Tables in screenshots are common when data comes from a web page, a PDF viewer, or a shared screen recording. This tool uses in-browser OCR to read the text in your image and converts the detected lines into structured rows you can download as a CSV and open in any spreadsheet application.</p>
+                <h2>How to use it</h2>
+                <p>Upload your screenshot and click Extract table text. A recognition library loads in your browser on first use, then the image is processed locally. Detected lines with multiple spaced columns are split into CSV fields. When done, a preview shows the extracted rows and a download link appears for the CSV. Your image stays on your device and is never uploaded to or stored by this site.</p>
+                <h2>Tips</h2>
+                <p>Crop the screenshot to include only the table before uploading. Extra content around the table, such as page navigation or surrounding paragraphs, will appear as additional rows in the output and require cleanup. Larger text and higher screen resolution generally produce cleaner results than small or compressed images.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>Can it handle tables with merged cells or complex formatting?</h3>
+                <p>The OCR reads text line by line. Merged cells and multi-row headers may not map cleanly to a flat CSV. You will likely need to review and adjust those areas of the output in your spreadsheet application.</p>
+                <h3>Does this tool work without an internet connection?</h3>
+                <p>The recognition library loads from a CDN on first use, so an internet connection is required for that initial download. Once loaded, the OCR processing itself runs locally in your browser.</p>
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>

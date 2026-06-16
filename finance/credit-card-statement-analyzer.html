@@ -86,10 +86,23 @@
                   <p>Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 
-                <h2>About this credit card statement analyzer</h2>
-                <p>Summarize charges by category and merchant from a CSV statement. Use it free without creating an account or uploading data to Nifty Utilities.</p>
-                <h2>How it works</h2>
-                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>
+                <h2>What can a credit card statement tell you about your spending?</h2>
+                <p>A credit card statement contains a transaction-level record of where your money went over a billing period, but most people only look at the balance due rather than the underlying data. Analyzing the statement by category and merchant reveals patterns that a quick scan of the total misses: which spending categories are largest, which merchants appear most often, and where discretionary spending is concentrated. This tool processes a CSV statement from your card issuer and surfaces that summary without sending your data anywhere.</p>
+                <h2>Spending by category</h2>
+                <p>The tool assigns each transaction to a category based on keywords in the merchant description. Common categories include groceries, dining, transportation, utilities, subscriptions, shopping, and healthcare. The category breakdown shows which areas of spending account for the largest share of your total and helps identify where reduction would have the most impact. Category assignment from description text is approximate, and some transactions may land in the wrong category; the summary is a starting point rather than a precise accounting.</p>
+                <h2>Spending by merchant</h2>
+                <p>The merchant summary normalizes transaction descriptions to group charges from the same merchant together, which is useful because card statements often show the same merchant in multiple slightly different formats. Seeing the total spent at each merchant over the period clarifies which stores, services, and restaurants represent the largest recurring commitments.</p>
+                <h2>Total activity</h2>
+                <p>The tool reports total transaction volume for the period. This figure includes all charges regardless of whether they are business, personal, or reimbursable. If your statement contains credits, returns, or payments, those appear as transactions with negative amounts and are handled separately from purchases in the summary. The total is a useful sanity check against the statement balance before any payments are applied.</p>
+                <h2>How to use this calculator</h2>
+                <p>Export a CSV from your card issuer's website or app, then upload it here. The tool reads the file in your browser and looks for date, description, and amount columns. No file or transaction data is sent to a server or stored anywhere outside your browser. The analysis happens locally and is discarded when you close or reload the page.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>What CSV format does this tool expect?</h3>
+                <p>The tool works best with a CSV that has at least three columns: a date, a description or merchant name, and an amount. Most major card issuers offer a CSV or spreadsheet download from the account activity page. If your file has separate debit and credit columns rather than a single amount column, the tool can handle that format as well.</p>
+                <h3>Is it safe to upload my credit card statement here?</h3>
+                <p>Yes. The file is read by code running in your browser and never transmitted to a server. The analysis is performed locally, and nothing from the file is stored after you close the page. You can verify this by disconnecting from the internet before uploading; the tool will still function because it requires no server connection to analyze the data.</p>
+                <h3>Why might some transactions be miscategorized?</h3>
+                <p>Category assignment relies on matching keywords in the merchant description against a set of category rules. Transaction descriptions on card statements are often abbreviated or contain codes that do not clearly indicate the merchant type. A gas station that also sells groceries may show in transportation rather than groceries, for example. The summaries are best used to understand general spending patterns rather than as a precise budget report.</p>
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>

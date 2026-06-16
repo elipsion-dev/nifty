@@ -86,10 +86,17 @@
                   <p>Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 
-                <h2>About this compare two csvs</h2>
-                <p>Find rows that were added, removed, or kept between two files. Use it free without creating an account or uploading data to Nifty Utilities.</p>
-                <h2>How it works</h2>
-                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>
+                <h2>How do you compare two CSV files to find what changed?</h2>
+                <p>When a CSV export is updated over time, it can be useful to know exactly which rows were added and which were removed between two versions. This tool compares two CSV files and produces a single output file that labels each changed row as either added or removed, so you can see precisely what is different.</p>
+                <h2>How to use it</h2>
+                <p>Select both CSV files using the file picker. The tool treats the first file as the baseline and the second as the updated version. It compares rows across all columns and identifies rows that appear in the baseline but not the updated file (removed) and rows that appear in the updated file but not the baseline (added). The output CSV includes a status column for each changed row. Everything is processed in your browser and never uploaded to or stored by this site.</p>
+                <h2>Tips</h2>
+                <p>The comparison is row-level and exact. A row that changed even one character in any column will appear as both a removal of the old version and an addition of the new version. Rows that are identical in both files do not appear in the output at all. This is useful for spotting discrete additions and deletions but is not designed to highlight edits within a row as individual field changes.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>Does the output show rows that stayed the same in both files?</h3>
+                <p>No. Only rows that changed are included in the output. A row with the same values in both files is treated as unchanged and does not appear in the comparison result.</p>
+                <h3>Does column order matter for the comparison?</h3>
+                <p>Yes. The tool compares cells in positional order. If the two files have the same columns but in a different arrangement, the comparison will not produce meaningful results. Make sure the column order is consistent before comparing.</p>
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>

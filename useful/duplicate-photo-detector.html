@@ -86,10 +86,17 @@
                   <p>Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 
-                <h2>About this duplicate photo detector</h2>
-                <p>Find exact duplicate images using local file hashes. Use it free without creating an account or uploading data to Nifty Utilities.</p>
-                <h2>How it works</h2>
-                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>
+                <h2>How do you find exact duplicate photos in a folder?</h2>
+                <p>Duplicate images accumulate from repeated downloads, device backups, and copying files between locations. This tool computes a cryptographic hash of each image file you select and identifies files with identical content, even if they have different names, giving you a report of which files are duplicates and which original they match.</p>
+                <h2>How to use it</h2>
+                <p>Select a batch of image files using the file picker and click Find exact duplicates. The tool computes a SHA-256 hash of each file entirely in your browser, compares all hashes, and produces a CSV listing each duplicate file alongside the earlier file it matches and the file size. Your images are never uploaded to or stored by this site.</p>
+                <h2>Tips</h2>
+                <p>The comparison is based on file content, not filename. Two files with different names but identical bytes will be flagged as duplicates. Files that look visually similar but have different content, for example a re-exported or lightly edited copy, will not be matched. This tool finds exact byte-for-byte duplicates only.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>How many files can I check at once?</h3>
+                <p>There is no fixed limit enforced by the tool, but hashing large numbers of large image files takes time and memory. For very large batches, selecting a few hundred files at a time is practical.</p>
+                <h3>Does the tool delete the duplicates it finds?</h3>
+                <p>No. It only identifies duplicates and reports them in a CSV. You decide which files to keep or remove using your file manager.</p>
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>

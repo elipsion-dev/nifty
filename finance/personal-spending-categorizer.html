@@ -86,10 +86,17 @@
                   <p>Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 
-                <h2>About this personal spending categorizer</h2>
-                <p>Assign common spending categories using editable keyword rules. Use it free without creating an account or uploading data to Nifty Utilities.</p>
-                <h2>How it works</h2>
-                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>
+                <h2>How do you categorize bank transactions by spending type?</h2>
+                <p>Seeing a total for each spending category is one of the most useful things you can do with a bank statement, but assigning categories by hand is slow. This tool scans your transaction descriptions and assigns each one to a spending category using keyword matching, adding a category column to your CSV so you can filter and sum by type in a spreadsheet.</p>
+                <h2>How to use it</h2>
+                <p>Upload your bank statement or transaction CSV. The tool reads the description column and matches each transaction against keyword rules for ten categories: Housing, Groceries, Dining, Transportation, Utilities, Subscriptions, Shopping, Healthcare, Income, and Transfer. Transactions that do not match any keyword are labeled Other. The output CSV adds a category column alongside date, description, and amount. Your financial data is processed entirely in your browser and is never uploaded to or stored by this site.</p>
+                <h2>Tips</h2>
+                <p>Category assignment is based on fixed keyword patterns in the description text. A transaction from a grocery store that uses an unusual name may be categorized as Other if the name does not match the built-in keywords. Cleaning descriptions with the Merchant Name Normalizer or Bank Statement Cleaner first can improve match rates. After downloading the categorized file, you can manually reassign any transactions the tool miscategorized by editing the category column in a spreadsheet.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>What keywords does each category use?</h3>
+                <p>The categories use common merchant names and transaction terms. Groceries matches words like "grocery," major supermarket names, and "walmart." Dining matches restaurant-related terms and food delivery services. Transportation matches fuel-related terms and ride-share names. You can see the full pattern by reviewing the output and noting which descriptions matched each category.</p>
+                <h3>Can I change the category rules?</h3>
+                <p>The keyword rules are fixed in this tool. To apply custom rules, download the output CSV and use a spreadsheet formula referencing a table of your own keywords, which gives you full control over the mapping.</p>
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>

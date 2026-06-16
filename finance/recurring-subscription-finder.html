@@ -86,10 +86,17 @@
                   <p>Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 
-                <h2>About this recurring subscription finder</h2>
-                <p>Find merchants and charges that appear on a repeating schedule. Use it free without creating an account or uploading data to Nifty Utilities.</p>
-                <h2>How it works</h2>
-                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>
+                <h2>How do you find recurring charges in a bank statement CSV?</h2>
+                <p>Subscription charges can accumulate quietly over time, and a year-end review of a bank statement often turns up services you forgot you were paying for. This tool scans your transaction CSV and surfaces merchants that appear more than once with the same amount, grouping them so you can see what you are being charged, how often, and on which dates.</p>
+                <h2>How to use it</h2>
+                <p>Upload your bank statement or transaction CSV. The tool normalizes merchant names by removing common noise words and transaction codes, then groups transactions by merchant and amount. Any combination that appears two or more times is listed in the output with the merchant name, typical charge amount, number of occurrences, and the dates it appeared. Your financial data is processed entirely in your browser and is never uploaded to or stored by this site.</p>
+                <h2>Tips</h2>
+                <p>The tool groups on normalized merchant name and amount together, so a service that changes its price mid-year will appear as two separate groups. Charges that appear only once do not appear in the output. If the merchant name column in your file is very noisy, with long transaction codes, some charges may not group as expected; cleaning the file with the Bank Statement Cleaner first often improves grouping accuracy.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>How does the tool decide what counts as a recurring charge?</h3>
+                <p>Any merchant-and-amount combination that appears in two or more transactions is flagged. The tool does not verify that the charges happen on a predictable calendar schedule; it identifies repetition, which is a reliable signal even when billing dates drift slightly month to month.</p>
+                <h3>Will it catch annual subscriptions that charge once a year?</h3>
+                <p>Only if your statement covers more than one year of transactions. If the file spans a single year, an annual charge appears only once and will not be flagged. Combining multiple years of statements using the Merge CSV Files tool before running this tool will help catch annual charges.</p>
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>

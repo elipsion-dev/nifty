@@ -86,10 +86,17 @@
                   <p>Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 
-                <h2>About this json ↔ csv converter</h2>
-                <p>Convert arrays of JSON objects to CSV and CSV back to JSON. Use it free without creating an account or uploading data to Nifty Utilities.</p>
-                <h2>How it works</h2>
-                <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device. The Net Worth Tracker can save entries only in your own browser's local storage.</p>
+                <h2>How do you convert JSON to CSV or CSV to JSON?</h2>
+                <p>JSON and CSV are the two most common formats for moving structured data between systems. APIs often return JSON while spreadsheet tools and import forms expect CSV, and vice versa. This tool converts in both directions: paste a JSON array of objects to get a CSV, or paste a CSV to get a JSON array.</p>
+                <h2>How to use it</h2>
+                <p>Paste your JSON or CSV text into the text area. Click JSON to CSV to convert a JSON array of objects into a comma-separated file with a header row derived from the object keys, or click CSV to JSON to convert a CSV with a header row into an array of JSON objects. The result appears in a text area you can copy or download. Everything happens in your browser; nothing you enter is sent to or stored by this site.</p>
+                <h2>Tips</h2>
+                <p>For the JSON to CSV direction, your input must be an array of objects at the top level, such as a list of records enclosed in square brackets. A single object or a nested structure will not convert correctly. For CSV to JSON, the first row is treated as the header and becomes the key names in each output object. Any missing values in a row become empty strings in the JSON output.</p>
+                <h2>Frequently asked questions</h2>
+                <h3>What JSON structure does the converter expect?</h3>
+                <p>The tool expects a flat array of objects where each object represents one row and all objects share the same set of keys. Nested objects, arrays within arrays, and non-uniform key sets will produce incomplete or unexpected output. Flatten your JSON before converting if your data has nested structures.</p>
+                <h3>Does the CSV to JSON direction support different delimiters?</h3>
+                <p>The tool auto-detects the delimiter in the pasted CSV text, so comma, tab, semicolon, and pipe-separated input all work without any manual configuration.</p>
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>
