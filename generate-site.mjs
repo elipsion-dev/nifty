@@ -1196,6 +1196,10 @@ const heroSvgs = {
   document: `<svg viewBox="0 0 120 90" role="img" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><path d="M40 10h28l16 16v54H40z"/><path d="M68 10v16h16"/><path d="M48 40h28M48 52h28M48 64h18"/></svg>`,
   calendar: `<svg viewBox="0 0 120 90" role="img" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><rect x="28" y="20" width="64" height="56" rx="4"/><path d="M28 36h64M44 12v14M76 12v14"/><circle cx="48" cy="52" r="4" fill="currentColor" stroke="none"/><circle cx="72" cy="52" r="4" fill="currentColor" stroke="none"/></svg>`,
   coins: `<svg viewBox="0 0 120 90" role="img" fill="none" stroke="currentColor" stroke-width="4"><ellipse cx="60" cy="30" rx="26" ry="11"/><path d="M34 30v14c0 6 12 11 26 11s26-5 26-11V30"/><path d="M34 44v14c0 6 12 11 26 11s26-5 26-11V44"/></svg>`
+  ,benefitCard: `<svg viewBox="0 0 120 90" role="img" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"><rect x="14" y="18" width="92" height="56" rx="6"/><circle cx="39" cy="45" r="12"/><path d="M58 35h34M58 47h26M58 59h19"/><path d="M34 45h10M39 40v10"/></svg>`
+  ,hourglass: `<svg viewBox="0 0 120 90" role="img" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M34 12h52M34 78h52M40 14c0 16 6 23 20 31-14 8-20 15-20 31M80 14c0 16-6 23-20 31 14 8 20 15 20 31"/><path d="M48 27h24M46 68h28"/></svg>`
+  ,passportStamp: `<svg viewBox="0 0 120 90" role="img" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"><rect x="22" y="10" width="70" height="68" rx="5"/><circle cx="57" cy="38" r="16"/><path d="M41 38h32M57 22c6 6 9 11 9 16s-3 10-9 16c-6-6-9-11-9-16s3-10 9-16M72 62h28v16H72z"/></svg>`
+  ,court: `<svg viewBox="0 0 120 90" role="img" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><path d="M14 30 60 10l46 20zM20 76h80M26 34v34M48 34v34M72 34v34M94 34v34M16 70h88"/></svg>`
 };
 
 const heroHtml = (meta) => {
@@ -1302,6 +1306,8 @@ const categories = [
       ["real-cost-of-owning-an-electric-car", "Real Cost of Owning an Electric Car", "Estimate financing, charging, insurance, tires, maintenance, and registration costs."],
       ["real-cost-of-owning-a-jet-ski", "Real Cost of Owning a Jet Ski", "Estimate annual storage, fuel, insurance, winterization, and registration costs."],
       ["real-cost-of-owning-a-second-home", "Real Cost of Owning a Second Home", "Estimate mortgage, property tax, insurance, utilities, upkeep, and travel costs."],
+      ["real-cost-of-owning-a-classic-car", "Real Cost of Owning a Classic Car", "Estimate agreed-value insurance, storage, upkeep, and appreciation for a collector car."],
+      ["real-cost-of-owning-a-vacation-rental", "Real Cost of Owning a Vacation Rental", "Estimate mortgage, operating costs, platform fees, and net short-term rental income."],
       ["moving-cost-estimator", "Moving Cost Estimator", "Estimate truck, movers, mileage, supplies, lodging, and other costs."],
       ["roommate-expense-splitter", "Roommate Expense Splitter", "Split shared expenses evenly or by custom percentages."],
       ["home-maintenance-budget-calculator", "Home Maintenance Budget Calculator", "Build an annual maintenance reserve from home value, age, and systems."],
@@ -1325,6 +1331,20 @@ const categories = [
       ["job-cost-calculator", "Job Cost Calculator", "Calculate labor, materials, overhead, markup, and job price."],
       ["service-pricing-calculator", "Service Pricing Calculator", "Price a service from time, costs, overhead, and desired margin."],
       ["sales-commission-calculator", "Sales Commission Calculator", "Calculate tiered or flat sales commissions."]
+    ]
+  },
+  {
+    slug: "government",
+    name: "Government & Deadlines",
+    description: "Turn federal eligibility rules and user-verified filing periods into clear planning dates and checklists.",
+    tools: [
+      ["social-security-claiming-age-calculator", "Social Security Claiming Age Calculator", "Compare a planned claiming age with full retirement age and estimate the monthly adjustment."],
+      ["rmd-calculator", "Required Minimum Distribution Calculator", "Estimate an owner RMD using the IRS Uniform Lifetime Table and a prior year-end balance."],
+      ["tax-refund-timing-estimator", "Tax Refund Timing Estimator", "Build a typical federal refund processing window from the return type and accepted date."],
+      ["fmla-eligibility-calculator", "FMLA Eligibility Calculator", "Screen the four basic federal employee-eligibility requirements for FMLA leave."],
+      ["naturalization-residency-date-calculator", "Naturalization Residency Date Calculator", "Estimate the 90-day early-filing date and screen residence and physical-presence inputs."],
+      ["i94-overstay-date-calculator", "I-94 Admit Until Date Calculator", "Compare a planned departure or current date with a date-certain I-94 admission record."],
+      ["small-claims-deadline-calculator", "Small Claims Deadline Calculator", "Apply a locally verified limitation period and personal safety margin to a claim date."]
     ]
   },
   {

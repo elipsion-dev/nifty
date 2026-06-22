@@ -78,6 +78,8 @@ Estimate major ownership, housing, travel, and shared-living costs.
 - [Real Cost of Owning an Electric Car](https://niftyutilities.com/homeowner/real-cost-of-owning-an-electric-car.html): Estimate financing, charging, insurance, tires, maintenance, and registration costs.
 - [Real Cost of Owning a Jet Ski](https://niftyutilities.com/homeowner/real-cost-of-owning-a-jet-ski.html): Estimate annual storage, fuel, insurance, winterization, and registration costs.
 - [Real Cost of Owning a Second Home](https://niftyutilities.com/homeowner/real-cost-of-owning-a-second-home.html): Estimate mortgage, property tax, insurance, utilities, upkeep, and travel costs.
+- [Real Cost of Owning a Classic Car](https://niftyutilities.com/homeowner/real-cost-of-owning-a-classic-car.html): Estimate agreed-value insurance, storage, upkeep, and appreciation for a collector car.
+- [Real Cost of Owning a Vacation Rental](https://niftyutilities.com/homeowner/real-cost-of-owning-a-vacation-rental.html): Estimate mortgage, operating costs, platform fees, and net short-term rental income.
 - [Moving Cost Estimator](https://niftyutilities.com/homeowner/moving-cost-estimator.html): Estimate truck, movers, mileage, supplies, lodging, and other costs.
 - [Roommate Expense Splitter](https://niftyutilities.com/homeowner/roommate-expense-splitter.html): Split shared expenses evenly or by custom percentages.
 - [Home Maintenance Budget Calculator](https://niftyutilities.com/homeowner/home-maintenance-budget-calculator.html): Build an annual maintenance reserve from home value, age, and systems.
@@ -99,6 +101,18 @@ Model pricing, profitability, labor, sales, and customer economics.
 - [Job Cost Calculator](https://niftyutilities.com/business/job-cost-calculator.html): Calculate labor, materials, overhead, markup, and job price.
 - [Service Pricing Calculator](https://niftyutilities.com/business/service-pricing-calculator.html): Price a service from time, costs, overhead, and desired margin.
 - [Sales Commission Calculator](https://niftyutilities.com/business/sales-commission-calculator.html): Calculate tiered or flat sales commissions.
+
+## Government & Deadlines
+
+Turn federal eligibility rules and user-verified filing periods into clear planning dates and checklists.
+
+- [Social Security Claiming Age Calculator](https://niftyutilities.com/government/social-security-claiming-age-calculator.html): Compare a planned claiming age with full retirement age and estimate the monthly adjustment.
+- [Required Minimum Distribution Calculator](https://niftyutilities.com/government/rmd-calculator.html): Estimate an owner RMD using the IRS Uniform Lifetime Table and a prior year-end balance.
+- [Tax Refund Timing Estimator](https://niftyutilities.com/government/tax-refund-timing-estimator.html): Build a typical federal refund processing window from the return type and accepted date.
+- [FMLA Eligibility Calculator](https://niftyutilities.com/government/fmla-eligibility-calculator.html): Screen the four basic federal employee-eligibility requirements for FMLA leave.
+- [Naturalization Residency Date Calculator](https://niftyutilities.com/government/naturalization-residency-date-calculator.html): Estimate the 90-day early-filing date and screen residence and physical-presence inputs.
+- [I-94 Admit Until Date Calculator](https://niftyutilities.com/government/i94-overstay-date-calculator.html): Compare a planned departure or current date with a date-certain I-94 admission record.
+- [Small Claims Deadline Calculator](https://niftyutilities.com/government/small-claims-deadline-calculator.html): Apply a locally verified limitation period and personal safety margin to a claim date.
 
 ## Weirdly Useful
 

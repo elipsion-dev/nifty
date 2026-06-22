@@ -12,6 +12,28 @@
   const slugify = (value) => String(value).toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   const today = () => new Date().toISOString().slice(0, 10);
   const titleCase = (value) => String(value).toLowerCase().replace(/\b\w/g, (letter) => letter.toUpperCase());
+  const DAY_MS = 86400000;
+  const parseIsoDate = (value) => {
+    const match = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match) return null;
+    const date = new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3])));
+    return Number.isNaN(date.getTime()) ? null : date;
+  };
+  const dateText = (date) => date instanceof Date && !Number.isNaN(date.getTime())
+    ? new Intl.DateTimeFormat("en-US", { timeZone: "UTC", year: "numeric", month: "long", day: "numeric" }).format(date)
+    : "—";
+  const addUtc = (date, { years = 0, months = 0, days = 0 } = {}) => {
+    const result = new Date(date.getTime());
+    const originalDay = result.getUTCDate();
+    result.setUTCDate(1);
+    result.setUTCFullYear(result.getUTCFullYear() + years);
+    result.setUTCMonth(result.getUTCMonth() + months);
+    const lastDay = new Date(Date.UTC(result.getUTCFullYear(), result.getUTCMonth() + 1, 0)).getUTCDate();
+    result.setUTCDate(Math.min(originalDay, lastDay));
+    result.setUTCDate(result.getUTCDate() + days);
+    return result;
+  };
+  const daysBetween = (from, to) => Math.floor((to.getTime() - from.getTime()) / DAY_MS);
 
   const fieldHtml = (field) => {
     const id = `field-${field.id}`;
@@ -40,6 +62,148 @@
   };
 
   const calculators = {
+    "social-security-claiming-age-calculator": {
+      fields: [
+        { id: "birth", label: "Date of birth", type: "date", value: "1964-06-15" },
+        { id: "claimAge", label: "Planned claiming age", type: "select", options: Array.from({ length: 9 }, (_, index) => [String(index + 62), `Age ${index + 62}`]) },
+        { id: "claimMonths", label: "Additional months after birthday", type: "select", options: Array.from({ length: 12 }, (_, month) => [String(month), `${month} month${month === 1 ? "" : "s"}`]) },
+        { id: "fraBenefit", label: "Estimated monthly benefit at full retirement age", value: 2000, min: 0 }
+      ],
+      calculate(v) {
+        const birth = parseIsoDate(v.birth);
+        if (!birth) return { metrics: [["Result", "Enter a valid birth date"]], note: "Use the date printed on your birth record." };
+        let birthYear = birth.getUTCFullYear();
+        if (birth.getUTCMonth() === 0 && birth.getUTCDate() === 1) birthYear -= 1;
+        const fraMonthsByYear = { 1938: 782, 1939: 784, 1940: 786, 1941: 788, 1942: 790, 1943: 792, 1955: 794, 1956: 796, 1957: 798, 1958: 800, 1959: 802 };
+        let fraMonths = birthYear <= 1937 ? 780 : birthYear >= 1960 ? 804 : (fraMonthsByYear[birthYear] || 792);
+        const claimMonths = num(v.claimAge) * 12 + num(v.claimMonths);
+        const earlyMonths = Math.max(0, fraMonths - claimMonths);
+        const delayedMonths = Math.max(0, Math.min(840, claimMonths) - fraMonths);
+        const reduction = Math.min(36, earlyMonths) * (5 / 9) / 100 + Math.max(0, earlyMonths - 36) * (5 / 12) / 100;
+        const increase = delayedMonths * (2 / 3) / 100;
+        const factor = 1 - reduction + increase;
+        const fraYears = Math.floor(fraMonths / 12), fraExtraMonths = fraMonths % 12;
+        const claimDate = addUtc(birth, { years: num(v.claimAge), months: num(v.claimMonths) });
+        return {
+          metrics: [["Full retirement age", `${fraYears} years${fraExtraMonths ? `, ${fraExtraMonths} months` : ""}`], ["Planned claiming month", dateText(claimDate)], ["Estimated monthly benefit", money.format(num(v.fraBenefit) * factor)], ["Change from FRA estimate", `${factor >= 1 ? "+" : ""}${number.format((factor - 1) * 100)}%`]],
+          note: "Planning estimate only. SSA calculates eligibility by month and may apply family, earnings-test, pension, disability, or survivor rules not modeled here. Delayed credits stop at age 70."
+        };
+      }
+    },
+    "rmd-calculator": {
+      fields: [
+        { id: "balance", label: "Prior December 31 account balance", value: 250000, min: 0 },
+        { id: "age", label: "Age at the end of the distribution year", value: 73, min: 72 },
+        { id: "account", label: "Account situation", type: "select", options: [["standard", "Owner — standard Uniform Lifetime Table"], ["spouse", "Spouse is sole beneficiary and more than 10 years younger"], ["inherited", "Inherited account / beneficiary"]] },
+        { id: "already", label: "Already withdrawn for this RMD year", value: 0, min: 0 }
+      ],
+      calculate(v) {
+        const table = [27.4,26.5,25.5,24.6,23.7,22.9,22.0,21.1,20.2,19.4,18.5,17.7,16.8,16.0,15.2,14.4,13.7,12.9,12.2,11.5,10.8,10.1,9.5,8.9,8.4,7.8,7.3,6.8,6.4,6.0,5.6,5.2,4.9,4.6,4.3,4.1,3.9,3.7,3.5,3.4,3.3,3.1,3.0,2.9,2.8,2.7,2.5,2.3,2.0];
+        const age = Math.floor(num(v.age));
+        if (v.account !== "standard") return { metrics: [["Table required", v.account === "spouse" ? "Joint Life and Last Survivor" : "Beneficiary rules"]], note: "This calculator intentionally does not estimate this situation. Use the applicable IRS table or beneficiary worksheet because the Uniform Lifetime Table would give the wrong result." };
+        const divisor = age >= 120 ? 2 : table[age - 72];
+        if (!divisor) return { metrics: [["RMD", "Age outside this table"]], note: "Enter an age from 72 through 120. Whether an RMD is due depends on birth year, account type, employment, and plan terms." };
+        const rmd = num(v.balance) / divisor;
+        const remaining = Math.max(0, rmd - num(v.already));
+        return { metrics: [["IRS distribution period", number.format(divisor)], ["Calculated RMD", money.format(rmd)], ["Still to withdraw", money.format(remaining)], ["Monthly planning amount", money.format(remaining / 12)]], note: "Uses the IRS Uniform Lifetime Table. This does not determine whether an RMD is required, combine accounts, or calculate inherited-account distributions." };
+      }
+    },
+    "tax-refund-timing-estimator": {
+      fields: [
+        { id: "filed", label: "Date the IRS accepted or received the return", type: "date", value: today() },
+        { id: "method", label: "Return type", type: "select", options: [["efile", "Original return — e-filed"], ["paper", "Original return — mailed"], ["amended", "Amended return"]] },
+        { id: "path", label: "Claimed EITC or Additional Child Tax Credit", type: "select", options: [["no", "No"], ["yes", "Yes"], ["unsure", "Not sure"]] },
+        { id: "review", label: "IRS says corrections or additional review are needed", type: "select", options: [["no", "No"], ["yes", "Yes"]] }
+      ],
+      calculate(v) {
+        const filed = parseIsoDate(v.filed);
+        if (!filed) return { metrics: [["Result", "Enter a valid date"]], note: "Use the acceptance date for an e-filed return or the IRS receipt date for a mailed return." };
+        const days = v.method === "amended" ? 112 : v.method === "paper" ? 42 : 21;
+        let planningDate = addUtc(filed, { days });
+        let pathNote = "";
+        if (v.path === "yes" && filed.getUTCMonth() <= 1) {
+          const lateFebruary = new Date(Date.UTC(filed.getUTCFullYear(), 1, 28));
+          if (planningDate < lateFebruary) planningDate = lateFebruary;
+          pathNote = " PATH Act timing can hold early EITC/ACTC refunds until after mid-February."
+        }
+        return { metrics: [["Typical processing window", v.method === "amended" ? "Up to 16 weeks" : v.method === "paper" ? "6 weeks or more" : "About 3 weeks"], ["Planning date", v.review === "yes" ? "No reliable estimate" : dateText(planningDate)], ["Status-check starting point", v.method === "efile" ? "24 hours after acceptance" : v.method === "amended" ? "3 weeks after filing" : "After processing begins"]], note: `${v.review === "yes" ? "Once the IRS requests corrections or review, standard windows no longer predict the refund date." : "This is a typical processing window, not a promised deposit date."}${pathNote} Check Where's My Refund? for the authoritative status.` };
+      }
+    },
+    "fmla-eligibility-calculator": {
+      fields: [
+        { id: "covered", label: "Covered employer", type: "select", options: [["yes", "Yes — public agency, school, or covered private employer"], ["no", "No"], ["unsure", "Not sure"]] },
+        { id: "months", label: "Total months worked for this employer", value: 12, min: 0 },
+        { id: "hours", label: "Hours actually worked in the previous 12 months", value: 1250, min: 0 },
+        { id: "nearby", label: "Employees within 75 miles of the worksite", value: 50, min: 0 },
+        { id: "airline", label: "Airline flight crew employee", type: "select", options: [["no", "No"], ["yes", "Yes"]] }
+      ],
+      calculate(v) {
+        const checks = [v.covered === "yes", num(v.months) >= 12, num(v.hours) >= 1250, num(v.nearby) >= 50];
+        const labels = ["covered-employer status", "12 months of employment", "1,250 hours actually worked", "50 employees within 75 miles"];
+        const failed = labels.filter((_, index) => !checks[index]);
+        const special = v.airline === "yes";
+        const status = special ? "Special rules apply" : failed.length ? (v.covered === "unsure" ? "Needs employer confirmation" : "Does not meet every federal gate") : "Meets the basic federal gates";
+        return { metrics: [["Screening result", status], ["Employment test", num(v.months) >= 12 ? "Meets 12 months" : `${number.format(12 - num(v.months))} months short`], ["Hours test", num(v.hours) >= 1250 ? "Meets 1,250 hours" : `${number.format(1250 - num(v.hours))} hours short`], ["Worksite test", num(v.nearby) >= 50 ? "Meets 50/75 rule" : `${number.format(50 - num(v.nearby))} employees short`]], note: special ? "Airline flight crew employees use special hours-of-service rules; ask the employer or U.S. Department of Labor rather than relying on this result." : failed.length ? `Items to verify: ${failed.join(", ")}. State family-leave laws or employer policies may provide protection even when federal FMLA does not.` : "This screens employee eligibility only. The reason for leave, notice, certification, and other FMLA requirements still must be satisfied." };
+      }
+    },
+    "naturalization-residency-date-calculator": {
+      fields: [
+        { id: "resident", label: "Resident Since date on Green Card", type: "date", value: "2022-08-01" },
+        { id: "basis", label: "Filing basis", type: "select", options: [["five", "General 5-year permanent-resident rule"], ["three", "3-year rule for qualifying spouse of a U.S. citizen"]] },
+        { id: "outside", label: "Total approximate days outside the U.S. during the statutory period", value: 0, min: 0 },
+        { id: "longest", label: "Longest single trip outside the U.S. (days)", value: 0, min: 0 },
+        { id: "district", label: "Months living in current state or USCIS district", value: 3, min: 0 }
+      ],
+      calculate(v) {
+        const resident = parseIsoDate(v.resident);
+        if (!resident) return { metrics: [["Result", "Enter a valid Resident Since date"]], note: "Use the date shown on the front of the Permanent Resident Card." };
+        const years = v.basis === "three" ? 3 : 5;
+        const requiredPresence = v.basis === "three" ? 548 : 913;
+        const anniversary = addUtc(resident, { years });
+        const early = addUtc(anniversary, { days: -90 });
+        const statutoryDays = Math.round(years * 365.25);
+        const presence = Math.max(0, statutoryDays - num(v.outside));
+        const warnings = [];
+        if (num(v.longest) > 180) warnings.push(num(v.longest) >= 365 ? "a trip of one year or more may break continuous residence" : "a trip over six months may create a presumption that continuous residence was broken");
+        if (presence < requiredPresence) warnings.push("the physical-presence estimate is below the usual minimum");
+        if (num(v.district) < 3) warnings.push("the three-month state/district residence period may not be met");
+        if (v.basis === "three") warnings.push("the marital-union and U.S.-citizen-spouse requirements must also be met");
+        return { metrics: [["90-day early-filing estimate", dateText(early)], ["Residence anniversary", dateText(anniversary)], ["Estimated physical presence", `${number.format(presence)} days`], ["Usual minimum", `${number.format(requiredPresence)} days`]], note: warnings.length ? `Review before filing: ${warnings.join("; ")}. This date alone does not establish eligibility.` : "No issue was identified from these limited inputs, but USCIS also reviews age, good moral character, English/civics, travel records, and other eligibility requirements." };
+      }
+    },
+    "i94-overstay-date-calculator": {
+      fields: [
+        { id: "type", label: "I-94 Admit Until entry", type: "select", options: [["date", "A specific date"], ["ds", "D/S (duration of status)"]] },
+        { id: "until", label: "Admit Until date", type: "date", value: today() },
+        { id: "compare", label: "Date to compare (today or planned departure)", type: "date", value: today() }
+      ],
+      calculate(v) {
+        if (v.type === "ds") return { metrics: [["Result", "No calendar deadline can be calculated"], ["I-94 notation", "D/S — duration of status"]], note: "D/S depends on maintaining the underlying status and program rules, not a printed expiration date. Confirm status with the designated school/program official or a qualified immigration professional." };
+        const until = parseIsoDate(v.until), compare = parseIsoDate(v.compare);
+        if (!until || !compare) return { metrics: [["Result", "Enter valid dates"]], note: "Copy the Admit Until date from the most recent CBP I-94 record, not the visa expiration date or the form's OMB expiration date." };
+        const difference = daysBetween(until, compare);
+        const status = difference <= 0 ? `${Math.abs(difference)} day${Math.abs(difference) === 1 ? "" : "s"} remaining` : `${difference} day${difference === 1 ? "" : "s"} after date`;
+        return { metrics: [["Admit Until date", dateText(until)], ["Comparison date", dateText(compare)], ["Calendar difference", status], ["Planning status", difference <= 0 ? "Before or on printed date" : "Past printed date"]], note: "This is calendar arithmetic, not a determination of lawful status or unlawful presence. Extensions, changes of status, tolling, age, asylum, D/S, and other rules can change the legal analysis." };
+      }
+    },
+    "small-claims-deadline-calculator": {
+      fields: [
+        { id: "event", label: "Claim-accrual or incident date", type: "date", value: today() },
+        { id: "years", label: "Verified limitation period — years", value: 2, min: 0 },
+        { id: "months", label: "Additional months", value: 0, min: 0 },
+        { id: "tolling", label: "Verified tolling days to add", value: 0, min: 0 },
+        { id: "margin", label: "Personal filing safety margin (days)", value: 30, min: 0 },
+        { id: "jurisdiction", label: "State / court checked", type: "text", value: "", placeholder: "Example: Indiana county small claims court", full: true }
+      ],
+      calculate(v) {
+        const event = parseIsoDate(v.event);
+        if (!event) return { metrics: [["Result", "Enter a valid date"]], note: "The legally relevant accrual date may differ from the day you first noticed the dispute." };
+        const deadline = addUtc(event, { years: Math.floor(num(v.years)), months: Math.floor(num(v.months)), days: Math.floor(num(v.tolling)) });
+        const target = addUtc(deadline, { days: -Math.floor(num(v.margin)) });
+        const daysToTarget = daysBetween(parseIsoDate(today()), target);
+        return { metrics: [["Raw calculated deadline", dateText(deadline)], ["Your safety-margin target", dateText(target)], ["Time from today to target", daysToTarget >= 0 ? `${daysToTarget} days remaining` : `${Math.abs(daysToTarget)} days ago`], ["Jurisdiction noted", v.jurisdiction || "Not entered"]], note: "Do not rely on this date until an official court source or lawyer confirms the claim type, accrual rule, limitation period, tolling, pre-suit notice, defendant, venue, monetary limit, and filing method. Weekends and holidays are not adjusted." };
+      }
+    },
     "rent-vs-buy-calculator": {
       fields: [
         { id: "rent", label: "Monthly rent", value: 1800 },
@@ -189,6 +353,43 @@
         const carrying = num(v.tax) + num(v.insurance) + num(v.utilities) + num(v.maintenance) + num(v.travel);
         const annual = payment * 12 + carrying;
         return { metrics: [["Monthly mortgage payment", money.format(payment)], ["Annual carrying cost (excl. mortgage)", money.format(carrying)], ["Total annual cost", money.format(annual)], ["Total monthly cost", money.format(annual / 12)]], note: "This is the cost of holding a second home for personal use; it excludes any rental income, and changes in the home's value over time are not modeled here." };
+      }
+    },
+    "real-cost-of-owning-a-classic-car": {
+      fields: [
+        { id: "value", label: "Current market value", value: 35000 }, { id: "appreciation", label: "Expected appreciation (%/yr)", value: 3 },
+        { id: "insurance", label: "Agreed-value collector insurance (annual)", value: 600 }, { id: "storage", label: "Climate-controlled storage (annual)", value: 1800 },
+        { id: "maintenance", label: "Specialist maintenance and restoration reserve (annual)", value: 1500 }, { id: "fuel", label: "Fuel for limited use (annual)", value: 300 },
+        { id: "events", label: "Registration, club dues, and show fees (annual)", value: 350 }
+      ],
+      calculate(v) {
+        const carrying = num(v.insurance) + num(v.storage) + num(v.maintenance) + num(v.fuel) + num(v.events);
+        const appreciation = num(v.value) * num(v.appreciation) / 100;
+        const net = carrying - appreciation;
+        return { metrics: [["Annual carrying cost", money.format(carrying)], ["Estimated annual appreciation", money.format(appreciation)], ["Net annual cost after appreciation", money.format(net)], ["Five-year carrying cost", money.format(carrying * 5)]], note: net <= 0 ? "At the appreciation rate you entered, estimated value gains exceed the yearly carrying cost — but collector-car values can fall as easily as rise and are never guaranteed." : "Appreciation is not guaranteed; collector values can fall. This estimate excludes the purchase price and any major restoration work." };
+      }
+    },
+    "real-cost-of-owning-a-vacation-rental": {
+      fields: [
+        { id: "price", label: "Purchase price", value: 340000 }, { id: "down", label: "Down payment", value: 68000 },
+        { id: "apr", label: "Mortgage APR (%)", value: 7 }, { id: "years", label: "Loan term (years)", value: 30 },
+        { id: "nightly", label: "Average nightly rate", value: 180 }, { id: "occupancy", label: "Occupancy (% of nights booked)", value: 55 },
+        { id: "platform", label: "Platform and host service fees (% of revenue)", value: 3 }, { id: "management", label: "Short-term management (% of revenue)", value: 20 },
+        { id: "tax", label: "Annual property tax", value: 3800 }, { id: "insurance", label: "Annual short-term rental insurance", value: 2000 },
+        { id: "utilities", label: "Annual utilities and internet", value: 3000 }, { id: "maintenance", label: "Annual maintenance, cleaning, and furnishing reserve", value: 4000 }
+      ],
+      calculate(v) {
+        const principal = num(v.price) - num(v.down);
+        const r = num(v.apr) / 1200;
+        const n = num(v.years) * 12;
+        const payment = r ? principal * r * (1 + r) ** n / ((1 + r) ** n - 1) : principal / n;
+        const grossRevenue = num(v.nightly) * 365 * num(v.occupancy) / 100;
+        const platformFee = grossRevenue * num(v.platform) / 100;
+        const mgmt = grossRevenue * num(v.management) / 100;
+        const operating = num(v.tax) + num(v.insurance) + num(v.utilities) + num(v.maintenance) + platformFee + mgmt;
+        const annualCost = payment * 12 + operating;
+        const netIncome = grossRevenue - annualCost;
+        return { metrics: [["Monthly loan payment", money.format(payment)], ["Gross annual revenue", money.format(grossRevenue)], ["Annual operating + financing cost", money.format(annualCost)], ["Annual net income", money.format(netIncome)], ["Monthly net income", money.format(netIncome / 12)]], note: netIncome >= 0 ? "Net income shown is before income taxes, depreciation, and appreciation, none of which are modeled here; occupancy and nightly rate are the biggest swing factors." : "This scenario operates at a loss before any tax effects or appreciation; raising occupancy or the nightly rate, or lowering management fees, are the main levers to model." };
       }
     },
     "moving-cost-estimator": {
