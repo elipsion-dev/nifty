@@ -1,0 +1,42 @@
+<!--meta {"hero":{"type":"emoji","value":"🗂️"},"heroPosition":"top","accent":"#5fc97a"}-->
+<p>Knowing your total spending is easy. Knowing where it went is the part that actually changes behavior, and it is exactly the part most people skip because tagging hundreds of transactions by hand is tedious enough to abandon by line forty.</p>
+
+<p>This tool reads your transaction descriptions and assigns each one a spending category using editable keyword rules, adding a single category column so you can finally filter, sum, and see the shape of your spending in a spreadsheet.</p>
+
+<!--more-->
+
+<h2>How keyword matching assigns a category</h2>
+<p>The categorizer scans each transaction's description for words associated with a category and assigns the first one that matches. Out of the box it recognizes ten common buckets: Housing, Groceries, Dining, Transportation, Utilities, Subscriptions, Shopping, Healthcare, Income, and Transfer. A description mentioning a well-known supermarket lands in Groceries; one mentioning a fuel brand or ride-share lands in Transportation. Anything that matches no rule is labeled Other rather than forced into a wrong bucket, which keeps the totals honest.</p>
+
+{{svg:checklist}}
+
+<h2>Why descriptions decide the result, and where that breaks</h2>
+<p>Because the engine works on text, the quality of your descriptions drives the quality of the categories. A grocery store that bills under an unfamiliar legal name, or a description so cluttered with codes that the keyword is buried, can slip into Other. This is the same reason a warehouse club that sells both food and tires is genuinely ambiguous: one keyword cannot know what was in the cart. Running your file through the Merchant Name Normalizer or Bank Statement Cleaner first measurably lifts the match rate, because cleaner text gives the keywords something clear to match against.</p>
+
+<h2>Editing the rules and the output</h2>
+<p>The keyword rules are meant to be adjusted, because everyone's spending vocabulary is a little different. After categorizing, you also retain full control of the output file: open the category column in a spreadsheet and reassign anything the rules got wrong. Treat the automatic pass as a head start that handles the obvious eighty percent, leaving you a short, fast cleanup rather than a blank slate.</p>
+<ul>
+<li>Local or regional merchants whose names match no built-in keyword.</li>
+<li>Mixed-purpose stores where a single transaction spans two categories.</li>
+<li>Transfers between your own accounts that you do not want counted as spending.</li>
+<li>Income deposits, which belong in their own bucket rather than in Other.</li>
+<li>One large annual bill that can distort a category's monthly picture if you forget it is annual.</li>
+</ul>
+
+{{svg:coins}}
+
+<h2>How to use this tool</h2>
+<p>Select your bank or card statement CSV and the categorizer runs entirely in your browser. It reads the description column, matches each row against the keyword rules, and adds a category column beside your existing date, description, and amount. Nothing is uploaded or saved on a server; the file stays on your device and clears when you close the tab. Download the categorized CSV and you can build a simple per-category total in seconds.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>What keywords does each category use?</h3>
+<p>Categories rely on common merchant names and transaction terms. Groceries matches supermarket names and grocery-related words; Dining matches restaurant and food-delivery terms; Transportation matches fuel brands and ride-share services; Utilities matches power, water, and telecom terms. Reviewing which descriptions landed in each category shows you the patterns in practice.</p>
+
+<h3>Can I change the category rules?</h3>
+<p>Yes, the rules are editable. You can adjust which keywords map to which category to fit your own merchants. For very specific or evolving rules, exporting the categorized CSV and applying a lookup against your own keyword table in a spreadsheet gives you unlimited control.</p>
+
+<h3>Why did so many transactions land in Other?</h3>
+<p>Usually because the descriptions are noisy or the merchants are local names the default keywords do not cover. Cleaning or normalizing the descriptions first, then adding a few keywords for your regular merchants, typically shrinks the Other pile substantially.</p>
+
+<h3>Is this a budgeting tool or financial advice?</h3>
+<p>Neither. It is a categorization helper that organizes your own data into buckets you define. The output is an estimate based on text matching, useful for seeing patterns, not a substitute for professional financial guidance.</p>

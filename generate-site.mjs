@@ -1202,6 +1202,41 @@ const heroSvgs = {
   ,court: `<svg viewBox="0 0 120 90" role="img" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><path d="M14 30 60 10l46 20zM20 76h80M26 34v34M48 34v34M72 34v34M94 34v34M16 70h88"/></svg>`
 };
 
+// Curated decorative spot illustrations for breaking up long-form article copy.
+// Inserted into article HTML via {{svg:id}} tokens; never hand-authored by content
+// writers. All are stroke-based on currentColor so each tool's accent flows through.
+const articleSvgs = {
+  coins: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="42" cy="30" rx="22" ry="9"/><path d="M20 30v12c0 5 10 9 22 9s22-4 22-9V30"/><path d="M20 42v12c0 5 10 9 22 9s22-4 22-9V42"/><circle cx="86" cy="46" r="20"/><path d="M86 37v18M80 43h9a3 3 0 0 1 0 6h-6a3 3 0 0 0 0 6h9"/></svg>`,
+  chart: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 14v52h84"/><rect x="30" y="44" width="12" height="22"/><rect x="52" y="32" width="12" height="34"/><rect x="74" y="22" width="12" height="44"/><path d="M30 40 56 26l18 6 22-15"/><path d="M90 17h8v8"/></svg>`,
+  calendar: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><rect x="28" y="18" width="64" height="50" rx="5"/><path d="M28 32h64M44 12v12M76 12v12"/><circle cx="46" cy="46" r="3" fill="currentColor" stroke="none"/><circle cx="60" cy="46" r="3" fill="currentColor" stroke="none"/><circle cx="74" cy="46" r="3" fill="currentColor" stroke="none"/><circle cx="46" cy="58" r="3" fill="currentColor" stroke="none"/><circle cx="60" cy="58" r="3" fill="currentColor" stroke="none"/></svg>`,
+  clock: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="60" cy="40" r="26"/><path d="M60 25v15l11 7"/></svg>`,
+  house: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M24 40 60 14l36 26"/><path d="M32 36v30h56V36"/><rect x="52" y="48" width="16" height="18"/></svg>`,
+  gear: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="60" cy="40" r="13"/><path d="M60 18v8M60 54v8M82 40h-8M46 40h-8M75.6 24.4l-5.7 5.7M50.1 49.9l-5.7 5.7M75.6 55.6l-5.7-5.7M50.1 30.1l-5.7-5.7"/></svg>`,
+  shield: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M60 12l26 9v18c0 18-12 26-26 31-14-5-26-13-26-31V21z"/><path d="M50 39l8 8 14-15"/></svg>`,
+  paw: `<svg viewBox="0 0 120 80" role="img" fill="currentColor"><ellipse cx="60" cy="52" rx="18" ry="14"/><circle cx="38" cy="34" r="7"/><circle cx="52" cy="24" r="7"/><circle cx="68" cy="24" r="7"/><circle cx="82" cy="34" r="7"/></svg>`,
+  car: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M24 50l6-18a8 8 0 0 1 7-5h46a8 8 0 0 1 7 5l6 18"/><rect x="18" y="50" width="84" height="12"/><circle cx="38" cy="62" r="7"/><circle cx="82" cy="62" r="7"/></svg>`,
+  boat: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M60 14v34M60 20l20 26H60M56 24 42 46h14"/><path d="M28 52h64l-10 16H38z"/></svg>`,
+  piggy: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M50 26h14M44 64v-6M76 64v-6"/><path d="M82 44c0-11-11-18-24-18s-24 7-24 18c0 6 3 10 8 14h32c5-4 8-8 8-14z"/><circle cx="50" cy="42" r="2.5" fill="currentColor" stroke="none"/><path d="M82 40l8-3"/></svg>`,
+  scale: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M60 16v48M44 64h32M34 26h52"/><path d="M34 26 24 46h20zM86 26 76 46h20"/><path d="M24 46a10 6 0 0 0 20 0M76 46a10 6 0 0 0 20 0"/></svg>`,
+  route: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M28 60h28a12 12 0 0 0 0-24H42" stroke-dasharray="2 8"/><path d="M84 22c-8 0-14 6-14 14 0 10 14 22 14 22s14-12 14-22c0-8-6-14-14-14z"/><circle cx="84" cy="36" r="5"/></svg>`,
+  spark: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M56 16l6 16 16 6-16 6-6 16-6-16-16-6 16-6z"/><path d="M90 20l2.5 6 6 2.5-6 2.5L90 38l-2.5-6-6-2.5 6-2.5z"/></svg>`,
+  document: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M44 12h26l16 16v40H44z"/><path d="M70 12v16h16"/><path d="M52 42h26M52 52h26M52 62h16"/></svg>`,
+  checklist: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><rect x="34" y="14" width="52" height="56" rx="5"/><path d="M44 30l4 4 7-8M44 48l4 4 7-8M62 30h14M62 50h14"/></svg>`,
+  receipt: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M44 12h32v56l-6-5-6 5-6-5-7 5-7-5V12z"/><path d="M52 28h16M52 38h16M52 48h10"/></svg>`,
+  leaf: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M40 62c0-26 22-46 46-46 0 26-22 46-46 46z"/><path d="M40 62c9-15 22-26 38-32"/></svg>`,
+  bolt: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M66 12 42 46h16l-6 22 26-36H62z"/></svg>`,
+  drop: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M60 14c11 15 19 23 19 34a19 19 0 0 1-38 0c0-11 8-19 19-34z"/><path d="M52 50a8 8 0 0 0 8 8"/></svg>`,
+  briefcase: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><rect x="30" y="28" width="60" height="38" rx="4"/><path d="M48 28v-6a4 4 0 0 1 4-4h16a4 4 0 0 1 4 4v6M30 44h60"/></svg>`,
+  tag: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M58 18H36v22l30 30 22-22z"/><circle cx="46" cy="30" r="4"/></svg>`,
+  users: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="48" cy="34" r="11"/><path d="M30 64c0-12 8-18 18-18s18 6 18 18"/><circle cx="80" cy="38" r="8"/><path d="M74 64c0-10 4-16 12-16s12 6 12 14"/></svg>`,
+  heart: `<svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M60 64S34 48 34 32a14 14 0 0 1 26-7 14 14 0 0 1 26 7c0 16-26 32-26 32z"/></svg>`
+};
+
+// Replace {{svg:id}} tokens in article HTML with the matching curated illustration,
+// wrapped in a decorative figure. Unknown ids are dropped silently.
+const expandArticleSvgs = (html) => html.replace(/\{\{svg:([a-z0-9-]+)\}\}/g, (_match, id) =>
+  articleSvgs[id] ? `<figure class="article-figure" aria-hidden="true">${articleSvgs[id]}</figure>` : "");
+
 const heroHtml = (meta) => {
   const hero = meta && meta.hero;
   if (!hero) return "";
@@ -1444,11 +1479,11 @@ const page = ({ title, description, body, pathname, prefix = "", scripts = "", p
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="${escapeHtml(description)}">
   <meta name="robots" content="${indexable ? "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" : "noindex,follow"}">
-  <meta name="theme-color" content="#0085ff">
+  <meta name="theme-color" content="#0f1720">
   <meta name="application-name" content="${SITE_NAME}">
   <meta name="apple-mobile-web-app-title" content="${SITE_NAME}">
   <meta name="msapplication-config" content="${prefix}browserconfig.xml">
-  <meta name="msapplication-TileColor" content="#0085ff">
+  <meta name="msapplication-TileColor" content="#0f1720">
   <meta property="og:site_name" content="${SITE_NAME}">
   <meta property="og:type" content="website">
   <meta property="og:title" content="${escapeHtml(title)} | ${SITE_NAME}">
@@ -1501,22 +1536,117 @@ const homeBody = `
 <main id="main">
   <section class="hero">
     <div class="hero-copy">
-      <p class="eyebrow">Free browser-based utilities</p>
-      <h1>Get the small job done.</h1>
-      <p class="hero-lede">Clean a bank statement, compare a purchase, generate a receipt, or fix a spreadsheet. No account. No upload queue.</p>
+      <p class="eyebrow">Browser tools for work that keeps moving</p>
+      <h1>Make the awkward file or calculation feel small.</h1>
+      <p class="hero-lede">Use the tools when a spreadsheet needs cleaning, a deadline needs checking, or a form needs printing. Everything runs in the browser and stays on your device.</p>
       <label class="search-box">
         <span class="sr-only">Search all tools</span>
-        <input id="tool-search" type="search" placeholder="Search ${allTools.length} tools…" autocomplete="off">
+        <input id="tool-search" type="search" placeholder="Search ${allTools.length} tools, categories, or tasks…" autocomplete="off">
         <kbd>/</kbd>
       </label>
     </div>
-    <aside class="privacy-note">
-      <span class="status-light"></span>
-      <strong>We cannot capture your tool data</strong>
-      <p>This is a static site with no backend, database, accounts, or submission endpoint. Files and entries are processed on your device and never sent to us.</p>
+    <aside class="hero-panel" aria-label="Local processing summary">
+      <div class="hero-panel-header">
+        <div>
+          <strong>Workbench view</strong>
+          <span>Local-first, no upload queue</span>
+        </div>
+        <div class="status-light" aria-hidden="true"></div>
+      </div>
+      <div class="hero-panel-graphic" aria-hidden="true">
+        <div class="hero-workbench">
+          <div class="hero-workbench-row">
+            <div class="hero-stat"><span>Tools</span><strong>${allTools.length} utilities</strong></div>
+            <div class="hero-stat"><span>Scope</span><strong>${categories.length} categories</strong></div>
+          </div>
+          <div class="hero-meter">
+            <svg viewBox="0 0 64 64" role="img" aria-hidden="true" focusable="false">
+              <rect x="10" y="10" width="44" height="44" rx="12" fill="none" stroke="currentColor" stroke-width="2"></rect>
+              <path d="M20 34h24M20 26h10M20 42h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+              <path d="M38 21l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <div class="meter-copy">
+              <strong>0 uploads required</strong>
+              <p>Files, entries, and calculations stay in the browser while you work.</p>
+            </div>
+          </div>
+          <div class="hero-workbench-row">
+            <div class="hero-chip"><span>Best for</span><strong>CSV cleanup, cost checks, printable forms</strong></div>
+            <div class="hero-chip"><span>Search</span><strong>Tool names, tasks, and categories</strong></div>
+          </div>
+        </div>
+      </div>
     </aside>
   </section>
   ${adWide}
+  <section class="proof-strip" aria-label="Site trust points">
+    <div class="proof-item">
+      <strong>Browser-only processing</strong>
+      <p>Calculations and file handling happen on your device, not on a server.</p>
+    </div>
+    <div class="proof-item">
+      <strong>No account to create</strong>
+      <p>Open a tool, use it, and leave without signing up or handing over an email.</p>
+    </div>
+    <div class="proof-item">
+      <strong>Made for practical output</strong>
+      <p>Most tools produce cleaned data, printable forms, or a clear next step.</p>
+    </div>
+    <div class="proof-item">
+      <strong>Built for messy inputs</strong>
+      <p>Statement exports, receipts, CSVs, deadlines, and rough estimates are the point.</p>
+    </div>
+  </section>
+
+  <section class="feature-strip" aria-labelledby="why-title">
+    <div class="feature-panel">
+      <p class="eyebrow">Why it feels different</p>
+      <h2 id="why-title">A quiet toolbox, not a crowded product tour.</h2>
+      <p>Nifty Utilities is aimed at the work people do in between bigger apps: cleaning a file before import, checking the cost of a decision, or generating something printable without setting up software.</p>
+      <ul class="feature-list">
+        <li>
+          <div>
+            <strong>Fast to understand</strong>
+            <span>Each page names the job plainly and shows the inputs in the order people already think about them.</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>Designed for imperfect data</strong>
+            <span>Most tools accept rough estimates, inconsistent CSVs, or browser-side files that need a little rescue.</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>Portable output</strong>
+            <span>Results are meant to be copied, printed, downloaded, or checked against a next step.</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="feature-panel">
+      <p class="eyebrow">Best starting points</p>
+      <h2>Start with the task you actually have.</h2>
+      <div class="workflow-grid">
+        <article class="workflow-card">
+          <h3>Clean a CSV</h3>
+          <p>Normalize statements, remove duplicates, convert delimiters, or compare two files side by side.</p>
+          <a href="spreadsheet/index.html">Open spreadsheet tools</a>
+        </article>
+        <article class="workflow-card">
+          <h3>Check the cost</h3>
+          <p>Estimate debt payoff, home expenses, business pricing, or a purchase you have not committed to yet.</p>
+          <a href="homeowner/index.html">Open cost calculators</a>
+        </article>
+        <article class="workflow-card">
+          <h3>Make a document</h3>
+          <p>Generate receipts, logs, inventory sheets, and printable records without a separate template app.</p>
+          <a href="documents/index.html">Open document tools</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <section class="directory" aria-labelledby="directory-title">
     <div class="section-heading">
       <div><p class="eyebrow">Tool directory</p><h2 id="directory-title">Browse by category</h2></div>
@@ -1538,8 +1668,8 @@ const homeBody = `
 </main>`;
 
 fs.writeFileSync("index.html", page({
-  title: `${allTools.length} Free Online Tools`,
-  description: "Free online tools for CSV files, personal finance, documents, home costs, business, images, and more. No sign-up; data stays in your browser.",
+  title: `${allTools.length} Browser Tools for Everyday Work`,
+  description: "Practical browser tools for CSV files, personal finance, documents, home costs, business math, and one-off cleanup jobs. No sign-up; data stays on your device.",
   pathname: "/",
   pageType: "CollectionPage",
   body: homeBody,
@@ -1548,6 +1678,13 @@ fs.writeFileSync("index.html", page({
 
 for (const category of categories) {
   fs.mkdirSync(category.slug, { recursive: true });
+  const commonTasks = category.tools.slice(0, 3).map(([slug, name, description]) => `
+            <li>
+              <div>
+                <strong>${escapeHtml(name)}</strong>
+                <span>${escapeHtml(description)}</span>
+              </div>
+            </li>`).join("");
   fs.writeFileSync(path.join(category.slug, "index.html"), page({
     title: `Free ${category.name} Tools`,
     description: `Browse ${category.tools.length} free ${category.name.toLowerCase()} tools. ${category.description} No sign-up required.`,
@@ -1561,6 +1698,16 @@ for (const category of categories) {
           <p class="eyebrow">${category.tools.length} free tools</p>
           <h1>${escapeHtml(category.name)}</h1>
           <p>${escapeHtml(category.description)}</p>
+        </section>
+        <section class="category-intro">
+          <div class="category-note">
+            <strong>What this category is for</strong>
+            <p>${escapeHtml(category.description)} These tools are meant for local, browser-first work: cleaning, comparing, estimating, and generating something you can use right away.</p>
+          </div>
+          <div class="category-note">
+            <strong>Common starting points</strong>
+            <ul class="feature-list">${commonTasks}</ul>
+          </div>
         </section>
         ${adWide}
         <section class="directory compact-directory">
@@ -1583,8 +1730,8 @@ for (const category of categories) {
                 <h2>How it works</h2>
                 <p>Enter or select your information, review the result, then download or print it when available. Inputs remain on this device.</p>`;
     const splitIndex = article.indexOf("<!--more-->");
-    const introHtml = splitIndex >= 0 ? `<section class="tool-intro">${article.slice(0, splitIndex)}</section>` : "";
-    const bodyHtml = splitIndex >= 0 ? article.slice(splitIndex + "<!--more-->".length) : article;
+    const introHtml = splitIndex >= 0 ? `<section class="tool-intro">${expandArticleSvgs(article.slice(0, splitIndex))}</section>` : "";
+    const bodyHtml = expandArticleSvgs(splitIndex >= 0 ? article.slice(splitIndex + "<!--more-->".length) : article);
     fs.writeFileSync(path.join(category.slug, `${slug}.html`), page({
       title: `Free ${name}`,
       description: `Free online ${name.toLowerCase()}. ${description} No sign-up; processing stays in your browser.`,
@@ -1666,9 +1813,42 @@ fs.writeFileSync("privacy.html", page({
 
 fs.writeFileSync("about.html", page({
   title: "About",
-  description: `About ${SITE_NAME}, a free collection of private browser-based utilities.`,
+  description: `About ${SITE_NAME}, a free collection of private, browser-based utilities for finance, home, document, and business tasks.`,
   pathname: "/about.html",
-  body: `<main id="main" class="prose-page"><p class="eyebrow">About ${SITE_NAME}</p><h1>Small tools, clear answers.</h1><p>${SITE_NAME} is a collection of practical utilities for files, finances, documents, home decisions, and business math. The site is static, fast, and built to work without an account.</p><p>Results are estimates. Check important calculations and documents with a qualified professional.</p><h2>Support</h2><p>Found a problem with a tool or have a suggestion for improvement? Please email ${mailtoLink}.</p></main>`
+  pageType: "AboutPage",
+  extraSchema: [
+    {
+      "@type": "Person",
+      "@id": `${SITE_URL}/#person`,
+      name: "Jacob Briggs",
+      jobTitle: "Founder & Developer",
+      url: `${SITE_URL}/about.html`,
+      worksFor: { "@id": `${SITE_URL}/#organization` }
+    }
+  ],
+  body: `<main id="main" class="prose-page">
+    <p class="eyebrow">About ${SITE_NAME}</p>
+    <h1>Useful tools that keep your data on your device.</h1>
+    <p>${SITE_NAME} is a growing collection of free, browser-based utilities for the small jobs that come up in everyday financial, home, business, and document work: cleaning a messy bank-statement CSV, estimating what a boat or a dog truly costs per year, splitting expenses with roommates, generating a printable bill of sale, or checking a filing deadline. Every tool runs entirely inside your web browser.</p>
+
+    <h2>Why this site exists</h2>
+    <p>Most "free online tools" ask you to upload your spreadsheet, your statement, or your photo to a server you know nothing about. For the kinds of files these tools handle — bank exports, receipts, personal inventories — that always felt like the wrong trade. ${SITE_NAME} was built around the opposite default: the tool comes to your data, not the other way around. There is no account to create, nothing to install, and no upload step, because there is no server on our side that could receive your files in the first place.</p>
+
+    <h2>How it works</h2>
+    <p>${SITE_NAME} is a static website. Calculations and file processing happen in JavaScript on your own device. When you drop a CSV into a cleaner or type figures into a calculator, that information is read, processed, and displayed by your browser and is never transmitted to us. A handful of advanced tools load an open-source library from a public CDN so it can run in your browser; even then, your inputs stay local. The full detail is on our <a href="privacy.html">privacy page</a>.</p>
+
+    <h2>How the estimates are built</h2>
+    <p>The cost calculators — the "real cost of owning a…" series and the rest — are designed to total the recurring expenses people most often forget, not to hand you a single national average. We deliberately avoid presenting specific dollar figures as fact, because real costs vary enormously by region, size, age, and usage. Instead, each tool breaks a decision into its true cost categories and asks you to supply the figures for your own situation, while the accompanying article explains what drives each line and where to find a local number you can trust. The goal is a realistic estimate you built yourself, not a guess we made for you.</p>
+
+    <h2>Who builds it</h2>
+    <p>${SITE_NAME} is built and maintained by Jacob Briggs, an independent developer. It started as a handful of personal utilities and grew into a public toolbox. Tools are added and revised regularly, and reader email genuinely shapes what gets built and fixed next.</p>
+
+    <h2>Accuracy and limits</h2>
+    <p>These tools provide estimates and general-purpose documents, not financial, tax, legal, or professional advice. They are a strong starting point for a decision or a draft, but important results and documents should be reviewed with a qualified professional before you rely on them.</p>
+
+    <h2>Contact</h2>
+    <p>Found a problem with a tool, spotted a number that looks off, or have an idea for one we should build? Email ${mailtoLink}. Every message reaches a real person.</p>
+  </main>`
 }));
 
 fs.writeFileSync("404.html", page({

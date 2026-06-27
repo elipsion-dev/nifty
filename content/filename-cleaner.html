@@ -1,0 +1,56 @@
+<!--meta {"hero":{"type":"emoji","value":"🧼"},"heroPosition":"top","accent":"#7cc4d6"}-->
+<p>Filenames rot quietly. A document picks up "final", then "final_v2", then "final_REAL (1)" before anyone notices. Multiply that by a download folder of a few hundred files and sorting, searching, and syncing all get harder than they should be.</p>
+
+<p>This tool takes a list of names you paste in, strips the common clutter, and hands back clean, consistently-cased names you can apply in a rename pass.</p>
+
+<!--more-->
+
+<h2>Why messy filenames cause real problems</h2>
+
+<p>Computers sort filenames as text, character by character, not the way a human reads them. A capital letter sorts before a lowercase one, a space sorts before a letter, and a parenthesis sorts before both. So a folder mixing <strong>Report Final.pdf</strong>, <strong>report (2).pdf</strong>, and <strong>REPORT_draft.pdf</strong> scatters three versions of the same thing into three different places in the list. Inconsistent names also break URL links when files go on the web, confuse case-sensitive systems like Linux servers, and make duplicates hard to spot at a glance.</p>
+
+<p>The fix is to pick one convention and apply it ruthlessly. Lowercase with a single separator is the safest choice because it survives being typed into a browser, a terminal, and a cloud bucket without surprises.</p>
+
+{{svg:document}}
+
+<h2>Paste one filename per line</h2>
+
+<p>Drop your names into the text box, one per line. You do not need the actual files present — the tool only ever sees the text you paste, so you can clean a list copied from a directory listing, a spreadsheet column, or a screenshot you typed out. The file extension on each line is detected and preserved, then lowercased, so <strong>Photo.JPG</strong> keeps its <strong>.jpg</strong> rather than losing it.</p>
+
+<h2>Choose a name style</h2>
+
+<p>Three output styles cover the common conventions, and each one normalizes spacing and collapses repeated separators along the way:</p>
+
+<ul>
+<li><strong>lowercase-dashes</strong> (kebab-case): the web-friendly default. <em>quarterly budget FINAL.xlsx</em> becomes <em>quarterly-budget.xlsx</em>. Best for anything that might become a URL.</li>
+<li><strong>lowercase_underscores</strong> (snake_case): common in code, data exports, and scientific datasets where dashes can be ambiguous.</li>
+<li><strong>Title Case</strong>: readable names for documents people open by hand, like <em>Quarterly Budget.xlsx</em>.</li>
+</ul>
+
+<p>Alongside the style change, the tool removes a small set of noise words it can safely assume are clutter — <strong>copy</strong>, <strong>final</strong>, and <strong>img</strong> as standalone words — and strips trailing parenthetical numbers like <strong>(1)</strong> or <strong>(2)</strong> that operating systems add to avoid collisions. Words it does not recognize as noise are left alone, because guessing too aggressively is how you lose the one meaningful word in a name.</p>
+
+{{svg:checklist}}
+
+<h2>A practical two-step workflow</h2>
+
+<p>This tool produces clean text; it does not touch files on disk. That separation is deliberate and safe — you can experiment without risk. The usual pattern is to clean the names here, copy the result, and feed it into an actual renamer. If you are renaming a batch like 400 vacation photos so they sort in date order, clean the descriptive part of the names here first, then apply a sequential or date prefix in your rename tool so the cleaned names line up correctly.</p>
+
+<h2>How to use this tool</h2>
+
+<p>Paste your filenames one per line, pick a name style, and click Clean filenames. The cleaned list appears in a result box you can copy or download. Everything runs entirely inside your browser using ordinary text processing — nothing you paste is uploaded, logged, or stored anywhere. You can close the tab and the data is gone.</p>
+
+{{svg:gear}}
+
+<h2>Frequently asked questions</h2>
+
+<h3>Will it remove a word like "final" if it is part of a real word?</h3>
+<p>No. The noise words are matched as whole standalone words, so <em>finalize-design.doc</em> keeps "finalize" intact. Only a separate "final" surrounded by separators is removed.</p>
+
+<h3>Can I paste full file paths with folders?</h3>
+<p>It is built for bare filenames. If you paste something like a full directory path, the slashes and folder names will be treated as part of the text and cleaned along with everything else, which is rarely what you want. Strip the folder portion first and paste only the filename.</p>
+
+<h3>Does it handle special characters and accents?</h3>
+<p>Spacing and separators are normalized, and the chosen casing is applied. Accented characters and other symbols are generally preserved rather than transliterated, so if you need strict ASCII-only names for an older system, give the output a quick scan before applying it.</p>
+
+<h3>What happens to the file extension?</h3>
+<p>It is kept and lowercased. The cleaning rules apply to the name portion before the final dot, so a valid extension like .pdf or .jpg is never altered beyond being made lowercase.</p>

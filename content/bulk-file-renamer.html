@@ -1,0 +1,30 @@
+<!--meta {"hero":{"type":"emoji","value":"🗂️"},"heroPosition":"top","accent":"#5fc97a"}-->
+<p>A folder named like "IMG_4821.jpg, Scan (3) copy.pdf, final_FINAL_v2.docx" is a folder nobody wants to inherit. Inconsistent names make files hard to sort, hard to find, and embarrassing to hand off.</p>
+<p>This tool turns a pile of files into a clean, sequentially numbered set, and crucially, it shows you the full mapping before you commit to anything.</p>
+<!--more-->
+<h2>Choosing a prefix and starting number</h2>
+<p>Pick a prefix that describes the set, then a number to count up from. The result follows the pattern prefix-001, prefix-002, and so on, with the original file extension preserved and lowercased. Zero-padding the numbers is deliberate and matters more than it looks: "001" through "100" sort correctly in every file manager, while "1" through "100" sort into the nonsense order of 1, 10, 100, 2, 20. If you name files in a way that should stay in order, padded numbers are what keep them that way.</p>
+<p>The prefix is automatically converted into a clean, URL-friendly slug, so spaces and special characters become dashes. That keeps the names safe to use as web assets, in scripts, and across operating systems that dislike spaces or punctuation in filenames. Choosing a starting number above 1 is handy when you are adding to a set that already ends at, say, 040 and you want the new files to continue the sequence rather than collide with it.</p>
+{{svg:tag}}
+<h2>Previewing the new names</h2>
+<p>Click Preview renamed files and you get a CSV mapping every original filename to its new name, side by side. This preview is the whole safety feature. You see exactly what each file will be called before any change happens, which means you catch a wrong prefix, an off-by-one starting number, or files in an order you didn't expect while it is still trivial to fix. Renaming in bulk without a preview is how people overwrite or scramble a folder; seeing the mapping first removes that risk.</p>
+<p>Files are numbered in the order they were selected, so the sort order in your file picker becomes the sequence in your output. If order matters, arrange or sort the files in the picker before selecting them. The preview will immediately show you whether the resulting sequence is the one you intended.</p>
+<ul>
+<li>Zero-padded numbers keep large sets sorting in true numeric order across every system.</li>
+<li>Selection order sets the sequence, so sort your files before selecting if order matters.</li>
+<li>The CSV doubles as a permanent before-and-after log of what each file used to be called.</li>
+<li>Keep prefixes short and descriptive; the slug step strips spaces and special characters for you.</li>
+<li>Scan the preview for any unexpected gaps or duplicates before acting on it.</li>
+</ul>
+<h2>How to use this tool</h2>
+<p>Select your files, enter a prefix and a starting number, and click Preview renamed files to see the CSV mapping originals to new names. Everything runs in your browser, and your files are never uploaded to or stored by this site. Use the CSV as your reference to apply the rename through your operating system or a short script, which lets you verify the whole mapping before committing any change.</p>
+{{svg:checklist}}
+<h2>Frequently asked questions</h2>
+<h3>Does the tool rename the files directly, or just preview them?</h3>
+<p>It generates a downloadable CSV that maps each original name to its new name. You then apply that mapping using your operating system's rename features or a small script. Previewing first means you confirm the full result before anything on disk actually changes.</p>
+<h3>What stops two files from getting the same new name?</h3>
+<p>Each file gets its own position in the sequence, so each number, and therefore each new name, is unique. The side-by-side CSV makes any unexpected collision easy to spot before you act on it.</p>
+<h3>Why are the numbers zero-padded like 001 instead of 1?</h3>
+<p>Padding keeps files sorting in correct numeric order. Without it, file managers sort alphabetically, putting 10 right after 1 and ahead of 2. Padding to a fixed width guarantees the visual order matches the intended sequence.</p>
+<h3>What happens to the file extensions?</h3>
+<p>Original extensions are preserved and converted to lowercase, so a "PHOTO.JPG" becomes "prefix-001.jpg". Only the name portion is replaced; the extension stays so the files still open in the right application.</p>

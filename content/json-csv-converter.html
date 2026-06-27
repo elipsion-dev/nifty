@@ -1,0 +1,46 @@
+<!--meta {"hero":{"type":"emoji","value":"🔁"},"heroPosition":"top","accent":"#6aa9ff"}-->
+<p>An API hands you JSON; the spreadsheet, the import form, or your analyst wants CSV. Or the reverse — you've got a tidy CSV and a tool that only ingests JSON. The two formats carry the same records in stubbornly different shapes.</p>
+
+<p>This tool converts both directions: paste a JSON array of objects to get CSV, or paste a CSV to get a JSON array.</p>
+
+<!--more-->
+
+<h2>JSON to CSV</h2>
+<p>Paste a JSON array of objects and convert. The tool reads the keys to build a header row and writes one CSV line per object. For this to work, the top level must be an array — a list of records wrapped in square brackets, like <em>[{"id":1,"name":"A"},{"id":2,"name":"B"}]</em>. A single bare object or a deeply nested structure won't map onto a flat table. The cleanest input is an array where every object shares the same set of keys; that produces a complete, rectangular CSV.</p>
+
+{{svg:document}}
+
+<h2>CSV to JSON</h2>
+<p>Paste a CSV with a header row and convert the other way. The first row becomes the key names, and each subsequent row becomes one JSON object using those keys. Missing values in a row turn into empty strings rather than being dropped, so every object keeps the same shape. The delimiter is auto-detected, so comma, tab, semicolon, and pipe-separated text all work without you configuring anything.</p>
+
+<h2>Where the two formats disagree</h2>
+<p>The friction is always structure. JSON expresses nesting and types; CSV is a flat grid of text. That mismatch creates a few predictable snags:</p>
+
+<ul>
+<li><strong>Nested objects and arrays.</strong> A value that is itself an object or list has no natural single-cell representation. Flatten your JSON to one level before converting to CSV.</li>
+<li><strong>Uneven keys.</strong> If some objects have keys others lack, the CSV's columns are derived from what the tool finds — non-uniform records can produce gaps or unexpected output. Normalize the keys first.</li>
+<li><strong>Everything becomes text in CSV.</strong> Numbers, booleans, and nulls all flatten to strings. Converting back won't automatically restore them to their original types.</li>
+<li><strong>Commas and quotes in values.</strong> Going to CSV, values containing the delimiter are quoted to stay in one field; going back, that quoting is unwound. Embedded line breaks survive only inside properly quoted fields.</li>
+</ul>
+
+{{svg:gear}}
+
+<h2>How to use this tool</h2>
+<p>Paste your text, click the direction you want, and copy or download the result. Everything runs in your browser — nothing you paste is sent to a server or stored. An API response with personal data or an internal CSV can be converted entirely on your own device.</p>
+
+<h2>Frequently asked questions</h2>
+
+<h3>What JSON structure does it expect?</h3>
+<p>A flat array of objects, where each object is one row and all objects share the same keys. Nested objects, arrays inside values, and inconsistent key sets produce incomplete or unexpected results. Flatten and normalize your JSON before converting if it isn't already a simple list of records.</p>
+
+<h3>Does CSV-to-JSON support different delimiters?</h3>
+<p>Yes. It auto-detects the delimiter in the pasted text, so comma, tab, semicolon, and pipe-separated input all convert without manual configuration.</p>
+
+<h3>Will numbers stay numbers when I convert?</h3>
+<p>Not guaranteed. CSV has no type system, so converting JSON to CSV turns numbers and booleans into plain text. Converting back yields strings unless your downstream tool re-parses them. If strict typing matters, cast the values after conversion.</p>
+
+<h3>My JSON didn't convert — what's wrong?</h3>
+<p>The most common causes are input that isn't a top-level array, a trailing comma or other syntax error, or nested structures the flat converter can't represent. Validate that your JSON is a well-formed array of flat objects, then try again.</p>
+
+<h3>How do I handle a JSON response that's wrapped in an outer object?</h3>
+<p>Many APIs return something like <em>{"results": [ ... ]}</em> rather than a bare array. The converter needs the array itself, so copy out just the value of the inner array — everything from the opening square bracket to its matching close — and paste that. Once the top level is the list of records, the conversion runs normally.</p>

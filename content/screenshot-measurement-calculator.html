@@ -1,0 +1,33 @@
+<!--meta {"hero":{"type":"emoji","value":"📐"},"heroPosition":"top","accent":"#c2693a"}-->
+<p>You don't always have a tape measure when you need one, but you almost always have a photo. If one object in that photo is a known size, every other thing in the same flat plane can be estimated from it.</p>
+<p>That is the entire trick behind this tool: give it one length it can trust, and it scales the rest of the picture to match.</p>
+<!--more-->
+<h2>Setting a reference line</h2>
+<p>Everything downstream depends on this one line, so it is worth getting right. Draw it over something whose real length you can state with confidence, then type that length in and pick the unit. The tool divides the line's pixel length by the real length to build a scale factor, and that factor is applied to every other measurement you make. A short, sloppy reference line carries its error into everything else, so favor a long, deliberate one.</p>
+<p>Pick a reference that is genuinely standard or independently verifiable rather than something you are guessing at. An interior door slab is commonly 80 inches tall. A sheet of letter paper taped to a wall is exactly 11 inches on the long edge. A standard brick course, a tile you can count, or a yardstick laid in the shot all work well. The closer your reference sits to the thing you actually want to measure, the less depth and angle distortion creep in between them.</p>
+{{svg:route}}
+<h2>Measuring lines and area</h2>
+<p>Line mode reports the estimated real length of any line you draw, which is what you want for wall runs, a window's width, the gap a sofa has to clear, or the height of a backsplash. Box mode lets you drag a rectangle and returns width, height, and area in one shot, which is the fast path for rough floor or wall square footage. You can stack several measurements on the same image, and the reference line stays put so they all share one scale.</p>
+<p>A practical habit: measure the same wall twice, once as a single long line and once as two shorter segments you add up. If the two results disagree badly, that is a signal your photo has perspective or lens issues distorting the scene, and the numbers should be trusted less.</p>
+<h2>Why this is an estimate, not a survey</h2>
+<p>This is a flat, two-dimensional scale. It assumes the things you measure lie in the same plane as your reference and that the camera looked at that plane head-on. Real cameras rarely do. Shooting from an angle compresses far edges and stretches near ones; wide-angle phone lenses bend straight lines near the frame edge; and an object several feet closer to the lens than your reference will read larger than it is. None of that is corrected here.</p>
+<p>The honest framing is that this estimates well enough for planning and badly enough that you should never order materials or cut anything from its numbers alone. Use it to decide whether a bookshelf might fit, to rough out paint coverage, or to sanity-check a dimension someone quoted you. Then confirm anything that matters with a real measurement on site.</p>
+<ul>
+<li>Shoot as square-on to the surface as you can, standing back and zooming rather than tilting up or down.</li>
+<li>Keep the reference object and your target in the same plane and at the same distance from the camera.</li>
+<li>Use the longest reliable reference available; a doorway beats a light switch.</li>
+<li>Avoid the extreme edges of wide-angle phone shots, where distortion is worst.</li>
+<li>Treat curved, sloped, or multi-depth scenes as unreliable for anything precise.</li>
+</ul>
+{{svg:house}}
+<h2>How to use this tool</h2>
+<p>Upload a straight-on photo, draw your reference line over a known length and type that length in, then draw additional lines or boxes to measure whatever else you need. The image is loaded into a canvas in your browser and every calculation happens on your device. The photo is never uploaded to us, and nothing you measure is sent to or stored on a server.</p>
+<h2>Frequently asked questions</h2>
+<h3>How accurate is measuring distance from a photo?</h3>
+<p>For a flat surface photographed head-on with a long, precise reference line, estimates can land within a few percent. For angled shots, wide-angle lenses, or objects at varying depths, error grows quickly and unpredictably. Always verify important measurements in person before relying on them.</p>
+<h3>What makes the best reference object?</h3>
+<p>Something long, flat, in the same plane as your target, and whose length you know exactly rather than approximately. Standard doors, letter or A4 paper, floor tiles you can count, and a yardstick placed in the scene are all strong choices. The longer the reference relative to the frame, the smaller your scaling error.</p>
+<h3>Can it estimate floor area for flooring or paint?</h3>
+<p>Box mode gives you width times height for a rectangle you draw, which is fine for rough planning. Because it is a flat 2D scale with no perspective correction, treat the square footage as a ballpark and confirm with an on-site measurement before buying materials.</p>
+<h3>Does the photo get uploaded anywhere?</h3>
+<p>No. The image stays in your browser inside a canvas element, and all measuring is computed locally on your device. It is never sent to or stored on our servers.</p>

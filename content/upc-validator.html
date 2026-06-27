@@ -1,0 +1,53 @@
+<!--meta {"hero":{"type":"emoji","value":"🛒"},"heroPosition":"top","accent":"#5fc97a"}-->
+<p>The twelfth digit on a UPC-A barcode is not part of the product number — it is a tripwire. It exists so that a single fat-fingered digit or a swapped pair gets caught before a scanner ever accepts the code as real. When a barcode "won't scan" or a product import throws errors, a wrong check digit is one of the first things to rule out.</p>
+
+<p>This tool checks whether a 12-digit UPC-A has the correct check digit, or computes the right one from your first 11 digits before you print.</p>
+
+<!--more-->
+
+<h2>How the UPC-A check digit actually works</h2>
+
+<p>A UPC-A is exactly 12 digits. The first 11 are the real payload — a number system digit, the manufacturer prefix, and the product number — and the 12th is a check digit derived from those 11 by a fixed formula. The math is worth knowing because it explains what the tool is doing:</p>
+
+<ul>
+<li>Add up the digits in the <strong>odd</strong> positions (the 1st, 3rd, 5th, 7th, 9th, and 11th) and multiply that sum by 3.</li>
+<li>Add up the digits in the <strong>even</strong> positions (the 2nd, 4th, 6th, 8th, and 10th).</li>
+<li>Add those two results together.</li>
+<li>The check digit is whatever value makes that grand total a multiple of 10 — in other words, take the total modulo 10 and subtract from 10 (and if that gives 10, the check digit is 0).</li>
+</ul>
+
+<p>Because the odd positions are weighted by 3 and the even ones by 1, the formula catches every single-digit error and most transpositions of adjacent digits — exactly the mistakes a human makes typing a long number.</p>
+
+{{svg:receipt}}
+
+<h2>Enter a UPC-A code</h2>
+
+<p>Type or paste your code into the input. Enter <strong>12 digits</strong> to validate an existing UPC — the tool confirms whether the check digit is correct. Enter <strong>11 digits</strong> instead and the tool calculates what the check digit should be, then shows you the complete, valid 12-digit code. That second mode is the one to use when you are assembling a barcode from a manufacturer prefix and product number and need the final digit filled in correctly.</p>
+
+<p>You do not need to clean the input first. Non-digit characters like spaces and dashes are stripped automatically, so a code copied from a label or spreadsheet with formatting still works.</p>
+
+<h2>Read the result</h2>
+
+<p>The tool reports whether the code is valid, displays the correct check digit, and shows the full 12-digit UPC. If a 12-digit code comes back invalid, that is your signal to recheck the source — a misprint, an OCR error, or a transposed pair somewhere in the first 11 digits. A valid check digit confirms the number is internally consistent; it does not confirm the product exists, only that the digits add up correctly.</p>
+
+{{svg:checklist}}
+
+<h2>How to use this tool</h2>
+
+<p>Enter 11 or 12 digits, click Validate UPC, and read the result. All of the arithmetic runs in your browser — nothing you enter is uploaded or stored by this site. It is a self-contained calculator, so it works offline once the page has loaded and never phones home with your data.</p>
+
+{{svg:document}}
+
+<h2>Frequently asked questions</h2>
+
+<h3>Does it tell me what product the UPC belongs to?</h3>
+<p>No. This tool does pure check-digit math. It does not connect to any product database, so it cannot return a brand, product name, price, or any other detail — only whether the digits are valid and what the check digit should be.</p>
+
+<h3>Does it work for EAN-13 barcodes?</h3>
+<p>EAN-13 uses the same weighted check-digit algorithm, and a UPC-A is effectively an EAN-13 with a leading zero. Validating the 12-digit UPC-A works correctly here. This tool is built for 11- or 12-digit input, so a full 13-digit EAN would need a tool sized for that length.</p>
+
+<h3>My barcode won't scan — does a valid check digit mean the code is fine?</h3>
+<p>It means the number itself is consistent, which rules out a typo. If the digits are valid but scanning still fails, the problem is usually physical: poor print contrast, a code that is too small, missing quiet-zone margins, or a damaged label rather than the number.</p>
+
+<h3>What is the leading digit of a UPC?</h3>
+<p>The first digit is the number system character. It signals the type of product — for example, certain values are reserved for variable-weight grocery items or coupons. The tool treats it as part of the 11-digit payload for the check-digit calculation regardless of its meaning.</p>

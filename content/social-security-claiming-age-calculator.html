@@ -1,28 +1,48 @@
 <!--meta {"hero":{"type":"svg","id":"benefitCard"},"heroPosition":"top","accent":"#315f8c","layout":"feature"}-->
-<p>Social Security gives you a window, not one universal retirement date. You can usually claim retirement benefits as early as 62, receive an unreduced benefit at your full retirement age, or earn delayed credits by waiting—up to age 70. This tool turns those milestones into dates and applies the standard monthly adjustment to the benefit estimate you enter.</p>
+<p>Social Security does not hand you a single retirement date. It hands you a window. You can start a retirement benefit as early as 62, take an unreduced benefit at your full retirement age, or keep earning delayed credits until 70. The same lifetime earnings record produces a very different monthly check depending on which month inside that window you choose.</p>
 
-<p>Use the monthly amount from your Social Security statement at full retirement age. The output is a comparison estimate, not a replacement for your personalized <em>my Social Security</em> record.</p>
+<p>This calculator takes the benefit estimate you already have at full retirement age and re-prices it for an earlier or later claiming month, so you can see the size of the tradeoff in dollars instead of in vague advice.</p>
 
 <!--more-->
 
-<h2>Read the result as a tradeoff, not a recommendation</h2>
-<p>Starting earlier usually means a smaller payment for more months. Starting later usually means a larger payment for fewer initial months. Health, work, savings, taxes, spousal benefits, and longevity expectations all affect that decision. The calculator intentionally shows the payment adjustment without declaring a “best” age.</p>
+<h2>The full-retirement-age benefit you enter</h2>
+<p>Every adjustment here is built on one number: your primary insurance amount, the monthly benefit payable if you claim exactly at full retirement age. Pull it from your Social Security statement or your online <em>my Social Security</em> account rather than guessing, because that figure already reflects your highest 35 years of indexed earnings. If you enter a rough number, you get a rough comparison. The math is only as honest as the input.</p>
 
-<h2>How full retirement age is assigned</h2>
-<p>The Social Security Administration assigns full retirement age by birth year. It gradually rises from 65 to 67; people born in 1960 or later generally have a full retirement age of 67. SSA treats a January 1 birthday as belonging to the previous birth year for this calculation, which the tool accounts for.</p>
+{{svg:coins}}
 
-<h2>What the monthly adjustment means</h2>
-<p>For a claim before full retirement age, the standard reduction is applied month by month: 5/9 of 1% for each of the first 36 early months and 5/12 of 1% for additional early months. For a claim after full retirement age, this tool models delayed credits at 2/3 of 1% per month, or 8% per full year, through age 70.</p>
+<h2>Your full retirement age by birth year</h2>
+<p>Full retirement age is not 65 for most people anymore. The Social Security Administration phased it upward over decades, and anyone born in 1960 or later generally reaches it at 67. People born in the late 1950s fall in the transition zone where it lands at 66 plus a number of months. One quirk catches people every year: SSA treats a January 1 birthday as belonging to the prior year for this purpose, which can shift the assigned age. The tool applies the standard birth-year schedule so the anchor date matches the rule SSA uses.</p>
 
-<h2>Limits that matter</h2>
-<p>This is a retirement-benefit estimate for the worker’s own record. It does not model the retirement earnings test, spouse or survivor coordination, disability conversions, government pensions, family maximums, Medicare enrollment, taxation, or a future change in law. Those details can materially change an actual payment.</p>
+<h2>The monthly adjustment for claiming early</h2>
+<p>Claiming before full retirement age permanently reduces the monthly amount, and the reduction is calculated month by month, not year by year. The standard formula trims about 5/9 of one percent for each of the first 36 early months, then about 5/12 of one percent for every additional early month beyond that. Someone who is two years early is reduced less, proportionally, than someone who is five years early, because the second tier is gentler. This calculator walks those months individually so a claim 41 months early is not treated the same as one 36 months early.</p>
 
-<h2>Use the official record before filing</h2>
-<p>Compare this planning result with SSA’s <a href="https://www.ssa.gov/retirement/full-retirement-age" rel="noopener">full retirement age information</a> and the estimates in your personal Social Security account. Filing is a separate decision made through SSA.</p>
+<h2>The delayed retirement credit for waiting</h2>
+<p>Waiting past full retirement age earns delayed retirement credits worth about 2/3 of one percent per month, or 8 percent for each full year, up to age 70. After 70 the credits stop, so there is no benefit reason to delay a retirement claim further. The tool caps the increase at 70 to avoid implying a larger check that the program will not pay.</p>
+
+<h2>What this comparison deliberately leaves out</h2>
+<p>A claiming decision is rarely just arithmetic. The result here models one worker's own retirement benefit and nothing else. It does not account for:</p>
+<ul>
+<li>The retirement earnings test, which can temporarily withhold benefits if you keep working before full retirement age</li>
+<li>Spousal, divorced-spouse, and survivor benefits, which follow their own rules</li>
+<li>Federal income tax on benefits, and Medicare premiums often deducted from the check</li>
+<li>Disability conversions, government pension offsets, and family maximum limits</li>
+<li>Your health, other savings, and how long you expect to need income</li>
+</ul>
+
+{{svg:scale}}
+
+<h2>How to use this calculator</h2>
+<p>Enter your full-retirement-age benefit and the age you are considering claiming. Everything runs inside your browser; no earnings figures, birth dates, or benefit amounts are uploaded or stored anywhere. Treat the output as a planning comparison, not a recommendation or a filing decision. Before you act, confirm your numbers against your personal record and the SSA's <a href="https://www.ssa.gov/benefits/retirement/planner/agereduction.html" rel="noopener">full retirement age and reduction information</a>. Program rules change, and individual situations vary; this is a screening aid, not financial or legal advice.</p>
 
 <h2>Frequently asked questions</h2>
-<h3>Does waiting after age 70 increase the retirement benefit?</h3>
-<p>No delayed retirement credits accrue after 70, so this calculator caps that increase at age 70.</p>
-<h3>Why might my SSA estimate differ?</h3>
-<p>SSA uses your actual earnings record and program-specific rules. This tool only adjusts the full-retirement-age amount you supply.</p>
+<h3>Is it always better to wait until 70?</h3>
+<p>Not automatically. Waiting produces a larger monthly check, but you collect nothing during the delay. Whether the larger payment eventually outweighs the skipped years depends on longevity, other income, taxes, and whether a spouse's benefit is tied to yours. The tool shows the size of the difference; it does not declare a winner.</p>
 
+<h3>Why is the SSA estimate different from mine?</h3>
+<p>SSA recalculates using your actual, continuously updated earnings record and assumptions about future work. This tool simply re-prices the single benefit figure you typed in. If your future earnings or work plans change, the official estimate will move and this one will not.</p>
+
+<h3>Does claiming early reduce my spouse's benefit too?</h3>
+<p>It can affect survivor benefits in particular, since a surviving spouse's amount is often linked to what the higher earner was receiving. That coordination is outside this calculator's scope and is one of the most common reasons to check the official planners before filing.</p>
+
+<h3>Can I change my mind after I claim?</h3>
+<p>There are narrow options, such as withdrawing an application within 12 months or suspending benefits at full retirement age, but both have strict conditions. Do not assume a claim is freely reversible; verify the current rules with SSA before relying on them.</p>

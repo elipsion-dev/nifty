@@ -1,0 +1,43 @@
+<!--meta {"hero":{"type":"emoji","value":"👯"},"heroPosition":"top","accent":"#7cc4d6"}-->
+<p>Duplicates creep into transaction data in mundane ways: a payment processor posts the same charge twice, an import runs twice, or you stitch together two monthly exports whose date ranges overlap by a few days. The result is a file that overstates your spending and quietly throws off every total built on top of it.</p>
+
+<p>This tool flags any transaction whose date, description, and amount all match one that appeared earlier in the file, so you can review the suspects and decide which, if any, to remove.</p>
+
+<!--more-->
+
+<h2>Matching on date, description, and amount together</h2>
+<p>The finder compares each row against every row above it and flags a match only when all three fields are identical: same date, same description, same amount. Requiring all three is what keeps false alarms down. Two separate dinners at the same restaurant on different days will not match because the dates differ; a $40 charge and a $41 charge will not match because the amounts differ. A genuine double-post, where a single event was recorded twice, matches on everything, and that is precisely what gets flagged.</p>
+
+{{svg:document}}
+
+<h2>Reading the flagged rows and their references</h2>
+<p>For every flagged row, the output records the row number of the earlier transaction it duplicates. That reference is the key to a fast review: instead of hunting through the file, you can jump straight to the first occurrence and compare the two in context. Crucially, the tool changes nothing. It marks suspects and leaves your data exactly as it was, because the decision to delete a row should be yours, made with the full picture in front of you.</p>
+<p>Two scenarios are worth separating. When you merge a national bank's December export with January's and they overlap on the 31st, the duplicates are real artifacts of the merge and safe to remove. But a coffee shop that you visited twice in one morning will also match on date, description, and amount, and that is a legitimate pair of charges, not an error.</p>
+
+<h2>Why exact matching can miss near-duplicates</h2>
+<p>Because matching is exact, a true duplicate recorded with even a one-day date difference, or with a slightly different description from two different banks, will slip past. This is a deliberate trade: loosening the rules would flag many innocent transactions. If you are combining statements that record dates or descriptions inconsistently, standardize them first so genuine duplicates actually line up.</p>
+<ul>
+<li>Overlapping date ranges when concatenating consecutive monthly exports.</li>
+<li>An import or sync that ran twice and posted every row again.</li>
+<li>Processor retries that briefly post a charge, reverse it, and re-post it.</li>
+<li>Legitimate same-day repeat purchases that look identical but are not errors.</li>
+<li>True duplicates hidden by a one-day date shift, which exact matching cannot catch.</li>
+</ul>
+
+{{svg:checklist}}
+
+<h2>How to use this tool</h2>
+<p>Select your transaction CSV and the finder runs in your browser, comparing rows and listing every flagged duplicate with a reference to its first occurrence. Your data is never uploaded or stored on a server; the comparison happens locally and is gone when you close the page. Review the flagged rows, confirm which are real, and delete those in a spreadsheet.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>Does the tool delete duplicates for me?</h3>
+<p>No. It only flags potential duplicates and shows which earlier row each one matches. Removing rows is left to you, using a spreadsheet, so a legitimate repeat charge is never deleted by accident.</p>
+
+<h3>What about real repeat charges on the same day?</h3>
+<p>Those will be flagged, because they match on all three fields. Use the row reference to compare the flagged charge against its first occurrence; if both are genuine separate purchases, leave them alone. The flag is a prompt to look, not a verdict.</p>
+
+<h3>Why was an obvious duplicate not flagged?</h3>
+<p>Almost always because one field differs slightly, most often a date recorded a day apart, or a description formatted differently by two banks. Standardize dates and descriptions before running the finder so true duplicates align on all three fields.</p>
+
+<h3>Can I run this after merging several files?</h3>
+<p>Yes, and that is the ideal time to use it. Merging exports is the most common source of overlap-based duplicates, so a pass through the finder right after combining files catches the artifacts before they distort your totals.</p>

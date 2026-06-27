@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Free online column mapper. Rename and reorder columns into a target schema. No sign-up; processing stays in your browser.">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-  <meta name="theme-color" content="#0085ff">
+  <meta name="theme-color" content="#0f1720">
   <meta name="application-name" content="Nifty Utilities">
   <meta name="apple-mobile-web-app-title" content="Nifty Utilities">
   <meta name="msapplication-config" content="../browserconfig.xml">
-  <meta name="msapplication-TileColor" content="#0085ff">
+  <meta name="msapplication-TileColor" content="#0f1720">
   <meta property="og:site_name" content="Nifty Utilities">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Free Column Mapper | Nifty Utilities">
@@ -34,7 +34,7 @@
   <link rel="mask-icon" href="../assets/icons/safari-pinned-tab.svg" color="#0085ff">
   <link rel="manifest" href="../site.webmanifest">
   <link rel="stylesheet" href="../assets/styles.css">
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://niftyutilities.com/#organization","name":"Nifty Utilities","url":"https://niftyutilities.com/","logo":{"@type":"ImageObject","url":"https://niftyutilities.com/assets/icons/icon-512x512.png","width":512,"height":512}},{"@type":"WebSite","@id":"https://niftyutilities.com/#website","name":"Nifty Utilities","url":"https://niftyutilities.com/","description":"Free browser-based tools for finance, CSV files, documents, home decisions, business math, images, and everyday tasks.","publisher":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://niftyutilities.com/spreadsheet/column-mapper.html#webpage","url":"https://niftyutilities.com/spreadsheet/column-mapper.html","name":"Free Column Mapper","description":"Free online column mapper. Rename and reorder columns into a target schema. No sign-up; processing stays in your browser.","isPartOf":{"@id":"https://niftyutilities.com/#website"},"about":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US","dateModified":"2026-06-22"},{"@type":"WebApplication","@id":"https://niftyutilities.com/spreadsheet/column-mapper.html#application","name":"Column Mapper","description":"Rename and reorder columns into a target schema.","url":"https://niftyutilities.com/spreadsheet/column-mapper.html","applicationCategory":"Spreadsheet / Data","operatingSystem":"Any","browserRequirements":"Requires a modern web browser with JavaScript enabled.","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://niftyutilities.com/#organization"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://niftyutilities.com/"},{"@type":"ListItem","position":2,"name":"Spreadsheet / Data","item":"https://niftyutilities.com/spreadsheet/"},{"@type":"ListItem","position":3,"name":"Column Mapper","item":"https://niftyutilities.com/spreadsheet/column-mapper.html"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://niftyutilities.com/#organization","name":"Nifty Utilities","url":"https://niftyutilities.com/","logo":{"@type":"ImageObject","url":"https://niftyutilities.com/assets/icons/icon-512x512.png","width":512,"height":512}},{"@type":"WebSite","@id":"https://niftyutilities.com/#website","name":"Nifty Utilities","url":"https://niftyutilities.com/","description":"Free browser-based tools for finance, CSV files, documents, home decisions, business math, images, and everyday tasks.","publisher":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://niftyutilities.com/spreadsheet/column-mapper.html#webpage","url":"https://niftyutilities.com/spreadsheet/column-mapper.html","name":"Free Column Mapper","description":"Free online column mapper. Rename and reorder columns into a target schema. No sign-up; processing stays in your browser.","isPartOf":{"@id":"https://niftyutilities.com/#website"},"about":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US","dateModified":"2026-06-27"},{"@type":"WebApplication","@id":"https://niftyutilities.com/spreadsheet/column-mapper.html#application","name":"Column Mapper","description":"Rename and reorder columns into a target schema.","url":"https://niftyutilities.com/spreadsheet/column-mapper.html","applicationCategory":"Spreadsheet / Data","operatingSystem":"Any","browserRequirements":"Requires a modern web browser with JavaScript enabled.","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://niftyutilities.com/#organization"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://niftyutilities.com/"},{"@type":"ListItem","position":2,"name":"Spreadsheet / Data","item":"https://niftyutilities.com/spreadsheet/"},{"@type":"ListItem","position":3,"name":"Column Mapper","item":"https://niftyutilities.com/spreadsheet/column-mapper.html"}]}]}</script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -69,7 +69,7 @@
     
         <main id="main">
           <div class="tool-layout">
-            <article class="tool-page">
+            <article class="tool-page" style="--tool-accent:#f0a830">
               <p class="breadcrumbs"><a href="../index.html">All tools</a><span>/</span><a href="index.html">Spreadsheet / Data</a></p>
               <header class="tool-title">
                 <p class="eyebrow">Spreadsheet / Data</p>
@@ -77,8 +77,12 @@
                 <p>Rename and reorder columns into a target schema.</p>
                 <div class="local-badge"><span class="status-light"></span>No data sent or stored</div>
               </header>
-              
-              
+              <div class="tool-hero tool-hero-emoji tool-hero-top" aria-hidden="true"><span>🏷️</span></div>
+              <section class="tool-intro"><p>Data leaves one system as "txn_date, memo, amt" and the system that has to receive it insists on "Date, Description, Amount." Same columns, wrong labels — and the import fails on a header it doesn't recognize.</p>
+
+<p>This tool rewrites your header row to the names you specify, in the order you specify, so the file matches the schema your target expects.</p>
+
+</section>
               <section id="tool-root" class="tool-workspace" data-tool="column-mapper">
                 <div class="loading-state">Loading tool…</div>
               </section>
@@ -89,17 +93,45 @@
                   <p>Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 
-                <h2>How do you rename CSV columns to match a target schema?</h2>
-                <p>When you receive data from one system and need to import it into another, the column names rarely match. This tool renames the columns in your CSV to whatever names you provide, in the order you provide them, so the output matches the header row your target system expects.</p>
-                <h2>How to use it</h2>
-                <p>Upload your CSV file. In the column names field, enter the new column names separated by commas in the order you want them to appear, for example: Date, Description, Amount. Click Process file and the tool applies your names to the columns in positional order, left to right. If you provide fewer names than columns, the extra columns are dropped. If you provide more, the extra names get empty columns. Download the remapped CSV when done. Everything is processed in your browser and never uploaded to or stored by this site.</p>
-                <h2>Tips</h2>
-                <p>The mapping is purely positional: the first name you enter replaces the first column header, the second name replaces the second, and so on. This means you can also use the tool to reduce a wide file to only the columns you need by entering fewer names than the file has. To see the current column names before entering your replacements, leave the field blank and click Process file once; the tool will populate the field with the existing headers for you to edit.</p>
-                <h2>Frequently asked questions</h2>
-                <h3>Can I reorder columns, not just rename them?</h3>
-                <p>Reordering is not supported by this tool. It renames columns in their existing order. If you also need to change column order, do that in a spreadsheet application before using this tool, or after downloading the remapped file.</p>
-                <h3>What if my file has more columns than I want to keep?</h3>
-                <p>Enter only the names for the columns you want to keep. The tool drops any columns beyond the number of names you provide, so supplying fewer names than columns is the intended way to reduce the column set.</p>
+
+<h2>Enter the names you want, in order</h2>
+<p>Upload the CSV and type the new column names into the field, separated by commas, in left-to-right order — for example: <em>Date, Description, Amount</em>. Process the file and the tool applies your names to the existing columns positionally: your first name replaces the first header, your second replaces the second, and so on down the line. The underlying data doesn't move; only the labels change.</p>
+<p>Not sure what the current headers are? Leave the field blank and process once — the tool fills the field with the existing headers so you can edit them in place rather than retyping from scratch.</p>
+
+<figure class="article-figure" aria-hidden="true"><svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M58 18H36v22l30 30 22-22z"/><circle cx="46" cy="30" r="4"/></svg></figure>
+
+<h2>Positional mapping, and how to use it to trim columns</h2>
+<p>The mapping is strictly by position, which has a useful side effect: if you supply <strong>fewer</strong> names than the file has columns, the extra trailing columns are dropped. That makes this the intended way to reduce a wide export down to just the fields you need — list names only for the columns you want to keep, and the rest fall off the right edge. Conversely, supplying more names than there are columns creates empty columns for the surplus names.</p>
+
+<h2>Watch the alignment</h2>
+<ul>
+<li><strong>It renames; it doesn't reorder.</strong> Names are matched to columns in their existing left-to-right order. If your source columns are in a different order than your target wants, rearrange them in a spreadsheet first — renaming alone won't move the data.</li>
+<li><strong>Count your commas.</strong> A stray comma in the names field creates a phantom blank name and shifts everything after it by one column. Double-check the comma count against the column count.</li>
+<li><strong>Trailing empty columns.</strong> Exports from spreadsheets sometimes carry empty columns on the right. They count as columns, so account for them when matching names to positions.</li>
+<li><strong>Spaces are kept.</strong> "Amount" and " Amount" are different header strings. If the target is picky, trim stray spaces from your names.</li>
+</ul>
+
+<figure class="article-figure" aria-hidden="true"><svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><rect x="34" y="14" width="52" height="56" rx="5"/><path d="M44 30l4 4 7-8M44 48l4 4 7-8M62 30h14M62 50h14"/></svg></figure>
+
+<h2>How to use this tool</h2>
+<p>Upload the file, enter your comma-separated names, process, and download the remapped CSV. It all happens in your browser — the file is read locally and never uploaded or stored. You can remap a payroll or customer export to a vendor's required schema without that data ever touching an outside server.</p>
+
+<h2>Frequently asked questions</h2>
+
+<h3>Can I reorder columns, not just rename them?</h3>
+<p>No — this tool renames columns in their current order. To also change order, rearrange the columns in a spreadsheet before using the tool, or after downloading. Renaming and reordering are separate steps.</p>
+
+<h3>What if the file has more columns than I want to keep?</h3>
+<p>Enter names only for the columns you want. Any columns beyond the number of names you provide are dropped, so supplying fewer names than columns is the built-in way to trim a wide file down.</p>
+
+<h3>I don't know the current column names — how do I see them?</h3>
+<p>Leave the names field empty and process once. The tool reads the existing header row and populates the field with it, so you can edit the real names instead of guessing.</p>
+
+<h3>Does it change the data in the rows?</h3>
+<p>No. Only the header row is rewritten (and trailing columns dropped if you supply fewer names). Every data cell that's kept stays exactly as it was.</p>
+
+<h3>What's a typical workflow this fits into?</h3>
+<p>A common one is preparing files for a bulk import. You receive an export with the wrong headers, use this tool to rename and trim the columns to the target system's exact schema, and — if you have several such files — then stack them with the Merge CSV Files tool, which requires a consistent layout. Mapping each file to the same names first is what makes that merge line up cleanly.</p>
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>

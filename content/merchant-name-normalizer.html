@@ -1,0 +1,42 @@
+<!--meta {"hero":{"type":"emoji","value":"🏷️"},"heroPosition":"top","accent":"#f0a830"}-->
+<p>Open a raw bank export and the same coffee shop might appear five different ways: once with a store number, once with a city code, once buried behind a "POS PURCHASE" prefix, and twice with a trailing authorization string. To a human it is obviously one merchant. To a spreadsheet, it is five.</p>
+
+<p>This tool turns those noisy descriptions into a single consistent merchant name, keeping your original text intact so nothing is lost, and making everything downstream, from grouping to totaling, dramatically easier.</p>
+
+<!--more-->
+
+<h2>What the noise actually is</h2>
+<p>Transaction descriptions are assembled by payment networks and banks, not by the merchant, which is why they read like machine output. They tend to carry a transaction-type prefix such as POS, DEBIT, PURCHASE, or ACH; a store or location number; a city and state abbreviation; and a long authorization or reference code. None of that helps you understand who you paid. The normalizer's job is to peel those layers away and leave the recognizable name.</p>
+
+{{svg:tag}}
+
+<h2>The normalization rules</h2>
+<p>The tool reads your description column and applies a sequence of cleanups: it removes the common transaction-type prefixes, strips standalone number sequences like store IDs and reference codes, and collapses the leftover extra spaces into single spaces. The cleaned name is written to its own new column and rendered in uppercase. Uppercasing is a small choice that does real work, because it prevents the same merchant from splitting into two groups simply because one entry was capitalized differently than another.</p>
+<p>Consider a tidy national-retailer line versus a quirky credit-union description stuffed with a six-digit terminal ID and a city tag. After normalization both collapse toward the bare brand name, so a later sum or pivot treats every visit to that retailer as one merchant instead of many near-duplicates.</p>
+
+<h2>Original description preserved alongside</h2>
+<p>Normalization is a best effort, not a guarantee, so the tool never throws away your source data. The output keeps the original date, the original description, the new normalized name, and the amount. Having both columns side by side lets you spot-check the result: scan the normalized column for anything that still looks garbled, and the original is right there to tell you what it should have been.</p>
+<ul>
+<li>Authorization and reference codes that change every transaction.</li>
+<li>Store or terminal numbers that make one location look like many.</li>
+<li>City and state fragments appended to the merchant name.</li>
+<li>Proprietary prefixes a particular bank uses that no general rule anticipates.</li>
+</ul>
+
+{{svg:document}}
+
+<h2>How to use this tool</h2>
+<p>Pick your transaction CSV and the normalizer runs in your browser, reading the description column and adding a cleaned name beside it. Your file is never sent anywhere; the work happens on your own machine and the data is discarded when you close the page. The output is a plain CSV, which makes it a natural first step before the Recurring Subscription Finder or the Personal Spending Categorizer, both of which group far more accurately on clean names.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>Does this change my original transaction data?</h3>
+<p>No. The original description stays in its own column, untouched. The normalized name is added as a separate column, so you can always compare the two and confirm the cleanup looks right for your particular bank's formatting.</p>
+
+<h3>Why are some names still messy after normalizing?</h3>
+<p>Every bank invents its own conventions, and a general set of rules cannot perfectly decode all of them. Descriptions that rely on unusual internal codes may not fully clean up. Treat the normalized column as a strong starting point and hand-correct the few stubborn entries in a spreadsheet.</p>
+
+<h3>Why uppercase the normalized names?</h3>
+<p>Uppercasing removes case as a source of accidental mismatches. When grouping or summing, "Acme Market" and "ACME MARKET" should be the same merchant, and forcing one consistent case guarantees they are treated that way.</p>
+
+<h3>Can I feed the output into other tools here?</h3>
+<p>Yes. The output is a standard date, description, normalized-name, amount CSV. It works cleanly as input for the other finance tools on this site, and clean names noticeably improve how well they group and categorize.</p>

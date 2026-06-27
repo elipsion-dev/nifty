@@ -1,0 +1,44 @@
+<!--meta {"hero":{"type":"emoji","value":"✂️"},"heroPosition":"top","accent":"#2dd4bf"}-->
+<p>An import form rejects anything over a few thousand rows. A spreadsheet app crawls to a halt on a half-million-line file. Sometimes a single CSV is simply too big to work with in one piece.</p>
+
+<p>This tool slices one large CSV into smaller files by row count — each piece carrying its own copy of the header so it stands on its own.</p>
+
+<!--more-->
+
+<h2>Choose your rows-per-file</h2>
+<p>Upload the CSV and tell the tool how many <em>data</em> rows you want in each output file (the default is 500). The header is counted separately and copied into every part, so a setting of 500 means 500 actual records per file plus one header line. The tool divides the file accordingly and hands you a download button for each part: part 1, part 2, and so on, in original order.</p>
+<p>The last file almost always holds fewer rows than the rest. A 1,750-row file split at 500 gives you three files of 500 and a final file of 250 — that short tail is normal, not a truncation error.</p>
+
+{{svg:document}}
+
+<h2>Sizing the split to your target system</h2>
+<p>The right number is driven by wherever the pieces are headed. If a platform caps imports at 1,000 rows, don't set 1,000 — set something with breathing room, like 900, so a miscount or an off-by-one header never trips the limit. If the goal is just to open the data in a spreadsheet, pick a size your machine handles smoothly. There's no universally correct value; it's whatever keeps the receiving system happy.</p>
+
+<h2>Things to watch for</h2>
+<ul>
+<li><strong>Quoted newlines.</strong> A field containing a line break inside quotes is one logical row but spans two physical lines. A splitter that counts lines rather than parsed records can cut a record in half — verify a boundary if your data has multi-line text fields.</li>
+<li><strong>Header on every part.</strong> This is the point of the per-file header, but it also means the total line count of all parts exceeds the original by the number of files. That's expected.</li>
+<li><strong>Encoding carries through.</strong> If the source has a UTF-8 BOM or unusual characters, those properties pass into each piece. Splitting doesn't clean data; it only divides it.</li>
+</ul>
+
+{{svg:checklist}}
+
+<h2>How to use this tool</h2>
+<p>Pick a file, enter a rows-per-file value, process, and download each part. All of it happens locally in your browser — the CSV is read from your device into the page and never uploaded, logged, or transmitted. A large file stays entirely on your computer, which is exactly what you want for anything sensitive.</p>
+
+<h2>Frequently asked questions</h2>
+
+<h3>Does each split file include the header row?</h3>
+<p>Yes. Every output part begins with the original header, so each one opens correctly in a spreadsheet and imports cleanly on its own. You never have to manually re-add column names.</p>
+
+<h3>Can I put the files back together later?</h3>
+<p>Yes — use the Merge CSV Files tool on this site. Select all the parts and it stacks them back into one file, automatically dropping the repeated header rows so you get a single clean result.</p>
+
+<h3>Why did my last file come out so small?</h3>
+<p>Because the total row count rarely divides evenly into your chosen size. The remainder lands in the final file. If you split 1,201 rows at 400, you get three files of 400 and one of 1 — perfectly normal.</p>
+
+<h3>What's the largest file I can split?</h3>
+<p>The practical ceiling is your browser's available memory, since the file is loaded in full to be divided. Files in the tens of megabytes are usually fine on a typical machine; extremely large exports may be slow or may not load on a low-memory device.</p>
+
+<h3>Why split by row count instead of file size?</h3>
+<p>Because the limits that actually matter are almost always counted in rows, not megabytes. Import forms, bulk-upload tools, and processing batches typically say "up to N records," so splitting by row count lets you target that number directly. A size-based split would leave you guessing how many records fit in each piece, since row width varies from file to file.</p>

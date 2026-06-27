@@ -1,0 +1,45 @@
+<!--meta {"hero":{"type":"emoji","value":"🏷️"},"heroPosition":"top","accent":"#f0a830"}-->
+<p>Data leaves one system as "txn_date, memo, amt" and the system that has to receive it insists on "Date, Description, Amount." Same columns, wrong labels — and the import fails on a header it doesn't recognize.</p>
+
+<p>This tool rewrites your header row to the names you specify, in the order you specify, so the file matches the schema your target expects.</p>
+
+<!--more-->
+
+<h2>Enter the names you want, in order</h2>
+<p>Upload the CSV and type the new column names into the field, separated by commas, in left-to-right order — for example: <em>Date, Description, Amount</em>. Process the file and the tool applies your names to the existing columns positionally: your first name replaces the first header, your second replaces the second, and so on down the line. The underlying data doesn't move; only the labels change.</p>
+<p>Not sure what the current headers are? Leave the field blank and process once — the tool fills the field with the existing headers so you can edit them in place rather than retyping from scratch.</p>
+
+{{svg:tag}}
+
+<h2>Positional mapping, and how to use it to trim columns</h2>
+<p>The mapping is strictly by position, which has a useful side effect: if you supply <strong>fewer</strong> names than the file has columns, the extra trailing columns are dropped. That makes this the intended way to reduce a wide export down to just the fields you need — list names only for the columns you want to keep, and the rest fall off the right edge. Conversely, supplying more names than there are columns creates empty columns for the surplus names.</p>
+
+<h2>Watch the alignment</h2>
+<ul>
+<li><strong>It renames; it doesn't reorder.</strong> Names are matched to columns in their existing left-to-right order. If your source columns are in a different order than your target wants, rearrange them in a spreadsheet first — renaming alone won't move the data.</li>
+<li><strong>Count your commas.</strong> A stray comma in the names field creates a phantom blank name and shifts everything after it by one column. Double-check the comma count against the column count.</li>
+<li><strong>Trailing empty columns.</strong> Exports from spreadsheets sometimes carry empty columns on the right. They count as columns, so account for them when matching names to positions.</li>
+<li><strong>Spaces are kept.</strong> "Amount" and " Amount" are different header strings. If the target is picky, trim stray spaces from your names.</li>
+</ul>
+
+{{svg:checklist}}
+
+<h2>How to use this tool</h2>
+<p>Upload the file, enter your comma-separated names, process, and download the remapped CSV. It all happens in your browser — the file is read locally and never uploaded or stored. You can remap a payroll or customer export to a vendor's required schema without that data ever touching an outside server.</p>
+
+<h2>Frequently asked questions</h2>
+
+<h3>Can I reorder columns, not just rename them?</h3>
+<p>No — this tool renames columns in their current order. To also change order, rearrange the columns in a spreadsheet before using the tool, or after downloading. Renaming and reordering are separate steps.</p>
+
+<h3>What if the file has more columns than I want to keep?</h3>
+<p>Enter names only for the columns you want. Any columns beyond the number of names you provide are dropped, so supplying fewer names than columns is the built-in way to trim a wide file down.</p>
+
+<h3>I don't know the current column names — how do I see them?</h3>
+<p>Leave the names field empty and process once. The tool reads the existing header row and populates the field with it, so you can edit the real names instead of guessing.</p>
+
+<h3>Does it change the data in the rows?</h3>
+<p>No. Only the header row is rewritten (and trailing columns dropped if you supply fewer names). Every data cell that's kept stays exactly as it was.</p>
+
+<h3>What's a typical workflow this fits into?</h3>
+<p>A common one is preparing files for a bulk import. You receive an export with the wrong headers, use this tool to rename and trim the columns to the target system's exact schema, and — if you have several such files — then stack them with the Merge CSV Files tool, which requires a consistent layout. Mapping each file to the same names first is what makes that merge line up cleanly.</p>

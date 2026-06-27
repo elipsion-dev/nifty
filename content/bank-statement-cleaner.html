@@ -1,0 +1,43 @@
+<!--meta {"hero":{"type":"emoji","value":"🧼"},"heroPosition":"top","accent":"#2dd4bf"}-->
+<p>A bank statement export almost never opens cleanly. Currency symbols cling to amounts, descriptions carry trailing spaces you cannot see, and a handful of blank rows separate one statement section from the next. Before any of that data is useful, somebody has to scrub it.</p>
+
+<p>This tool does that scrubbing for you: it detects your real columns, strips the noise, drops empty rows, and hands back a tidy date, description, and amount file you can sort, filter, or feed into another tool.</p>
+
+<!--more-->
+
+<h2>Detecting your date, description, and amount columns</h2>
+<p>The first thing the cleaner does is read your header row and decide which column is which. It looks for the words banks actually use, not a single rigid format: a date column might be labeled "Date," "Posted," "Transaction Date," or "Posting Date," while the description hides under "Description," "Memo," "Details," or "Payee." Amounts are trickier, because some institutions ship one signed column and others split spending into separate debit and credit columns. The tool recognizes both shapes and maps them to a standard layout.</p>
+<p>Picture two exports side by side: a large national bank gives you a clean four-column file with a single "Amount" column where debits are already negative, while a small credit union's download uses cryptic headers and keeps "Debit" and "Credit" in two separate columns. Both come out the other side looking identical, which is the entire point.</p>
+
+{{svg:receipt}}
+
+<h2>Stripping currency symbols, commas, and stray whitespace</h2>
+<p>Raw amounts arrive in a surprising number of disguises. You may see a dollar sign, thousands separators, parentheses standing in for a negative, or a value padded with spaces. The cleaner removes the symbols and separators so each amount becomes a plain number a spreadsheet will treat as math rather than text. On the description side, it trims leading and trailing whitespace and collapses runs of spaces, which is what stops the same merchant from sorting into two different groups simply because one entry had an extra space on the end.</p>
+
+<h2>Dropping blank and partial rows</h2>
+<p>Statement exports love to insert empty rows, section headers, and the occasional running-balance line that is not a transaction at all. Rows with no real content are removed so your file does not end with a scatter of blanks. The result uses simple lowercase column names, which keeps it predictable when you import it elsewhere.</p>
+<ul>
+<li>Currency symbols and commas baked into the amount column, which silently turn numbers into text.</li>
+<li>Trailing spaces in descriptions that split one merchant into several.</li>
+<li>Blank separator rows between monthly sections in a multi-month export.</li>
+<li>A debit/credit split where you expected one signed amount column.</li>
+<li>Unusual header names that no automatic detector can be expected to guess.</li>
+</ul>
+
+{{svg:checklist}}
+
+<h2>How to use this tool</h2>
+<p>Choose your bank statement CSV and the tool reads it directly in your browser. It detects the columns, cleans the values, removes empty rows, and shows a preview so you can confirm the mapping looks right before you download the cleaned file. Nothing is uploaded; the file never leaves your device and is gone the moment you close the tab. If you want to be certain, you can disconnect from the internet first and the cleaner still works, because there is no server involved.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>Does the tool reformat my dates?</h3>
+<p>No. Dates pass through exactly as they appear in your source file. The cleaner standardizes the structure of the file, not the format of individual date strings. If you need a specific date format, change it in a spreadsheet after downloading, where you have full control over the locale and pattern.</p>
+
+<h3>What happens to my debit and credit columns?</h3>
+<p>If your file keeps debits and credits in separate columns, the cleaner combines them into a single signed amount: money leaving the account becomes negative and money arriving becomes positive. That single-column shape is what most analysis tools and spreadsheets expect.</p>
+
+<h3>The tool mapped the wrong column. What can I do?</h3>
+<p>Automatic detection covers common naming conventions, but a few institutions use headers that no rule can anticipate. If the preview shows a wrong mapping, rename your columns to plain "Date," "Description," and "Amount" in a text editor or spreadsheet, then run the file again.</p>
+
+<h3>Is my financial data safe here?</h3>
+<p>Yes. All processing happens locally in your browser, and no part of the file is transmitted or stored anywhere. The cleaning code runs on your machine the same way a desktop program would, with the convenience of needing nothing installed.</p>

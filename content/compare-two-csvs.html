@@ -1,0 +1,42 @@
+<!--meta {"hero":{"type":"emoji","value":"🔍"},"heroPosition":"top","accent":"#c98bdb"}-->
+<p>You re-export the same report a week later and want one honest answer: what's different? Eyeballing two versions side by side is how subtle changes slip past you.</p>
+
+<p>This tool compares two CSVs and outputs only the rows that changed — each labeled as added or removed — so the diff is explicit instead of buried.</p>
+
+<!--more-->
+
+<h2>Baseline versus updated</h2>
+<p>Pick two files. The first is the baseline (the "before"), the second is the updated version (the "after"). The tool compares rows across all columns and sorts them into two buckets: rows present in the baseline but missing from the updated file are <strong>removed</strong>, and rows present in the updated file but not the baseline are <strong>added</strong>. The output is a single CSV with a status column marking each changed row, so you can filter and read it in any spreadsheet.</p>
+<p>Order matters here — swap the two files and your additions and removals flip. If the result looks backwards, you likely loaded them in the wrong slots.</p>
+
+{{svg:document}}
+
+<h2>What an "edit" looks like in the output</h2>
+<p>The comparison is row-level and exact. The tool has no concept of a record being "the same row, slightly changed." So if one cell in a row changes — a corrected spelling, an updated amount, a fixed typo — that row shows up twice: once as a removal of the old version and once as an addition of the new one. This is the right mental model. A single edited field reads as remove-then-add, not as one "modified" line. It's excellent for catching discrete insertions and deletions; it won't pinpoint which field within a row changed.</p>
+
+<h2>Before you compare</h2>
+<ul>
+<li><strong>Match the column order.</strong> Cells are compared positionally. Same columns in a different arrangement produces meaningless results — align order first.</li>
+<li><strong>Watch invisible differences.</strong> A trailing space, a UTF-8 BOM on one file, or "1/5" vs "01/05" makes otherwise-identical rows register as a removal plus an addition. Normalize formatting if the diff is noisier than reality.</li>
+<li><strong>Unchanged rows vanish.</strong> Rows identical in both files don't appear in the output at all — that's intentional, so the result stays focused on change.</li>
+<li><strong>Duplicates within a file.</strong> If a row appears twice in one file, the comparison's set-based logic can behave unexpectedly; deduplicate each file first for the cleanest diff.</li>
+</ul>
+
+{{svg:scale}}
+
+<h2>How to use this tool</h2>
+<p>Select both files, run the comparison, and download the result showing added and removed rows. Everything is computed in your browser from the files you choose — neither file is uploaded, copied to a server, or retained. You can safely compare two snapshots of sensitive data without it ever leaving your device.</p>
+
+<h2>Frequently asked questions</h2>
+
+<h3>Does the output include rows that stayed the same?</h3>
+<p>No. Only changed rows appear. A row with identical values in both files is treated as unchanged and is left out, keeping the result focused on what actually differs.</p>
+
+<h3>Why does one small edit show as two rows?</h3>
+<p>Because matching is exact across the whole row. A changed cell makes the old row no longer match anything in the updated file (a removal) and the new row no longer match anything in the baseline (an addition). The tool reports field-level edits as a paired remove and add.</p>
+
+<h3>Does column order affect the result?</h3>
+<p>Yes. Cells are compared in position. Two files with the same columns in a different order won't compare meaningfully. Make the column order consistent in both files before running the comparison.</p>
+
+<h3>Can I tell which file a row came from?</h3>
+<p>Yes — the status column does exactly that. "Removed" means the row existed only in the baseline; "added" means it existed only in the updated file. Filtering on that column separates the two sets instantly.</p>

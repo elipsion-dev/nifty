@@ -1,0 +1,32 @@
+<!--meta {"hero":{"type":"emoji","value":"📊"},"heroPosition":"top","accent":"#2dd4bf"}-->
+<p>A table is the one thing you most want to copy and the one thing screenshots make hardest. The rows are right there on screen, neatly aligned, and completely uncopyable.</p>
+<p>This tool runs OCR on the image in your browser and reconstructs those rows as editable data you can download as a CSV and open in any spreadsheet, so you don't have to retype a grid by hand.</p>
+<!--more-->
+<h2>Where table screenshots come from</h2>
+<p>Tables get trapped as images constantly: a pricing grid on a web page that blocks selection, a financial summary inside a PDF report, a spreadsheet someone pasted into a chat as a picture, or a frame grabbed from a shared screen during a call. In all of these the data is visually perfect but mechanically locked. OCR is the bridge, turning the pixels of each cell back into characters you can edit and calculate with.</p>
+<h2>Extracting the rows</h2>
+<p>Upload your screenshot and click Extract table text. The recognition library loads in your browser on first use, then the image is processed locally. The tool reads the image line by line and splits each line on the visible gaps between columns, producing structured rows. A preview shows what it found, and a download link gives you the CSV. Because the parser keys off whitespace gaps, tables with generous spacing between columns reconstruct far more cleanly than ones where columns are crammed together.</p>
+{{svg:chart}}
+<h2>What clean reconstruction needs, and where it breaks</h2>
+<p>Flat, simple tables, the kind with one header row and consistent columns, are where this shines. The reconstruction breaks down on the formatting that humans read effortlessly but a line-by-line reader cannot infer. Merged cells have no single line to map to. Multi-row or stacked headers flatten into separate rows. Cells whose text wraps onto two lines become two rows instead of one. Right-aligned numbers next to left-aligned labels can confuse where one column ends and the next begins.</p>
+<p>The realistic workflow is extract, then tidy. The OCR does the heavy lifting of transcribing dozens or hundreds of cells, and you spend a minute in your spreadsheet fixing the handful of structural quirks. That is almost always faster than typing the whole table from scratch, which is the point.</p>
+<p>One detail worth planning around: the source you capture from often controls how clean the result is. If you can widen a browser window or zoom a PDF before screenshotting so that no cell wraps to a second line and columns get a little extra breathing room, you remove the two problems that cause the most cleanup, wrapped cells and crammed columns, before they ever reach the OCR.</p>
+<ul>
+<li>Crop to the table alone; surrounding text and navigation become junk rows.</li>
+<li>Bigger is better, larger on-screen text and higher resolution beat small or compressed captures.</li>
+<li>Flat single-header tables convert best; expect to repair merged cells and stacked headers by hand.</li>
+<li>Verify numeric columns carefully, since a misread digit looks just as plausible as a correct one.</li>
+<li>The first extraction of a session is slower while the library downloads.</li>
+</ul>
+<h2>How to use this tool</h2>
+<p>Upload a table screenshot, click Extract table text, review the rows in the preview, and download the CSV to open in your spreadsheet application. The recognition library loads into your browser and the image is processed on your device. Your image stays local and is never uploaded to or stored by this site.</p>
+{{svg:checklist}}
+<h2>Frequently asked questions</h2>
+<h3>Can it handle merged cells or multi-row headers?</h3>
+<p>Not cleanly. The OCR reads text line by line, so merged cells and stacked headers don't map neatly to a flat CSV. Extract first to get the bulk of the data transcribed, then fix those specific areas in your spreadsheet.</p>
+<h3>How accurate is it on numbers?</h3>
+<p>Accuracy tracks image quality. Clear, high-resolution screenshots of digital tables read well, but OCR can still confuse characters like 0 and O or 1 and l. Always proofread numeric columns before relying on totals or calculations built from them.</p>
+<h3>Does this tool work offline?</h3>
+<p>The recognition library loads from a CDN on first use, so you need a connection for that initial download. Once it has loaded, the OCR processing itself runs locally in your browser.</p>
+<h3>What if a cell's text wrapped onto two lines in the image?</h3>
+<p>Each visual line is read separately, so wrapped text can split into two rows. After downloading, merge those rows back together in your spreadsheet. Capturing the table at a wider width so cells don't wrap helps avoid this.</p>

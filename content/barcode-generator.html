@@ -1,0 +1,51 @@
+<!--meta {"hero":{"type":"emoji","value":"🏷️"},"heroPosition":"top","accent":"#f0a830"}-->
+<p>Sometimes you just need a scannable barcode for something that lives inside your own world — a shelf location, an asset tag, an order number, a box of inventory. You do not need a retail product code registered with a global authority; you need a label your own scanner will read.</p>
+
+<p>This tool generates a CODE128 barcode from any text or number and gives you a crisp SVG you can drop straight into a label, document, or design file.</p>
+
+<!--more-->
+
+<h2>Why CODE128 is the right default</h2>
+
+<p>CODE128 is a high-density linear barcode that encodes the full ASCII set — letters, digits, and standard symbols — which makes it the workhorse for anything that is not a registered retail product. Shipping carriers, warehouses, libraries, and internal asset-tracking systems lean on it precisely because it is flexible. It also has a clever trick: a dedicated numeric mode (subset C) packs two digits into the space of one character, so an all-numeric value like an order number produces a notably more compact barcode than the same length of mixed text.</p>
+
+<p>Under the hood, every CODE128 symbol carries a start code, your data, a calculated checksum character (a modulo-103 weighted sum the scanner verifies), and a stop pattern. You do not have to think about any of that — the encoder handles it — but it is why a CODE128 barcode is self-checking and resistant to misreads.</p>
+
+{{svg:tag}}
+
+<h2>Enter the value to encode</h2>
+
+<p>Type the text or number you want in the input field. This is encoded verbatim, so a SKU like <strong>WH-A12-0473</strong> is preserved dashes and all, and a scanner reading it will return exactly that string. Keep two things in mind: the longer the value, the wider the barcode (which matters if you have a fixed label size), and CODE128 is case-sensitive, so <strong>a12</strong> and <strong>A12</strong> are different codes.</p>
+
+<h2>Generate and download the SVG</h2>
+
+<p>Click Generate barcode and the tool loads a barcode library in your browser, renders a scalable SVG with the human-readable value printed beneath the bars, and offers a Download SVG button. SVG is the right format for barcodes because it is vector-based: it stays razor-sharp at any size, from a small adhesive label to a full-page sign, with no blurring or pixelation. Drop it into a word processor, a label template, or a design tool and resize freely.</p>
+
+<ul>
+<li>SVG scales without quality loss — print at any size.</li>
+<li>The human-readable text under the bars lets people verify a code by eye.</li>
+<li>Always keep a quiet zone (blank margin) on both ends, or scanners may miss the start and stop patterns.</li>
+<li>Run a test scan of the printed output before committing to a large run — printer resolution and label contrast both affect readability.</li>
+</ul>
+
+{{svg:gear}}
+
+<h2>How to use this tool</h2>
+
+<p>Enter your value, click Generate barcode, and download the SVG. The encoding, the checksum math, and the rendering all happen in your browser — nothing you type is sent to a server or stored by this site. That keeps internal SKUs, order numbers, and asset IDs private to your machine.</p>
+
+{{svg:document}}
+
+<h2>Frequently asked questions</h2>
+
+<h3>Can I use this for retail products sold in stores?</h3>
+<p>No. Point-of-sale systems expect UPC-A or EAN-13, which are different formats with their own check-digit rules and require a registered manufacturer prefix. This tool produces CODE128, which is for internal and logistics use. If you are working with a UPC, use the UPC Validator on this site to confirm its check digit, then generate the barcode in the correct retail format with a tool that supports it.</p>
+
+<h3>What characters can I encode?</h3>
+<p>CODE128 covers all standard ASCII — uppercase and lowercase letters, all ten digits, and common punctuation. That makes it well suited to alphanumeric SKUs, tracking numbers, and reference codes. It is not meant for accented or non-Latin characters.</p>
+
+<h3>Why is my all-numeric barcode shorter than a text one of the same length?</h3>
+<p>CODE128's subset C encodes pairs of digits into a single symbol character, roughly halving the width of purely numeric data. A 10-digit number is more compact than 10 letters, which is handy when label space is tight.</p>
+
+<h3>Will a phone barcode-scanner app read it?</h3>
+<p>Most general scanner apps and dedicated 1D scanners read CODE128 natively. As always, print a sample and test it on the actual device you will use before producing the whole batch.</p>

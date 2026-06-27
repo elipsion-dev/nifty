@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Free online vin decoder. Validate a VIN and decode its year and basic structure locally. No sign-up; processing stays in your browser.">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-  <meta name="theme-color" content="#0085ff">
+  <meta name="theme-color" content="#0f1720">
   <meta name="application-name" content="Nifty Utilities">
   <meta name="apple-mobile-web-app-title" content="Nifty Utilities">
   <meta name="msapplication-config" content="../browserconfig.xml">
-  <meta name="msapplication-TileColor" content="#0085ff">
+  <meta name="msapplication-TileColor" content="#0f1720">
   <meta property="og:site_name" content="Nifty Utilities">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Free VIN Decoder | Nifty Utilities">
@@ -34,7 +34,7 @@
   <link rel="mask-icon" href="../assets/icons/safari-pinned-tab.svg" color="#0085ff">
   <link rel="manifest" href="../site.webmanifest">
   <link rel="stylesheet" href="../assets/styles.css">
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://niftyutilities.com/#organization","name":"Nifty Utilities","url":"https://niftyutilities.com/","logo":{"@type":"ImageObject","url":"https://niftyutilities.com/assets/icons/icon-512x512.png","width":512,"height":512}},{"@type":"WebSite","@id":"https://niftyutilities.com/#website","name":"Nifty Utilities","url":"https://niftyutilities.com/","description":"Free browser-based tools for finance, CSV files, documents, home decisions, business math, images, and everyday tasks.","publisher":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://niftyutilities.com/useful/vin-decoder.html#webpage","url":"https://niftyutilities.com/useful/vin-decoder.html","name":"Free VIN Decoder","description":"Free online vin decoder. Validate a VIN and decode its year and basic structure locally. No sign-up; processing stays in your browser.","isPartOf":{"@id":"https://niftyutilities.com/#website"},"about":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US","dateModified":"2026-06-22"},{"@type":"WebApplication","@id":"https://niftyutilities.com/useful/vin-decoder.html#application","name":"VIN Decoder","description":"Validate a VIN and decode its year and basic structure locally.","url":"https://niftyutilities.com/useful/vin-decoder.html","applicationCategory":"Weirdly Useful","operatingSystem":"Any","browserRequirements":"Requires a modern web browser with JavaScript enabled.","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://niftyutilities.com/#organization"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://niftyutilities.com/"},{"@type":"ListItem","position":2,"name":"Weirdly Useful","item":"https://niftyutilities.com/useful/"},{"@type":"ListItem","position":3,"name":"VIN Decoder","item":"https://niftyutilities.com/useful/vin-decoder.html"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://niftyutilities.com/#organization","name":"Nifty Utilities","url":"https://niftyutilities.com/","logo":{"@type":"ImageObject","url":"https://niftyutilities.com/assets/icons/icon-512x512.png","width":512,"height":512}},{"@type":"WebSite","@id":"https://niftyutilities.com/#website","name":"Nifty Utilities","url":"https://niftyutilities.com/","description":"Free browser-based tools for finance, CSV files, documents, home decisions, business math, images, and everyday tasks.","publisher":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://niftyutilities.com/useful/vin-decoder.html#webpage","url":"https://niftyutilities.com/useful/vin-decoder.html","name":"Free VIN Decoder","description":"Free online vin decoder. Validate a VIN and decode its year and basic structure locally. No sign-up; processing stays in your browser.","isPartOf":{"@id":"https://niftyutilities.com/#website"},"about":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US","dateModified":"2026-06-27"},{"@type":"WebApplication","@id":"https://niftyutilities.com/useful/vin-decoder.html#application","name":"VIN Decoder","description":"Validate a VIN and decode its year and basic structure locally.","url":"https://niftyutilities.com/useful/vin-decoder.html","applicationCategory":"Weirdly Useful","operatingSystem":"Any","browserRequirements":"Requires a modern web browser with JavaScript enabled.","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://niftyutilities.com/#organization"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://niftyutilities.com/"},{"@type":"ListItem","position":2,"name":"Weirdly Useful","item":"https://niftyutilities.com/useful/"},{"@type":"ListItem","position":3,"name":"VIN Decoder","item":"https://niftyutilities.com/useful/vin-decoder.html"}]}]}</script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -69,7 +69,7 @@
     
         <main id="main">
           <div class="tool-layout">
-            <article class="tool-page">
+            <article class="tool-page" style="--tool-accent:#e8845b">
               <p class="breadcrumbs"><a href="../index.html">All tools</a><span>/</span><a href="index.html">Weirdly Useful</a></p>
               <header class="tool-title">
                 <p class="eyebrow">Weirdly Useful</p>
@@ -77,8 +77,12 @@
                 <p>Validate a VIN and decode its year and basic structure locally.</p>
                 <div class="local-badge"><span class="status-light"></span>No data sent or stored</div>
               </header>
-              
-              
+              <div class="tool-hero tool-hero-emoji tool-hero-top" aria-hidden="true"><span>🚗</span></div>
+              <section class="tool-intro"><p>A VIN is not a random serial number — it is a 17-character record with a defined slot for the manufacturer, the vehicle's basic description, the model year, the assembly plant, and a built-in check digit that mathematically validates the whole string. Read it correctly and a VIN tells you a surprising amount before you ever touch a database.</p>
+
+<p>This tool validates the VIN's structure and check digit and decodes its sections entirely on your device, so you can sanity-check a number from a listing, a title, or a windshield in seconds.</p>
+
+</section>
               <section id="tool-root" class="tool-workspace" data-tool="vin-decoder">
                 <div class="loading-state">Loading tool…</div>
               </section>
@@ -89,17 +93,55 @@
                   <p>Nifty Utilities has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 
-                <h2>How do you validate a VIN and decode its basic structure?</h2>
-                <p>A Vehicle Identification Number is a 17-character code that identifies a specific vehicle. Each position in the VIN encodes structured information, and the ninth character is a check digit calculated from the others. This tool validates that check digit and decodes the VIN's world manufacturer identifier, vehicle descriptor section, model year, plant code, and serial number locally in your browser.</p>
-                <h2>How to use it</h2>
-                <p>Enter a 17-character VIN and click Decode VIN. The tool validates the format, checks the ninth-position check digit against the standard algorithm, and displays the decoded structure including the possible model year derived from position ten. If the check digit does not match, the result shows what the expected value should be. Everything runs in your browser and nothing you enter is sent to or stored by this site.</p>
-                <h2>Tips</h2>
-                <p>VINs cannot contain the letters I, O, or Q. If validation fails, check for those characters, which are sometimes confused with the digits 1 and 0. The model year decoded from position ten may show more than one candidate year because the same code repeats on a 30-year cycle; the tool displays the most recent plausible year. This decoder works from the VIN structure alone and does not connect to any external vehicle database.</p>
-                <h2>Frequently asked questions</h2>
-                <h3>Does this tool look up vehicle details like make, model, or trim?</h3>
-                <p>No. The tool decodes the structural sections of the VIN and validates the check digit using the standard algorithm. It does not connect to any manufacturer or government database, so it cannot return vehicle specifications, recall information, ownership history, or title status.</p>
-                <h3>What does it mean if the check digit is invalid?</h3>
-                <p>An invalid check digit means either the VIN was entered incorrectly, contains a typo, or the VIN itself is not genuine. It is a useful first signal that something is wrong, but a valid check digit does not guarantee the VIN is authentic or has not been altered.</p>
+
+<h2>The anatomy of a 17-character VIN</h2>
+
+<p>Since 1981, light-vehicle VINs follow a standard layout, and knowing the segments makes the decoded output meaningful:</p>
+
+<ul>
+<li><strong>Positions 1–3, the WMI</strong> (World Manufacturer Identifier): identifies who built the vehicle and in which region. The first character maps to a geographic area — for instance, numbers and letters in certain ranges indicate North America, Europe, or Asia.</li>
+<li><strong>Positions 4–8, the VDS</strong> (Vehicle Descriptor Section): the manufacturer's coded description of body style, engine, and model line.</li>
+<li><strong>Position 9, the check digit:</strong> a single character (0–9 or X) calculated from all the others.</li>
+<li><strong>Position 10, the model year:</strong> a single letter or digit on a repeating cycle.</li>
+<li><strong>Position 11, the plant code:</strong> the specific factory.</li>
+<li><strong>Positions 12–17, the serial number:</strong> the unique sequence for that individual vehicle.</li>
+</ul>
+
+<figure class="article-figure" aria-hidden="true"><svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M24 50l6-18a8 8 0 0 1 7-5h46a8 8 0 0 1 7 5l6 18"/><rect x="18" y="50" width="84" height="12"/><circle cx="38" cy="62" r="7"/><circle cx="82" cy="62" r="7"/></svg></figure>
+
+<h2>Enter a 17-character VIN</h2>
+
+<p>Type or paste the VIN and the tool first checks the format. A real VIN never contains the letters <strong>I</strong>, <strong>O</strong>, or <strong>Q</strong> — they were deliberately excluded because they are too easily confused with the digits 1 and 0. If validation fails, that is the first thing to check: someone likely read an O where there was a zero, or an I where there was a 1.</p>
+
+<h2>The check digit at position 9</h2>
+
+<p>This is the clever part. Each character is converted to a number, multiplied by a fixed weight assigned to its position, and the weighted values are summed. That sum is divided by 11, and the remainder becomes the check digit — with a remainder of 10 represented by the letter <strong>X</strong>. The tool runs this calculation and compares the result to the character actually sitting in position 9. If they disagree, it shows you the value that <em>should</em> be there, which usually pinpoints a single mistyped character elsewhere in the string.</p>
+
+<figure class="article-figure" aria-hidden="true"><svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><rect x="34" y="14" width="52" height="56" rx="5"/><path d="M44 30l4 4 7-8M44 48l4 4 7-8M62 30h14M62 50h14"/></svg></figure>
+
+<h2>Decoding the model year</h2>
+
+<p>Position 10 encodes the model year, but with a catch: the code cycles. The same letter or digit repeats roughly every 30 years, so the character that means one year also meant a year three decades earlier and will mean one three decades later. The tool surfaces the most recent plausible year, but if you are looking at an older vehicle, confirm against other evidence rather than assuming the newest match. Position 10 also skips the excluded letters and the numbers used in earlier parts of the cycle, which is why the sequence looks irregular.</p>
+
+<h2>How to use this tool</h2>
+
+<p>Enter a 17-character VIN and click Decode VIN. You get a pass/fail on the format and check digit plus the decoded WMI, descriptor section, model year, plant, and serial number. All of it is computed locally in your browser from the VIN's structure alone — nothing you enter is uploaded or stored, and the tool never contacts any external database.</p>
+
+<figure class="article-figure" aria-hidden="true"><svg viewBox="0 0 120 80" role="img" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M60 12l26 9v18c0 18-12 26-26 31-14-5-26-13-26-31V21z"/><path d="M50 39l8 8 14-15"/></svg></figure>
+
+<h2>Frequently asked questions</h2>
+
+<h3>Will it tell me the make, model, and trim?</h3>
+<p>No. It decodes the structural sections and validates the check digit using the standard algorithm. It does not connect to a manufacturer or government database, so it cannot return specifications, options, recall notices, accident history, or title status.</p>
+
+<h3>What does an invalid check digit mean?</h3>
+<p>Most often, a typo — a transposed or misread character. It can also indicate a VIN that is not genuine. Treat it as a red flag worth investigating, but remember the reverse is not a guarantee: a valid check digit only proves the digits are internally consistent, not that the VIN is authentic or unaltered.</p>
+
+<h3>Why won't my VIN validate even though I copied it carefully?</h3>
+<p>Check for the forbidden letters I, O, and Q first, then confirm the length is exactly 17 characters. Stray spaces, a dash, or a character read off a dirty or worn plate are the usual culprits.</p>
+
+<h3>Do motorcycles and older cars use the same format?</h3>
+<p>The standardized 17-character format applies to most vehicles built from 1981 onward, including motorcycles. Vehicles older than that may use shorter or non-standard VINs that this decoder, which expects the modern 17-character structure, will not validate.</p>
                 <h2>Important</h2>
                 <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
                 <h2>Support</h2>

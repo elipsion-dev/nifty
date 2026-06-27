@@ -1,0 +1,51 @@
+<!--meta {"hero":{"type":"emoji","value":"🖼️"},"heroPosition":"top","accent":"#6aa9ff"}-->
+<p>Photo libraries grow duplicates the way a junk drawer grows pens. The same image arrives from a phone backup, a shared album download, a "just in case" copy onto an external drive, and an email attachment you saved twice. The files have different names but identical bytes.</p>
+
+<p>This tool fingerprints each image you select and tells you exactly which ones are byte-for-byte copies of each other, so you can reclaim space with confidence instead of guesswork.</p>
+
+<!--more-->
+
+<h2>What "exact duplicate" really means</h2>
+
+<p>This is the most important thing to understand before you trust the results. The tool finds <strong>exact</strong> duplicates — files whose contents are identical down to the last byte — by computing a SHA-256 hash of each file and comparing those hashes. A hash is a fixed-length fingerprint: if two files produce the same SHA-256 value, they are the same file, regardless of name, folder, or modified date. If even one byte differs, the hashes diverge completely.</p>
+
+<p>That precision is a feature, not a limitation, but it has a sharp edge worth knowing. A photo you opened and re-saved, ran through a filter, resized for email, or that your phone re-compressed during a transfer is a <em>different file</em> even though it looks identical on screen. It will not be flagged here. This tool answers "are these the same file?" not "do these look the same?" — and the first question is the one you can act on without losing anything.</p>
+
+{{svg:shield}}
+
+<h2>Select your image files</h2>
+
+<p>Use the file picker to select a batch of images. The comparison works on whatever set you hand it, so the practical approach is to point it at a folder you suspect is full of copies — a camera dump, a "Downloads" pile, a merged-together backup. Because matching is based purely on content, two files named <strong>IMG_4471.jpg</strong> and <strong>beach-sunset.jpg</strong> will still be caught if their bytes match.</p>
+
+<h2>Find exact duplicates</h2>
+
+<p>Click the button and the tool reads each file, computes its SHA-256 hash in your browser, and groups files with matching hashes. The output is a CSV that lists each duplicate file alongside the earlier file it matches and the file size, so you can see at a glance how much space each redundant copy is costing you. The first occurrence of any given image is treated as the original; later identical files are the ones reported as duplicates.</p>
+
+<ul>
+<li>Matching is by content, so renamed copies are still detected.</li>
+<li>Visually similar but re-encoded images are <strong>not</strong> matched — only identical bytes.</li>
+<li>The CSV identifies duplicates; it never deletes anything. You stay in control of what gets removed.</li>
+<li>Hashing many large files takes time and memory, so a few hundred files per run is a comfortable batch size.</li>
+</ul>
+
+{{svg:checklist}}
+
+<h2>How to use this tool</h2>
+
+<p>Pick your images, click Find exact duplicates, and review the CSV. Then open your file manager and delete the copies you no longer need, keeping the originals the report points to. Every byte of every image is processed locally in your browser — your photos are never uploaded to a server or stored by this site. That matters for personal photos, and it means you can run this on sensitive images without them ever leaving your machine.</p>
+
+{{svg:document}}
+
+<h2>Frequently asked questions</h2>
+
+<h3>Why didn't it catch two photos that look exactly the same?</h3>
+<p>Because they are not the same file. Resizing, re-saving, applying any edit, or even a transfer that re-compresses the image changes the underlying bytes, which changes the hash. This tool only finds files that are identical byte for byte.</p>
+
+<h3>Is SHA-256 reliable enough to trust before deleting?</h3>
+<p>Yes. SHA-256 is a cryptographic hash; the odds of two genuinely different files producing the same value are astronomically small — far smaller than the chance of a disk error corrupting a file during deletion. If the hashes match, the files are duplicates.</p>
+
+<h3>Can I check thousands of photos at once?</h3>
+<p>There is no hard cap, but performance is bounded by your device's memory and how long you want to wait while every file is read and hashed. For very large libraries, work in batches of a few hundred at a time.</p>
+
+<h3>Does it work on formats other than JPEG?</h3>
+<p>Yes. It hashes raw file content, so PNG, HEIC, RAW, GIF, and any other file type are all compared the same way. The tool does not care what is inside the file, only whether two files are identical.</p>

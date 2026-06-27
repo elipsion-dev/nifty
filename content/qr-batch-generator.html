@@ -1,0 +1,51 @@
+<!--meta {"hero":{"type":"emoji","value":"🔳"},"heroPosition":"top","accent":"#2dd4bf"}-->
+<p>One QR code is a thirty-second job in any free generator. Fifty of them — one per table at an event, per product in a catalog, per room in a building — is a tedious afternoon of copy, paste, download, rename, repeat.</p>
+
+<p>This tool turns a plain list of URLs or text into a wall of labeled QR codes in a single pass, each with its own download button, so the repetitive part disappears.</p>
+
+<!--more-->
+
+<h2>One value per line</h2>
+
+<p>Type or paste your values into the text box, one per line. Each line becomes its own QR code, up to 50 per run. A line can hold anything a QR code can carry: a full <strong>https://</strong> URL, a phone number as <strong>tel:5551234567</strong>, an email as <strong>mailto:you@example.com</strong>, a Wi-Fi join string, or just plain text. The tool reads each line literally, so what you type is exactly what gets encoded — there is no autocorrect quietly changing a link behind your back.</p>
+
+<p>A tip that saves real headaches: include the scheme on URLs. A code encoding <strong>example.com</strong> may open a search instead of the site on some phones, while <strong>https://example.com</strong> reliably launches the browser. The few extra characters are worth it.</p>
+
+{{svg:checklist}}
+
+<h2>Generate QR codes</h2>
+
+<p>Click the button and the tool loads a QR library in your browser and renders one labeled code per line. Each is drawn at 150 by 150 pixels with its own download button to save a PNG. The label under each code echoes the value it encodes, so when you are saving fifty files you can tell at a glance which is which instead of decoding them one by one.</p>
+
+<h2>Keep values short for reliable scans</h2>
+
+<p>QR codes are not fixed-size grids — the more data you cram in, the more tiny modules (the little black squares) the code needs, and the denser and harder to scan it becomes. A short link scans instantly from across a room; a 200-character URL packed with tracking parameters becomes a dense block that demands a steady hand and good light. Two habits keep your codes friendly:</p>
+
+<ul>
+<li>Shorten long URLs first, stripping unnecessary query parameters or using a link shortener.</li>
+<li>Always test-scan before printing a batch — open your phone camera and check that each code resolves to the right place.</li>
+<li>For print, download the PNG and scale it up in an image editor; vector-style upscaling keeps edges crisp, and bigger is more forgiving.</li>
+<li>Leave a "quiet zone" — empty white margin — around each code when you lay it out, or scanners may struggle to find its edges.</li>
+</ul>
+
+{{svg:spark}}
+
+<h2>How to use this tool</h2>
+
+<p>Enter your lines, click Generate QR codes, and download each PNG you need. Everything — loading the library, drawing the codes, and saving the images — happens inside your browser. No value you enter is uploaded or stored by this site, which means you can generate codes for internal links or private URLs without them touching a server.</p>
+
+{{svg:document}}
+
+<h2>Frequently asked questions</h2>
+
+<h3>Can I download all the codes in one click?</h3>
+<p>No. Each code has its own download button, so larger batches mean saving each PNG individually. The trade-off is that you can pick and choose exactly which codes you keep.</p>
+
+<h3>How big are the images, and are they good enough to print?</h3>
+<p>Each renders at 150 by 150 pixels. That is fine for screens and small labels. For posters or signage, download the PNG and scale it up — and keep the encoded value short so the code stays low-density and prints sharp.</p>
+
+<h3>Do the codes expire or stop working?</h3>
+<p>The QR code itself never expires; it is just a picture of the data you encoded. It will keep working forever. What can break is the destination — if you encode a URL and later take that page down, the code still scans but leads nowhere. For anything long-lived, point codes at a stable URL you control.</p>
+
+<h3>What is the maximum number of values per run?</h3>
+<p>Up to 50 lines are processed at once. For a larger job, run it in batches of 50.</p>

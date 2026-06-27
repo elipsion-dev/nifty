@@ -1,0 +1,33 @@
+<!--meta {"hero":{"type":"svg","id":"calendar"},"heroPosition":"top","accent":"#7a5cad"}-->
+<p>Warranties fail you quietly. The dishwasher dies three weeks after coverage ends, the receipt has faded to a blank strip of thermal paper, and you have no idea when you even bought it.</p>
+<p>This tool fixes both problems at once: it pulls the purchase details off a photo of the receipt, then drops a reminder on your calendar for the exact day the warranty runs out, with a heads-up a week early.</p>
+<!--more-->
+<h2>Scanning the receipt</h2>
+<p>Upload a clear photo or screenshot and the tool runs optical character recognition right in your browser to read the printed text, then guesses the merchant name, the purchase date, and the total. OCR is genuinely unreliable on receipts. Thermal paper fades, ink smears, fonts are tiny, and dollar amounts get confused with line-item prices. Treat the scan as a first draft, not a final answer.</p>
+<p>Every field stays editable for exactly this reason. Always glance at the three extracted values and fix anything wrong before you create the reminder, because a misread date throws off the expiration calculation by however many days it got wrong. If a receipt is too far gone to scan, skip the photo entirely and type the merchant, date, and amount by hand; the rest of the tool works the same either way.</p>
+{{svg:receipt}}
+<h2>Choosing a warranty length</h2>
+<p>Pick the coverage period that matches the product, anywhere from ninety days to ten years. Most manufacturer warranties on electronics and small appliances run one year, large appliances and power tools often carry longer terms, and any extended plan you bought separately has its own length printed on the paperwork. The tool simply adds the period you choose to the purchase date to land on the expiration date.</p>
+<p>A useful habit is to set the reminder to the shorter of two clocks when a store return window and a manufacturer warranty overlap. Some defects are easier to resolve as a store return in the first month than as a warranty claim later, so knowing the earlier deadline can save you a frustrating support call.</p>
+<h2>Adding the reminder to your calendar</h2>
+<p>Once the details are set you get two ways out. "Add to Google Calendar" opens a prefilled all-day event on the expiration date in your Google account, with a reminder set seven days ahead so you have time to actually act. "Download .ics file" produces a standard calendar file that imports cleanly into Apple Calendar, Microsoft Outlook, and nearly every other calendar app. Either event carries the item, the amount, and the purchase date in its details, so when something breaks you already have the proof-of-purchase facts in front of you.</p>
+<ul>
+<li>Flatten the receipt and shoot it in bright, even light with no glare for the best OCR results.</li>
+<li>Crop tightly to the receipt before uploading so background clutter doesn't confuse the reader.</li>
+<li>Double-check the purchase date above all else, since the whole reminder hinges on it.</li>
+<li>For big-ticket items, keep the original receipt image too; a calendar note is a reminder, not a substitute for proof.</li>
+</ul>
+{{svg:shield}}
+<h2>Your receipt stays on your device</h2>
+<p>The recognition library downloads to your browser and reads the image locally; the photo itself is never uploaded to us. The Google Calendar option is just a prefilled web link assembled in your browser, and the .ics file is generated on your device and downloaded directly. Nothing you scan or type is sent to or stored on a server.</p>
+<h2>How to use this tool</h2>
+<p>Upload a receipt and scan it, or enter the details by hand. Confirm the merchant, date, and amount, choose the warranty length, and create the reminder. Then add it to Google Calendar or download the .ics file for your calendar app of choice.</p>
+<h2>Frequently asked questions</h2>
+<h3>Does the receipt photo get uploaded anywhere?</h3>
+<p>No. The OCR runs in your browser after a recognition library loads, and the image is processed entirely on your device. The calendar link and the .ics file are also built locally, so your receipt and its details never reach our servers.</p>
+<h3>Why didn't it read my receipt correctly?</h3>
+<p>Faded thermal paper, wrinkles, glare, and unusual fonts all make OCR harder, and some receipts simply read poorly no matter what. Try a flatter, brighter, more tightly cropped photo, then correct the merchant, date, and amount by hand before creating the reminder.</p>
+<h3>Will the reminder work in calendars other than Google?</h3>
+<p>Yes. Use the "Download .ics file" button to get a standard calendar file that imports into Apple Calendar, Microsoft Outlook, and most other apps. The Google Calendar button is just a convenience for people already living in Google Calendar.</p>
+<h3>Does a calendar reminder replace keeping the receipt?</h3>
+<p>No. The reminder tells you when coverage ends, but most warranty claims still require the original proof of purchase. Keep the receipt image or a photo of it alongside the reminder, especially for expensive items.</p>

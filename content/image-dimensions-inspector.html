@@ -1,0 +1,31 @@
+<!--meta {"hero":{"type":"emoji","value":"🖼️"},"heroPosition":"top","accent":"#f0a830"}-->
+<p>"What size is this image?" sounds like a one-second question until you have forty files and have to open each one in a viewer to find out. The answer you need is buried in metadata you can't see from the file name.</p>
+<p>This tool reads the width, height, aspect ratio, file type, and file size of a whole batch in a single pass and hands you a sortable CSV summary.</p>
+<!--more-->
+<h2>Selecting your images</h2>
+<p>Use the file picker to choose one image or a hundred, then click Inspect images. Each file is read in your browser to pull its pixel dimensions and metadata, and the results fill a table on the page. There is no upload step and no waiting on a server; the work happens locally as fast as your device can read the files.</p>
+<p>The point of doing this in bulk is to spot the outliers. When you can see every dimension in one list, the one banner that is half the resolution of the rest, or the single photo that is ten times the file size of its neighbors, jumps out immediately, instead of staying hidden until it breaks a layout or blows a page-weight budget.</p>
+{{svg:chart}}
+<h2>Reading the columns</h2>
+<p>The output gives you filename, width, height, aspect ratio, file type, and size in bytes. Width and height are the true pixel dimensions, which is what actually matters for whether an image is sharp on a high-density display or too small for print. Aspect ratio tells you whether images will crop consistently in a grid. File type confirms what a file really is rather than what its extension claims, and file size flags the heavyweights worth compressing.</p>
+<p>A few concrete uses: confirming exported assets hit a required pixel size before a developer handoff, auditing a folder of product photos for consistent proportions before they go into a catalog grid, or finding the oversized originals dragging down a page's load time so you know which ones to run through a compressor. Download the CSV and sort by any column to make those judgments across the whole set at once.</p>
+<p>Aspect ratio deserves special attention because it is the quiet cause of so many layout problems. A grid of thumbnails only looks tidy if every image shares the same proportions; mix a 4:3 photo in with a row of 16:9 ones and one tile either gets letterboxed or cropped oddly. Scanning the ratio column lets you catch the odd-shaped file before it lands in a template and forces an awkward crop, rather than discovering it after the page is built.</p>
+<ul>
+<li>Sort the CSV by file size to find compression candidates fast.</li>
+<li>Sort by width or height to catch images that fall short of a required resolution.</li>
+<li>Check aspect ratio when images need to crop uniformly in a gallery or grid.</li>
+<li>Trust the reported file type over the extension; a ".jpg" that is actually a PNG will show its real type.</li>
+<li>Files in formats your browser can't decode report an error and the rest still process.</li>
+</ul>
+<h2>How to use this tool</h2>
+<p>Select one or more image files, click Inspect images, review the table, and download the CSV. Every file is read and measured in your browser; nothing is uploaded to or stored by this site, and the originals are never modified, resized, or re-saved.</p>
+{{svg:checklist}}
+<h2>Frequently asked questions</h2>
+<h3>What image formats does it support?</h3>
+<p>Any format your browser can render, including PNG, JPG, GIF, WebP, and SVG. A file the browser can't decode will report an error for that entry while the rest of the batch continues to process normally.</p>
+<h3>Does inspecting the images change or resize them?</h3>
+<p>No. The tool only reads and reports dimensions and metadata. Your original files are left exactly as they were, with no modification, compression, or re-export.</p>
+<h3>Why does the file type sometimes differ from the extension?</h3>
+<p>An extension is just part of the file name and can be wrong or renamed. The tool reports the actual format detected from the file's contents, which is why a file named ".jpg" might correctly show up as a PNG. The reported type is the reliable one.</p>
+<h3>Is there a limit on how many files I can inspect?</h3>
+<p>There's no hard cap, but reading a very large batch of large files uses memory and takes time. If your browser slows down, inspect a few hundred files at a time rather than thousands at once.</p>

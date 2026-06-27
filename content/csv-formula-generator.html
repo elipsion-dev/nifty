@@ -1,0 +1,42 @@
+<!--meta {"hero":{"type":"emoji","value":"🧮"},"heroPosition":"top","accent":"#7cc4d6"}-->
+<p>You know what you want the spreadsheet to do — look this value up over there, add up that column, flag the rows over a threshold. What you don't want is to remember whether the lookup value or the lookup array comes first this time.</p>
+
+<p>This tool builds ready-to-paste formulas from plain inputs: pick the type, drop in your cell references, copy the result into Excel or Google Sheets.</p>
+
+<!--more-->
+
+<h2>Pick the formula type</h2>
+<p>Choose from the dropdown: <strong>Sum a range</strong>, <strong>If/then</strong>, <strong>XLOOKUP</strong>, <strong>Join text</strong>, or <strong>Percent change</strong>. Each maps to a real function — SUM, IF, XLOOKUP, TEXTJOIN, and a percent-change expression wrapped in IFERROR so a divide-by-zero returns cleanly instead of showing an error. You're choosing the shape of the answer; the tool handles the exact argument order behind it.</p>
+
+{{svg:gear}}
+
+<h2>Fill in your cell references</h2>
+<p>Enter your primary reference or range in the first field, a second value or range in the second, and a condition where the formula needs one. Use standard notation — <em>A2:A100</em> for a column range, <em>B2</em> for a single cell. The generator drops those references into the formula literally, so they have to match your real sheet layout. If your data starts on row 5, don't leave the defaults pointing at row 2.</p>
+<p>One thing to know about XLOOKUP: the tool uses column C as the return range by default. If your return values live in a different column, paste the formula and adjust that one argument in your sheet — everything else will already be correct.</p>
+
+<h2>Check before you paste</h2>
+<ul>
+<li><strong>References are literal.</strong> The tool can't see your spreadsheet, so it trusts the ranges you type. A wrong column letter produces a valid-looking formula pointed at the wrong data.</li>
+<li><strong>Absolute vs relative.</strong> If you'll copy the formula down a column, you may want dollar signs (<em>$A$2</em>) to lock a reference. Add them after generating.</li>
+<li><strong>Locale separators.</strong> Some regional spreadsheet settings use semicolons between arguments instead of commas. If a pasted formula errors immediately, swapping commas for semicolons often fixes it.</li>
+<li><strong>Text needs quotes.</strong> Literal text inside a formula must be in double quotes; cell references must not be. Mixing those up is the most common reason a formula won't parse.</li>
+</ul>
+
+{{svg:chart}}
+
+<h2>How to use this tool</h2>
+<p>Select a type, enter your references, generate, and copy the formula. Nothing you type is sent anywhere — the formula is assembled in your browser and the tool stores nothing. There's no spreadsheet uploaded and no data involved, just text in and a formula out, all on your own device.</p>
+
+<h2>Frequently asked questions</h2>
+
+<h3>Will these formulas work in both Excel and Google Sheets?</h3>
+<p>SUM, IF, and TEXTJOIN work in both. XLOOKUP needs Excel 2019, Microsoft 365, or a current version of Google Sheets — older Excel won't recognize it (use INDEX/MATCH or VLOOKUP instead there). The percent-change formula relies on IFERROR, which both applications support.</p>
+
+<h3>Can I generate a formula type that isn't in the list?</h3>
+<p>The tool covers the five types in the dropdown. For anything else, the closest type often gives a workable skeleton you can edit by hand once it's in your sheet — for instance, adapting the IF output into a nested IF.</p>
+
+<h3>The formula pasted but returned an error — why?</h3>
+<p>Usually the references don't match your real layout, or your spreadsheet's locale expects semicolons between arguments. Confirm the ranges point at your actual data, and try replacing commas with semicolons if you're in a region that uses them.</p>
+
+<h3>Does it work with my data, or just cell references?</h3>
+<p>Just references. The tool builds the formula text; you paste it into a sheet where your data already lives. It never sees or needs the data itself.</p>

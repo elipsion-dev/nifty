@@ -1,0 +1,42 @@
+<!--meta {"hero":{"type":"emoji","value":"🧩"},"heroPosition":"top","accent":"#6aa9ff"}-->
+<p>Twelve monthly exports, four regional reports, a folder of batch dumps that all carry the same columns — stitching them together by hand means a lot of copy, paste, and quiet praying that you didn't paste a header row into the middle of the data.</p>
+
+<p>This tool stacks CSV files that share a column layout into one file: header from the first file, data rows from every file after it.</p>
+
+<!--more-->
+
+<h2>Pick the files that share a layout</h2>
+<p>Select two or more CSVs with the file picker. The only thing that has to match is the columns themselves — same names, same order, left to right. The files can come from different months or different systems; what matters is that column three means the same thing in every file. The tool reads each one, keeps the header from the first file you selected, and appends the data rows from the rest beneath it.</p>
+<p>Selection order is also output order. If you want January through December in sequence, select them in that order, because the tool stacks them exactly as you hand them over. It does not sort or reorder rows for you.</p>
+
+{{svg:document}}
+
+<h2>What happens to the repeated header rows</h2>
+<p>Most exports of the same report include their own header row. The tool watches for this: when a later file's first row matches the header it already kept, it drops that duplicate so you don't end up with "Date,Amount,Status" sitting in row 4,001. The catch is that the match has to be exact. If one export wrote <em>Amount</em> and another wrote <em>amount </em> with a trailing space, the second header slips through and lands in your data as a row. Skim the merged preview around each file boundary before you trust it.</p>
+
+<h2>Common pitfalls before you merge</h2>
+<ul>
+<li><strong>Reordered columns.</strong> Two files with the same column names but a different order will silently misalign — addresses landing under the phone column. Standardize order first.</li>
+<li><strong>Mixed delimiters.</strong> One comma-separated file and one tab- or semicolon-separated file won't stack cleanly. Convert them to one delimiter first.</li>
+<li><strong>A column added mid-year.</strong> If a newer export gained a "Region" column the older files lack, the row widths differ and everything after that point shifts. Align the schema before merging.</li>
+<li><strong>UTF-8 BOM on one file.</strong> A byte-order mark on the first file can attach an invisible character to your first header name. If a downstream import complains about a column it "can't find," this is a usual suspect.</li>
+</ul>
+
+{{svg:checklist}}
+
+<h2>How to use this tool</h2>
+<p>Choose your files, click to process, and a preview of the combined data appears with a download button for the single merged CSV. Everything runs inside your browser using the file contents loaded into the page — nothing is uploaded to a server, stored, or sent anywhere. You can do this offline once the page has loaded, and the files never leave your machine.</p>
+
+<h2>Frequently asked questions</h2>
+
+<h3>Does it handle files with different column orders?</h3>
+<p>No. The merge stacks rows positionally and uses the column order of the first file. Same columns in a different arrangement will put data in the wrong place. Fix the order first — the Column Mapper tool on this site can help.</p>
+
+<h3>What if my files have slightly different columns?</h3>
+<p>The tool assumes a shared layout. If one file has an extra column or a renamed one, the rows won't line up consistently. Bring every file to the same schema before merging; otherwise the wider or narrower rows will throw off everything below them.</p>
+
+<h3>Will it remove duplicate data rows across files?</h3>
+<p>No — only repeated header rows are dropped. If the same record appears in two source files, both copies land in the output. Run the merged file through the Remove Duplicate Rows tool afterward if overlap is likely.</p>
+
+<h3>Is there a limit on how many files I can merge?</h3>
+<p>There's no fixed cap, but because the work happens in your browser's memory, very large totals are bounded by what your device can hold at once. Merging dozens of modest monthly files is comfortable; combining several huge multi-gigabyte exports may strain a low-memory machine.</p>

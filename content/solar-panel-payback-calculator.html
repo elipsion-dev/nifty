@@ -1,55 +1,52 @@
 <!--meta {"hero":{"type":"emoji","value":"☀️"},"heroPosition":"bottom","accent":"#d4a017","layout":"feature"}-->
-<p>Going solar is one of the larger financial decisions a homeowner can make. The promise is compelling — lock in lower electricity costs for decades — but the upfront price tag is significant, and the math involves several moving parts. This calculator cuts through the noise by answering the one question that matters most: how long until the system pays for itself?</p>
+<p>Solar is one of the few home upgrades sold primarily as an investment: spend a large sum now, lock in lower electricity costs for decades. Whether that trade is worth it comes down to a single question — how many years of savings does it take to earn back what you spent? That is the payback period, and it is the number this calculator is built to answer.</p>
 
-<p>Enter your gross system cost, any tax credits or rebates you expect to receive, your current monthly electric bill, and the percentage of that bill solar is expected to offset. The calculator returns your net cost after incentives, your estimated annual savings, your payback period in years, and a rough 25-year net savings figure — the same horizon most panels are rated for. Everything is calculated instantly in your browser; nothing you enter is sent to any server.</p>
-
-<p>The result is a starting point for conversations with installers and your accountant, not a final bid. Electricity rates, local sunlight, roof orientation, and available incentives all vary significantly, so treat the output as a framework for comparison rather than a precise forecast.</p>
+<p>Enter your gross system cost, the incentives you expect as a percentage, your current monthly electric bill, and the share of that bill solar will offset. The tool returns your net cost after incentives, your estimated annual savings, your payback period in years, and a rough 25-year net — the horizon most panels are warrantied for. It all runs in your browser, with nothing uploaded. Treat the result as a framework for comparing quotes, not a final bid.</p>
 
 <!--more-->
 
-<h2>How the payback calculation works</h2>
+<h2>Gross system cost and incentives: getting to net</h2>
 
-<p>The calculator follows a straightforward four-step logic that you can verify yourself at any time.</p>
+<p>Gross cost is the installed price before any credits or rebates — the number at the bottom of an installer's quote. Because that number varies more than most homeowners expect, gather two or three quotes rather than anchoring on the first. The calculator then subtracts incentives expressed as a percentage of gross cost: <em>net cost = gross cost × (1 − incentive %)</em>.</p>
 
-<h3>Step 1 — Net cost after incentives</h3>
+<p>The federal Residential Clean Energy Credit has historically covered a meaningful share of installed cost, and many states and utilities stack their own rebates on top. But the percentage you can actually claim depends on your tax liability, your state, and your utility — and incentive programs change, sunset, and get revised. Do not treat any headline percentage as guaranteed; confirm the current federal rate and your local programs with a tax professional and your installer's finance team before you bank on a net number.</p>
 
-<p>Your gross system cost is the price before any credits or rebates. The federal Residential Clean Energy Credit has historically covered a meaningful share of installation costs, and many states and utilities layer additional incentives on top. The calculator expresses total incentives as a percentage of gross cost, then subtracts that amount: net cost = gross cost × (1 − incentive %). At a 30% incentive on a $25,000 system, for example, the net cost would be $17,500 — but the actual percentage available to you depends on your tax liability, state, and utility, so verify current figures with a tax professional before counting on any specific number.</p>
+{{svg:leaf}}
 
-<h3>Step 2 — Estimated annual savings</h3>
+<h2>Your electric bill and the offset percentage</h2>
 
-<p>Annual savings are calculated from your current monthly electric bill and the share of it that solar is expected to cover: annual savings = monthly bill × 12 × offset %. A system sized to offset 90% of a $160 monthly bill would produce roughly $1,728 in savings per year in this model. The offset percentage varies with system size, roof space, local sun hours, and how your utility handles net metering — ask any installer for a production estimate specific to your address.</p>
+<p>Annual savings come from two inputs: <em>monthly bill × 12 × offset %</em>. The monthly bill should be a twelve-month average, not a single statement — usage swings hard between a mild spring and an air-conditioned August, and one month will mislead you. The offset percentage is the share of your usage the system is sized to cover. A small array on a shaded north-facing roof might offset a fraction of your bill; a large array on unobstructed south-facing pitch might cover nearly all of it.</p>
 
-<h3>Step 3 — Payback period</h3>
+<p>Two homes with identical bills can see very different savings purely from roof orientation, shading, and local sun hours. That is why the offset figure should come from an installer's production estimate for your specific address — including a shading analysis — rather than a generic assumption. As a transparency check on the math: if you plug in a $200 monthly bill at a 90% offset, the model returns $2,160 in annual savings (200 × 12 × 0.90). That is the formula working on your numbers, not a market forecast.</p>
 
-<p>The payback period is simply net cost divided by annual savings. It tells you how many years of electricity savings it takes to recover what you spent. This is the central metric for a solar decision because it normalizes systems of different sizes and costs into a single comparable number. A shorter payback means the investment recovers faster and leaves more years of pure savings within the panel's rated life.</p>
+<h2>Payback period and 25-year net</h2>
 
-<h3>Step 4 — 25-year net savings</h3>
+<p>Payback is simply net cost divided by annual savings — the number of years of electricity savings it takes to recover what you spent. It is the central metric because it normalizes systems of different sizes into one comparable figure. The 25-year net takes annual savings × 25 and subtracts net cost, representing the total value captured over a typical panel warranty if savings held perfectly flat. They rarely hold perfectly flat, which is the point of the next section.</p>
 
-<p>Most residential solar panels carry a 25-year performance warranty, making that the standard planning horizon. The 25-year net figure is annual savings × 25 minus net cost. It represents the total value you'd capture over that period if savings hold flat — which brings us to what the model intentionally leaves out.</p>
+<h2>What simple payback leaves out</h2>
 
-<h2>What simple payback does not capture</h2>
+<p>The model holds savings constant. Reality nudges the outcome in both directions, and it is worth knowing which way before you commit.</p>
 
-<p>The model holds annual savings constant, which is a useful simplification but not a complete picture. A few factors push real-world outcomes in either direction and are worth understanding before you commit.</p>
+<ul>
+<li><strong>Rising utility rates</strong> make your savings grow over time, so the flat 25-year figure may understate the real benefit.</li>
+<li><strong>Panel degradation</strong> trims output by a small amount each year; the constant-output assumption slightly overstates savings in the later years. Check the degradation warranty on any panel you consider.</li>
+<li><strong>Financing costs:</strong> if you borrow, the interest you repay is not in the gross-cost figure, so your true cost is higher and payback is longer than the tool shows.</li>
+<li><strong>Inverter and battery replacement:</strong> string inverters often carry a shorter warranty than the panels and may need replacing once within the period; battery storage has its own replacement clock. Neither is in the simple model.</li>
+</ul>
 
-<p><strong>Utility rate inflation.</strong> If electricity prices rise over time, your savings grow proportionally — making the investment look better than the flat model suggests. The calculator does not compound rate increases, so the 25-year figure could be conservative if rates rise meaningfully.</p>
+{{svg:piggy}}
 
-<p><strong>Panel degradation.</strong> Solar panels lose a small amount of output each year. A commonly cited figure in the industry is around 0.5% per year, but the actual rate varies by manufacturer and technology — verify the degradation warranty on any panel you're considering. The calculator assumes constant output, so real savings may be slightly lower in later years.</p>
+<h2>How to use this calculator</h2>
 
-<p><strong>Financing costs.</strong> If you finance the system with a loan, interest adds to your true cost. The calculator uses your gross cost as entered; if you're borrowing, the total you repay will be higher than the sticker price, and payback will take longer than the calculator shows.</p>
-
-<p><strong>Maintenance and inverter replacement.</strong> String inverters typically carry a 10–15 year warranty and may need replacement before the panel warranty expires. Battery storage, if added, brings its own replacement timeline. Neither of these is included in the simple payback model.</p>
-
-<h2>Inputs to gather before you calculate</h2>
-
-<p>The more accurate your inputs, the more useful the output. For gross system cost, get at least two or three installer quotes — prices vary more than most people expect. For the incentive percentage, check the current federal credit rate (it has changed over time), your state's solar incentive database, and any utility rebate programs; your installer's finance team or a tax professional can help confirm what you can actually claim. For your monthly bill, use an average across 12 months rather than a single month, since usage fluctuates seasonally. For the offset percentage, ask installers for a shading analysis and production estimate specific to your roof rather than using a generic number.</p>
+<p>Enter gross cost from a real quote, a verified incentive percentage, your averaged monthly bill, and an installer-provided offset estimate. The four outputs update instantly. Run it against each competing quote to compare them on payback rather than sticker price. All calculation happens in your browser — nothing you enter is sent to a server or stored anywhere.</p>
 
 <h2>Frequently asked questions</h2>
 
 <h3>Does the calculator account for net metering?</h3>
-<p>Not directly. The offset percentage is where net metering implicitly enters the picture — if your utility credits excess production at or near the retail rate, a higher offset percentage is reasonable. If your utility has moved to a lower avoided-cost rate for exported power, your effective offset may be lower than the system's nameplate coverage suggests. Ask your installer how your utility compensates exported energy and adjust the offset input accordingly.</p>
+<p>Indirectly, through the offset percentage. If your utility credits excess production at or near the retail rate, a high offset is realistic. If your utility has shifted to a lower avoided-cost rate for power you export to the grid, your effective offset is lower than the system's nameplate coverage suggests, and you should reduce the offset input accordingly. Ask your installer exactly how your utility compensates exported energy — net-metering rules have been changing in many states and materially affect the savings.</p>
 
-<h3>What payback period is generally considered good for solar?</h3>
-<p>There is no universal benchmark, but installers and financial advisors commonly discuss payback periods in the range of 6 to 12 years as reasonable for residential solar, with shorter periods representing better economics. Because most panels are rated for around 25 years, a 7-year payback leaves roughly 18 years of net savings, while a 12-year payback leaves about 13. Your comfort with that ratio — and how long you plan to stay in the home — should guide the decision more than any single target number.</p>
+<h3>What counts as a good payback period?</h3>
+<p>There is no universal benchmark, but residential payback periods are commonly discussed in the range of roughly 6 to 12 years, with shorter being better economics. Since panels are typically warrantied around 25 years, a shorter payback leaves more years of near-pure savings inside the warranty window. How long you plan to stay in the home matters as much as the number itself — payback only benefits you if you own the system long enough to reach it.</p>
 
-<h3>Will solar increase my home's resale value?</h3>
-<p>Research has generally found that owned solar installations add to resale value, though the amount varies by market, system age, and whether the system is owned outright or under a lease or power purchase agreement. Leased systems and PPAs can complicate a sale because the contract transfers to the buyer. The calculator does not model resale value impact — it focuses purely on the energy savings payback — so factor any value-at-sale estimates separately when weighing the full financial picture.</p>
+<h3>Will solar raise my home's resale value?</h3>
+<p>Studies have generally found that owned solar adds to resale value, though the amount varies by market, system age, and ownership structure. The important distinction is ownership: a system you own outright is an asset that transfers cleanly, while a leased system or power-purchase agreement assigns a contract to the buyer, which can complicate a sale. This calculator models only the energy-savings payback, so weigh any resale impact separately.</p>

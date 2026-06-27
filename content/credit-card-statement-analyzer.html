@@ -1,0 +1,43 @@
+<!--meta {"hero":{"type":"emoji","value":"💳"},"heroPosition":"top","accent":"#e8845b"}-->
+<p>Most people read a credit card statement for exactly one number: the balance due. Everything that explains that number, the dozens of charges that built it up, scrolls past unexamined. Yet that detail is where the useful story lives.</p>
+
+<p>This tool reads a CSV statement and reorganizes it two ways, by category and by merchant, so the pattern behind the total becomes visible. It is an estimate built from your own data, processed on your device, meant to inform rather than to advise.</p>
+
+<!--more-->
+
+<h2>Spending by category</h2>
+<p>The analyzer assigns each charge to a category by matching keywords in the merchant description, then totals each category. Typical buckets include groceries, dining, transportation, utilities, subscriptions, shopping, and healthcare. Seeing the categories ranked by size tells you immediately where the money concentrates, and where a change would move the needle most. Because the assignment comes from text matching, it is approximate: a fuel station that also sells snacks, or a warehouse club spanning several categories, can land in a bucket you would have chosen differently. Read the breakdown as a map of proportions, not a precise ledger.</p>
+
+{{svg:chart}}
+
+<h2>Spending by merchant</h2>
+<p>The merchant view normalizes descriptions so the same business groups together even when the statement prints it several ways, then totals what you spent at each one. This is often more revealing than the category view, because it surfaces the specific places that quietly add up. A single restaurant visited weekly, or one online retailer hit on impulse, can rival an entire category. Ranking merchants by total spend turns a vague sense of "I eat out too much" into a concrete, named figure you can actually react to.</p>
+<p>Consider a clean export from a major issuer, where merchant names are tidy, versus a messier file where one store appears under three slightly different strings. Normalization is what lets both produce a single honest total per merchant rather than fragmenting the spend.</p>
+
+<h2>Total activity and the sanity check</h2>
+<p>The analyzer also reports total transaction volume for the period. Credits, returns, and payments arrive as negative amounts and are handled separately from purchases, so they do not inflate your spending totals. One practical use of the total is a sanity check: compare it against the statement balance before payments to confirm you uploaded the full period and nothing was truncated.</p>
+<ul>
+<li>A single merchant whose weekly visits quietly rival a whole category.</li>
+<li>Subscriptions scattered across the statement that add up once grouped.</li>
+<li>Mixed-purpose stores that a keyword cannot categorize precisely.</li>
+<li>Returns and credits that should reduce, not inflate, a category total.</li>
+<li>A partial export that ends mid-period and understates the real picture.</li>
+</ul>
+
+{{svg:receipt}}
+
+<h2>How to use this tool</h2>
+<p>Download a CSV from your card issuer's website or app, then select it here. The analyzer reads the file in your browser, looking for date, description, and amount columns, including files that split debit and credit. Nothing is transmitted or stored; the analysis is computed locally and discarded when you reload or close the page. If you want proof, disconnect from the internet first, the summaries still generate, because no server is involved.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>What CSV format does it expect?</h3>
+<p>At minimum a date, a description or merchant name, and an amount column. Most major issuers offer a CSV or spreadsheet download from the account activity page. Files that use separate debit and credit columns instead of one signed amount are also supported.</p>
+
+<h3>Is it safe to upload my statement?</h3>
+<p>Your file is never uploaded. It is read by code running in your browser and never sent to a server, and nothing from it persists after you close the page. The processing is local in the same sense a desktop app would be local.</p>
+
+<h3>Why are some charges in the wrong category?</h3>
+<p>Categorization depends on keywords in the description, and statement descriptions are often abbreviated or coded. A store that sells across categories, or one with an opaque name, can be assigned imperfectly. Use the category view for proportions and the merchant view, which is more reliable, for specifics.</p>
+
+<h3>Does this tell me what I should do with my money?</h3>
+<p>No. It summarizes your own spending so you can draw your own conclusions. The figures are estimates derived from text matching, not financial advice, and they are best treated as a starting point for your own review.</p>

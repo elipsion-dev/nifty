@@ -1,6 +1,6 @@
 # Nifty Utilities: Complete Tool Directory
 
-Nifty Utilities is a free collection of 93 practical web utilities. No account is required. The website has no application backend, upload endpoint, or database capable of receiving tool inputs. Processing happens in the visitor's browser.
+Nifty Utilities is a free collection of 86 practical web utilities. No account is required. The website has no application backend, upload endpoint, or database capable of receiving tool inputs. Processing happens in the visitor's browser.
 
 ## Finance / CSV
 

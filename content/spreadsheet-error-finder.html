@@ -1,0 +1,43 @@
+<!--meta {"hero":{"type":"emoji","value":"🚨"},"heroPosition":"top","accent":"#e8845b"}-->
+<p>A bad CSV doesn't announce itself. It loads fine, looks fine, and then breaks an import three steps later or quietly throws off a sum — and you're left tracing the failure back through the whole pipeline.</p>
+
+<p>This tool scans a CSV up front for the usual structural and data-quality problems: blank cells, rows with the wrong number of columns, and stray spreadsheet error values.</p>
+
+<!--more-->
+
+<h2>What the scan checks</h2>
+<p>Process your file and the tool walks every row and every cell, measuring each against the expected column count and watching for telltale problem values. Three categories surface most often: <strong>blank cells</strong> where a value was expected, <strong>rows with the wrong width</strong> — too few or too many columns, which usually means an unescaped delimiter or a ragged export — and cells holding <strong>spreadsheet error strings</strong> that got pasted in as values when the file was exported.</p>
+
+{{svg:checklist}}
+
+<h2>The issues report</h2>
+<p>The output is a separate CSV listing each problem with its row number, column name, issue type, and the offending cell value, plus a total count as a summary. That structure matters: instead of a vague "your file has errors," you get a worklist you can open in a spreadsheet, sort by issue type or column, and walk through one by one. The tool reports; it does not change your source data, so nothing is altered behind your back.</p>
+
+<h2>Reading the findings with judgment</h2>
+<p>Not every flag is a defect. A blank cell may be a genuinely optional field — a missing middle name isn't an error. The value of the report is context: review each flagged item against what that column is supposed to mean rather than treating every line as broken. A column that's almost entirely blank usually points to either an unused optional field or a systematic gap worth investigating at the source. Spreadsheet error values, on the other hand, almost never belong in clean data and are worth fixing every time.</p>
+
+<ul>
+<li><strong>Error strings detected:</strong> common ones like REF, VALUE, DIV/0, N/A, and NAME errors — the residue of formulas that failed before the file was exported as values.</li>
+<li><strong>Width mismatches:</strong> often caused by a comma inside an unquoted field, splitting one value into two and making the row too wide.</li>
+<li><strong>Trailing empty columns:</strong> a frequent source of "wrong width" flags from spreadsheet exports that pad rows on the right.</li>
+<li><strong>Blanks in key columns:</strong> a missing ID or date is far more serious than a missing optional note — weigh them differently.</li>
+</ul>
+
+{{svg:document}}
+
+<h2>How to use this tool</h2>
+<p>Upload the CSV, process it, review the issue summary, and download the report to dig in. The scan runs entirely in your browser — your data is read locally and never uploaded or stored anywhere. You can audit a sensitive export for problems without sending a single row to a server.</p>
+
+<h2>Frequently asked questions</h2>
+
+<h3>What error values does it detect?</h3>
+<p>It flags cells containing common spreadsheet error strings — including REF, VALUE, DIV/0, N/A, and NAME errors. These appear when formulas that errored out were saved as static values during export, and they almost always indicate a problem upstream.</p>
+
+<h3>Does it fix the errors it finds?</h3>
+<p>No. It identifies and reports issues without modifying your data. Use the report to locate each problem in your source file, correct it there, then rescan to confirm the issues are gone.</p>
+
+<h3>Why is it flagging blanks that are fine?</h3>
+<p>The scan can't know which blanks are acceptable in your data, so it flags them all and leaves the judgment to you. For columns that are legitimately optional, you can simply disregard those entries in the report.</p>
+
+<h3>What causes a "wrong number of columns" flag?</h3>
+<p>Usually a delimiter character sitting inside a field that wasn't wrapped in quotes — a comma in an address, for instance — which splits one value into two and makes the row too wide. Trailing empty columns from a spreadsheet export are another common cause.</p>

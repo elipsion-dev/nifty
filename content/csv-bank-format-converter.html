@@ -1,0 +1,43 @@
+<!--meta {"hero":{"type":"emoji","value":"🔀"},"heroPosition":"top","accent":"#6aa9ff"}-->
+<p>The pain shows up the moment you try to combine accounts. One bank puts the date first, another puts it third. One uses a single signed amount, another splits debits and credits into two columns. One calls the payee "Description," another calls it "Memo." Stack those files together and nothing lines up.</p>
+
+<p>This converter exists to make many banks speak one language: it maps whatever your source file calls its columns into a clean date, description, and single signed-amount layout that imports anywhere and merges without a fight.</p>
+
+<!--more-->
+
+<h2>Mapping inconsistent column names</h2>
+<p>The converter reads your header row and matches each column to a standard role regardless of what your bank named it. Dates might be labeled "Date," "Posting Date," or "Transaction Date"; the payee might be "Description," "Details," "Memo," or "Payee." Rather than demanding one rigid format, it recognizes the common conventions and assigns them to the output's fixed columns. The goal is not to clean noise out of the descriptions; it is to reconcile the structural differences between institutions so files from different sources end up shaped the same.</p>
+
+{{svg:route}}
+
+<h2>Collapsing debit and credit columns into one signed amount</h2>
+<p>The biggest structural mismatch between banks is how they represent money in and money out. Many large banks ship a single "Amount" column where debits are already negative. Plenty of credit unions and smaller institutions instead use two columns, "Debit" and "Credit," each holding positive numbers. The converter handles both: when it finds split columns, it combines them into one signed amount, turning credits positive and debits negative. That single-column shape is the lingua franca most spreadsheets and budgeting tools expect, and it is what makes two differently-built files stack cleanly.</p>
+<p>Imagine merging a national bank's signed-amount export with a credit union's debit/credit export covering the same months. Run both through the converter and they emerge in the identical three-column layout, ready to concatenate into one continuous history instead of two incompatible files.</p>
+
+<h2>Producing a consistent merge-ready output</h2>
+<p>Alongside the column mapping, the converter strips currency symbols from amounts so they read as numbers, trims description whitespace, and drops blank rows. The output is intentionally minimal and predictable, which is exactly what you want feeding the other finance tools on this site.</p>
+<ul>
+<li>Different column orders that prevent a naive copy-paste merge.</li>
+<li>Split debit/credit columns where the destination expects one signed amount.</li>
+<li>Currency symbols that turn an otherwise-numeric amount into text.</li>
+<li>Proprietary header names that automatic detection cannot anticipate.</li>
+<li>Mismatched description labels across banks for the same concept.</li>
+</ul>
+
+{{svg:gear}}
+
+<h2>How to use this tool</h2>
+<p>Choose your bank statement CSV and the converter processes it in your browser. It detects the columns, maps them into the standard layout, combines any debit and credit columns into one signed amount, and shows a preview so you can confirm the mapping before downloading. Nothing is uploaded; the conversion runs locally and the file never touches a server. This tool and the Bank Statement Cleaner share the same detection engine and output shape, so pick whichever name fits how you think about the task: converting between banks, or cleaning one bank's export.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>Does it work with statements from any bank?</h3>
+<p>It works with any CSV whose headers are recognizable as date, description, and amount fields, which covers the large majority of consumer banks and card issuers. Very unusual or proprietary header names may not be detected automatically.</p>
+
+<h3>What if my column names are not recognized?</h3>
+<p>If the preview shows a wrong or missing mapping, rename your columns to plain "Date," "Description," and "Amount" in a text editor or spreadsheet, then run the file again. The converter will pick them up reliably once the headers use standard words.</p>
+
+<h3>How are debit and credit columns combined?</h3>
+<p>They are merged into a single signed amount column. Credit values become positive and debit values become negative, matching the convention used by most analysis tools so the output imports cleanly.</p>
+
+<h3>Can I use the output to merge several banks together?</h3>
+<p>Yes. That is the main reason to convert. Once every file is in the identical date, description, signed-amount layout, you can stack them into one history, then run the result through the Duplicate Transaction Finder to clean up any overlap from the merge.</p>

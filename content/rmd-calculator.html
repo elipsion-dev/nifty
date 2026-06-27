@@ -1,30 +1,48 @@
 <!--meta {"hero":{"type":"emoji","value":"🧮"},"heroPosition":"bottom","accent":"#6d4c7d"}-->
-<p>A required minimum distribution starts with two numbers: the account balance at the end of the previous calendar year and an IRS life-expectancy divisor for your age in the distribution year. This calculator keeps that arithmetic visible, then subtracts anything you already withdrew toward the year’s requirement.</p>
+<p>A required minimum distribution is one of the few retirement calculations the IRS reduces to a single division problem: a balance divided by a factor. The trouble is rarely the arithmetic. It is using last year's right balance, this year's right factor, and the right table for who you actually are.</p>
 
-<p>It is deliberately limited to an original account owner using the Uniform Lifetime Table. That boundary prevents a quick estimate from silently applying the wrong table to a spouse-beneficiary or inherited-account situation.</p>
+<p>This calculator keeps that division in plain sight for an original account owner using the IRS Uniform Lifetime Table, then subtracts anything you have already taken so you can see what is still owed for the year.</p>
 
 <!--more-->
 
-<h2>The RMD equation</h2>
-<p><strong>Prior December 31 balance ÷ distribution period = calculated RMD.</strong> The distribution period is not your remaining life expectancy in plain language; it is the factor assigned by the IRS table. As age increases, the factor generally decreases and the portion required to be distributed increases.</p>
+<h2>The prior year-end balance</h2>
+<p>The first input is the fair market value of the retirement account on December 31 of the year <em>before</em> the distribution year. Not today's balance, not an average, not the value on your birthday. Custodians report this figure, but it can be muddied by year-end rollovers in transit, transfers between accounts, or recharacterizations. Reconcile the statement before you trust the result, because an inflated or stale balance flows straight through to an inflated RMD.</p>
 
-<h2>Which balance belongs in the first box?</h2>
-<p>Use the retirement account’s fair market value on December 31 immediately before the RMD year. Do not enter today’s balance. Rollovers, outstanding rollovers, transfers, and multiple IRAs can complicate the amount a custodian reports, so reconcile the statement before treating the result as final.</p>
+{{svg:piggy}}
 
-<h2>When this calculator must stop</h2>
-<p>If a spouse more than ten years younger is the sole beneficiary, the IRS Joint Life and Last Survivor Table may apply. Beneficiaries of inherited accounts face separate life-expectancy and ten-year rules. Selecting either situation produces a stop message instead of a misleading dollar amount.</p>
+<h2>Your age and the Uniform Lifetime factor</h2>
+<p>The second input is your age in the distribution year, which the tool maps to a distribution period from the IRS Uniform Lifetime Table. That period is not your remaining life expectancy in everyday terms; it is a published factor. As age rises the factor shrinks, so the fraction of the account you must withdraw grows each year. The equation is simply <strong>prior December 31 balance ÷ distribution period = the year's RMD</strong>.</p>
 
-<h2>Whether a distribution is due is a separate question</h2>
-<p>Current federal rules generally start owner RMDs at age 73, but birth year, account type, employment, plan terms, and first-year timing matter. Roth IRAs generally do not require owner distributions during the owner’s lifetime. Employer plans may allow a still-working participant to delay, while an IRA generally does not use that exception.</p>
+<h2>Amounts already withdrawn this year</h2>
+<p>If you have taken distributions earlier in the year, the tool subtracts them so the remaining requirement is visible. This matters most late in the calendar year, when people who have been drawing income monthly want to know whether they have already cleared the minimum or still need a final withdrawal before December 31.</p>
 
-<h2>Two deadlines can land in one tax year</h2>
-<p>A first RMD may generally be delayed until April 1 of the following year, but the next annual RMD is still due by December 31 of that same year. Delaying can therefore place two taxable distributions in one calendar year. That is a tax-planning issue, not merely a deadline choice.</p>
+<h2>When this calculator stops on purpose</h2>
+<p>The Uniform Lifetime Table is not universal. The tool refuses to give a number in two situations where a different table or rule applies, because a confident wrong answer would be worse than none:</p>
+<ul>
+<li>A spouse more than ten years younger is your sole beneficiary, which may call for the IRS Joint Life and Last Survivor Table and a smaller required amount</li>
+<li>You are taking distributions from an inherited account, which follows separate beneficiary life-expectancy rules and, for many beneficiaries, a ten-year payout window</li>
+</ul>
 
-<p>Verify the result with the IRS <a href="https://www.irs.gov/rmd" rel="noopener">required minimum distribution guidance</a>, the current Publication 590-B, and the account custodian.</p>
+{{svg:calendar}}
+
+<h2>Whether a distribution is even due yet</h2>
+<p>Calculating an RMD is not the same as owing one. Under current federal rules owner RMDs generally begin at age 73, but your birth year, account type, and plan terms all matter. Roth IRAs generally require no distributions during the owner's lifetime. Some employer plans let a still-working participant who is not a major owner delay until retirement, an exception an IRA generally does not offer. Confirm your start year before assuming a withdrawal is required.</p>
+
+<h2>The first-year timing trap</h2>
+<p>Your very first RMD can usually be delayed until April 1 of the following year. That sounds generous until you notice the second year's RMD is still due by that same December 31. Delaying therefore stacks two taxable distributions into one calendar year, which can push you into a higher bracket or trigger other thresholds. Treat that as a tax-planning decision, not just a deadline you are free to slide.</p>
+
+<h2>How to use this calculator</h2>
+<p>Enter the prior year-end balance, your age this year, and anything already withdrawn. The math happens entirely in your browser; no balances or ages are uploaded or saved. Use the figure as an estimate and reconcile it against the IRS <a href="https://www.irs.gov/retirement-plans/retirement-plan-and-ira-required-minimum-distributions-faqs" rel="noopener">required minimum distribution guidance</a>, the current Publication 590-B, and your custodian's own calculation. Rules and tables change, and individual situations vary; this is a planning aid, not tax advice.</p>
 
 <h2>Frequently asked questions</h2>
-<h3>Can I withdraw more than the calculated RMD?</h3>
-<p>Yes. The RMD is a minimum, although an excess generally does not reduce a future year’s RMD.</p>
-<h3>Can I combine every retirement account?</h3>
-<p>Not automatically. Aggregation rules differ among IRAs and employer plans. Calculate and satisfy each account under the rules that apply to that account type.</p>
+<h3>Can I take more than the RMD?</h3>
+<p>Yes. The RMD is a floor, not a ceiling. But withdrawing extra in one year generally does not reduce a future year's required amount, and the excess is still taxable when it comes from a pre-tax account.</p>
 
+<h3>Can I satisfy every account from just one of them?</h3>
+<p>Sometimes, but not freely. RMDs from multiple traditional IRAs may often be aggregated and taken from any one of them, while employer plans like 401(k)s generally must each pay their own RMD separately. Calculate each account under the rule that fits its type.</p>
+
+<h3>What happens if I miss the deadline?</h3>
+<p>A missed RMD has historically carried a steep excise tax on the shortfall, though the penalty rate and waiver process have changed in recent law. Because the consequences and relief options shift, confirm the current penalty and correction procedure with the IRS rather than relying on an older figure.</p>
+
+<h3>Does this handle 401(k)s or only IRAs?</h3>
+<p>The Uniform Lifetime math here applies to many owner accounts, but aggregation, still-working exceptions, and plan-specific terms differ between IRAs and employer plans. Use the result as the arithmetic starting point and confirm the account-type rules separately.</p>

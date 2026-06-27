@@ -1,0 +1,43 @@
+<!--meta {"hero":{"type":"emoji","value":"🔀"},"heroPosition":"top","accent":"#2dd4bf"}-->
+<p>"CSV" implies commas, but plenty of exports arrive separated by tabs, semicolons, or pipes instead — and the system you're feeding may demand exactly one of those. The separator is a small detail that quietly decides whether an import succeeds.</p>
+
+<p>This tool detects the delimiter your file already uses and rewrites the data with whichever one you pick.</p>
+
+<!--more-->
+
+<h2>Upload and choose your output delimiter</h2>
+<p>Drop in your delimited text file and select the output separator from the dropdown — comma, tab, semicolon, or pipe. The tool parses the file using its detected input delimiter and re-emits every row with the one you chose. The converted result appears in a text area you can copy straight out or download as a file.</p>
+
+{{svg:gear}}
+
+<h2>Auto-detection of the input delimiter</h2>
+<p>You don't specify the incoming separator — the tool scans the file and infers it from the structure, so a tab-separated or semicolon-separated source converts without any manual setup. Detection is reliable when one delimiter clearly dominates each row. It can get confused only in unusual cases, such as a file where the "real" separator is rare but another candidate character appears frequently inside the text. If a conversion looks scrambled, that mismatch is the first thing to check.</p>
+
+<h2>Why the delimiter matters — and the quoting trap</h2>
+<p>The reason semicolons and pipes exist as separators at all is to dodge commas. European exports often use semicolons because commas serve as decimal marks there. The classic failure is a comma <em>inside</em> a value — "Smith, John" or "$1,200" — which a naive parser reads as a column break. Proper CSV handles this by wrapping such values in double quotes, and this tool respects those quoting rules. But if your source has unquoted delimiter characters sitting inside field values, no tool can reliably tell data from structure, and parsing will go wrong.</p>
+
+<ul>
+<li><strong>Quoted values are safe.</strong> A field wrapped in double quotes can contain the delimiter; the parser keeps it as one field.</li>
+<li><strong>Unquoted delimiters in values</strong> will split a field in two — this breaks parsing regardless of which tool you use. Fix the quoting at the source.</li>
+<li><strong>Switching to tab</strong> is a common fix when commas inside values keep breaking a comma-based import, since tabs rarely appear in ordinary text.</li>
+<li><strong>Embedded line breaks</strong> inside quoted fields and unusual characters are worth reviewing in the converted output before you rely on it.</li>
+</ul>
+
+{{svg:document}}
+
+<h2>How to use this tool</h2>
+<p>Upload the file, choose the output delimiter, process, and copy or download the result. The conversion happens entirely in your browser — the file is read on your device and never uploaded or stored. Whatever the data is, it stays local.</p>
+
+<h2>Frequently asked questions</h2>
+
+<h3>Why would I want a tab-delimited file instead of CSV?</h3>
+<p>Some database loaders, older import systems, and certain government data formats expect tabs. Tab-delimited format also sidesteps the comma-inside-a-value problem entirely, since tabs almost never occur in ordinary text. When a comma-based import keeps failing on punctuation in your data, switching to tab often clears it up.</p>
+
+<h3>Can it handle values that contain the delimiter character?</h3>
+<p>Yes, as long as those values are properly quoted in the source. The parser follows standard quoting rules — a field wrapped in double quotes can hold the delimiter without breaking. Unquoted delimiter characters inside values, however, can't be reliably distinguished from real separators.</p>
+
+<h3>Do I need to tell it the input delimiter?</h3>
+<p>No. The tool detects it automatically by scanning the file's structure, so comma, tab, semicolon, and pipe sources all convert without manual selection. You only choose the output delimiter.</p>
+
+<h3>The output looks scrambled — what happened?</h3>
+<p>Most likely the auto-detection picked the wrong input delimiter because another character appeared more often than the real separator, or the source had unquoted delimiters inside its values. Check the source file's quoting and consistency, then convert again.</p>
