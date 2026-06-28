@@ -1428,7 +1428,7 @@ const header = (prefix = "") => `
 
 const footer = (prefix = "") => `
   <footer class="site-footer">
-    <div><strong>${SITE_NAME}</strong><br><span>No backend. No database. Your tool data stays on your device.</span></div>
+    <div><strong>${SITE_NAME}</strong><br><span>Everything runs in your browser. We never see your data and can't save it.</span></div>
     <div class="footer-links"><a href="${prefix}privacy.html">Privacy</a><a href="${prefix}about.html">About</a><a href="mailto:${SUPPORT_EMAIL}">Support</a></div>
   </footer>`;
 
@@ -1537,8 +1537,8 @@ const homeBody = `
   <section class="hero">
     <div class="hero-copy">
       <p class="eyebrow">Browser tools for work that keeps moving</p>
-      <h1>Make the awkward file or calculation feel small.</h1>
-      <p class="hero-lede">Use the tools when a spreadsheet needs cleaning, a deadline needs checking, or a form needs printing. Everything runs in the browser and stays on your device.</p>
+      <h1>Nifty little tools that just work.</h1>
+      <p class="hero-lede">Clean up a spreadsheet, check a deadline, or print a form in seconds. Everything runs right in your browser, and nothing you type ever leaves your device.</p>
       <label class="search-box">
         <span class="sr-only">Search all tools</span>
         <input id="tool-search" type="search" placeholder="Search ${allTools.length} tools, categories, or tasks…" autocomplete="off">
@@ -1548,8 +1548,8 @@ const homeBody = `
     <aside class="hero-panel" aria-label="Local processing summary">
       <div class="hero-panel-header">
         <div>
-          <strong>Workbench view</strong>
-          <span>Local-first, no upload queue</span>
+          <strong>Everything stays on your device</strong>
+          <span>Tools run in your browser — nothing gets uploaded</span>
         </div>
         <div class="status-light" aria-hidden="true"></div>
       </div>
@@ -1808,7 +1808,7 @@ fs.writeFileSync("privacy.html", page({
   title: "Privacy",
   description: `${SITE_NAME} privacy information and local browser processing policy.`,
   pathname: "/privacy.html",
-  body: `<main id="main" class="prose-page"><p class="eyebrow">${SITE_NAME}</p><h1>Your tool data never reaches us.</h1><p>${SITE_NAME} is a static website. It has no application backend, database, user accounts, upload service, or form submission endpoint. There is no ${SITE_NAME} system capable of receiving, viewing, capturing, or storing the files and information you enter into these tools.</p><p>Calculations and file processing happen inside your web browser on your device. Your inputs are not transmitted to ${SITE_NAME}.</p><h2>Local storage</h2><p>The Net Worth Tracker can save information in your browser's local storage so it remains available on that device. That information still does not leave your browser. You can remove it with the tool's clear button or your browser settings.</p><h2>Downloaded libraries</h2><p>A few advanced tools download software libraries from a public content delivery network. The libraries run in your browser; ${SITE_NAME} does not send your tool inputs or files to those providers.</p>${privacyAnalyticsSection}</main>`
+  body: `<main id="main" class="prose-page"><p class="eyebrow">${SITE_NAME}</p><h1>Your data never reaches us.</h1><p>${SITE_NAME} is a static website. It has no application backend, database, user accounts, upload service, or form submission endpoint. There is no ${SITE_NAME} system capable of receiving, viewing, capturing, or storing the files and information you enter into these tools.</p><p>Calculations and file processing happen inside your web browser on your device. Your inputs are not transmitted to ${SITE_NAME}.</p><h2>Local storage</h2><p>The Net Worth Tracker can save information in your browser's local storage so it remains available on that device. That information still does not leave your browser. You can remove it with the tool's clear button or your browser settings.</p><h2>Downloaded libraries</h2><p>A few advanced tools download software libraries from a public content delivery network. The libraries run in your browser; ${SITE_NAME} does not send your tool inputs or files to those providers.</p>${privacyAnalyticsSection}</main>`
 }));
 
 fs.writeFileSync("about.html", page({
