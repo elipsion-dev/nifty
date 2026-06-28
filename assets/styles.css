@@ -83,7 +83,8 @@ h2 { letter-spacing: -0.03em; }
 .hero h1 { max-width: 760px; margin-bottom: 1.2rem; }
 .hero-lede { max-width: 700px; color: var(--muted); font-size: clamp(1.06rem, 1.8vw, 1.22rem); }
 .eyebrow { margin-bottom: .7rem; color: var(--accent); font: 700 .72rem/1.2 ui-monospace, "SFMono-Regular", Consolas, monospace; letter-spacing: .12em; text-transform: uppercase; }
-.search-box { position: relative; display: block; max-width: 650px; margin-top: 2rem; }
+.search-wrap { position: relative; max-width: 650px; margin-top: 2rem; z-index: 30; scroll-margin-top: 96px; }
+.search-box { position: relative; display: block; }
 .search-box input { width: 100%; padding: 1rem 3.5rem 1rem 1.1rem; color: var(--ink); border: 1px solid var(--line); border-radius: 10px; background: var(--surface); box-shadow: var(--shadow); }
 .search-box input:focus { outline: 3px solid rgba(45,212,191,.30); border-color: var(--accent); }
 .search-box kbd { position: absolute; right: 1rem; top: .85rem; padding: .15rem .45rem; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; background: var(--surface-2); }
@@ -268,8 +269,24 @@ h2 { letter-spacing: -0.03em; }
 .tool-card h3 { padding-right: 1.5rem; font-size: 1.05rem; }
 .tool-card p { color: var(--muted); font-size: .86rem; }
 .tool-arrow { position: absolute; right: 1rem; top: 1rem; color: var(--accent); }
-.search-results { padding-top: 2rem; }
-.search-results .tool-grid { grid-template-columns: repeat(3, 1fr); }
+.search-results {
+  position: absolute;
+  top: calc(100% + .6rem);
+  left: 0;
+  width: 820px;
+  max-width: calc(100vw - 2.5rem);
+  max-height: min(66vh, 580px);
+  overflow-y: auto;
+  z-index: 40;
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 26px 60px rgba(0,0,0,.5);
+}
+.search-results[hidden] { display: none; }
+.search-count { margin: 0 0 .85rem; color: var(--muted); font: .8rem ui-monospace, monospace; }
+.search-results .tool-grid { grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); }
 .search-empty {
   max-width: 760px;
   padding: 1.2rem 1.25rem;

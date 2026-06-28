@@ -12,7 +12,7 @@
   <meta name="msapplication-TileColor" content="#0f1720">
   <meta property="og:site_name" content="Nifty Utilities">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="86 Browser Tools for Everyday Work | Nifty Utilities">
+  <meta property="og:title" content="FREE Online Tools – 86 Browser Utilities, No Sign-Up | Nifty Utilities">
   <meta property="og:description" content="Practical browser tools for CSV files, personal finance, documents, home costs, business math, and one-off cleanup jobs. No sign-up; data stays on your device.">
   <meta property="og:url" content="https://niftyutilities.com/">
   <meta property="og:image" content="https://niftyutilities.com/assets/brand/nifty-utilities-social-card.png">
@@ -20,10 +20,10 @@
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Nifty Utilities toolbox logo">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="86 Browser Tools for Everyday Work | Nifty Utilities">
+  <meta name="twitter:title" content="FREE Online Tools – 86 Browser Utilities, No Sign-Up | Nifty Utilities">
   <meta name="twitter:description" content="Practical browser tools for CSV files, personal finance, documents, home costs, business math, and one-off cleanup jobs. No sign-up; data stays on your device.">
   <meta name="twitter:image" content="https://niftyutilities.com/assets/brand/nifty-utilities-social-card.png">
-  <title>86 Browser Tools for Everyday Work | Nifty Utilities</title>
+  <title>FREE Online Tools – 86 Browser Utilities, No Sign-Up | Nifty Utilities</title>
   <link rel="canonical" href="https://niftyutilities.com/">
   <link rel="alternate" hreflang="en-US" href="https://niftyutilities.com/">
   <link rel="alternate" hreflang="x-default" href="https://niftyutilities.com/">
@@ -73,11 +73,14 @@
       <p class="eyebrow">Browser tools for work that keeps moving</p>
       <h1>Nifty little tools that just work.</h1>
       <p class="hero-lede">Clean up a spreadsheet, check a deadline, or print a form in seconds. Everything runs right in your browser, and nothing you type ever leaves your device.</p>
-      <label class="search-box">
-        <span class="sr-only">Search all tools</span>
-        <input id="tool-search" type="search" placeholder="Search 86 tools, categories, or tasks…" autocomplete="off">
-        <kbd>/</kbd>
-      </label>
+      <div class="search-wrap">
+        <label class="search-box">
+          <span class="sr-only">Search all tools</span>
+          <input id="tool-search" type="search" placeholder="Search 86 tools, e.g. boat, CSV, mileage…" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="search-results">
+          <kbd>/</kbd>
+        </label>
+        <div id="search-results" class="search-results" hidden></div>
+      </div>
     </div>
     <aside class="hero-panel" aria-label="Local processing summary">
       <div class="hero-panel-header">
@@ -186,7 +189,6 @@
       <div><p class="eyebrow">Tool directory</p><h2 id="directory-title">Browse by category</h2></div>
       <p id="search-status">86 tools, zero sign-ups</p>
     </div>
-    <div id="search-results" class="search-results" hidden></div>
     <div id="category-list" class="category-list">
       
         <section class="category-block">

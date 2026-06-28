@@ -1415,6 +1415,26 @@ const allTools = categories.flatMap((category) =>
 
 const escapeHtml = (value) => value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
 
+// Search-result <title>: lead with FREE + tool name, then as much of the
+// capability as fits in a Google-friendly length, cut on a word boundary.
+const seoTitle = (name, description = "", max = 70) => {
+  const base = `FREE ${name}`;
+  let cap = String(description).trim().replace(/\.$/, "");
+  const room = max - base.length - 3; // " – "
+  if (!cap || room < 24) return base; // long name; keep the title clean
+  if (cap.length > room) {
+    cap = cap.slice(0, room);
+    const lastSpace = cap.lastIndexOf(" ");
+    if (lastSpace > 0) cap = cap.slice(0, lastSpace);
+  }
+  // Avoid ending on a dangling preposition/conjunction or stray punctuation.
+  const trimEnds = (s) => s.replace(/[\s,;:–-]+$/, "");
+  cap = trimEnds(cap).replace(/\s+(?:and|or|for|with|of|to|in|on|by|a|an|the|using|from|that)$/i, "");
+  cap = trimEnds(cap);
+  if (cap.length < 12) return base;
+  return `${base} – ${cap}`;
+};
+
 const header = (prefix = "") => `
   <header class="site-header">
     <a class="brand" href="${prefix}index.html" aria-label="${SITE_NAME} home">
@@ -1432,8 +1452,10 @@ const footer = (prefix = "") => `
     <div class="footer-links"><a href="${prefix}privacy.html">Privacy</a><a href="${prefix}about.html">About</a><a href="mailto:${SUPPORT_EMAIL}">Support</a></div>
   </footer>`;
 
-const page = ({ title, description, body, pathname, prefix = "", scripts = "", pageType = "WebPage", extraSchema = [], indexable = true }) => {
+const page = ({ title, description, body, pathname, prefix = "", scripts = "", pageType = "WebPage", extraSchema = [], indexable = true, titleTag }) => {
   const canonical = `${SITE_URL}${pathname}`;
+  // titleTag, when provided, is the verbatim <title>/social title (no brand suffix appended).
+  const metaTitle = titleTag || `${title} | ${SITE_NAME}`;
   const schema = {
     "@context": "https://schema.org",
     "@graph": [
@@ -1486,7 +1508,7 @@ const page = ({ title, description, body, pathname, prefix = "", scripts = "", p
   <meta name="msapplication-TileColor" content="#0f1720">
   <meta property="og:site_name" content="${SITE_NAME}">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="${escapeHtml(title)} | ${SITE_NAME}">
+  <meta property="og:title" content="${escapeHtml(metaTitle)}">
   <meta property="og:description" content="${escapeHtml(description)}">
   <meta property="og:url" content="${canonical}">
   <meta property="og:image" content="${SITE_URL}/assets/brand/nifty-utilities-social-card.png">
@@ -1494,10 +1516,10 @@ const page = ({ title, description, body, pathname, prefix = "", scripts = "", p
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="${SITE_NAME} toolbox logo">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="${escapeHtml(title)} | ${SITE_NAME}">
+  <meta name="twitter:title" content="${escapeHtml(metaTitle)}">
   <meta name="twitter:description" content="${escapeHtml(description)}">
   <meta name="twitter:image" content="${SITE_URL}/assets/brand/nifty-utilities-social-card.png">
-  <title>${escapeHtml(title)} | ${SITE_NAME}</title>
+  <title>${escapeHtml(metaTitle)}</title>
   <link rel="canonical" href="${canonical}">
   <link rel="alternate" hreflang="en-US" href="${canonical}">
   <link rel="alternate" hreflang="x-default" href="${canonical}">
@@ -1539,11 +1561,14 @@ const homeBody = `
       <p class="eyebrow">Browser tools for work that keeps moving</p>
       <h1>Nifty little tools that just work.</h1>
       <p class="hero-lede">Clean up a spreadsheet, check a deadline, or print a form in seconds. Everything runs right in your browser, and nothing you type ever leaves your device.</p>
-      <label class="search-box">
-        <span class="sr-only">Search all tools</span>
-        <input id="tool-search" type="search" placeholder="Search ${allTools.length} tools, categories, or tasks…" autocomplete="off">
-        <kbd>/</kbd>
-      </label>
+      <div class="search-wrap">
+        <label class="search-box">
+          <span class="sr-only">Search all tools</span>
+          <input id="tool-search" type="search" placeholder="Search ${allTools.length} tools, e.g. boat, CSV, mileage…" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="search-results">
+          <kbd>/</kbd>
+        </label>
+        <div id="search-results" class="search-results" hidden></div>
+      </div>
     </div>
     <aside class="hero-panel" aria-label="Local processing summary">
       <div class="hero-panel-header">
@@ -1652,7 +1677,6 @@ const homeBody = `
       <div><p class="eyebrow">Tool directory</p><h2 id="directory-title">Browse by category</h2></div>
       <p id="search-status">${allTools.length} tools, zero sign-ups</p>
     </div>
-    <div id="search-results" class="search-results" hidden></div>
     <div id="category-list" class="category-list">
       ${categories.map((category) => `
         <section class="category-block">
@@ -1669,6 +1693,7 @@ const homeBody = `
 
 fs.writeFileSync("index.html", page({
   title: `${allTools.length} Browser Tools for Everyday Work`,
+  titleTag: `FREE Online Tools – ${allTools.length} Browser Utilities, No Sign-Up | ${SITE_NAME}`,
   description: "Practical browser tools for CSV files, personal finance, documents, home costs, business math, and one-off cleanup jobs. No sign-up; data stays on your device.",
   pathname: "/",
   pageType: "CollectionPage",
@@ -1687,6 +1712,7 @@ for (const category of categories) {
             </li>`).join("");
   fs.writeFileSync(path.join(category.slug, "index.html"), page({
     title: `Free ${category.name} Tools`,
+    titleTag: seoTitle(`${category.name} Tools`, `${category.tools.length} free utilities, no sign-up`),
     description: `Browse ${category.tools.length} free ${category.name.toLowerCase()} tools. ${category.description} No sign-up required.`,
     pathname: `/${category.slug}/`,
     pageType: "CollectionPage",
@@ -1734,6 +1760,7 @@ for (const category of categories) {
     const bodyHtml = expandArticleSvgs(splitIndex >= 0 ? article.slice(splitIndex + "<!--more-->".length) : article);
     fs.writeFileSync(path.join(category.slug, `${slug}.html`), page({
       title: `Free ${name}`,
+      titleTag: seoTitle(name, description),
       description: `Free online ${name.toLowerCase()}. ${description} No sign-up; processing stays in your browser.`,
       pathname: `/${category.slug}/${slug}.html`,
       prefix: "../",
