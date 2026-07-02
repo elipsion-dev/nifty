@@ -550,7 +550,9 @@ th { background: var(--surface-2); font-size: .7rem; text-transform: uppercase; 
 .two-col .quiz-note { margin: 0; }
 .q-list { margin: .2rem 0 0; padding-left: 1.1rem; color: var(--muted); }
 .q-list li { margin: .3rem 0; font-size: .9rem; }
-.watch-list { border-left: 0; padding-left: 1.1rem; }
+.watch-list { list-style: none; padding-left: 0; }
+.watch-list li { position: relative; padding-left: 1.2rem; }
+.watch-list li::before { content: "!"; position: absolute; left: 0; top: 0; color: var(--gold); font-weight: 800; }
 @media (max-width: 650px) {
   .two-col { grid-template-columns: 1fr; }
   .p-dot { font-size: 0; padding: .8rem .2rem; }
@@ -576,7 +578,10 @@ th { background: var(--surface-2); font-size: .7rem; text-transform: uppercase; 
 .match-hero .sign-ic { width: 58px; height: 58px; color: var(--qa); }
 .match-hero .match-score { font: 800 2.6rem/1 "Iowan Old Style", Georgia, serif; color: var(--qa); text-align: center; }
 .match-hero .match-score small { display: block; font: 600 .72rem/1.2 ui-monospace, Consolas, monospace; color: var(--muted); }
-.watch-list { border-left: 3px solid var(--gold); padding-left: 1rem; }
+.sign-mini { margin-top: .3rem; font-weight: 700; font-size: .9rem; }
+.match-meta { text-align: center; color: var(--muted); font-size: .88rem; margin-top: -.4rem; }
+.match-lead { font-size: 1.05rem; }
+.good-list li { margin: .45rem 0; }
 @media (max-width: 650px) {
   .zodiac-input { grid-template-columns: 1fr; }
   .q-option.figural .q-svg { width: 64px; height: 64px; }

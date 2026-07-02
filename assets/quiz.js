@@ -611,9 +611,366 @@
   }
 
   /* =====================================================================
-   *  ZODIAC COMPATIBILITY  (built next)
+   *  ZODIAC COMPATIBILITY
+   *  12 signs with original SVG glyphs, sign-or-birthday input (correct
+   *  date boundaries), a traditional aspect-based score, and hand-written
+   *  specificity for every one of the 78 unordered pairings.
    * ===================================================================== */
   function renderZodiac() {
-    root.innerHTML = '<div class="loading-state">Zodiac guide coming online…</div>';
+    const G = (inner) =>
+      `<svg viewBox="0 0 48 48" class="sign-ic" role="img" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
+    const glyphs = {
+      aries: G(`<path d="M24 42V22M24 22c0-9-5-13-10-11-5 2-4 10 2 11M24 22c0-9 5-13 10-11 5 2 4 10-2 11"/>`),
+      taurus: G(`<circle cx="24" cy="30" r="10"/><path d="M10 11c2 7 8 11 14 11s12-4 14-11"/>`),
+      gemini: G(`<path d="M13 12c7 3 15 3 22 0M13 36c7-3 15-3 22 0M20 13v22M28 13v22"/>`),
+      cancer: G(`<path d="M8 23c4-8 18-9 25-2M40 25c-4 8-18 9-25 2"/><circle cx="14" cy="26" r="3.2"/><circle cx="34" cy="22" r="3.2"/>`),
+      leo: G(`<circle cx="16" cy="32" r="7"/><path d="M22 29c-4-8 0-17 6-18 6-1 10 5 6 10-3 4-8 2-7-2"/>`),
+      virgo: G(`<path d="M9 14v22M9 14c5 0 6 4 6 9v13M15 23c5-2 6 2 6 9v6M21 30c1-6 5-9 9-6 5 3 3 10-2 12 5 2 6 6 2 9"/>`),
+      libra: G(`<path d="M8 35h32M8 41h32M14 31a10 10 0 0 1 20 0"/>`),
+      scorpio: G(`<path d="M8 15v20M8 15c5 0 6 4 6 9v11M14 20c5-2 6 2 6 9v9M20 24c1-4 6-6 9-3 3 3 3 8 0 11l5 6M32 33l7 5-2-8"/>`),
+      sagittarius: G(`<path d="M11 37 35 13M23 13h13v13M17 25l9 9"/>`),
+      capricorn: G(`<path d="M9 16c5-2 7 3 7 9v10M16 21c4-5 9-3 10 3 1 5-2 9-5 9M25 34c7 3 13-3 10-10-2-5-8-4-9 1"/>`),
+      aquarius: G(`<path d="M8 22c3-4 5-4 8 0 3 4 5 4 8 0 3-4 5-4 8 0 3 4 5 4 8 0M8 31c3-4 5-4 8 0 3 4 5 4 8 0 3-4 5-4 8 0 3 4 5 4 8 0"/>`),
+      pisces: G(`<path d="M14 9c-6 6-6 24 0 30M34 9c6 6 6 24 0 30M10 24h28"/>`)
+    };
+
+    // key, name, element, modality, dates label, ruler, blurb, gift
+    const signs = [
+      { key: "aries", name: "Aries", el: "Fire", mod: "Cardinal", dates: "Mar 21 – Apr 19", ruler: "Mars", blurb: "Bold, driven, and first through the door. Aries brings courage and unstoppable momentum.", gift: "courage, initiative, and a jolt of adventurous energy" },
+      { key: "taurus", name: "Taurus", el: "Earth", mod: "Fixed", dates: "Apr 20 – May 20", ruler: "Venus", blurb: "Steady, sensual, and loyal. Taurus loves comfort, security, and the finer, slower things.", gift: "steadiness, comfort, and unwavering loyalty" },
+      { key: "gemini", name: "Gemini", el: "Air", mod: "Mutable", dates: "May 21 – Jun 20", ruler: "Mercury", blurb: "Curious, quick, and endlessly talkative. Gemini lives for ideas, variety, and good conversation.", gift: "curiosity, wit, and conversation that never runs dry" },
+      { key: "cancer", name: "Cancer", el: "Water", mod: "Cardinal", dates: "Jun 21 – Jul 22", ruler: "the Moon", blurb: "Nurturing, intuitive, and protective. Cancer leads with feeling and builds a real home.", gift: "nurturing warmth and a genuine emotional home" },
+      { key: "leo", name: "Leo", el: "Fire", mod: "Fixed", dates: "Jul 23 – Aug 22", ruler: "the Sun", blurb: "Warm, generous, and magnetic. Leo shines, loves grandly, and stays fiercely loyal.", gift: "generous warmth, loyalty, and a sense of occasion" },
+      { key: "virgo", name: "Virgo", el: "Earth", mod: "Mutable", dates: "Aug 23 – Sep 22", ruler: "Mercury", blurb: "Precise, practical, and quietly caring. Virgo shows love by making everything work better.", gift: "practical care, sharp attention, and quiet devotion" },
+      { key: "libra", name: "Libra", el: "Air", mod: "Cardinal", dates: "Sep 23 – Oct 22", ruler: "Venus", blurb: "Charming, fair, and partnership-minded. Libra seeks harmony, beauty, and balance.", gift: "harmony, fairness, and effortless charm" },
+      { key: "scorpio", name: "Scorpio", el: "Water", mod: "Fixed", dates: "Oct 23 – Nov 21", ruler: "Pluto", blurb: "Intense, loyal, and deep. Scorpio loves all the way down and never does anything halfway.", gift: "depth, passion, and fierce commitment" },
+      { key: "sagittarius", name: "Sagittarius", el: "Fire", mod: "Mutable", dates: "Nov 22 – Dec 21", ruler: "Jupiter", blurb: "Adventurous, honest, and free. Sagittarius chases the horizon and the bigger meaning.", gift: "optimism, adventure, and refreshingly honest perspective" },
+      { key: "capricorn", name: "Capricorn", el: "Earth", mod: "Cardinal", dates: "Dec 22 – Jan 19", ruler: "Saturn", blurb: "Ambitious, disciplined, and dependable. Capricorn builds status and security to last.", gift: "ambition, stability, and a plan that actually works" },
+      { key: "aquarius", name: "Aquarius", el: "Air", mod: "Fixed", dates: "Jan 20 – Feb 18", ruler: "Uranus", blurb: "Inventive, independent, and idealistic. Aquarius thinks ahead and champions the bigger cause.", gift: "originality, open-mindedness, and breathing room" },
+      { key: "pisces", name: "Pisces", el: "Water", mod: "Mutable", dates: "Feb 19 – Mar 20", ruler: "Neptune", blurb: "Dreamy, compassionate, and artistic. Pisces feels everything and loves with the whole heart.", gift: "empathy, imagination, and gentle romance" }
+    ];
+    const idx = Object.fromEntries(signs.map((s, i) => [s.key, i]));
+
+    // Birthday → sign using standard tropical-zodiac date boundaries.
+    // Encode the date as month*100+day so ranges are simple integer comparisons.
+    const signFromDate = (month, day) => {
+      const t = month * 100 + day;
+      if (t >= 120 && t <= 218) return "aquarius";     // Jan 20 – Feb 18
+      if (t >= 219 && t <= 320) return "pisces";       // Feb 19 – Mar 20
+      if (t >= 321 && t <= 419) return "aries";        // Mar 21 – Apr 19
+      if (t >= 420 && t <= 520) return "taurus";       // Apr 20 – May 20
+      if (t >= 521 && t <= 620) return "gemini";       // May 21 – Jun 20
+      if (t >= 621 && t <= 722) return "cancer";       // Jun 21 – Jul 22
+      if (t >= 723 && t <= 822) return "leo";          // Jul 23 – Aug 22
+      if (t >= 823 && t <= 922) return "virgo";        // Aug 23 – Sep 22
+      if (t >= 923 && t <= 1022) return "libra";       // Sep 23 – Oct 22
+      if (t >= 1023 && t <= 1121) return "scorpio";    // Oct 23 – Nov 21
+      if (t >= 1122 && t <= 1221) return "sagittarius"; // Nov 22 – Dec 21
+      return "capricorn";                              // Dec 22 – Jan 19 (wraps)
+    };
+
+    // Hand-written signature for every unordered pair (canonical key "min-max").
+    const pairNote = {
+      "0-0": "Two rams means pure high-octane momentum — you chase goals, adventures and the occasional argument with equal fire, and neither of you holds a grudge for long. The spark is instant; the challenge is that nobody wants to be the one who slows down to plan.",
+      "1-1": "Two Bulls build something solid and sensual — a shared love of comfort, good food, loyalty, and a home that feels like a fortress. You understand each other's need for security completely; the risk is that neither of you budges once you've dug in.",
+      "2-2": "Two Geminis never run out of things to say — endless curiosity, banter, and half-finished plans that somehow multiply. Mentally you're a perfect match; grounding all that energy into follow-through is the shared homework.",
+      "3-3": "Two Crabs create a deeply nurturing, emotionally fluent bond — you read each other's moods without a word and build a cozy, protective nest. The tenderness is real; so is the risk of both retreating into your shells at the same time.",
+      "4-4": "Two Lions light up the room together — warmth, loyalty, drama, and grand romantic gestures on both sides. When you share the spotlight it's dazzling; when you compete for it, the roars get loud.",
+      "5-5": "Two Virgos run a tidy, thoughtful life together — shared standards, mutual usefulness, and small daily acts of care. You genuinely appreciate each other's efforts; the trap is trading improvement tips until it tips into mutual criticism.",
+      "6-6": "Two Libras create a graceful, harmonious, beautiful partnership — endless fairness, charm, and consideration. You both crave balance; the shared struggle is that eventually someone has to actually make the decision.",
+      "7-7": "Two Scorpios go all the way in — intense loyalty, magnetic attraction, and a bond with no shallow end. The depth is unmatched; that same intensity fuels jealousy and power struggles if trust ever wobbles.",
+      "8-8": "Two Archers are a travelling, laughing, on-to-the-next-thing duo — freedom, optimism, and big dreams you actually chase together. Space is never a problem; remembering to handle the boring logistics is.",
+      "9-9": "Two Capricorns are a power couple by design — ambitious, disciplined, and quietly devoted, building status and security as a team. You respect each other's drive; the work is letting warmth in past the to-do list.",
+      "10-10": "Two Aquarians are best friends first — inventive, independent, and fascinated by ideas and causes bigger than yourselves. You give each other total freedom; the missing piece can be day-to-day emotional closeness.",
+      "11-11": "Two Pisces share a dreamy, compassionate, almost telepathic bond — art, empathy, and a private world only the two of you inhabit. The romance is enchanting; someone still has to keep a foot in the real world.",
+      "0-1": "Mars-fire meets Venus-earth: Aries brings the spark and the nerve, Taurus brings the staying power and the comfort. Aries learns patience, Taurus learns spontaneity — a slow-burn that lasts if Aries doesn't rush the Bull.",
+      "0-2": "Fire and air, and it crackles — Aries acts, Gemini schemes, and together you're never bored. Fast talk, fast plans, and spontaneous adventures keep you both mentally and physically on the move.",
+      "0-3": "Bold Aries and tender Cancer sit on one of the zodiac's oldest fault lines: drive versus feeling. When Aries provides protection and Cancer provides a home base it's powerful; friction comes when Aries is blunt and Cancer takes it to heart.",
+      "0-4": "Two fire signs, instant heat — Aries the initiator, Leo the star, both passionate, loyal, and up for anything. You cheer each other on brilliantly; keep the ego contest friendly and it's a blaze that warms rather than burns.",
+      "0-5": "Impulsive Aries and precise Virgo look mismatched, and that's the point — Aries supplies courage and momentum, Virgo supplies the plan that makes it work. Respect the difference and you're a formidable start-to-finish team.",
+      "0-6": "Opposite signs, and magnetic for it — Aries is 'me,' Libra is 'we,' and each has exactly what the other lacks. Aries brings decisiveness, Libra brings diplomacy; balance the self-and-partner tug and it's classic opposites-attract.",
+      "0-7": "Both answer to warrior Mars, so this is pure intensity — fearless, passionate, all-in. Aries fights out loud, Scorpio fights deep; aim that shared drive at the world instead of each other and few couples are more powerful.",
+      "0-8": "Two fire signs built for adventure — spontaneous, optimistic, blunt, and always ready for the next trip. You hand each other freedom and fun in equal measure; one of the zodiac's easiest, most energizing matches.",
+      "0-9": "Two cardinal go-getters from opposite directions — Aries charges, Capricorn strategizes. It's a square, so sparks fly, but as an ambition-driven team you can conquer almost anything once Aries respects the long game.",
+      "0-10": "Fire and air, rebels together — Aries acts on instinct, Aquarius on vision, and neither one clings. You fan each other's independence and love a bold idea; expect excitement, spontaneity, and plenty of room to breathe.",
+      "0-11": "Zodiac neighbours: Aries the warrior, Pisces the dreamer. Aries protects and emboldens gentle Pisces, Pisces softens and inspires fiery Aries — a tender-tough pairing when Aries stays gentle with Pisces' feelings.",
+      "1-2": "Steady earth and restless air — Taurus wants to settle, Gemini wants to explore. Neighbours who balance each other: Gemini brings lightness and ideas, Taurus brings follow-through and calm, as long as patience runs both ways.",
+      "1-3": "Earth and water in easy harmony — both crave security, home comforts, and loyalty, and you build a warm, stable life almost effortlessly. Taurus is the steady rock, Cancer the emotional heart; a genuinely nurturing match.",
+      "1-4": "Two fixed signs who love luxury and loyalty — Taurus the sensualist, Leo the romantic, both devoted once committed. The affection and comfort are lavish; the standoffs, when they come, are epic because neither backs down.",
+      "1-5": "Two earth signs, deeply compatible — practical, reliable, and quietly devoted, with Virgo's precision and Taurus's steadiness reinforcing each other. You build security together and mean it; one of the zodiac's most stable pairings.",
+      "1-6": "Both ruled by Venus, so beauty, comfort, and affection are your shared language — lovely spaces, good food, real tenderness. Taurus grounds Libra's indecision, Libra lightens Taurus's stubbornness; a graceful, harmony-loving match.",
+      "1-7": "Opposites and intensely magnetic — Taurus the sensual builder, Scorpio the emotional depth-charge, both fiercely loyal and possessive. The attraction is powerful and lasting; the shared fixity means neither forgives being crossed easily.",
+      "1-8": "Homebody earth meets wanderer fire — Taurus wants roots, Sagittarius wants the horizon. It takes real compromise, but Taurus can ground Sag's adventures and Sag can coax Taurus out to play.",
+      "1-9": "Two earth signs and a natural power base — ambitious, loyal, and grounded, you build wealth, security, and a solid life as a team. Taurus adds warmth and pleasure to Capricorn's discipline; steady, sensible, and enduring.",
+      "1-10": "Fixed earth and fixed air, stubborn on both ends — Taurus loves tradition, Aquarius loves reinvention. It's a square with real friction, but Taurus grounds Aquarius's ideas and Aquarius widens Taurus's world if both will bend.",
+      "1-11": "Earth and water, gentle and romantic — Taurus offers Pisces safety and a stable shore, Pisces offers Taurus tenderness and imagination. A soothing, affectionate match where practicality meets dreams.",
+      "2-3": "Air and water, mind and heart — Gemini talks it out, Cancer feels it through. Neighbours who trade gifts: Gemini lightens Cancer's moods, Cancer gives Gemini emotional depth, once Gemini learns a little tenderness.",
+      "2-4": "Air feeds fire — playful Gemini and warm Leo make a sociable, flirtatious, fun-loving pair. Gemini's wit delights Leo, Leo's generosity charms Gemini; lots of sparkle when Leo's ego and Gemini's teasing stay kind.",
+      "2-5": "Both ruled by Mercury, so it's a true meeting of minds — clever, verbal, endlessly curious. Gemini scatters ideas, Virgo organizes them; great conversation and mental chemistry once Virgo's critique and Gemini's flit find a rhythm.",
+      "2-6": "Two air signs in effortless sync — social, witty, idea-loving, and light on their feet. The conversation never stops and the vibe stays easy and elegant; among the most naturally harmonious matches in the zodiac.",
+      "2-7": "Airy Gemini and deep Scorpio are a study in contrast — Gemini floats across the surface, Scorpio dives to the seabed. Fascinating and challenging: Scorpio wants total depth, Gemini wants total freedom, and the pull is real.",
+      "2-8": "Opposite signs, twin explorers — Gemini the local scout, Sagittarius the far traveller, both curious, funny, and freedom-loving. You finish each other's ideas and adventures; a lively, never-boring opposites-attract match.",
+      "2-9": "Playful air and serious earth — Gemini improvises, Capricorn plans. An unlikely but useful pair: Capricorn gives Gemini's ideas structure, Gemini lightens Capricorn's load, when each respects the other's tempo.",
+      "2-10": "Two air signs and instant friends — inventive, quirky, intellectually electric, and allergic to clinginess. You give each other total freedom and a stream of new ideas; one of the zodiac's brightest mental matches.",
+      "2-11": "Mutable air and mutable water — Gemini the thinker, Pisces the dreamer, both adaptable and imaginative. Neighbours who spark each other creatively; the work is turning all those ideas and feelings into something that holds.",
+      "3-4": "Neighbouring Moon and Sun — Cancer nurtures, Leo shines. A warm, protective pairing: Leo brings confidence and generosity, Cancer brings devotion and a real home, when Leo's pride and Cancer's sensitivity are handled gently.",
+      "3-5": "Water and earth, quietly devoted — both caretakers, you show love through practical, thoughtful acts. Virgo steadies Cancer's moods, Cancer softens Virgo's self-criticism; a nurturing, dependable, low-drama match.",
+      "3-6": "Two cardinal signs who both want partnership but express it differently — Cancer through care, Libra through charm. It's a square, so tact matters, but a home full of beauty and warmth is possible when feeling and fairness align.",
+      "3-7": "Two water signs, profoundly bonded — emotional, intuitive, and loyal to the bone. You read each other's depths instinctively and love fiercely; among the most devoted matches, once Scorpio's guardedness meets Cancer's tenderness.",
+      "3-8": "Homebody water and wandering fire — Cancer wants closeness and roots, Sagittarius wants space and horizons. Different needs, but Sag brings adventure to Cancer's world and Cancer gives Sag a home worth returning to.",
+      "3-9": "Opposite signs, the zodiac's parents — Cancer the nurturing home, Capricorn the providing structure. Deeply complementary: Cancer warms Capricorn, Capricorn secures Cancer; a classic build-a-life-together match.",
+      "3-10": "Tender water and cool air — Cancer leads with emotion, Aquarius with logic and independence. A square that stretches both: Cancer teaches Aquarius warmth, Aquarius teaches Cancer perspective, if the emotional gap is respected.",
+      "3-11": "Two water signs, gentle and intuitive — you feel each other completely and create a soft, romantic, deeply empathetic world. Cancer gives Pisces security, Pisces gives Cancer wonder; one of the tenderest matches going.",
+      "4-5": "Fire and earth, star and stage manager — Leo dazzles, Virgo perfects. Neighbours who complement: Virgo quietly supports Leo's shine and Leo warms Virgo up, when Leo appreciates the help and Virgo eases the critique.",
+      "4-6": "Fire and air, a glamorous pair — Leo the warm romantic, Libra the charming aesthete, both social and affectionate. You love beauty, romance, and being adored; a genuinely fun, flattering, harmonious match.",
+      "4-7": "Two fixed signs, magnetic and intense — Leo blazes in the open, Scorpio smoulders underneath, both proud and fiercely loyal. Passion runs high, so does the will: this soars when you're allies and scorches when you clash.",
+      "4-8": "Two fire signs, pure joy — Leo the performer, Sagittarius the adventurer, both generous, warm, and up for the big life. Endless fun, romance, and optimism; one of the zodiac's most naturally happy matches.",
+      "4-9": "Warm fire and cool earth — Leo wants applause, Capricorn wants achievement. A square, but a power pairing: Leo brings heart and flair, Capricorn brings ambition and stability, and together you build something impressive.",
+      "4-10": "Opposite signs and electric — Leo the radiant individual, Aquarius the visionary humanitarian, both fixed and strong-willed. Leo warms Aquarius, Aquarius broadens Leo; a fascinating attraction of heart and head.",
+      "4-11": "Fire and water, showman and dreamer — Leo's warmth draws gentle Pisces out, Pisces's imagination enchants Leo. A romantic, creative pairing when Leo stays tender and Pisces bolsters Leo's heart.",
+      "5-6": "Earth and air, neighbours with different loves — Virgo craves order, Libra craves harmony, both refined and considerate. Libra lightens Virgo's worry, Virgo grounds Libra's indecision; a polished, thoughtful match.",
+      "5-7": "Earth and water, quietly powerful — both perceptive, private, and loyal, you build deep trust and shared purpose. Virgo's precision meets Scorpio's intensity beautifully; a devoted, mutually respectful match.",
+      "5-8": "Precise earth and expansive fire — Virgo sweats the details, Sagittarius chases the big picture. A square, so patience helps, but Sag opens Virgo's horizons and Virgo grounds Sag's plans when they meet in the middle.",
+      "5-9": "Two earth signs, a competent and devoted team — practical, ambitious, and grounded, you turn goals into results together. Virgo perfects, Capricorn builds; a stable, mutually admiring, get-things-done match.",
+      "5-10": "Earthy Virgo and airy Aquarius, both cerebral but pointed differently — Virgo wants the workable, Aquarius the visionary. An offbeat combination that intrigues: Aquarius stretches Virgo's thinking, Virgo makes Aquarius's ideas real.",
+      "5-11": "Opposite signs, service and compassion — Virgo the practical helper, Pisces the tender dreamer, each supplying what the other lacks. Virgo grounds Pisces, Pisces softens Virgo; a caring, healing opposites-attract match.",
+      "6-7": "Air and water, neighbours with pull — Libra keeps it light and fair, Scorpio wants it deep and real. Libra charms Scorpio out of brooding, Scorpio gives Libra emotional substance, when surface meets depth respectfully.",
+      "6-8": "Air feeds fire — sociable Libra and adventurous Sagittarius make a fun, easygoing, optimistic pair. Libra adds grace and partnership, Sag adds spark and freedom; a warm, harmonious, on-the-go match.",
+      "6-9": "Two cardinal signs, charm meets ambition — Libra smooths the room, Capricorn builds the empire. A square, but complementary: Libra brings people skills, Capricorn brings structure, once tact and drive learn to share the lead.",
+      "6-10": "Two air signs, an easy meeting of minds — social, fair-minded, idea-driven, and cool-headed. You share values and conversation effortlessly and give each other space; a naturally harmonious, friendship-first match.",
+      "6-11": "Airy Libra and watery Pisces, both gentle romantics drawn to beauty and softness. A dreamy, artistic pairing; the shared challenge is that neither one loves confrontation or hard decisions.",
+      "7-8": "Deep water and free fire — Scorpio wants intensity and loyalty, Sagittarius wants freedom and fun. Neighbours who intrigue each other: Sag lightens Scorpio, Scorpio deepens Sag, once jealousy and restlessness are managed.",
+      "7-9": "Water and earth, a formidable and loyal alliance — both strategic, determined, and private, you trust slowly and commit deeply. Scorpio brings passion, Capricorn brings steadiness; a quietly powerful, ambitious match.",
+      "7-10": "Two fixed signs, intense and unconventional — Scorpio craves depth and merging, Aquarius craves freedom and distance. A square of strong wills; magnetic and challenging, it works when independence and intimacy strike a truce.",
+      "7-11": "Two water signs, soulmate territory — Scorpio's depth and Pisces's imagination merge into an intuitive, all-in bond. Scorpio protects tender Pisces, Pisces softens guarded Scorpio; profoundly emotional and devoted.",
+      "8-9": "Free fire and structured earth — Sag chases the horizon, Capricorn builds the base. Neighbours who balance each other: Capricorn turns Sag's dreams into plans, Sag loosens Capricorn up, when tempo and priorities are negotiated.",
+      "8-10": "Fire and air, freedom-loving originals — Sag the adventurer, Aquarius the visionary, both independent, open-minded, and allergic to control. Big ideas, big trips, and easy space; a stimulating, friendship-based match.",
+      "8-11": "Two mutable signs lit by Jupiter's optimism — Sag the seeker, Pisces the dreamer, both idealistic and adaptable. A square, but inspiring: Sag brings adventure, Pisces brings soul, when bluntness meets sensitivity kindly.",
+      "9-10": "Traditional earth and radical air — Capricorn respects structure, Aquarius rewrites it. Neighbours once both ruled by Saturn: Capricorn grounds Aquarius's vision, Aquarius modernizes Capricorn's plans, as long as both stay open.",
+      "9-11": "Earth and water, a gentle-strong pairing — Capricorn provides security and direction, Pisces provides tenderness and imagination. Cap grounds Pisces's dreams, Pisces warms Cap's world; a quietly complementary match.",
+      "10-11": "Air and water, neighbours and idealists — Aquarius dreams for humanity, Pisces feels for the individual. A creative, compassionate pairing: Aquarius gives Pisces perspective, Pisces gives Aquarius heart, across the head-and-heart gap."
+    };
+
+    // Short element descriptor per sign (varies by element → helps differentiate).
+    const elAdj = {
+      Fire: "fiery drive and spontaneity",
+      Earth: "grounded, practical steadiness",
+      Air: "quick ideas and social ease",
+      Water: "deep feeling and intuition"
+    };
+    // Relationship clause per unordered element pair — 2 variants each, chosen by
+    // the pair so two same-element couples don't read identically.
+    const relClause = {
+      "Fire-Fire": ["a shared flame that sparks and races", "two fires that keep each other burning bright"],
+      "Earth-Earth": ["a solid, sensual base built to last", "two steady hands building something real"],
+      "Air-Air": ["a restless, idea-swapping current between you", "two lively minds forever in conversation"],
+      "Water-Water": ["two deep wells of feeling that mirror each other", "an intuitive tide you both move with"],
+      "Earth-Fire": ["drive meeting substance once the pace is shared", "spark and staying-power, if you sync your speeds"],
+      "Air-Fire": ["a naturally energizing mix, since air feeds fire", "ideas fanning the flames into real momentum"],
+      "Fire-Water": ["the classic heat-and-depth blend of passion and feeling", "steam when it's good, a balance of fire and tide when it's not"],
+      "Air-Earth": ["the practical shaking hands with the theoretical", "big thinking finding solid ground to stand on"],
+      "Earth-Water": ["a nurturing mix, feeling finding a safe, steady shore", "roots and rain — one steadies, one softens"],
+      "Air-Water": ["head meeting heart, with a little translation", "thought and emotion learning each other's language"]
+    };
+    const modClause = {
+      "Cardinal-Cardinal": ["both of you love to start and to lead", "two initiators who set things in motion"],
+      "Fixed-Fixed": ["both of you are loyal, committed, and delightfully stubborn", "two fixed hearts that stay the course"],
+      "Mutable-Mutable": ["both of you bend and adapt with ease", "two flexible spirits who flow around trouble"],
+      "Cardinal-Fixed": ["one of you starts, the other sustains", "an initiator paired with a stabilizer"],
+      "Cardinal-Mutable": ["one of you launches, the other adapts", "a leader paired with a natural improviser"],
+      "Fixed-Mutable": ["one of you holds steady while the other bends", "an anchor paired with a free-flowing current"]
+    };
+    const aspectGoodV = {
+      0: ["share the same sign's wavelength — a conjunction of instant, built-in understanding", "meet at a conjunction, so you simply get each other from the start"],
+      1: ["sit side by side on the wheel — different speeds, but plenty to teach each other", "are next-door neighbours, close enough to learn each other's rhythm"],
+      2: ["form a sextile — a friendly, easy angle where attraction comes naturally", "sit at a supportive sextile, an angle that just clicks"],
+      3: ["form a square — a high-energy angle that keeps the passion switched on", "meet at a square, the aspect that generates heat and drive"],
+      4: ["form a trine — the most harmonious angle in astrology, all ease and flow", "sit at a trine, so comfort and understanding come effortlessly"],
+      5: ["form a quincunx — an offbeat angle that grows through curiosity", "meet at a quincunx, an intriguing angle that rewards adjustment"],
+      6: ["sit in opposition — the axis of attraction, each the other's missing half", "face each other across the wheel, opposites with real magnetic pull"]
+    };
+    const elClashV = {
+      "Fire-Water": ["blunt fire can scald tender feelings, and heavy moods can dampen the spark", "the heat-and-water gap means pace and gentleness matter a lot"],
+      "Earth-Fire": ["one of you races while the other wants caution — agree on a tempo", "impatience versus prudence can grind unless you meet in the middle"],
+      "Air-Earth": ["one wants the concrete, the other the abstract — you can talk past each other", "practical versus theoretical can feel like two different channels"],
+      "Air-Water": ["one rationalizes while the other feels — give feelings airtime and logic patience", "head and heart need a translator when things get tense"],
+      "Fire-Fire": ["two fires can burn hot — tempers and competition need an outlet", "so much heat between you that egos need somewhere to go"],
+      "Earth-Earth": ["two steady natures can settle into a rut — schedule novelty on purpose", "comfort can tip into stagnation without a nudge"],
+      "Air-Air": ["two heads can over-think — remember to land the decisions and the feelings", "all talk and no landing is the trap to avoid"],
+      "Water-Water": ["two deep feelers can drown in shared moods — keep a line to the surface", "emotions can flood the room unless one of you stays anchored"]
+    };
+    const modClashV = {
+      "Cardinal-Cardinal": ["as two initiators, watch for a quiet tug-of-war over who's in charge", "both wanting to lead can turn into a subtle power struggle"],
+      "Fixed-Fixed": ["as two fixed signs, neither of you loves being first to bend", "two stubborn streaks mean compromise takes real effort"],
+      "Mutable-Mutable": ["as two adaptable signs, you can drift without a firm plan", "all that flexibility needs one of you to hold the anchor"]
+    };
+
+    const scoreByDist = { 0: 82, 1: 64, 2: 88, 3: 66, 4: 92, 5: 62, 6: 84 };
+    const label = (s) => s >= 88 ? "Excellent" : s >= 78 ? "Strong" : s >= 68 ? "Promising" : "Takes real work";
+
+    /* ---- screens ---- */
+    function intro() {
+      root.innerHTML = `
+        <div class="quiz quiz-intro">
+          <div class="quiz-badges">
+            <span class="quiz-badge">☉ All 12 signs</span>
+            <span class="quiz-badge ok">✓ 100% free · no sign-up · no email</span>
+          </div>
+          <h2>Check any two signs for compatibility</h2>
+          <p class="quiz-lede"><strong>Completely FREE zodiac compatibility check. No signup, no email, no credit card. Instant results for any two signs, no catch.</strong></p>
+          <p>Pick your sign (or enter a birthday and we'll find it), do the same for your partner, and get an in-depth breakdown of the good ways your signs work together — plus a few honest things to watch for.</p>
+          <div class="zodiac-input">
+            ${sidePicker("a", "You")}
+            ${sidePicker("b", "Your partner")}
+          </div>
+          <div class="actions"><button class="button primary" id="reveal">Reveal our compatibility →</button></div>
+          <p id="z-error" class="error" hidden></p>
+          <h3>A little about each sign</h3>
+          <div class="zodiac-grid">
+            ${signs.map((s) => `
+              <div class="sign-card">
+                ${glyphs[s.key]}
+                <h4>${esc(s.name)}</h4>
+                <span class="sign-dates">${esc(s.dates)}</span>
+                <span class="sign-el">${esc(s.el)} · ${esc(s.mod)}</span>
+                <p>${esc(s.blurb)}</p>
+              </div>`).join("")}
+          </div>
+        </div>`;
+      wireSide("a");
+      wireSide("b");
+      root.querySelector("#reveal").onclick = reveal;
+    }
+
+    function sidePicker(side, title) {
+      return `
+        <div class="zodiac-side" data-side="${side}">
+          <h3>${esc(title)}</h3>
+          <div class="zodiac-mode">
+            <button type="button" class="on" data-mode="sign">By sign</button>
+            <button type="button" data-mode="date">By birthday</button>
+          </div>
+          <div class="field" data-panel="sign">
+            <label for="z-sign-${side}">Star sign</label>
+            <select id="z-sign-${side}">
+              <option value="">Choose a sign…</option>
+              ${signs.map((s) => `<option value="${s.key}">${esc(s.name)} (${esc(s.dates)})</option>`).join("")}
+            </select>
+          </div>
+          <div class="field" data-panel="date" hidden>
+            <label for="z-date-${side}">Date of birth</label>
+            <input type="date" id="z-date-${side}">
+            <small>We only use the month and day to find the sign. Nothing is saved.</small>
+          </div>
+        </div>`;
+    }
+
+    function wireSide(side) {
+      const wrap = root.querySelector(`.zodiac-side[data-side="${side}"]`);
+      wrap.querySelectorAll(".zodiac-mode button").forEach((b) => {
+        b.onclick = () => {
+          wrap.querySelectorAll(".zodiac-mode button").forEach((x) => x.classList.toggle("on", x === b));
+          wrap.querySelector('[data-panel="sign"]').hidden = b.dataset.mode !== "sign";
+          wrap.querySelector('[data-panel="date"]').hidden = b.dataset.mode !== "date";
+        };
+      });
+    }
+
+    function readSide(side) {
+      const wrap = root.querySelector(`.zodiac-side[data-side="${side}"]`);
+      const mode = wrap.querySelector(".zodiac-mode button.on").dataset.mode;
+      if (mode === "sign") {
+        const v = wrap.querySelector(`#z-sign-${side}`).value;
+        return v || null;
+      }
+      const dv = wrap.querySelector(`#z-date-${side}`).value; // YYYY-MM-DD
+      if (!dv) return null;
+      const parts = dv.split("-");
+      const month = Number(parts[1]);
+      const day = Number(parts[2]);
+      if (!month || !day) return null;
+      return signFromDate(month, day);
+    }
+
+    function reveal() {
+      const err = root.querySelector("#z-error");
+      const a = readSide("a");
+      const b = readSide("b");
+      if (!a || !b) {
+        err.textContent = "Please choose a sign or enter a birthday on both sides.";
+        err.hidden = false;
+        return;
+      }
+      results(a, b);
+    }
+
+    function results(keyA, keyB) {
+      const i = idx[keyA];
+      const j = idx[keyB];
+      const A = signs[i];
+      const B = signs[j];
+      const dist = Math.min(Math.abs(i - j), 12 - Math.abs(i - j));
+      const score = scoreByDist[dist];
+
+      const note = pairNote[`${Math.min(i, j)}-${Math.max(i, j)}`] || "";
+      const elKey = [A.el, B.el].sort().join("-");
+      const modKey = [A.mod, B.mod].sort().join("-");
+      // Deterministic per-pair variant picker so same-category couples diverge.
+      const pick = (arr) => arr[(i * 7 + j * 3) % arr.length];
+
+      const elText = `${A.name} brings ${elAdj[A.el]}, ${B.name} ${elAdj[B.el]} — ${pick(relClause[elKey])}.`;
+      const modText = i === j
+        ? `And as two ${A.mod.toLowerCase()} signs, ${pick(modClause[modKey])}.`
+        : `On top of that, ${pick(modClause[modKey])} — ${A.name} is ${A.mod.toLowerCase()}, ${B.name} is ${B.mod.toLowerCase()}.`;
+      const aspectGood = `${A.name} and ${B.name} ${pick(aspectGoodV[dist])}.`;
+
+      const gifts = i === j
+        ? `<li>You both bring the same gift — ${esc(A.gift)} — which makes for deep mutual understanding.</li>`
+        : `<li><strong>${esc(A.name)}</strong> offers <strong>${esc(B.name)}</strong> ${esc(A.gift)}.</li>
+           <li><strong>${esc(B.name)}</strong> offers <strong>${esc(A.name)}</strong> ${esc(B.gift)}.</li>`;
+
+      // Watch-outs: element clash + modality clash + aspect note, named, brief.
+      const watch = [];
+      if (elClashV[elKey]) watch.push(`${A.name} and ${B.name}: ${pick(elClashV[elKey])}.`);
+      if (modClashV[modKey]) watch.push(`${pick(modClashV[modKey]).replace(/^as /, "As ")}.`);
+      if (dist === 3) watch.push(`As a square, the chemistry is real, but ${A.name} and ${B.name} only turn friction into growth by working at it.`);
+      else if (dist === 6) watch.push(`As opposites, ${A.name} and ${B.name} complete each other — but can amplify each other's extremes if you stop meeting in the middle.`);
+      else if (dist === 1 || dist === 5) watch.push(`${A.name} and ${B.name} are wired quite differently, so small misunderstandings need patience and translation.`);
+      if (watch.length === 0) watch.push(`Even an easy match like ${A.name} and ${B.name} can coast — keep choosing each other on purpose.`);
+      const watchTop = watch.slice(0, 3);
+
+      root.innerHTML = `
+        <div class="quiz quiz-results">
+          <p class="eyebrow">Your compatibility</p>
+          <div class="match-hero">
+            <div style="text-align:center">${glyphs[A.key]}<div class="sign-mini">${esc(A.name)}</div></div>
+            <div class="match-score">${score}%<small>${esc(label(score))} match</small></div>
+            <div style="text-align:center">${glyphs[B.key]}<div class="sign-mini">${esc(B.name)}</div></div>
+          </div>
+          <p class="match-meta">${esc(A.name)} (${esc(A.el)}, ${esc(A.mod)}) &amp; ${esc(B.name)} (${esc(B.el)}, ${esc(B.mod)})</p>
+          <p class="match-lead">${esc(note)}</p>
+          <h3>Why the chemistry works</h3>
+          <p>${esc(elText)} ${esc(modText)}</p>
+          <h3>The good ways you work together</h3>
+          <ul class="q-list good-list">
+            ${gifts}
+            <li>${esc(aspectGood)}</li>
+          </ul>
+          <h3>A few things to watch</h3>
+          <ul class="q-list watch-list">${watchTop.map((w) => `<li>${esc(w)}</li>`).join("")}</ul>
+          <div class="quiz-note">
+            <strong>Take it lightly</strong>
+            <p>Sun-sign compatibility is a fun lens, not a rulebook. A full astrological picture involves far more than two birthdays, and any two people can make it work — or not — regardless of their signs. Enjoy it for what it is.</p>
+          </div>
+          <div class="actions">
+            <button class="button primary" id="again">Try another pairing</button>
+          </div>
+          <p class="quiz-share-note">Nothing was uploaded or saved — this all runs in your browser.</p>
+        </div>`;
+      root.querySelector("#again").onclick = () => { intro(); root.scrollIntoView({ block: "start", behavior: "smooth" }); };
+      root.scrollIntoView({ block: "start", behavior: "smooth" });
+    }
+
+    intro();
   }
 })();
