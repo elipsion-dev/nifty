@@ -535,6 +535,28 @@ th { background: var(--surface-2); font-size: .7rem; text-transform: uppercase; 
 .affinity-head .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: .45rem; vertical-align: middle; }
 .affinity-bar { height: 12px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
 .affinity-bar > span { display: block; height: 100%; border-radius: 999px; }
+.affinity-rows { margin: .8rem 0 1.4rem; }
+
+/* personality Likert flow */
+.p-scale-legend { display: flex; justify-content: space-between; color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; margin: .8rem 0 .4rem; }
+.p-statements { display: grid; gap: 1.1rem; }
+.p-statement { padding: .95rem 1rem; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); }
+.p-text { margin: 0 0 .7rem; font-weight: 600; }
+.p-scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: .4rem; }
+.p-dot { position: relative; padding: .6rem .3rem; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--muted); cursor: pointer; font-size: .68rem; line-height: 1.15; text-align: center; transition: border-color .15s, background .15s, color .15s; }
+.p-dot:hover { border-color: var(--qa); }
+.p-dot.selected { border-color: var(--qa); background: color-mix(in srgb, var(--qa) 20%, var(--surface)); color: var(--ink); box-shadow: 0 0 0 1px var(--qa) inset; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.two-col .quiz-note { margin: 0; }
+.q-list { margin: .2rem 0 0; padding-left: 1.1rem; color: var(--muted); }
+.q-list li { margin: .3rem 0; font-size: .9rem; }
+.watch-list { border-left: 0; padding-left: 1.1rem; }
+@media (max-width: 650px) {
+  .two-col { grid-template-columns: 1fr; }
+  .p-dot { font-size: 0; padding: .8rem .2rem; }
+  .p-dot span { font-size: 0; }
+  .p-dot::after { content: ""; display: block; width: 10px; height: 10px; margin: 0 auto; border-radius: 50%; background: currentColor; }
+}
 
 /* zodiac */
 .zodiac-input { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin: 1.2rem 0; }

@@ -354,10 +354,260 @@
   }
 
   /* =====================================================================
-   *  PERSONALITY TYPE TEST  (built next)
+   *  PERSONALITY TYPE TEST
+   *  Original 6-type model (not Color Code / True Colors / MBTI). Balanced
+   *  Likert: 6 first-person statements per type, scored 0-4, summed, and
+   *  shown as an affinity intensity per type with a dominant type.
    * ===================================================================== */
   function renderPersonalityTest() {
-    root.innerHTML = '<div class="loading-state">Personality test coming online…</div>';
+    const ICON = (inner) =>
+      `<svg viewBox="0 0 64 64" class="type-ic" role="img" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round">${inner}</svg>`;
+    const icons = {
+      beacon: ICON(`<circle cx="32" cy="32" r="11"/><path d="M32 6v9M32 49v9M6 32h9M49 32h9M14 14l6 6M44 44l6 6M50 14l-6 6M20 44l-6 6"/>`),
+      architect: ICON(`<circle cx="32" cy="12" r="3.5"/><path d="M32 15 19 52M32 15l13 37M24 40h16"/>`),
+      trailblazer: ICON(`<path d="M20 8v48"/><path d="M20 12h28l-8 9 8 9H20z" fill="currentColor"/>`),
+      anchor: ICON(`<circle cx="32" cy="14" r="5"/><path d="M32 19v33M20 34h24M16 42a16 16 0 0 0 32 0"/>`),
+      voyager: ICON(`<path d="M32 6l5.5 18.5L56 30l-18.5 5.5L32 54l-5.5-18.5L8 30l18.5-5.5z"/>`),
+      weaver: ICON(`<circle cx="25" cy="32" r="13"/><circle cx="39" cy="32" r="13"/>`)
+    };
+    // key, name, color, tagline, blurb (intro card), meaning (full), strengths, watch
+    const types = [
+      {
+        key: "beacon", name: "The Beacon", color: "#e6a935", tagline: "Warmth that moves people",
+        blurb: "Expressive, optimistic, and energised by people. Beacons lift the mood and pull others together.",
+        meaning: "You lead with warmth and energy. A Beacon reads a room instinctively and knows how to lift it — you turn a flat meeting into a conversation and a stranger into a friend. Optimism is your default setting, so you tend to see possibility where others see problems, and people are drawn to that hopeful, expressive energy. You think out loud, connect quickly, and feel most alive when you're helping others feel seen and encouraged.",
+        strengths: ["Rallies and motivates the people around you", "Communicates with genuine warmth and enthusiasm", "Finds the upside and keeps morale high under pressure", "Builds a wide, loyal network with ease"],
+        watch: ["Can talk over quieter voices without meaning to", "May gloss over hard details in favour of the vibe", "Needs recognition, and can deflate without it"]
+      },
+      {
+        key: "architect", name: "The Architect", color: "#4f8cff", tagline: "Order out of complexity",
+        blurb: "Analytical, precise, and structured. Architects trust logic, plans, and evidence over impulse.",
+        meaning: "You bring clarity to messy problems. An Architect wants to understand how things actually work, and you're happiest with a clean plan, solid data, and a system you can trust. You notice the errors and inconsistencies everyone else skimmed past, and you'd rather be right than fast. That precision makes you the person others turn to when a decision really has to hold up — you think it through before you commit, and your conclusions tend to last.",
+        strengths: ["Thinks rigorously and spots flaws early", "Builds reliable plans, systems, and processes", "Makes decisions grounded in evidence, not mood", "Delivers careful, high-quality, detailed work"],
+        watch: ["Can over-analyse and delay a good-enough decision", "May come across as cool or critical to feelings-first people", "Resists changing a plan even when the ground shifts"]
+      },
+      {
+        key: "trailblazer", name: "The Trailblazer", color: "#e0796c", tagline: "Momentum and nerve",
+        blurb: "Driven, decisive, and bold. Trailblazers move first, take charge, and push through obstacles.",
+        meaning: "You are built for momentum. A Trailblazer would rather act and adjust than wait for perfect certainty, and you're comfortable making the hard call when everyone else hesitates. Goals genuinely energise you, obstacles make you push harder, and you like owning the outcome. When a group is stuck, you're the one who gets it moving — decisive, direct, and unafraid to lead from the front.",
+        strengths: ["Decisive and confident under pressure", "Drives projects forward and gets results", "Takes ownership and leads without being asked", "Turns setbacks into fuel"],
+        watch: ["Can steamroll people in the rush to progress", "Impatience may cut off useful discussion", "Risks burning out yourself and others"]
+      },
+      {
+        key: "anchor", name: "The Anchor", color: "#3ecf8e", tagline: "Steady ground for everyone",
+        blurb: "Calm, loyal, and dependable. Anchors keep things stable and quietly look after the people around them.",
+        meaning: "You are the steady ground others stand on. An Anchor stays level when everyone else is stressed, keeps their word, and shows up consistently — which is exactly why people rely on you. You value harmony and would usually rather keep the peace than win a point, and you quietly make sure the people around you are actually okay. Your calm, dependable presence is the thing that holds teams and friendships together over the long haul.",
+        strengths: ["Stays calm and grounded in a crisis", "Deeply loyal, consistent, and trustworthy", "Creates harmony and looks after others", "Follows through and finishes what you start"],
+        watch: ["Can avoid necessary conflict to keep the peace", "May resist change even when it's needed", "Puts others first until your own needs go unmet"]
+      },
+      {
+        key: "voyager", name: "The Voyager", color: "#b57edc", tagline: "Chasing what could be",
+        blurb: "Curious, imaginative, and restless. Voyagers chase new ideas and reimagine how things could be.",
+        meaning: "You are pulled forward by possibility. A Voyager is always chasing the next idea, experience, or what-if, and you get restless doing the same thing the same way for long. You imagine how things could be completely different and happily rethink the rules to get there. That curiosity makes you a natural innovator — you see the future arriving before other people do, and you'd take an interesting risk over a safe, predictable path almost every time.",
+        strengths: ["Generates original ideas and fresh angles", "Embraces change and thrives on novelty", "Sees possibilities and long-range vision", "Comfortable with bold, calculated risks"],
+        watch: ["Can start more than you finish", "May dismiss proven methods too quickly", "Restlessness can read as unreliability"]
+      },
+      {
+        key: "weaver", name: "The Weaver", color: "#2dd4bf", tagline: "Bringing people together",
+        blurb: "Empathetic, diplomatic, and adaptive. Weavers sense what people feel and bring them into harmony.",
+        meaning: "You connect people to each other. A Weaver senses how others feel before they say a word, and you naturally end up mediating when there's tension. You adapt your approach to whoever you're with, listen more than you talk, and care more about doing what's fair than about being right. That empathy and diplomacy make you the quiet glue in any group — the one who understands every side and helps everyone feel heard.",
+        strengths: ["Reads people and emotions with real accuracy", "Mediates conflict and builds consensus", "Adapts smoothly to different people and situations", "Leads with fairness, empathy, and values"],
+        watch: ["Can absorb others' stress until it wears you down", "May lose your own position while accommodating everyone", "Avoids taking a hard stand when one is needed"]
+      }
+    ];
+    const typeByKey = Object.fromEntries(types.map((t) => [t.key, t]));
+
+    // 6 first-person statements per type (order interleaved at runtime).
+    const S = (type, text) => ({ type, text });
+    const bank = [
+      S("beacon", "I light up when I'm the one energising a room."),
+      S("beacon", "People come to me for a boost of encouragement."),
+      S("beacon", "I'd rather talk an idea through out loud than sit with it alone."),
+      S("beacon", "I naturally look for the bright side of a tough situation."),
+      S("beacon", "Being noticed and appreciated matters a lot to me."),
+      S("beacon", "I make new connections easily wherever I go."),
+      S("architect", "I like to understand exactly how something works before I trust it."),
+      S("architect", "A clear plan and a tidy system calm me down."),
+      S("architect", "I catch errors and inconsistencies that other people miss."),
+      S("architect", "I prefer decisions backed by data over decisions based on a feeling."),
+      S("architect", "I think carefully before I speak or commit."),
+      S("architect", "Vague instructions frustrate me; I want the specifics."),
+      S("trailblazer", "I'd rather act now and adjust than wait for perfect certainty."),
+      S("trailblazer", "I get restless when things move too slowly."),
+      S("trailblazer", "Winning and hitting the goal genuinely motivate me."),
+      S("trailblazer", "I'm comfortable making the hard call when no one else will."),
+      S("trailblazer", "Obstacles make me push harder, not back off."),
+      S("trailblazer", "I like being in charge of the outcome."),
+      S("anchor", "I stay calm and level-headed when other people are stressed."),
+      S("anchor", "Loyalty and keeping my word matter deeply to me."),
+      S("anchor", "I'd rather keep the peace than win an argument."),
+      S("anchor", "People rely on me because I'm consistent and dependable."),
+      S("anchor", "I prefer steady routines over constant change."),
+      S("anchor", "I quietly make sure everyone around me is okay."),
+      S("voyager", "I'm always chasing the next new idea or experience."),
+      S("voyager", "I get bored doing the same thing the same way for long."),
+      S("voyager", "I love imagining how things could be completely different."),
+      S("voyager", "I'd pick an interesting risk over a safe, predictable path."),
+      S("voyager", "My mind jumps ahead to possibilities others haven't considered."),
+      S("voyager", "Rules are starting points I'm happy to rethink."),
+      S("weaver", "I can sense how people are feeling before they say it."),
+      S("weaver", "I naturally end up mediating when people disagree."),
+      S("weaver", "I adapt my approach to fit whoever I'm with."),
+      S("weaver", "Doing what's fair and right matters more to me than being right."),
+      S("weaver", "I listen more than I talk in a group."),
+      S("weaver", "I feel other people's emotions almost as if they were my own.")
+    ];
+    // Interleave so the same type doesn't cluster: round-robin by type.
+    const byType = types.map((t) => bank.filter((s) => s.type === t.key));
+    const questions = [];
+    for (let i = 0; i < 6; i++) for (const group of byType) questions.push(group[i]);
+
+    const TOTAL = questions.length;
+    const PER_PAGE = 6;
+    const PAGES = Math.ceil(TOTAL / PER_PAGE);
+    const scale = ["Strongly disagree", "Disagree", "Neutral", "Agree", "Strongly agree"];
+    const answers = new Array(TOTAL).fill(null);
+    let page = 0;
+
+    function intro() {
+      root.innerHTML = `
+        <div class="quiz quiz-intro">
+          <div class="quiz-badges">
+            <span class="quiz-badge time">⏱ Estimated time: about 10 minutes</span>
+            <span class="quiz-badge">${TOTAL} statements · 6 types</span>
+            <span class="quiz-badge ok">✓ 100% free · no sign-up · no email</span>
+          </div>
+          <h2>Which of the six types are you?</h2>
+          <p class="quiz-lede"><strong>Completely FREE personality type test. No signup, no email, no credit card. Instant results with a full type breakdown, no catch.</strong></p>
+          <p>This is an original, colour-coded model built for this site — it isn't the Color Code, True Colors, or Myers-Briggs. You'll rate ${TOTAL} short statements, and we'll show your <strong>dominant type</strong> plus your affinity for all six. Most people are a blend, and the scorecard shows exactly how yours mixes.</p>
+          <h3>Meet the six types</h3>
+          <div class="type-grid">
+            ${types.map((t) => `
+              <div class="type-card" style="--tc:${t.color}">
+                ${icons[t.key]}
+                <h4>${esc(t.name)}</h4>
+                <p>${esc(t.blurb)}</p>
+              </div>`).join("")}
+          </div>
+          <div class="quiz-note">
+            <strong>Answer honestly, not aspirationally</strong>
+            <p>Rate how you actually are day to day, not how you'd like to be or how you act at work. There are no better or worse types — each one is a different set of strengths.</p>
+          </div>
+          <div class="actions"><button class="button primary" id="start">Start the test →</button></div>
+        </div>`;
+      root.querySelector("#start").onclick = () => { page = 0; renderPage(); };
+    }
+
+    function renderPage() {
+      const start = page * PER_PAGE;
+      const slice = questions.slice(start, start + PER_PAGE);
+      const answered = answers.filter((a) => a !== null).length;
+      const rows = slice.map((q, idx) => {
+        const gi = start + idx;
+        return `
+          <div class="p-statement">
+            <p class="p-text">${esc(q.text)}</p>
+            <div class="p-scale" role="group" aria-label="${esc(q.text)}">
+              ${scale.map((label, v) => `
+                <button type="button" class="p-dot${answers[gi] === v ? " selected" : ""}" data-gi="${gi}" data-v="${v}" title="${esc(label)}" aria-label="${esc(label)}"><span>${label}</span></button>`).join("")}
+            </div>
+          </div>`;
+      }).join("");
+      root.innerHTML = `
+        <div class="quiz quiz-question">
+          <div class="quiz-progress"><span style="width:${(answered / TOTAL) * 100}%"></span></div>
+          <p class="quiz-count">Page ${page + 1} of ${PAGES} · ${answered} of ${TOTAL} answered</p>
+          <div class="p-scale-legend"><span>Strongly disagree</span><span>Strongly agree</span></div>
+          <div class="p-statements">${rows}</div>
+          <div class="actions quiz-nav">
+            <button class="button" id="prev"${page === 0 ? " disabled" : ""}>← Back</button>
+            ${page === PAGES - 1
+              ? `<button class="button primary" id="finish">See my results</button>`
+              : `<button class="button primary" id="next">Next →</button>`}
+          </div>
+        </div>`;
+      root.querySelectorAll(".p-dot").forEach((b) => {
+        b.onclick = () => {
+          answers[Number(b.dataset.gi)] = Number(b.dataset.v);
+          b.parentElement.querySelectorAll(".p-dot").forEach((x) => x.classList.remove("selected"));
+          b.classList.add("selected");
+          const bar = root.querySelector(".quiz-progress > span");
+          const a = answers.filter((x) => x !== null).length;
+          if (bar) bar.style.width = `${(a / TOTAL) * 100}%`;
+          const c = root.querySelector(".quiz-count");
+          if (c) c.textContent = `Page ${page + 1} of ${PAGES} · ${a} of ${TOTAL} answered`;
+        };
+      });
+      const prev = root.querySelector("#prev");
+      if (prev) prev.onclick = () => { if (page > 0) { page -= 1; renderPage(); root.scrollIntoView({ block: "start" }); } };
+      const next = root.querySelector("#next");
+      if (next) next.onclick = () => {
+        if (!pageComplete(start)) { alert("Please answer every statement on this page before continuing."); return; }
+        page += 1; renderPage(); root.scrollIntoView({ block: "start" });
+      };
+      const finish = root.querySelector("#finish");
+      if (finish) finish.onclick = () => {
+        if (answers.some((a) => a === null)) { alert("Please answer every statement so the scorecard is accurate."); return; }
+        results();
+      };
+    }
+    function pageComplete(start) {
+      for (let i = start; i < Math.min(start + PER_PAGE, TOTAL); i++) if (answers[i] === null) return false;
+      return true;
+    }
+
+    function results() {
+      const scores = Object.fromEntries(types.map((t) => [t.key, 0]));
+      questions.forEach((q, i) => { scores[q.type] += answers[i]; });
+      const max = 6 * 4; // 6 statements * max 4
+      const ranked = types
+        .map((t) => ({ t, raw: scores[t.key], pct: Math.round((scores[t.key] / max) * 100) }))
+        .sort((a, b) => b.raw - a.raw);
+      const top = ranked[0];
+      const second = ranked[1];
+      const blend = (top.raw - second.raw) <= 3
+        ? `<p>Your profile is a close blend of <strong style="color:${top.t.color}">${esc(top.t.name)}</strong> and <strong style="color:${second.t.color}">${esc(second.t.name)}</strong> — you draw on both depending on the situation.</p>`
+        : `<p><strong style="color:${top.t.color}">${esc(top.t.name)}</strong> is clearly out in front for you, with <strong style="color:${second.t.color}">${esc(second.t.name)}</strong> as your strong secondary flavour.</p>`;
+
+      const bars = ranked.map((r) => `
+        <div class="affinity-row">
+          <div class="affinity-head"><span><span class="dot" style="background:${r.t.color}"></span>${esc(r.t.name)}</span><strong>${r.pct}%</strong></div>
+          <div class="affinity-bar"><span style="width:${r.pct}%;background:${r.t.color}"></span></div>
+        </div>`).join("");
+
+      root.innerHTML = `
+        <div class="quiz quiz-results">
+          <p class="eyebrow">Your dominant type</p>
+          <div class="type-result-head" style="--tc:${top.t.color}">
+            ${icons[top.t.key]}
+            <div><h2>${esc(top.t.name)}</h2><span class="type-tag">${esc(top.t.tagline)}</span></div>
+          </div>
+          <p>${esc(top.t.meaning)}</p>
+          ${blend}
+          <h3>Your affinity for each type</h3>
+          <div class="affinity-rows">${bars}</div>
+          <div class="two-col">
+            <div class="quiz-note">
+              <strong>Where you shine</strong>
+              <ul class="q-list">${top.t.strengths.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>
+            </div>
+            <div class="quiz-note warn">
+              <strong>What to watch for</strong>
+              <ul class="q-list watch-list">${top.t.watch.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>
+            </div>
+          </div>
+          <div class="quiz-note">
+            <strong>Remember</strong>
+            <p>No type is better than another, and this is a self-reflection tool, not a clinical assessment. Your result is a snapshot of how you answered today — use it as a mirror and a conversation starter, not a label.</p>
+          </div>
+          <div class="actions"><button class="button primary" id="retake">Retake the test</button></div>
+          <p class="quiz-share-note">Nothing was uploaded or saved — refresh and it's gone.</p>
+        </div>`;
+      root.querySelector("#retake").onclick = () => location.reload();
+      root.scrollIntoView({ block: "start", behavior: "smooth" });
+    }
+
+    intro();
   }
 
   /* =====================================================================
