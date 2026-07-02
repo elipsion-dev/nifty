@@ -466,6 +466,7 @@
     const PER_PAGE = 6;
     const PAGES = Math.ceil(TOTAL / PER_PAGE);
     const scale = ["Strongly disagree", "Disagree", "Neutral", "Agree", "Strongly agree"];
+    const scaleAbbr = ["SD", "D", "N", "A", "SA"];
     const answers = new Array(TOTAL).fill(null);
     let page = 0;
 
@@ -509,7 +510,7 @@
             <p class="p-text">${esc(q.text)}</p>
             <div class="p-scale" role="group" aria-label="${esc(q.text)}">
               ${scale.map((label, v) => `
-                <button type="button" class="p-dot${answers[gi] === v ? " selected" : ""}" data-gi="${gi}" data-v="${v}" title="${esc(label)}" aria-label="${esc(label)}"><span>${label}</span></button>`).join("")}
+                <button type="button" class="p-dot${answers[gi] === v ? " selected" : ""}" data-gi="${gi}" data-v="${v}" data-abbr="${scaleAbbr[v]}" title="${esc(label)}" aria-label="${esc(label)}"><span>${label}</span></button>`).join("")}
             </div>
           </div>`;
       }).join("");
