@@ -1400,6 +1400,16 @@ const categories = [
       ["upc-validator", "UPC Validator", "Validate UPC-A check digits or calculate a missing check digit."],
       ["vin-decoder", "VIN Decoder", "Validate a VIN and decode its year and basic structure locally."]
     ]
+  },
+  {
+    slug: "quizzes",
+    name: "Quizzes & You",
+    description: "Free self-assessments and just-for-fun tests with instant results: an original reasoning (IQ-style) test, a personality type profiler, and a zodiac compatibility guide. No sign-up, no email, nothing stored.",
+    tools: [
+      ["iq-test", "IQ Test", "Estimate your reasoning ability with an original, timed test spanning pattern, number, verbal, and spatial puzzles."],
+      ["personality-type-test", "Personality Type Test", "Find your dominant personality type and your affinity for every type with an original color-style profiler."],
+      ["zodiac-compatibility", "Zodiac Compatibility", "See how any two star signs work together, with an in-depth strengths breakdown and a few things to watch."]
+    ]
   }
 ];
 
@@ -1760,8 +1770,8 @@ for (const category of categories) {
     const bodyHtml = expandArticleSvgs(splitIndex >= 0 ? article.slice(splitIndex + "<!--more-->".length) : article);
     fs.writeFileSync(path.join(category.slug, `${slug}.html`), page({
       title: `Free ${name}`,
-      titleTag: seoTitle(name, description),
-      description: `Free online ${name.toLowerCase()}. ${description} No sign-up; processing stays in your browser.`,
+      titleTag: meta.titleTag || seoTitle(name, description),
+      description: meta.metaDescription || `Free online ${name.toLowerCase()}. ${description} No sign-up; processing stays in your browser.`,
       pathname: `/${category.slug}/${slug}.html`,
       prefix: "../",
       extraSchema: [
@@ -1815,7 +1825,7 @@ for (const category of categories) {
                 </div>
                 ${bodyHtml}
                 <h2>Important</h2>
-                <p>This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them.</p>
+                <p>${meta.disclaimer || "This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them."}</p>
                 <h2>Support</h2>
                 ${toolSupportNote}
               </section>
@@ -1826,7 +1836,7 @@ for (const category of categories) {
             </aside>
           </div>
         </main>`,
-      scripts: `<script src="../assets/tool.js" defer></script>`
+      scripts: `<script src="../assets/${meta.script || "tool.js"}" defer></script>`
     }));
   }
 }
