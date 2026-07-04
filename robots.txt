@@ -1,19 +1,25 @@
 User-agent: *
 Allow: /
+Disallow: /content/
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /content/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /content/
 
 User-agent: GPTBot
 Allow: /
+Disallow: /content/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /content/
 
 User-agent: Claude-SearchBot
 Allow: /
+Disallow: /content/
 
 Sitemap: https://niftyutilities.com/sitemap.xml
