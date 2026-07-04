@@ -335,6 +335,20 @@ h2 { letter-spacing: -0.03em; }
 .tool-help li { margin-bottom: .4rem; }
 .support-note { color: var(--muted); }
 
+/* Related tools + highlighted quizzes on individual tool pages */
+.related-tools { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--line); }
+.related-tools h2 { margin: 0 0 1rem; color: var(--ink); font-size: 1.1rem; }
+.related-tools h2 ~ h2 { margin-top: 1.6rem; }
+.related-links { display: flex; flex-wrap: wrap; gap: .6rem; }
+.related-link { padding: .5rem .85rem; color: var(--ink); font-size: .85rem; text-decoration: none; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; transition: color .16s ease, border-color .16s ease; }
+.related-link:hover { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
+.related-quizzes { margin-top: 0; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.tool-card-featured { border-color: color-mix(in srgb, var(--gold) 45%, var(--line)); background: color-mix(in srgb, var(--gold) 8%, var(--surface)); }
+.tool-card-featured:hover { border-color: color-mix(in srgb, var(--gold) 70%, var(--line)); box-shadow: 0 12px 30px rgba(0,0,0,.45), 0 0 0 1px rgba(217,169,58,.28), 0 0 24px rgba(217,169,58,.18); }
+.tool-card-featured .tool-arrow { color: var(--gold); }
+.tool-card-featured h3 { margin-top: 1.5rem; }
+.tool-badge { position: absolute; left: 1rem; top: 1rem; padding: .15rem .5rem; color: #2a1e00; font: 700 .62rem/1.4 ui-monospace, "SFMono-Regular", Consolas, monospace; letter-spacing: .1em; text-transform: uppercase; background: var(--gold); border-radius: 999px; }
+
 /* Per-tool accent: defaults to brand teal, overridden by inline --tool-accent. */
 .tool-page { --tool-accent: var(--accent); }
 .tool-page .eyebrow { color: var(--tool-accent); }

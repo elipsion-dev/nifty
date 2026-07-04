@@ -1562,6 +1562,45 @@ const toolCards = (tools, prefix = "../") => tools.map(([slug, name, description
     <p>${escapeHtml(description)}</p>
   </a>`).join("");
 
+// Quizzes highlighted on every individual tool page for internal backlinking.
+const FEATURED_QUIZ_SLUGS = ["iq-test", "personality-type-test", "zodiac-compatibility"];
+
+// "More tools" block injected into each individual tool page (never hub pages).
+// Lists every same-category sibling as a compact link (full internal mesh) plus a
+// highlighted set of quizzes. Never self-links; skips quizzes already shown as siblings.
+const relatedToolsSection = (category, currentSlug) => {
+  const cleanCat = category.name.replace(" / CSV", "").replace(" / Data", "");
+  const siblings = category.tools.filter(([slug]) => slug !== currentSlug);
+  const shown = new Set(siblings.map(([slug]) => slug));
+  const siblingLinks = siblings
+    .map(([slug, name]) => `<a class="related-link" href="${slug}.html">${escapeHtml(name)}</a>`)
+    .join("");
+
+  const quizTools = categories.find((c) => c.slug === "quizzes").tools;
+  const quizPrefix = category.slug === "quizzes" ? "" : "../quizzes/";
+  const featuredCards = FEATURED_QUIZ_SLUGS
+    .map((qs) => quizTools.find(([slug]) => slug === qs))
+    .filter(Boolean)
+    .filter(([slug]) => slug !== currentSlug && !shown.has(slug))
+    .map(([slug, name, description]) => `
+                  <a class="tool-card tool-card-featured" href="${quizPrefix}${slug}.html">
+                    <span class="tool-badge">Quiz</span>
+                    <span class="tool-arrow" aria-hidden="true">↗</span>
+                    <h3>${escapeHtml(name)}</h3>
+                    <p>${escapeHtml(description)}</p>
+                  </a>`)
+    .join("");
+
+  if (!siblingLinks && !featuredCards) return "";
+  return `
+              <section class="related-tools" aria-label="More tools you might like">
+                ${siblingLinks ? `<h2>Try these other ${escapeHtml(cleanCat)} tools</h2>
+                <div class="related-links">${siblingLinks}</div>` : ""}
+                ${featuredCards ? `<h2>Popular quizzes</h2>
+                <div class="tool-grid related-quizzes">${featuredCards}</div>` : ""}
+              </section>`;
+};
+
 fs.mkdirSync("assets", { recursive: true });
 
 const homeBody = `
@@ -1818,6 +1857,7 @@ for (const category of categories) {
                 <div class="loading-state">Loading tool…</div>
               </section>
               ${heroBottom}
+              ${relatedToolsSection(category, slug)}
               <section class="tool-help">
                 <div class="privacy-callout">
                   <h2>Your data never reaches us</h2>
@@ -1910,21 +1950,27 @@ fs.writeFileSync("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset
 
 fs.writeFileSync("robots.txt", `User-agent: *
 Allow: /
+Disallow: /content/
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /content/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /content/
 
 User-agent: GPTBot
 Allow: /
+Disallow: /content/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /content/
 
 User-agent: Claude-SearchBot
 Allow: /
+Disallow: /content/
 
 Sitemap: ${SITE_URL}/sitemap.xml
 `);
