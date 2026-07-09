@@ -35,6 +35,12 @@
   if (slug === "iq-test") renderIqTest();
   else if (slug === "personality-type-test") renderPersonalityTest();
   else if (slug === "zodiac-compatibility") renderZodiac();
+  else if (slug === "typing-speed-test") renderTypingTest();
+  else if (slug === "reaction-time-test") renderReactionTest();
+  else if (slug === "click-speed-test") renderClickSpeedTest();
+  else if (slug === "memory-test") renderMemoryTest();
+  else if (slug === "color-blindness-test") renderColorBlindnessTest();
+  else if (slug === "love-calculator") renderLoveCalculator();
   else root.innerHTML = '<p class="error">This tool could not be loaded.</p>';
 
   /* =====================================================================
@@ -974,4 +980,1809 @@
 
     intro();
   }
+
+  /* =====================================================================
+   *  TYPING SPEED TEST (WPM)
+   *  Live WPM + accuracy typing test. All words are an original common-word
+   *  pool assembled for this site. Runs entirely in the browser; nothing is
+   *  saved or uploaded. Timer starts on the first keystroke.
+   * ===================================================================== */
+  function renderTypingTest() {
+    /* ---- original pool of ~180 common English words (assembled for this site) ---- */
+    const WORDS = (
+      "the of and to in is it you that he was for on are with as his they at be this " +
+      "from or one had by word but not what all were when we there can an your which " +
+      "their said each she do how if will up other about out many then them these so " +
+      "some her would make like him into time has look two more write go see number no " +
+      "way could people my than first water been call who now find long down day did get " +
+      "come made may part over new sound take only little work know place year live me " +
+      "back give most very after thing our just name good sentence man think say great " +
+      "where help through much before line right too mean old any same tell boy follow " +
+      "came want show also around form three small set put end does another well large " +
+      "must big even such because turn here why ask went men read need land different " +
+      "home us move try kind hand picture again change off play spell air away animal " +
+      "house point page letter mother answer found study still learn should world high " +
+      "every near add food between own below country plant last school father keep tree " +
+      "never start city earth eye light thought head under story saw left don't few " +
+      "while along might close something seem next hard open example begin life always " +
+      "those both paper together got group often run important until children side feet " +
+      "car mile night walk white sea began grow took river four carry state once book " +
+      "hear stop without second later miss idea enough eat face watch far really almost " +
+      "above girl sometimes mountain cut young talk soon list song being leave family "
+    ).trim().split(/\s+/);
+
+    /* ---- modes (seconds) ---- */
+    const MODES = [
+      { s: 15, label: "15 seconds" },
+      { s: 30, label: "30 seconds" },
+      { s: 60, label: "60 seconds" }
+    ];
+    let modeSeconds = 60; // default
+
+    /* ---- per-run state / teardown ---- */
+    let target = "";        // the passage string (lowercase word stream)
+    let typed = "";         // what the user has entered so far
+    let correctChars = 0;   // keystroke-based: correct chars ever committed
+    let totalTyped = 0;     // keystroke-based: total chars ever committed (no decrement on backspace)
+    let prevLen = 0;        // previous typed length, to detect insert vs. delete
+    let startTime = null;   // performance.now() at first keystroke
+    let active = false;     // true only during the live typing phase
+    let rafId = null;       // requestAnimationFrame handle for the live stat loop
+    let endTimer = null;    // setTimeout that ends the test when time expires
+    let input = null;       // the (real, on-screen) input element
+    const onBlur = () => { if (active && input) setTimeout(() => { if (active && input) input.focus(); }, 0); };
+
+    function teardown() {
+      active = false;
+      if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+      if (endTimer !== null) { clearTimeout(endTimer); endTimer = null; }
+      if (input) { input.removeEventListener("blur", onBlur); }
+      input = null;
+    }
+
+    /* ---- build a passage from the pool ---- */
+    function buildPassage(seconds) {
+      // Roughly size the passage so a fast typist won't run out; ~2.4 words/sec ceiling.
+      const wordCount = Math.max(40, Math.round(seconds * 2.6) + 30);
+      const out = [];
+      let bag = [];
+      for (let i = 0; i < wordCount; i++) {
+        if (bag.length === 0) bag = shuffle(WORDS);
+        out.push(bag.pop());
+      }
+      return out.join(" ");
+    }
+
+    const round1 = (n) => Math.round(n * 10) / 10;
+
+    /* ---- intro screen ---- */
+    function intro() {
+      teardown();
+      root.innerHTML = `
+        <div class="quiz quiz-intro">
+          <div class="quiz-badges">
+            <span class="quiz-badge time">⌨️ Live WPM &amp; accuracy</span>
+            <span class="quiz-badge">Choose 15 / 30 / 60 seconds</span>
+            <span class="quiz-badge ok">✓ 100% free · no sign-up · no email</span>
+          </div>
+          <h2>A free typing speed test</h2>
+          <p class="quiz-lede"><strong>Completely FREE Typing Speed Test. No signup, no email, no credit card. Instant results, no catch.</strong></p>
+          <p>Type the passage as fast and as accurately as you can. Your speed in <strong>words per minute</strong> and your <strong>accuracy</strong> update live as you go, and the timer only starts on your first keystroke. Nothing you type is saved or uploaded.</p>
+          <ul class="quiz-facts">
+            <li><span>⏱</span><div><strong>Pick a length</strong> — a 15, 30, or 60 second sprint. Shorter runs reward bursts; longer runs reward stamina.</div></li>
+            <li><span>🎯</span><div><strong>Accuracy counts</strong> — every keystroke is checked against the target, so mistakes lower your net speed.</div></li>
+            <li><span>📊</span><div><strong>Honest scoring</strong> — WPM uses the standard 5-characters-per-word rule, exactly like the big typing tests.</div></li>
+          </ul>
+          <div class="typing-modes" role="group" aria-label="Test length">
+            ${MODES.map((m) => `<button type="button" class="button typing-mode${m.s === modeSeconds ? " on" : ""}" data-s="${m.s}">${esc(m.label)}</button>`).join("")}
+          </div>
+          <div class="quiz-note">
+            <strong>How to get an accurate result</strong>
+            <p>Use a real keyboard if you can, keep your eyes on the screen, and don't worry about the odd typo — fixing it with backspace is fine. Auto-correct and auto-capitalisation are turned off so what you type is exactly what is measured.</p>
+          </div>
+          <div class="actions"><button class="button primary" id="start">Start typing →</button></div>
+        </div>`;
+      root.querySelectorAll(".typing-mode").forEach((b) => {
+        b.onclick = () => {
+          modeSeconds = Number(b.dataset.s);
+          root.querySelectorAll(".typing-mode").forEach((x) => x.classList.toggle("on", x === b));
+        };
+      });
+      root.querySelector("#start").onclick = () => startTest();
+    }
+
+    /* ---- typing phase ---- */
+    function startTest() {
+      teardown();
+      target = buildPassage(modeSeconds);
+      typed = "";
+      correctChars = 0;
+      totalTyped = 0;
+      prevLen = 0;
+      startTime = null;
+      active = true;
+
+      root.innerHTML = `
+        <div class="quiz quiz-question typing-live">
+          <div class="quiz-topbar">
+            <span class="quiz-cat">Typing speed test</span>
+            <span class="quiz-timer-wrap">⏱ <span id="typing-clock">${modeSeconds}.0s</span></span>
+          </div>
+          <div class="typing-stats">
+            <div class="typing-stat"><strong id="typing-wpm">0</strong><span>WPM</span></div>
+            <div class="typing-stat"><strong id="typing-acc">100%</strong><span>Accuracy</span></div>
+            <div class="typing-stat"><strong id="typing-chars">0</strong><span>Characters</span></div>
+          </div>
+          <div class="typing-stage" id="typing-stage">
+            <div class="typing-passage" id="typing-passage" aria-hidden="true">${renderPassage("")}</div>
+            <input id="typing-input" class="typing-input" type="text" inputmode="text"
+              autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+              aria-label="Type the passage shown above" />
+          </div>
+          <p class="typing-hint" id="typing-hint">Start typing to begin the timer.</p>
+          <div class="actions">
+            <button class="button" id="typing-restart">Restart</button>
+          </div>
+        </div>`;
+
+      input = root.querySelector("#typing-input");
+      const stage = root.querySelector("#typing-stage");
+      // Clicking anywhere in the stage refocuses the input so keystrokes are never lost.
+      stage.onclick = () => { if (active && input) input.focus(); };
+      input.addEventListener("blur", onBlur);
+      input.addEventListener("paste", (e) => e.preventDefault());
+      input.addEventListener("input", onInput);
+      root.querySelector("#typing-restart").onclick = () => intro();
+
+      // Auto-focus (raises the mobile keyboard).
+      input.focus();
+    }
+
+    /* ---- per-character passage markup ---- */
+    function renderPassage(current) {
+      let html = "";
+      for (let i = 0; i < target.length; i++) {
+        const ch = target[i];
+        const shown = ch === " " ? "&nbsp;" : esc(ch);
+        let cls = "tc";
+        let id = "";
+        if (i < current.length) {
+          cls += current[i] === ch ? " tc-ok" : " tc-bad";
+        } else if (i === current.length) {
+          cls += " tc-cur";
+          id = ' id="tc-cursor"';
+        }
+        html += `<span class="${cls}"${id}>${shown}</span>`;
+      }
+      return html;
+    }
+
+    /* ---- input handler (keystroke accounting) ---- */
+    function onInput() {
+      if (!active) return;
+      let val = input.value;
+      // Never let the user type past the passage length.
+      if (val.length > target.length) { val = val.slice(0, target.length); input.value = val; }
+
+      if (startTime === null) {
+        startTime = performance.now();
+        const hint = document.getElementById("typing-hint");
+        if (hint) hint.textContent = "Timer running — keep going!";
+        // End the run when the chosen time elapses.
+        endTimer = window.setTimeout(() => finish(true), modeSeconds * 1000);
+        loop();
+      }
+
+      // Count only newly-committed characters (insertions). Deletions never
+      // decrement the tallies — the standard "backspace can't erase a mistake".
+      if (val.length > prevLen) {
+        for (let i = prevLen; i < val.length; i++) {
+          totalTyped += 1;
+          if (val[i] === target[i]) correctChars += 1;
+        }
+      }
+      prevLen = val.length;
+      typed = val;
+
+      // Re-render highlighting.
+      const passage = document.getElementById("typing-passage");
+      if (passage) {
+        passage.innerHTML = renderPassage(typed);
+        // Keep the active character visible without disturbing input focus
+        // (the input is a sibling, so scrolling inside the passage is safe).
+        const cursor = document.getElementById("tc-cursor");
+        if (cursor) cursor.scrollIntoView({ block: "nearest" });
+      }
+
+      updateStats();
+
+      // Finish early if the whole passage has been typed.
+      if (typed.length >= target.length) finish(false);
+    }
+
+    /* ---- live stat loop (rAF) ---- */
+    function loop() {
+      if (!active) return;
+      updateStats();
+      const clock = document.getElementById("typing-clock");
+      if (clock && startTime !== null) {
+        const elapsed = (performance.now() - startTime) / 1000;
+        const left = Math.max(0, modeSeconds - elapsed);
+        clock.textContent = `${left.toFixed(1)}s`;
+        if (left <= 5) clock.classList.add("low");
+      }
+      rafId = requestAnimationFrame(loop);
+    }
+
+    function currentWpm() {
+      if (startTime === null) return { net: 0, raw: 0, minutes: 0 };
+      const minutes = (performance.now() - startTime) / 60000;
+      // Suppress the divide-by-near-zero spike on the very first keystrokes.
+      if (minutes < 1 / 600) return { net: 0, raw: 0, minutes };
+      return {
+        net: (correctChars / 5) / minutes,
+        raw: (totalTyped / 5) / minutes,
+        minutes
+      };
+    }
+
+    function updateStats() {
+      const { net } = currentWpm();
+      const wpmEl = document.getElementById("typing-wpm");
+      const accEl = document.getElementById("typing-acc");
+      const charsEl = document.getElementById("typing-chars");
+      if (wpmEl) wpmEl.textContent = String(Math.round(net));
+      if (accEl) accEl.textContent = totalTyped === 0 ? "100%" : pct((correctChars / totalTyped) * 100);
+      if (charsEl) charsEl.textContent = String(correctChars);
+    }
+
+    /* ---- results ---- */
+    function finish(timedOut) {
+      if (!active) return; // guard against double-finish (timer + full passage)
+      const { net, raw, minutes } = currentWpm();
+      teardown();
+
+      const netWpm = Math.round(net);
+      const rawWpm = Math.round(raw);
+      const incorrect = Math.max(0, totalTyped - correctChars);
+      const accuracy = totalTyped === 0 ? 100 : (correctChars / totalTyped) * 100;
+
+      const band =
+        netWpm >= 80 ? { name: "Professional", note: "Genuinely fast — that's the territory of typists who do it for a living." } :
+        netWpm >= 60 ? { name: "Fast", note: "Well above average. Your fingers clearly know the keyboard." } :
+        netWpm >= 40 ? { name: "Good", note: "Around and above the typical typist's pace of roughly 40 WPM." } :
+        netWpm >= 25 ? { name: "Steady", note: "A solid everyday pace. Regular practice moves this up quickly." } :
+        { name: "Warming up", note: "A short, honest starting point — accuracy first, speed follows." };
+
+      const WPM_MAX = 120; // scale ceiling for the bar
+      const wpmBar = Math.max(2, Math.min(100, (netWpm / WPM_MAX) * 100));
+      const accBar = Math.max(2, Math.min(100, accuracy));
+
+      root.innerHTML = `
+        <div class="quiz quiz-results">
+          ${timedOut ? `<p class="quiz-flash">⏱ Time is up — here is how you did.</p>` : `<p class="quiz-flash">✓ Passage complete — here is how you did.</p>`}
+          <p class="eyebrow">Your typing result</p>
+          <div class="score-hero">
+            <div class="score-big">${netWpm}<small>net words per minute</small></div>
+            <div class="score-meta">
+              <p><strong>${esc(band.name)}</strong> · ${pct(accuracy)} accuracy</p>
+              <p>${esc(band.note)}</p>
+              <p>Raw speed ${rawWpm} WPM over ${round1(minutes * 60)}s.</p>
+            </div>
+          </div>
+          <div class="score-rows">
+            <div class="score-row">
+              <div class="score-row-head"><span>Net speed (of ${WPM_MAX} WPM scale)</span><strong>${netWpm} WPM</strong></div>
+              <div class="score-bar"><span style="width:${wpmBar}%"></span></div>
+            </div>
+            <div class="score-row">
+              <div class="score-row-head"><span>Accuracy</span><strong>${pct(accuracy)}</strong></div>
+              <div class="score-bar"><span style="width:${accBar}%"></span></div>
+            </div>
+          </div>
+          <div class="typing-tally">
+            <div class="typing-tally-item"><strong>${correctChars}</strong><span>correct characters</span></div>
+            <div class="typing-tally-item"><strong>${incorrect}</strong><span>incorrect characters</span></div>
+            <div class="typing-tally-item"><strong>${totalTyped}</strong><span>characters typed</span></div>
+          </div>
+          <div class="quiz-note warn">
+            <strong>How to read this number</strong>
+            <p>An average typist lands near 40 WPM; 40–60 is good, 60–80 is fast, and 80+ is professional territory. Your score shifts with the keyboard you used, the sample words, and how familiar they were — treat it as a personal benchmark, not a certified credential.</p>
+          </div>
+          <div class="actions">
+            <button class="button primary" id="typing-again">Try again</button>
+          </div>
+          <p class="quiz-share-note">Nothing was uploaded or saved — refresh and it's gone. Trying again shuffles a brand-new passage.</p>
+        </div>`;
+      root.querySelector("#typing-again").onclick = () => intro();
+      root.scrollIntoView({ block: "start", behavior: "smooth" });
+    }
+
+    intro();
+  }
+
+function renderReactionTest() {
+  // States: "intro" | "waiting" | "ready" | "result" | "done"
+  const ROUNDS = 5;
+  const MIN_DELAY = 1500;
+  const MAX_DELAY = 4500;
+
+  const times = [];
+  let state = "intro";
+  let greenAt = 0;
+  let timerId = null;
+  let keyHandler = null;
+
+  function clearPendingTimer() {
+    if (timerId !== null) {
+      clearTimeout(timerId);
+      timerId = null;
+    }
+  }
+
+  function removeKeyHandler() {
+    if (keyHandler) {
+      document.removeEventListener("keydown", keyHandler);
+      keyHandler = null;
+    }
+  }
+
+  function addKeyHandler() {
+    removeKeyHandler(); // never stack listeners
+    keyHandler = (e) => {
+      if (e.code === "Space" || e.key === " ") {
+        e.preventDefault();
+        onActivate();
+      }
+    };
+    document.addEventListener("keydown", keyHandler);
+  }
+
+  // ---- intro ----
+  function intro() {
+    state = "intro";
+    root.innerHTML = `
+      <div class="quiz quiz-intro">
+        <div class="quiz-badges">
+          <span class="quiz-badge time">⏱ About 2 minutes</span>
+          <span class="quiz-badge">${ROUNDS} rounds</span>
+          <span class="quiz-badge ok">✓ 100% free · no sign-up · no email</span>
+        </div>
+        <h2>⚡ Reaction Time Test</h2>
+        <p class="quiz-lede"><strong>Completely FREE Reaction Time Test. No signup, no email, no credit card. Instant results, no catch.</strong> Find out how fast your reflexes are with five timed rounds — all in your browser, nothing saved, no installs.</p>
+        <ul class="quiz-facts">
+          <li><span>🟥</span><div><strong>Wait for red to turn green</strong> — stare at the pad and be ready.</div></li>
+          <li><span>⚡</span><div><strong>Click or tap the moment it goes green</strong> — or press Space bar.</div></li>
+          <li><span>📊</span><div><strong>5 valid rounds recorded</strong> — clicking before green restarts that round.</div></li>
+          <li><span>📈</span><div><strong>Average, best, and worst</strong> — plus honest performance bands.</div></li>
+        </ul>
+        <div class="quiz-note">
+          <strong>Get the most accurate result</strong>
+          <p>Use a mouse or trackpad on a desktop for the fastest times. Touchscreens work too but typically add 20–40 ms. Keep your eyes on the pad, don't anticipate — clicking while it's still red voids that round and restarts it.</p>
+        </div>
+        <div class="actions"><button class="button primary" id="rt-start">Start →</button></div>
+      </div>`;
+    root.querySelector("#rt-start").onclick = () => {
+      addKeyHandler();
+      beginRound();
+    };
+  }
+
+  // ---- round ----
+  function beginRound() {
+    state = "waiting";
+    addKeyHandler(); // restore Space→onActivate for every round (clears any stale spaceAdvance)
+    const roundNum = times.length + 1;
+    const delay = MIN_DELAY + Math.random() * (MAX_DELAY - MIN_DELAY);
+
+    root.innerHTML = `
+      <div class="quiz">
+        <div class="quiz-topbar">
+          <span class="quiz-cat">Round ${roundNum} of ${ROUNDS}</span>
+          <span class="quiz-count" style="margin:0">Click or tap the pad · Space also works</span>
+        </div>
+        <div class="quiz-progress"><span style="width:${((roundNum - 1) / ROUNDS) * 100}%"></span></div>
+        <div class="reaction-pad-wrap">
+          <div class="reaction-pad reaction-waiting" id="rt-pad" role="button" tabindex="0" aria-label="Reaction pad — wait for green">
+            <div class="reaction-pad-label">Wait for green…</div>
+          </div>
+        </div>
+        <p class="reaction-hint">Don't click yet — click as soon as it turns green.</p>
+      </div>`;
+
+    const pad = root.querySelector("#rt-pad");
+    pad.addEventListener("click", onActivate);
+    pad.addEventListener("touchend", (e) => { e.preventDefault(); onActivate(); }, { passive: false });
+
+    clearPendingTimer();
+    timerId = setTimeout(() => {
+      timerId = null;
+      if (state !== "waiting") return; // already torn down
+      state = "ready";
+      greenAt = performance.now();
+      const p = root.querySelector("#rt-pad");
+      if (p) {
+        p.className = "reaction-pad reaction-ready";
+        p.setAttribute("aria-label", "Reaction pad — click now!");
+        const lbl = p.querySelector(".reaction-pad-label");
+        if (lbl) lbl.textContent = "CLICK!";
+      }
+    }, delay);
+  }
+
+  function onActivate() {
+    if (state === "waiting") {
+      // Too soon
+      clearPendingTimer();
+      state = "result"; // prevent re-entry while showing message
+      const pad = root.querySelector("#rt-pad");
+      if (pad) {
+        pad.className = "reaction-pad reaction-toosoon";
+        const lbl = pad.querySelector(".reaction-pad-label");
+        if (lbl) lbl.textContent = "Too soon!";
+      }
+      const hint = root.querySelector(".reaction-hint");
+      if (hint) hint.textContent = "You clicked before it turned green. Restarting this round…";
+      timerId = setTimeout(() => {
+        timerId = null;
+        beginRound();
+      }, 1200);
+    } else if (state === "ready") {
+      const rt = Math.round(performance.now() - greenAt);
+      state = "result"; // double-click guard
+      times.push(rt);
+      showRoundResult(rt);
+    }
+    // state "result" / "done" / "intro" — ignore
+  }
+
+  function showRoundResult(rt) {
+    const pad = root.querySelector("#rt-pad");
+    if (pad) {
+      pad.className = "reaction-pad reaction-done";
+      const lbl = pad.querySelector(".reaction-pad-label");
+      if (lbl) lbl.textContent = `${rt} ms`;
+    }
+    const hint = root.querySelector(".reaction-hint");
+    if (hint) {
+      if (times.length < ROUNDS) {
+        hint.innerHTML = `Round ${times.length} recorded. <strong>Click or tap the pad to continue.</strong>`;
+      } else {
+        hint.innerHTML = `All ${ROUNDS} rounds done! <strong>Click or tap to see your results.</strong>`;
+      }
+    }
+    // Now clicking/tapping the pad advances to next round or results.
+    const pad2 = root.querySelector("#rt-pad");
+    if (pad2) {
+      const advanceFn = () => {
+        if (times.length >= ROUNDS) {
+          removeKeyHandler();
+          clearPendingTimer();
+          results();
+        } else {
+          beginRound();
+        }
+      };
+      pad2.addEventListener("click", advanceFn, { once: true });
+      pad2.addEventListener("touchend", (e) => { e.preventDefault(); advanceFn(); }, { once: true, passive: false });
+      // Space also advances from result state
+      const spaceAdvance = (e) => {
+        if (e.code === "Space" || e.key === " ") {
+          e.preventDefault();
+          document.removeEventListener("keydown", spaceAdvance);
+          advanceFn();
+        }
+      };
+      // Temporarily replace keyHandler with space-advance
+      removeKeyHandler();
+      document.addEventListener("keydown", spaceAdvance);
+      keyHandler = spaceAdvance; // track it so teardown can remove it
+    }
+  }
+
+  // ---- results ----
+  function results() {
+    state = "done";
+    removeKeyHandler();
+    clearPendingTimer();
+
+    const avg = Math.round(times.reduce((a, b) => a + b, 0) / times.length);
+    const best = Math.min(...times);
+    const worst = Math.max(...times);
+
+    const band =
+      avg < 200 ? { label: "Excellent", note: "Very fast — top end for human perception." } :
+      avg < 250 ? { label: "Fast", note: "Above average — faster than most people." } :
+      avg < 300 ? { label: "Average", note: "Right in the normal human range (~250 ms)." } :
+      avg < 350 ? { label: "Slower than average", note: "Below average but within the normal range." } :
+                  { label: "Relaxed", note: "On the slower side — may reflect device lag, fatigue, or touch input." };
+
+    // Bars: width ∝ ms against worst or 500ms ceiling (shorter = faster)
+    const ceiling = Math.max(worst, 500);
+    const roundRows = times.map((t, i) => {
+      const w = Math.round((t / ceiling) * 100);
+      return `<div class="score-row">
+        <div class="score-row-head"><span>Round ${i + 1}</span><strong>${t} ms</strong></div>
+        <div class="score-bar"><span style="width:${w}%"></span></div>
+      </div>`;
+    }).join("");
+
+    const compRows = [
+      ["< 200 ms", "Excellent", "Top of the human range"],
+      ["200–250 ms", "Fast", "Above average"],
+      ["250–300 ms", "Average", "Normal human range"],
+      ["300–350 ms", "Slower", "Below average but normal"],
+      ["> 350 ms", "Relaxed", "May reflect fatigue or touch lag"],
+    ].map(([range, label, desc]) => {
+      const isYours = (
+        (range === "< 200 ms" && avg < 200) ||
+        (range === "200–250 ms" && avg >= 200 && avg < 250) ||
+        (range === "250–300 ms" && avg >= 250 && avg < 300) ||
+        (range === "300–350 ms" && avg >= 300 && avg < 350) ||
+        (range === "> 350 ms" && avg >= 350)
+      );
+      return `<tr class="${isYours ? "reaction-yours" : ""}">
+        <td>${esc(range)}</td><td>${esc(label)}</td><td>${esc(desc)}${isYours ? " ← you" : ""}</td>
+      </tr>`;
+    }).join("");
+
+    root.innerHTML = `
+      <div class="quiz quiz-results">
+        <p class="eyebrow">Your result</p>
+        <div class="score-hero">
+          <div class="score-big">${avg}<small>ms average</small></div>
+          <div class="score-meta">
+            <p><strong>${band.label}</strong></p>
+            <p>${band.note}</p>
+            <p>Best: <strong>${best} ms</strong> · Worst: <strong>${worst} ms</strong></p>
+          </div>
+        </div>
+        <h3>Your 5 rounds</h3>
+        <p class="reaction-bar-note">Shorter bar = faster reaction.</p>
+        <div class="score-rows">${roundRows}</div>
+        <h3>How you compare</h3>
+        <p style="color:var(--muted);font-size:.88rem;margin-bottom:.6rem">Honest performance bands — not clinical. Average humans click around 250 ms on a mouse; touchscreen typically adds 20–40 ms.</p>
+        <div class="reaction-table-wrap">
+          <table class="reaction-table">
+            <thead><tr><th>Average</th><th>Band</th><th>What it means</th></tr></thead>
+            <tbody>${compRows}</tbody>
+          </table>
+        </div>
+        <div class="quiz-note warn">
+          <strong>Important</strong>
+          <p>Reaction times on this test depend on your device hardware, display refresh rate, input method (mouse vs. touch), browser, and background CPU load. Results vary run-to-run. This is not a medical or diagnostic measure of neurological health — it's a fun self-comparison tool.</p>
+        </div>
+        <div class="actions">
+          <button class="button primary" id="rt-retake">Try again</button>
+        </div>
+        <p class="quiz-share-note">Nothing was uploaded or saved — refresh and it's gone. Retaking starts fresh rounds.</p>
+      </div>`;
+
+    root.querySelector("#rt-retake").onclick = () => location.reload();
+    root.scrollIntoView({ block: "start", behavior: "smooth" });
+  }
+
+  intro();
+}
+
+function renderClickSpeedTest() {
+  // ── state ──────────────────────────────────────────────────────────────────
+  let selectedDuration = 10; // seconds (5 / 10 / 30)
+  let totalClicks = 0;
+  let startTime = null;     // performance.now() at first click
+  let rafId = null;
+  let finished = false;
+
+  // Teardown helpers — held in closure so every screen transition cleans up.
+  let kbListener = null;
+
+  function teardown() {
+    if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+    if (kbListener !== null) {
+      document.removeEventListener("keydown", kbListener);
+      kbListener = null;
+    }
+  }
+
+  // ── screen: intro ──────────────────────────────────────────────────────────
+  function intro() {
+    teardown();
+    finished = false;
+    totalClicks = 0;
+    startTime = null;
+
+    root.innerHTML = `
+      <div class="quiz quiz-intro">
+        <div class="quiz-badges">
+          <span class="quiz-badge time">⏱ Finish in 5 – 30 seconds</span>
+          <span class="quiz-badge">Click as fast as you can</span>
+          <span class="quiz-badge ok">✓ 100% free · no sign-up · no email</span>
+        </div>
+        <h2>How fast can you click?</h2>
+        <p class="quiz-lede"><strong>Completely FREE Click Speed Test. No signup, no email, no credit card. Instant results, no catch.</strong> Pick a duration, tap the pad to start, and click as fast as you can. Your CPS appears the moment time runs out.</p>
+        <ul class="quiz-facts">
+          <li><span>🖱️</span><div><strong>Clicks per second (CPS)</strong> — total clicks divided by the duration you chose.</div></li>
+          <li><span>⌨️</span><div><strong>Space bar counts</strong> — prefer the keyboard? It registers as a click too.</div></li>
+          <li><span>⏱</span><div><strong>Timer starts on first click</strong> — no reaction-lag penalty; the clock waits for you.</div></li>
+          <li><span>📱</span><div><strong>Touch-friendly</strong> — works on phones and tablets as well as desktops.</div></li>
+        </ul>
+        <div class="quiz-note">
+          <strong>Tips for an accurate result</strong>
+          <p>Rest your clicking arm on a surface, use your fingertip (not a knuckle), and keep a relaxed grip — tension slows you down. Take a 30-second rest between attempts. Three runs averaged is a more honest picture than a single peak.</p>
+        </div>
+        <h3>Choose your duration</h3>
+        <div class="cps-duration-row">
+          <button class="button cps-dur-btn" data-sec="5">5 seconds</button>
+          <button class="button cps-dur-btn cps-dur-active" data-sec="10">10 seconds</button>
+          <button class="button cps-dur-btn" data-sec="30">30 seconds</button>
+        </div>
+        <div class="actions" style="margin-top:1.6rem">
+          <button class="button primary" id="cps-go">Ready — open the pad →</button>
+        </div>
+      </div>`;
+
+    // Duration selector
+    root.querySelectorAll(".cps-dur-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        root.querySelectorAll(".cps-dur-btn").forEach((b) => b.classList.remove("cps-dur-active"));
+        btn.classList.add("cps-dur-active");
+        selectedDuration = Number(btn.dataset.sec);
+      });
+    });
+
+    root.querySelector("#cps-go").addEventListener("click", () => pad());
+  }
+
+  // ── screen: pad ────────────────────────────────────────────────────────────
+  function pad() {
+    teardown();
+    finished = false;
+    totalClicks = 0;
+    startTime = null;
+
+    root.innerHTML = `
+      <div class="quiz cps-pad-screen">
+        <div class="cps-topbar">
+          <span class="cps-dur-label">Duration: <strong>${selectedDuration}s</strong></span>
+          <span class="cps-live-cps" id="cps-live-cps">— CPS</span>
+        </div>
+        <div class="cps-countdown" id="cps-countdown">${selectedDuration}.0</div>
+        <button
+          class="cps-pad"
+          id="cps-pad"
+          aria-label="Click pad — click as fast as you can"
+          aria-live="polite"
+        >
+          <span class="cps-pad-count" id="cps-pad-count">0</span>
+          <span class="cps-pad-hint" id="cps-pad-hint">Tap here to start</span>
+        </button>
+        <p class="cps-kb-note">Space bar also counts</p>
+      </div>`;
+
+    const padEl       = root.querySelector("#cps-pad");
+    const countEl     = root.querySelector("#cps-pad-count");
+    const hintEl      = root.querySelector("#cps-pad-hint");
+    const countdownEl = root.querySelector("#cps-countdown");
+    const liveCpsEl   = root.querySelector("#cps-live-cps");
+
+    // Prevent context menu on long-press (mobile)
+    padEl.addEventListener("contextmenu", (e) => e.preventDefault());
+
+    function registerClick() {
+      if (finished) return;
+
+      if (startTime === null) {
+        // First click — start the timer loop
+        startTime = performance.now();
+        hintEl.textContent = "";
+        hintEl.style.display = "none";
+        startLoop();
+      }
+
+      totalClicks += 1;
+      countEl.textContent = totalClicks;
+
+      // Live CPS (guard division by ~0 on first click)
+      const elapsed = (performance.now() - startTime) / 1000;
+      if (elapsed > 0.05) {
+        liveCpsEl.textContent = (totalClicks / elapsed).toFixed(1) + " CPS";
+      }
+    }
+
+    // pointerdown — one event per physical tap or click, no double-fire
+    padEl.addEventListener("pointerdown", (e) => {
+      e.preventDefault(); // kill scroll / zoom on touch
+      registerClick();
+    });
+
+    // Space bar
+    kbListener = (e) => {
+      if (e.code === "Space") {
+        e.preventDefault(); // prevent page scroll
+        // Only count if the pad is visible and the pointer is not a repeat key event
+        if (!finished) registerClick();
+      }
+    };
+    document.addEventListener("keydown", kbListener);
+
+    // rAF loop — updates countdown and fires end independently of click events
+    function startLoop() {
+      function tick() {
+        if (finished) return;
+        const elapsed = (performance.now() - startTime) / 1000;
+        const remaining = selectedDuration - elapsed;
+
+        if (remaining <= 0) {
+          countdownEl.textContent = "0.0";
+          endTest();
+          return;
+        }
+
+        countdownEl.textContent = remaining.toFixed(1);
+        rafId = requestAnimationFrame(tick);
+      }
+      rafId = requestAnimationFrame(tick);
+    }
+  }
+
+  // ── end of test ────────────────────────────────────────────────────────────
+  function endTest() {
+    finished = true;
+    teardown();
+
+    const cps = totalClicks / selectedDuration; // use fixed duration, not elapsed
+    results(cps, totalClicks, selectedDuration);
+  }
+
+  // ── screen: results ────────────────────────────────────────────────────────
+  function results(cps, clicks, duration) {
+    const cpsDisplay = cps.toFixed(1);
+
+    // Interpretation band
+    let band, bandColor, bandDetail;
+    if (cps < 4) {
+      band = "Relaxed";
+      bandColor = "var(--muted)";
+      bandDetail = "A calm, unhurried pace — typical of someone not trying to go fast, or using a particularly heavy input device.";
+    } else if (cps < 6) {
+      band = "Average";
+      bandColor = "var(--green)";
+      bandDetail = "Solidly in the middle of the pack for everyday mouse and trackpad users clicking at a comfortable speed.";
+    } else if (cps < 8) {
+      band = "Fast";
+      bandColor = "var(--qa)";
+      bandDetail = "Above the typical casual pace. Consistent clicking technique and a light-trigger device both help here.";
+    } else if (cps < 10) {
+      band = "Very fast";
+      bandColor = "var(--qa)";
+      bandDetail = "In the range you'd expect from a practiced gamer using a gaming mouse with a light trigger.";
+    } else {
+      band = "Exceptional";
+      bandColor = "var(--gold)";
+      bandDetail = "Scores above 10 CPS are unusual with single-finger clicking technique. If you reached this with a standard mouse, that's genuinely impressive. Note that some techniques (jitter clicking, butterfly clicking, drag clicking) can push scores higher but aren't measuring natural click speed.";
+    }
+
+    // Score bars for the stat rows (scaled to a 12 CPS ceiling for the bars)
+    const barPct = Math.min(100, Math.round((cps / 12) * 100));
+
+    const interpretation = [
+      { label: "Relaxed", range: "< 4 CPS", active: cps < 4 },
+      { label: "Average", range: "4 – 6 CPS", active: cps >= 4 && cps < 6 },
+      { label: "Fast", range: "6 – 8 CPS", active: cps >= 6 && cps < 8 },
+      { label: "Very fast", range: "8 – 10 CPS", active: cps >= 8 && cps < 10 },
+      { label: "Exceptional", range: "> 10 CPS", active: cps >= 10 },
+    ];
+
+    const tableRows = interpretation.map(({ label, range, active }) => `
+      <div class="score-row${active ? " cps-row-active" : ""}">
+        <div class="score-row-head">
+          <span>${active ? "▶ " : ""}${esc(label)}</span>
+          <strong>${esc(range)}</strong>
+        </div>
+        <div class="score-bar">
+          <span style="width:${active ? barPct : (label === "Relaxed" ? 25 : label === "Average" ? 50 : label === "Fast" ? 67 : label === "Very fast" ? 83 : 100)}%"></span>
+        </div>
+      </div>`).join("");
+
+    root.innerHTML = `
+      <div class="quiz quiz-results">
+        <p class="eyebrow">Your click speed result</p>
+        <div class="score-hero">
+          <div class="score-big">${esc(cpsDisplay)}<small>clicks per second</small></div>
+          <div class="score-meta">
+            <p><strong style="color:${bandColor}">${esc(band)}</strong></p>
+            <p>${esc(clicks)} total click${clicks === 1 ? "" : "s"} in ${esc(String(duration))} seconds.</p>
+          </div>
+        </div>
+        <div class="quiz-note">
+          <strong>${esc(band)}</strong>
+          <p>${esc(bandDetail)}</p>
+        </div>
+        <h3>How you compare</h3>
+        <div class="score-rows">${tableRows}</div>
+        <div class="quiz-note warn">
+          <strong>A note on high scores</strong>
+          <p>Scores above 10 CPS usually involve specialised techniques: <strong>jitter clicking</strong> (tensing the forearm to vibrate), <strong>butterfly clicking</strong> (alternating two fingers), or <strong>drag clicking</strong> (dragging a finger across the button to register multiple contacts). These produce big numbers but carry injury risk and don't reflect natural clicking speed. This test is calibrated for ordinary single-finger technique.</p>
+        </div>
+        <div class="actions">
+          <button class="button primary" id="cps-again">Try again</button>
+          <button class="button" id="cps-change">Change duration</button>
+        </div>
+        <p class="quiz-share-note">Nothing was uploaded or saved — refresh and it's gone. Each run is independent.</p>
+      </div>`;
+
+    root.querySelector("#cps-again").addEventListener("click", () => pad());
+    root.querySelector("#cps-change").addEventListener("click", () => intro());
+    root.scrollIntoView({ block: "start", behavior: "smooth" });
+  }
+
+  // ── kick off ───────────────────────────────────────────────────────────────
+  intro();
+}
+
+function renderMemoryTest() {
+  /* ------------------------------------------------------------------ *
+   * Memory Test — progressive digit-span recall
+   * Helpers in scope: esc, shuffle, normCdf, pct, root
+   * ------------------------------------------------------------------ */
+
+  /* ---- constants ---- */
+  const START_LENGTH = 3;
+  const MAX_LIVES    = 3;
+
+  /* ---- state ---- */
+  let spanLength  = START_LENGTH;   // current digit-sequence length
+  let lives       = MAX_LIVES;      // mistakes remaining
+  let bestSpan    = 0;              // longest length correctly recalled
+  let roundsWon   = 0;              // sequences answered correctly
+  let sequence    = [];             // current digit array
+  let flashTimer  = null;           // setTimeout ID for hide-sequence step
+  let phase       = "intro";        // "intro" | "flash" | "recall" | "feedback" | "over"
+
+  /* ---- timer guard: always cancel before scheduling a new one ----
+   * This is the key to avoiding stale-timer races.  Every code path
+   * that starts a new flash timer calls clearFlash() first, and every
+   * screen teardown (intro / results) also calls it.  A timer ID is
+   * stored once and immediately nulled after use so it can never fire
+   * twice into the wrong screen.
+   */
+  function clearFlash() {
+    if (flashTimer !== null) {
+      clearTimeout(flashTimer);
+      flashTimer = null;
+    }
+  }
+
+  /* ---- digit-sequence generator ---- */
+  function makeSequence(len) {
+    const digits = [];
+    let last = -1;
+    for (let i = 0; i < len; i++) {
+      // Avoid immediate repeats of the same digit (makes it marginally non-trivial)
+      let d;
+      do { d = Math.floor(Math.random() * 10); } while (d === last && len > 1);
+      digits.push(d);
+      last = d;
+    }
+    return digits;
+  }
+
+  /* ==================================================================
+   *  SCREENS
+   * ================================================================== */
+
+  /* ---- INTRO ---- */
+  function intro() {
+    clearFlash();
+    phase = "intro";
+    root.innerHTML = `
+      <div class="quiz quiz-intro">
+        <div class="quiz-badges">
+          <span class="quiz-badge time">⏱ Estimated time: 3–5 minutes</span>
+          <span class="quiz-badge">Digit-span recall</span>
+          <span class="quiz-badge ok">✓ 100% free · no sign-up · no email</span>
+        </div>
+        <h2>🔢 Memory Test — digit span</h2>
+        <p class="quiz-lede"><strong>Completely FREE Memory Test. No signup, no email, no credit card. Instant results, no catch.</strong> Find out how many digits your working memory can hold in one go — your result is your <em>memory span</em>.</p>
+        <p>You will see a sequence of digits flash on screen for a moment, then you type back exactly what you saw. Get it right and the next sequence is one digit longer. Three mistakes and the test ends — your span is the longest sequence you recalled correctly.</p>
+        <ul class="quiz-facts">
+          <li><span>👀</span><div><strong>Flash phase</strong> — a sequence of digits appears briefly, then disappears.</div></li>
+          <li><span>⌨️</span><div><strong>Recall phase</strong> — type the digits back in order and press Submit.</div></li>
+          <li><span>📈</span><div><strong>Level up</strong> — each correct answer adds one more digit to the sequence.</div></li>
+          <li><span>❤️</span><div><strong>Three lives</strong> — the test ends after three mistakes. Your span is your best correct recall.</div></li>
+        </ul>
+        <div class="quiz-note">
+          <strong>For the fairest result</strong>
+          <p>Put your phone down, clear your mind, and watch the sequence the moment it appears. Saying the digits aloud or sub-vocalising is fine — that is a normal part of how working memory works. Do not write them down.</p>
+        </div>
+        <div class="actions"><button class="button primary" id="mt-start">Start the test →</button></div>
+      </div>`;
+    root.querySelector("#mt-start").onclick = startTest;
+  }
+
+  /* ---- start / restart ---- */
+  function startTest() {
+    spanLength = START_LENGTH;
+    lives      = MAX_LIVES;
+    bestSpan   = 0;
+    roundsWon  = 0;
+    beginFlash();
+  }
+
+  /* ---- FLASH: show the sequence ---- */
+  function beginFlash() {
+    clearFlash();                            // cancel any lingering timer first
+    phase    = "flash";
+    sequence = makeSequence(spanLength);
+    const duration = spanLength * 700;       // ~700 ms per digit (tested readable)
+
+    root.innerHTML = `
+      <div class="quiz quiz-question memory-screen">
+        ${topbar()}
+        <p class="quiz-count memory-instruction">Watch the sequence — it will disappear in <strong>${(duration / 1000).toFixed(1)}s</strong></p>
+        <div class="memory-sequence-wrap">
+          <div class="memory-sequence" id="mt-seq" aria-live="polite">${sequence.join(" ")}</div>
+        </div>
+      </div>`;
+
+    // Schedule the transition to recall.  Store the ID immediately so
+    // clearFlash() can cancel it if the user somehow navigates away.
+    flashTimer = setTimeout(() => {
+      flashTimer = null;              // nulled BEFORE entering recall so double-clear is harmless
+      if (phase === "flash") recall(); // guard: only advance if we are still in flash phase
+    }, duration);
+  }
+
+  /* ---- RECALL: hide sequence, show input ---- */
+  function recall() {
+    clearFlash();   // belt-and-suspenders — clears any residual timer
+    phase = "recall";
+
+    root.innerHTML = `
+      <div class="quiz quiz-question memory-screen">
+        ${topbar()}
+        <p class="quiz-count memory-instruction">What was the sequence? Type the digits and press Submit.</p>
+        <div class="memory-input-area">
+          <input
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            id="mt-input"
+            class="memory-input"
+            maxlength="20"
+            placeholder="${"_ ".repeat(sequence.length).trim()}"
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+            autofocus
+          />
+          <div class="actions" style="margin-top:1rem">
+            <button class="button primary" id="mt-submit">Submit</button>
+          </div>
+        </div>
+        <div class="memory-keypad" id="mt-keypad" aria-label="On-screen digit keypad">
+          ${[1,2,3,4,5,6,7,8,9,"⌫",0,"✓"].map((k) =>
+            `<button type="button" class="memory-key${k === "✓" ? " memory-key-enter" : k === "⌫" ? " memory-key-del" : ""}" data-k="${k}">${k}</button>`
+          ).join("")}
+        </div>
+      </div>`;
+
+    const inp = root.querySelector("#mt-input");
+    const submitBtn = root.querySelector("#mt-submit");
+
+    /* on-screen keypad */
+    root.querySelectorAll(".memory-key").forEach((btn) => {
+      btn.onclick = () => {
+        const k = btn.dataset.k;
+        if (k === "⌫") {
+          inp.value = inp.value.slice(0, -1);
+        } else if (k === "✓") {
+          checkAnswer();
+        } else {
+          if (inp.value.length < 20) inp.value += k;
+        }
+        inp.focus();
+      };
+    });
+
+    submitBtn.onclick = checkAnswer;
+    inp.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { e.preventDefault(); checkAnswer(); }
+    });
+
+    inp.focus();
+  }
+
+  /* ---- check the typed answer ---- */
+  function checkAnswer() {
+    if (phase !== "recall") return;          // guard against double-submit
+    const inp = root.querySelector("#mt-input");
+    if (!inp) return;
+    const typed = inp.value.replace(/\s/g, "");
+    const correct = sequence.join("");
+    if (typed === correct) {
+      onCorrect();
+    } else {
+      onWrong(typed, correct);
+    }
+  }
+
+  /* ---- correct answer ---- */
+  function onCorrect() {
+    phase = "feedback";
+    if (spanLength > bestSpan) bestSpan = spanLength;
+    roundsWon += 1;
+    spanLength += 1;
+
+    // Brief positive flash overlay
+    root.innerHTML = `
+      <div class="quiz quiz-question memory-screen">
+        ${topbar()}
+        <div class="memory-feedback memory-feedback-ok">
+          <span class="memory-feedback-icon">✓</span>
+          <p>Correct! Next up: <strong>${spanLength} digits</strong></p>
+        </div>
+      </div>`;
+
+    flashTimer = setTimeout(() => {
+      flashTimer = null;
+      if (phase === "feedback") beginFlash();
+    }, 900);
+  }
+
+  /* ---- wrong answer ---- */
+  function onWrong(typed, correct) {
+    phase = "feedback";
+    lives -= 1;
+
+    const livesLeft = lives;
+    const over = livesLeft <= 0;
+
+    if (over) {
+      // Show wrong feedback briefly then go to results
+      root.innerHTML = `
+        <div class="quiz quiz-question memory-screen">
+          ${topbar()}
+          <div class="memory-feedback memory-feedback-err">
+            <span class="memory-feedback-icon">✗</span>
+            <p>The sequence was <strong class="memory-seq-reveal">${esc(correct)}</strong></p>
+            <p class="memory-typed">You typed: <span>${esc(typed || "(nothing)")}</span></p>
+            <p>No lives left — calculating your result…</p>
+          </div>
+        </div>`;
+      flashTimer = setTimeout(() => {
+        flashTimer = null;
+        if (phase === "feedback") results();
+      }, 1800);
+    } else {
+      // Still has lives — show wrong, same length retry
+      root.innerHTML = `
+        <div class="quiz quiz-question memory-screen">
+          ${topbar()}
+          <div class="memory-feedback memory-feedback-err">
+            <span class="memory-feedback-icon">✗</span>
+            <p>The sequence was <strong class="memory-seq-reveal">${esc(correct)}</strong></p>
+            <p class="memory-typed">You typed: <span>${esc(typed || "(nothing)")}</span></p>
+            <p>${livesLeft} ${livesLeft === 1 ? "life" : "lives"} remaining. Same length, try again!</p>
+          </div>
+        </div>`;
+      flashTimer = setTimeout(() => {
+        flashTimer = null;
+        if (phase === "feedback") beginFlash();
+      }, 2000);
+    }
+  }
+
+  /* ---- RESULTS ---- */
+  function results() {
+    clearFlash();
+    phase = "over";
+
+    // Interpret the span honestly
+    const span = bestSpan;
+    let band, bandNote;
+    if (span === 0) {
+      band = "—";
+      bandNote = "No sequences were recalled correctly. Try again on a fresh day!";
+    } else if (span <= 4) {
+      band = "Short";
+      bandNote = "Most adults hold 5–9 items. Practice and a distraction-free environment can improve this.";
+    } else if (span <= 6) {
+      band = "Average";
+      bandNote = "Right in the typical range for adults. The classic average is about 7 (give or take 2).";
+    } else if (span <= 8) {
+      band = "Above average";
+      bandNote = "You're comfortably above the typical range of 5–9 digits. Solid working memory!";
+    } else {
+      band = "Impressive";
+      bandNote = "Spans of 9+ are uncommon. Expert mnemonists aside, this is well above the population average.";
+    }
+
+    // Comparison bar: population average ≈ 7, scale max shown = 12
+    const barMax = Math.max(12, span);
+    const avgPct = Math.round((7 / barMax) * 100);
+    const yourPct = Math.round((span / barMax) * 100);
+
+    root.innerHTML = `
+      <div class="quiz quiz-results">
+        <p class="eyebrow">Your memory span result</p>
+        <div class="score-hero">
+          <div class="score-big">${span}<small>digit${span !== 1 ? "s" : ""} recalled</small></div>
+          <div class="score-meta">
+            <p><strong>${esc(band)}</strong> span</p>
+            <p>${roundsWon} sequence${roundsWon !== 1 ? "s" : ""} cleared correctly.</p>
+            <p>The well-known population average is <strong>~7 ± 2 digits</strong>.</p>
+          </div>
+        </div>
+        <p>${esc(bandNote)}</p>
+        <h3>How you compare</h3>
+        <div class="score-rows">
+          <div class="score-row">
+            <div class="score-row-head"><span>Your span</span><strong>${span}</strong></div>
+            <div class="score-bar"><span style="width:${yourPct}%"></span></div>
+          </div>
+          <div class="score-row">
+            <div class="score-row-head"><span>Population average (~7)</span><strong>7</strong></div>
+            <div class="score-bar memory-bar-avg"><span style="width:${avgPct}%;background:var(--muted)"></span></div>
+          </div>
+        </div>
+        <div class="quiz-note">
+          <strong>What affects your span?</strong>
+          <p>Working-memory span naturally varies with tiredness, stress, distraction, and time of day. It can improve with practice — digit-span exercises appear regularly in memory and cognitive training research. Taking this test again after a rest or in a quieter setting may give a different result.</p>
+        </div>
+        <div class="quiz-note warn">
+          <strong>Keep this in perspective</strong>
+          <p>This is a casual, browser-based measure — not a clinical digit-span task administered by a professional. Your score reflects how you performed right now, under these conditions, in a text-input format. Treat it as a fun snapshot, not a definitive assessment of your memory.</p>
+        </div>
+        <div class="actions">
+          <button class="button primary" id="mt-retry">Try again</button>
+        </div>
+        <p class="quiz-share-note">Nothing was uploaded or saved — refresh and it's gone. Retaking generates a fresh set of random sequences.</p>
+      </div>`;
+
+    root.querySelector("#mt-retry").onclick = () => { intro(); };
+    root.scrollIntoView({ block: "start", behavior: "smooth" });
+  }
+
+  /* ---- shared top-bar (lives + level) ---- */
+  function topbar() {
+    const heartsFull  = "❤️".repeat(lives);
+    const heartsEmpty = "🖤".repeat(MAX_LIVES - lives);
+    return `
+      <div class="quiz-topbar memory-topbar">
+        <span class="quiz-cat">Length: ${spanLength}</span>
+        <span class="memory-lives" aria-label="${lives} of ${MAX_LIVES} lives remaining">${heartsFull}${heartsEmpty}</span>
+      </div>
+      <div class="quiz-progress">
+        <span style="width:${Math.min(100, Math.round(((spanLength - START_LENGTH) / (12 - START_LENGTH)) * 100))}%"></span>
+      </div>`;
+  }
+
+  /* ---- boot ---- */
+  intro();
+}
+
+  /* =====================================================================
+   *  COLOR BLINDNESS TEST (Ishihara-style screening)
+   *  An at-home red-green color-vision *screening* — NOT a diagnosis.
+   *  Plates are generated at runtime as original dot-mosaics: a hidden
+   *  numeral is drawn to an offscreen canvas, its alpha mask decides which
+   *  dots are "figure" vs "background", and the two dot palettes differ
+   *  mainly in HUE along the red-green confusion axis while their LUMINANCE
+   *  ranges overlap — so luminance can't be used as a segmentation cue and
+   *  only hue carries the digit. No copyrighted plate is reproduced.
+   * ===================================================================== */
+  function renderColorBlindnessTest() {
+    /* ---- palettes (see color-blindness-test.note.md for luminance proof) ----
+     * Both figure and background contain LIGHT and DARK shades whose WCAG
+     * relative luminances interleave, so brightness gives no clue. Figure =
+     * warm reds/oranges; background = greens/olives of similar lightness. */
+    const PAL_FIGURE_RG = ["#c0392b", "#d9534f", "#e8734a", "#f0a15b", "#b5522e"]; // reds/oranges
+    const PAL_BG_RG = ["#4f6b28", "#6b8a34", "#8aa04c", "#a9b06e", "#5f7d40"];      // greens/olives
+    // Control plate (readable by ANY color vision): figure is clearly darker
+    // blue/teal vs a light warm-neutral background — a pure luminance+hue cue.
+    const PAL_FIGURE_CTRL = ["#20506b", "#2e6f8e", "#3b8ca8", "#276a55"];
+    const PAL_BG_CTRL = ["#e7dfae", "#efe6bc", "#ddd39a", "#f2ead0"];
+    // Neutral "empty field" speckle used behind everything for texture.
+    const PAL_NEUTRAL = ["#e9e4d6", "#ddd7c6", "#efeadd"];
+
+    /* ---- digit pool: every value a plate can hide is drawn from here, so
+     * options (true digit + distractors) always come from the same set. On
+     * every retake we resample fresh digits, so the hidden numbers vary — not
+     * just their order — which also defeats memorising the answer set. */
+    const DIGIT_POOL = ["2", "3", "5", "6", "7", "8", "9", "12", "15", "21", "26", "29", "45", "74"];
+    const RG_PLATE_COUNT = 7; // 7 red-green screening plates + 1 control = 8
+
+    const SIZE = 300;          // logical px of the plate square
+    const PACK_RADIUS = 146;   // dot-field radius inside the square
+    const NO_NUMBER = "__none__";
+
+    // Build the option set for one plate: true digit + a couple of distractors.
+    const distractorsFor = (digit) => {
+      const opts = new Set([digit]);
+      const shuffled = shuffle(DIGIT_POOL);
+      for (const d of shuffled) { if (opts.size >= 3) break; if (d !== digit) opts.add(d); }
+      return shuffle([...opts]);
+    };
+
+    // Sample distinct hidden digits for the red-green plates this session.
+    const sampleDigits = (n) => shuffle(DIGIT_POOL).slice(0, n);
+
+    /* ---- offscreen digit mask: draw the numeral, read alpha ----
+     * Returns a function isFigure(x,y) over the SIZE×SIZE field, or null if
+     * canvas/readback is unavailable (caller degrades gracefully). */
+    function buildMask(digit) {
+      let cvs, ctx;
+      try {
+        cvs = document.createElement("canvas");
+        cvs.width = SIZE; cvs.height = SIZE;
+        ctx = cvs.getContext("2d");
+        if (!ctx) return null;
+      } catch (e) { return null; }
+      ctx.clearRect(0, 0, SIZE, SIZE);
+      ctx.fillStyle = "#000";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      // Wide, heavy font so the stroke is thick enough to be dot-sampled well.
+      const fontPx = digit.length > 1 ? Math.round(SIZE * 0.62) : Math.round(SIZE * 0.74);
+      ctx.font = `900 ${fontPx}px "Arial Black", Arial, sans-serif`;
+      ctx.fillText(digit, SIZE / 2, SIZE / 2 + fontPx * 0.02);
+      let data;
+      try {
+        data = ctx.getImageData(0, 0, SIZE, SIZE).data;
+      } catch (e) { return null; } // tainted canvas guard (shouldn't happen locally)
+      return (x, y) => {
+        const px = Math.max(0, Math.min(SIZE - 1, Math.round(x)));
+        const py = Math.max(0, Math.min(SIZE - 1, Math.round(y)));
+        return data[(py * SIZE + px) * 4 + 3] > 128; // alpha of the glyph
+      };
+    }
+
+    // Random-dart circle packing with radius classes + loose overlap reject.
+    function packDots() {
+      const dots = [];
+      const cx = SIZE / 2, cy = SIZE / 2;
+      const radiusClasses = [9, 7, 5.5, 4];
+      const targetByClass = [70, 150, 300, 420];
+      for (let ci = 0; ci < radiusClasses.length; ci++) {
+        const r = radiusClasses[ci];
+        let placed = 0, attempts = 0;
+        const cap = targetByClass[ci] * 30; // attempt cap: never loop forever
+        while (placed < targetByClass[ci] && attempts < cap) {
+          attempts++;
+          const ang = Math.random() * Math.PI * 2;
+          const rad = Math.sqrt(Math.random()) * (PACK_RADIUS - r);
+          const x = cx + Math.cos(ang) * rad;
+          const y = cy + Math.sin(ang) * rad;
+          let ok = true;
+          // Loose rejection: only check against nearby larger/equal dots.
+          for (let k = dots.length - 1; k >= 0 && k > dots.length - 260; k--) {
+            const o = dots[k];
+            const dx = o.x - x, dy = o.y - y;
+            const min = (o.r + r) * 0.86; // allow slight touch, like real plates
+            if (dx * dx + dy * dy < min * min) { ok = false; break; }
+          }
+          if (ok) { dots.push({ x, y, r }); placed++; }
+        }
+      }
+      return dots;
+    }
+
+    const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+    // Render one plate to a <canvas> element and return it (or null on failure).
+    function renderPlate(spec) {
+      const mask = buildMask(spec.digit);
+      if (!mask) return null;
+      const dots = packDots();
+      let cvs, ctx;
+      try {
+        cvs = document.createElement("canvas");
+        // Hi-DPI crisp: back the 300px box with 2x pixels.
+        const dpr = Math.min(2, window.devicePixelRatio || 1);
+        cvs.width = SIZE * dpr; cvs.height = SIZE * dpr;
+        cvs.style.width = "100%";
+        cvs.style.maxWidth = SIZE + "px";
+        cvs.style.height = "auto";
+        ctx = cvs.getContext("2d");
+        if (!ctx) return null;
+        ctx.scale(dpr, dpr);
+      } catch (e) { return null; }
+
+      const figPal = spec.control ? PAL_FIGURE_CTRL : PAL_FIGURE_RG;
+      const bgPal = spec.control ? PAL_BG_CTRL : PAL_BG_RG;
+
+      for (const d of dots) {
+        // Sample the mask at the dot centre to decide figure vs background.
+        const fig = mask(d.x, d.y);
+        const color = fig ? pick(figPal) : pick(bgPal);
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+      }
+      return cvs;
+    }
+
+    /* ---- run state: reshuffle plate order + digit selection each session ---- */
+    let run, answers, current, canvasOK;
+
+    function newRun() {
+      // Fresh hidden digits for the red-green plates + one fixed-role control.
+      const rgDigits = sampleDigits(RG_PLATE_COUNT);
+      const controlDigit = pick(DIGIT_POOL.filter((d) => d.length === 1 && !rgDigits.includes(d)));
+      const specs = rgDigits.map((digit) => ({ digit, control: false }));
+      specs.push({ digit: controlDigit, control: true });
+      run = shuffle(specs).map((spec) => ({
+        spec,
+        options: distractorsFor(spec.digit),
+        canvas: null // cached on first render so Back/Next keeps the same dots
+      }));
+      answers = new Array(run.length).fill(null);
+      current = 0;
+      canvasOK = true;
+    }
+
+    /* ---- screens ---- */
+    function intro() {
+      root.innerHTML = `
+        <div class="quiz quiz-intro">
+          <div class="quiz-badges">
+            <span class="quiz-badge time">⏱ Estimated time: about 3 minutes</span>
+            <span class="quiz-badge">${RG_PLATE_COUNT + 1} color plates</span>
+            <span class="quiz-badge ok">✓ 100% free · no sign-up · no email</span>
+          </div>
+          <h2>A free color-vision screening</h2>
+          <p class="quiz-lede"><strong>Completely FREE Color Blindness Test. No signup, no email, no credit card. Instant results, no catch.</strong></p>
+          <p>You'll see a series of dotted plates. Each one hides a <strong>number</strong> made of colored dots. For every plate, tell us which number you can read — or say you can't see one. It's the same idea as the classic dot-pattern plates, drawn fresh in your browser so nothing copyrighted is used.</p>
+          <ul class="quiz-facts">
+            <li><span>🔴</span><div><strong>Look for the number</strong> — each plate hides a digit or two in the dots.</div></li>
+            <li><span>👁️</span><div><strong>Answer honestly</strong> — pick what you actually see, not what you think should be there.</div></li>
+            <li><span>🟢</span><div><strong>Red-green focus</strong> — the plates screen the most common type of color-vision difference.</div></li>
+            <li><span>🧭</span><div><strong>One control plate</strong> — a number almost everyone can read, to sanity-check your screen.</div></li>
+          </ul>
+          <div class="quiz-note warn">
+            <strong>Read this first — this is a screening, not a diagnosis</strong>
+            <p>This is an at-home color-vision check for curiosity and learning only. It is <strong>not a medical diagnosis</strong>. Your screen's colors, brightness, and the lighting in your room strongly affect the result, and no online test can replace a properly administered exam. If you have any concern about your color vision, please see an optometrist or ophthalmologist. Don't use this to self-diagnose or rule anything in or out.</p>
+          </div>
+          <div class="plate-tips">
+            <strong>Before you start:</strong> view on a color screen at normal brightness, not in direct sunlight, and don't tilt the screen (angle shifts the colors). Glance at each plate naturally rather than staring.
+          </div>
+          <div class="actions"><button class="button primary" id="start">Start the screening →</button></div>
+        </div>`;
+      root.querySelector("#start").onclick = () => { current = 0; plate(); };
+    }
+
+    function plate() {
+      const q = run[current];
+      const answered = answers.filter((a) => a !== null).length;
+      // Render once per plate and cache, so navigating Back/Next keeps the
+      // exact same dot pattern (only the answer matters, not the speckle).
+      if (canvasOK && !q.canvas) q.canvas = renderPlate(q.spec);
+      const cvs = canvasOK ? q.canvas : null;
+      if (!cvs) {
+        // Graceful degradation — canvas unavailable/blocked.
+        canvasOK = false;
+        root.innerHTML = `
+          <div class="quiz quiz-question">
+            <div class="quiz-note warn">
+              <strong>This screening needs canvas graphics</strong>
+              <p>Your browser blocked the drawing surface this test uses to build the color plates, so it can't run here. Try a different browser or re-enable canvas/JavaScript, then reload.</p>
+            </div>
+            <div class="actions"><button class="button" id="back-intro">← Back</button></div>
+          </div>`;
+        const b = root.querySelector("#back-intro");
+        if (b) b.onclick = () => intro();
+        return;
+      }
+
+      const opts = q.options.map((d, i) => `
+        <button type="button" class="q-option plate-opt${answers[current] === d ? " selected" : ""}" data-d="${esc(d)}">
+          <span class="q-key">${String.fromCharCode(65 + i)}</span>
+          <span class="q-val">${esc(d)}</span>
+        </button>`).join("");
+
+      root.innerHTML = `
+        <div class="quiz quiz-question">
+          <div class="quiz-topbar">
+            <span class="quiz-cat">Plate ${current + 1} of ${run.length}</span>
+            <span class="quiz-timer-wrap">${q.spec.control ? "🧭 control plate" : "🔎 find the number"}</span>
+          </div>
+          <div class="quiz-progress"><span style="width:${(current / run.length) * 100}%"></span></div>
+          <p class="quiz-count">Plate ${current + 1} of ${run.length} · ${answered} answered</p>
+          <h2 class="q-prompt">What number do you see?</h2>
+          <div class="plate-stage" id="plate-stage"></div>
+          <div class="q-options plate-options">
+            ${opts}
+            <button type="button" class="q-option plate-opt plate-none${answers[current] === NO_NUMBER ? " selected" : ""}" data-d="${NO_NUMBER}">
+              <span class="q-key">✕</span>
+              <span class="q-val">I can't see a number</span>
+            </button>
+          </div>
+          <div class="actions quiz-nav">
+            <button class="button" id="prev"${current === 0 ? " disabled" : ""}>← Back</button>
+            ${current === run.length - 1
+              ? `<button class="button primary" id="finish">See my result</button>`
+              : `<button class="button primary" id="next">Next →</button>`}
+          </div>
+        </div>`;
+      root.querySelector("#plate-stage").appendChild(cvs);
+
+      root.querySelectorAll(".plate-opt").forEach((b) => {
+        b.onclick = () => {
+          answers[current] = b.dataset.d;
+          if (current < run.length - 1) { current += 1; plate(); }
+          else plate();
+        };
+      });
+      const prev = root.querySelector("#prev");
+      if (prev) prev.onclick = () => { if (current > 0) { current -= 1; plate(); } };
+      const next = root.querySelector("#next");
+      if (next) next.onclick = () => { if (current < run.length - 1) { current += 1; plate(); } };
+      const finish = root.querySelector("#finish");
+      if (finish) finish.onclick = () => confirmFinish();
+    }
+
+    function confirmFinish() {
+      const blank = answers.filter((a) => a === null).length;
+      if (blank > 0 && !window.confirm(`${blank} plate${blank === 1 ? " has" : "s have"} no answer yet — they'll count as "no number seen". Finish anyway?`)) return;
+      results();
+    }
+
+    function results() {
+      // Score: how many red-green plates were read as the intended digit,
+      // plus whether the control was read (a proxy for good conditions).
+      let rgTotal = 0, rgCorrect = 0;
+      let controlSeen = null;
+      run.forEach((q, i) => {
+        const expected = q.spec.digit;
+        const got = answers[i];
+        if (q.spec.control) {
+          controlSeen = (got === expected);
+          return;
+        }
+        rgTotal += 1;
+        if (got === expected) rgCorrect += 1;
+      });
+
+      const rgPct = rgTotal ? Math.round((rgCorrect / rgTotal) * 100) : 0;
+
+      // Cautious interpretation. NEVER name a specific diagnosis as fact.
+      let headline, tone, body;
+      if (controlSeen === false) {
+        headline = "Inconclusive";
+        tone = "warn";
+        body = "You didn't read the <strong>control plate</strong> — the one almost everyone can see. That usually points to a display or lighting problem (brightness too low, a color filter or night-mode on, sunlight on the screen, or a tilted panel) rather than to your color vision. Fix the viewing conditions and try again before reading anything into the result.";
+      } else if (rgPct >= 80) {
+        headline = "Consistent with typical color vision";
+        tone = "ok";
+        body = "You read most of the plates the way someone with typical red-green color vision would. On this quick screen, nothing stood out — but remember this is a rough at-home check, not a measurement.";
+      } else if (rgPct >= 45) {
+        headline = "Mixed — worth a proper test";
+        tone = "warn";
+        body = "You read some plates as expected and missed others. That can happen from screen and lighting conditions, from guessing, or it <em>may</em> suggest a mild red-green color-vision difference. This screen can't tell those apart. If you're curious, a proper test with an eye-care professional is the only way to know.";
+      } else {
+        headline = "May suggest a red-green difference";
+        tone = "warn";
+        body = "You read few of the hidden numbers the way typical color vision usually does. That pattern <em>may</em> be consistent with a red-green color-vision deficiency — the most common kind — but it can also come from your screen, lighting, or how the plates rendered. This is only a screening: it can't diagnose anything or name a specific condition. Please consider a professionally administered color-vision test.";
+      }
+
+      const controlLine = controlSeen === null
+        ? ""
+        : controlSeen
+          ? `<p>✓ You read the control plate, so your screen and lighting were probably fine.</p>`
+          : `<p>⚠ You did not read the control plate — treat everything above with extra caution.</p>`;
+
+      root.innerHTML = `
+        <div class="quiz quiz-results">
+          <p class="eyebrow">Your screening result</p>
+          <div class="score-hero">
+            <div class="score-big">${rgCorrect}/${rgTotal}<small>red-green plates read as expected</small></div>
+            <div class="score-meta">
+              <p><strong>${esc(headline)}</strong></p>
+              <p>${rgPct}% of the screening plates matched the intended number.</p>
+              ${controlLine}
+            </div>
+          </div>
+          <div class="quiz-note ${tone === "ok" ? "" : "warn"}">
+            <strong>What this suggests (cautiously)</strong>
+            <p>${body}</p>
+          </div>
+          <div class="quiz-note warn">
+            <strong>This is a screening, not a diagnosis</strong>
+            <p>An online dot-plate check can only ever be <em>suggestive</em>. Screen colors, brightness, night-mode filters, and room lighting all change what you see, and this test cannot replace an eye-care professional. It cannot diagnose color blindness, rule it out, or name a specific type. If your color vision matters for work, safety, or peace of mind, book a proper test with an optometrist or ophthalmologist.</p>
+          </div>
+          <div class="plate-tips">
+            <strong>Why plates like these work:</strong> the figure dots and background dots are chosen to differ mainly in <em>hue</em> along the red-green axis while staying close in brightness. Someone with typical color vision separates them by color and reads the number; a red-green difference makes them blend together. Because brightness and screen settings can fake or hide that effect, at-home results are only ever a hint.
+          </div>
+          <div class="actions">
+            <button class="button primary" id="retake">Try again</button>
+          </div>
+          <p class="quiz-share-note">Nothing was uploaded or saved — refresh and it's gone. Trying again reshuffles the plates and the hidden numbers.</p>
+        </div>`;
+      root.querySelector("#retake").onclick = () => { newRun(); plate(); };
+      root.scrollIntoView({ block: "start", behavior: "smooth" });
+    }
+
+    newRun();
+    intro();
+  }
+
+function renderLoveCalculator() {
+  /* ------------------------------------------------------------------
+   *  Algorithm (deterministic, symmetric, transparent)
+   *
+   *  Normalise each name: lowercase, keep only [a-z].
+   *  Combine the two normalised strings in canonical order (sorted
+   *  alphabetically so A+B == B+A) into a single "signature".
+   *
+   *  Hash via a simple djb2-style mix — no external libraries needed.
+   *  Map the hash to 0-100 using modulo-then-scale, then "warm"
+   *  (bias away from the extremes a little so extreme scores feel
+   *  earned rather than common).
+   *
+   *  Sub-factor scores are also derived from the combined signature /
+   *  properties so they are symmetric and always the same for a given
+   *  pair.
+   * ------------------------------------------------------------------ */
+
+  /* ---- helpers specific to this module ---- */
+  function normName(raw) {
+    return String(raw).toLowerCase().replace(/[^a-z]/g, "");
+  }
+
+  function hashStr(s) {
+    let h = 5381;
+    for (let i = 0; i < s.length; i++) {
+      h = ((h << 5) + h + s.charCodeAt(i)) >>> 0; // djb2, unsigned 32-bit
+    }
+    return h;
+  }
+
+  // Canonical combined key — symmetric by construction.
+  function pairKey(na, nb) {
+    const [a, b] = [na, nb].sort();
+    return a + "|" + b;
+  }
+
+  // Map a 32-bit hash to [0, 100] with a mild centre bias.
+  function hashToScore(h) {
+    const raw = h % 101; // 0-100 uniform
+    // Bias: nudge scores within [15, 90] more often by blending two draws.
+    const h2 = hashStr(String(h) + "x") % 101;
+    const blended = Math.round((raw + h2) / 2);
+    // Clamp to [8, 97] so extreme scores feel special.
+    return Math.max(8, Math.min(97, blended));
+  }
+
+  // Derive a sub-score (0-100) from the pair key with a secondary salt.
+  function subScore(key, salt, lo, hi) {
+    const h = hashStr(key + salt);
+    const span = hi - lo;
+    return lo + (h % (span + 1));
+  }
+
+  /* ---- verdict bands ---- */
+  const verdicts = [
+    { max: 20, label: "Cosmic Strangers", message: (a, b) =>
+        `${a} and ${b} march to completely different drums — and honestly, that's rare. The universe clearly has a sense of humour pairing you two, but stranger things have worked out. You'd both make excellent pen pals.` },
+    { max: 40, label: "Unlikely Allies", message: (a, b) =>
+        `${a} and ${b} have some ground to cover, but a little mystery never hurt anyone. Opposites have a funny way of keeping things interesting. There's potential here if you're both curious enough to explore it.` },
+    { max: 60, label: "Nice Spark", message: (a, b) =>
+        `${a} and ${b} have a genuine spark going. It's not written in the stars or anything — more like a warm Tuesday-afternoon kind of chemistry. Comfortable, easy, worth pursuing.` },
+    { max: 80, label: "Strong Pull", message: (a, b) =>
+        `${a} and ${b} are a strong match by the letters. There's a real pull here — the comfortable kind, where you finish each other's sentences and also each other's snacks. Go for it.` },
+    { max: 100, label: "Meant to Be? 💘", message: (a, b) =>
+        `${a} and ${b} — the letters don't lie. This is the kind of match that makes a great story. The energy is high, the resonance is real, and the universe seems to agree. At least the alphabet does.` }
+  ];
+
+  function getVerdict(score) {
+    return verdicts.find((v) => score <= v.max);
+  }
+
+  /* ---- factor definitions ---- */
+  // Each factor returns a {label, score:0-100} from normalised names.
+  function factors(na, nb) {
+    const key = pairKey(na, nb);
+
+    // 1. Shared letters — symmetric set intersection.
+    const setA = new Set(na.split(""));
+    const setB = new Set(nb.split(""));
+    const shared = [...setA].filter((c) => setB.has(c)).length;
+    const union = new Set([...setA, ...setB]).size;
+    const letterScore = union > 0 ? Math.round((shared / union) * 100) : 50;
+
+    // 2. Name-length harmony — closer lengths = higher score.
+    const diff = Math.abs(na.length - nb.length);
+    const maxLen = Math.max(na.length, nb.length, 1);
+    const lengthScore = Math.round((1 - diff / maxLen) * 100);
+
+    // 3. Vowel balance — how close the vowel densities are.
+    const vowels = new Set(["a", "e", "i", "o", "u"]);
+    const vA = na.length > 0 ? [...na].filter((c) => vowels.has(c)).length / na.length : 0;
+    const vB = nb.length > 0 ? [...nb].filter((c) => vowels.has(c)).length / nb.length : 0;
+    const vowelScore = Math.round((1 - Math.abs(vA - vB)) * 100);
+
+    // 4. Rhythm resonance — mix of the pair's hash, unique to the pair.
+    const rhythmScore = subScore(key, "rhythm", 30, 98);
+
+    return [
+      { label: "Shared letters", score: letterScore },
+      { label: "Name-length harmony", score: lengthScore },
+      { label: "Vowel balance", score: vowelScore },
+      { label: "Rhythm resonance", score: rhythmScore }
+    ];
+  }
+
+  /* ---- screens ---- */
+  function intro() {
+    root.innerHTML = `
+      <div class="quiz quiz-intro">
+        <div class="quiz-badges">
+          <span class="quiz-badge time">💘 Just your names — nothing else</span>
+          <span class="quiz-badge ok">✓ 100% free · no sign-up · no email</span>
+        </div>
+        <h2>Love Calculator — name compatibility</h2>
+        <p class="quiz-lede"><strong>Completely FREE Love Calculator. No signup, no email, no credit card. Instant results, no catch.</strong> Enter two names and get an instant, deterministic love-compatibility score — same pair, same result every time.</p>
+        <ul class="quiz-facts">
+          <li><span>🔤</span><div><strong>Letters only</strong> — the score is worked out from the letters in each name. No birthdays, no personal data.</div></li>
+          <li><span>📊</span><div><strong>Broken down by factor</strong> — shared letters, name-length harmony, vowel balance, and rhythm resonance.</div></li>
+          <li><span>🔒</span><div><strong>Runs entirely in your browser</strong> — nothing is sent anywhere or saved. Refresh and it's gone.</div></li>
+        </ul>
+        <div class="quiz-note">
+          <strong>It's a game, not a prediction</strong>
+          <p>This is a fun letter-maths game. The score says nothing about your real compatibility — that takes, you know, actually knowing each other. Enjoy it for what it is.</p>
+        </div>
+        <div class="love-inputs">
+          <div class="field">
+            <label for="love-name-a">Your name</label>
+            <input type="text" id="love-name-a" placeholder="Enter your name" maxlength="60" autocomplete="off" spellcheck="false">
+          </div>
+          <div class="love-heart-divider" aria-hidden="true">💘</div>
+          <div class="field">
+            <label for="love-name-b">Their name</label>
+            <input type="text" id="love-name-b" placeholder="Enter their name" maxlength="60" autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+        <p id="love-error" class="error" hidden></p>
+        <div class="actions">
+          <button class="button primary" id="love-calc">Calculate our score →</button>
+        </div>
+      </div>`;
+
+    const inA = root.querySelector("#love-name-a");
+    const inB = root.querySelector("#love-name-b");
+    const btn = root.querySelector("#love-calc");
+    const err = root.querySelector("#love-error");
+
+    function validate() {
+      const ok = normName(inA.value).length > 0 && normName(inB.value).length > 0;
+      btn.disabled = false; // always allow click, show message instead
+      return ok;
+    }
+
+    btn.onclick = () => {
+      const na = normName(inA.value);
+      const nb = normName(inB.value);
+      if (!na || !nb) {
+        err.textContent = na
+          ? "Please enter a name in the second field."
+          : nb
+          ? "Please enter a name in the first field."
+          : "Please enter both names to calculate.";
+        err.hidden = false;
+        (na ? inB : inA).focus();
+        return;
+      }
+      err.hidden = true;
+      results(inA.value.trim(), inB.value.trim(), na, nb);
+    };
+
+    // Allow Enter in either field.
+    [inA, inB].forEach((inp) => {
+      inp.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") btn.click();
+      });
+    });
+
+    inA.focus();
+  }
+
+  function results(rawA, rawB, na, nb) {
+    // --- compute ---
+    const key = pairKey(na, nb);
+    const h = hashStr(key);
+    const score = hashToScore(h);
+    const verdict = getVerdict(score);
+    const fs = factors(na, nb);
+
+    // Safe-escaped display names.
+    const dA = esc(rawA);
+    const dB = esc(rawB);
+
+    // Factor bar HTML.
+    const factorRows = fs.map((f) => `
+      <div class="score-row">
+        <div class="score-row-head"><span>${esc(f.label)}</span><strong>${f.score}%</strong></div>
+        <div class="score-bar"><span class="love-bar-fill" style="width:0%" data-pct="${f.score}%"></span></div>
+      </div>`).join("");
+
+    root.innerHTML = `
+      <div class="quiz quiz-results">
+        <p class="eyebrow">Your love score</p>
+        <div class="score-hero love-result-hero">
+          <div class="score-big love-score-big">${score}<small>out of 100</small></div>
+          <div class="score-meta">
+            <p><strong>${esc(verdict.label)}</strong></p>
+            <p>${verdict.message(dA, dB)}</p>
+          </div>
+        </div>
+        <div class="love-meter-wrap" aria-label="Love meter: ${score} out of 100">
+          <div class="love-meter-track">
+            <div class="love-meter-fill" id="love-meter-fill" style="width:0%" data-pct="${score}%"></div>
+          </div>
+          <div class="love-meter-labels">
+            <span>0%</span>
+            <span class="love-meter-score" id="love-meter-label">0%</span>
+            <span>100%</span>
+          </div>
+        </div>
+        <h3>How the score breaks down</h3>
+        <div class="score-rows">${factorRows}</div>
+        <div class="quiz-note">
+          <strong>Same pair, same result — always</strong>
+          <p>The score is worked out from the letters in both names using a fixed algorithm, so ${dA} and ${dB} will always get ${score}% on this calculator. Swap the order and the result is the same. It's deterministic, not magic — but a little of both, maybe.</p>
+        </div>
+        <div class="actions">
+          <button class="button primary" id="love-again">Try another pair</button>
+        </div>
+        <p class="quiz-share-note">Nothing was uploaded or saved — this all runs in your browser. Refresh and it's gone.</p>
+      </div>`;
+
+    root.querySelector("#love-again").onclick = () => {
+      intro();
+      root.scrollIntoView({ block: "start", behavior: "smooth" });
+    };
+
+    // Animate the meter and factor bars after paint.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const fill = document.getElementById("love-meter-fill");
+        const label = document.getElementById("love-meter-label");
+        if (fill) {
+          fill.style.transition = "width 1s cubic-bezier(.22,.68,0,1.2)";
+          fill.style.width = score + "%";
+        }
+        if (label) {
+          // Set the true value synchronously first, so a backgrounded tab (where
+          // rAF/timers are frozen) still shows the correct score. The rAF count-up
+          // below is pure visual enhancement when the tab is visible.
+          label.textContent = score + "%";
+          let start = null;
+          const dur = 900;
+          function step(ts) {
+            if (!start) start = ts;
+            const prog = Math.min((ts - start) / dur, 1);
+            const val = Math.round(prog * score);
+            label.textContent = val + "%";
+            if (prog < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        }
+        // Animate factor bars with a short stagger.
+        root.querySelectorAll(".love-bar-fill").forEach((el, i) => {
+          setTimeout(() => {
+            el.style.transition = "width .7s ease";
+            el.style.width = el.dataset.pct;
+          }, 200 + i * 80);
+        });
+      });
+    });
+
+    root.scrollIntoView({ block: "start", behavior: "smooth" });
+  }
+
+  intro();
+}
+
 })();

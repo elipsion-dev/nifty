@@ -1403,10 +1403,16 @@ const categories = [
   },
   {
     slug: "quizzes",
-    name: "Quizzes & You",
-    description: "Free self-assessments and just-for-fun tests with instant results: an original reasoning (IQ-style) test, a personality type profiler, and a zodiac compatibility guide. No sign-up, no email, nothing stored.",
+    name: "Quizzes & Tests",
+    description: "Free self-assessments, skill tests, and just-for-fun quizzes with instant results: an original reasoning (IQ-style) test, typing and reaction speed tests, a memory test, a personality profiler, a color-blindness screening, and more. No sign-up, no email, nothing stored.",
     tools: [
       ["iq-test", "IQ Test", "Estimate your reasoning ability with an original, timed test spanning pattern, number, verbal, and spatial puzzles."],
+      ["typing-speed-test", "Typing Speed Test", "Type a passage and measure your live WPM and accuracy in 15, 30, or 60 second modes — nothing saved."],
+      ["reaction-time-test", "Reaction Time Test", "Click the moment the pad turns green across five rounds to measure your average reaction time in milliseconds."],
+      ["click-speed-test", "Click Speed Test", "Click a pad as fast as you can in 5, 10, or 30 seconds to find your clicks-per-second (CPS) score."],
+      ["memory-test", "Memory Test", "See how many digits your working memory can hold with a progressive digit-span recall test."],
+      ["color-blindness-test", "Color Blindness Test", "Take a free at-home Ishihara-style red-green color-vision screening with plates drawn fresh in your browser."],
+      ["love-calculator", "Love Calculator", "Enter two names for an instant, just-for-fun compatibility score — the same pair always gives the same result."],
       ["personality-type-test", "Personality Type Test", "Find your dominant personality type and your affinity for every type with an original color-style profiler."],
       ["zodiac-compatibility", "Zodiac Compatibility", "See how any two star signs work together, with an in-depth strengths breakdown and a few things to watch."]
     ]
@@ -1563,7 +1569,7 @@ const toolCards = (tools, prefix = "../") => tools.map(([slug, name, description
   </a>`).join("");
 
 // Quizzes highlighted on every individual tool page for internal backlinking.
-const FEATURED_QUIZ_SLUGS = ["iq-test", "personality-type-test", "zodiac-compatibility"];
+const FEATURED_QUIZ_SLUGS = ["iq-test", "typing-speed-test", "reaction-time-test", "love-calculator"];
 
 // "More tools" block injected into each individual tool page (never hub pages).
 // Lists every same-category sibling as a compact link (full internal mesh) plus a
@@ -1718,8 +1724,8 @@ const homeBody = `
           <a href="documents/index.html">Open document tools</a>
         </article>
         <article class="workflow-card">
-          <h3>Take a quiz</h3>
-          <p>Try the timed IQ test, find your personality type, or check zodiac compatibility — original tests, instant results.</p>
+          <h3>Take a test</h3>
+          <p>Try the timed IQ test, check your typing speed or reaction time, or find your personality type — original tests, instant results.</p>
           <a href="quizzes/iq-test.html">Start the IQ test</a>
         </article>
       </div>

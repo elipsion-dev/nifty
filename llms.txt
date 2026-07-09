@@ -133,10 +133,16 @@ Small browser utilities for images, filenames, codes, and awkward one-off jobs.
 - [UPC Validator](https://niftyutilities.com/useful/upc-validator.html): Validate UPC-A check digits or calculate a missing check digit.
 - [VIN Decoder](https://niftyutilities.com/useful/vin-decoder.html): Validate a VIN and decode its year and basic structure locally.
 
-## Quizzes & You
+## Quizzes & Tests
 
-Free self-assessments and just-for-fun tests with instant results: an original reasoning (IQ-style) test, a personality type profiler, and a zodiac compatibility guide. No sign-up, no email, nothing stored.
+Free self-assessments, skill tests, and just-for-fun quizzes with instant results: an original reasoning (IQ-style) test, typing and reaction speed tests, a memory test, a personality profiler, a color-blindness screening, and more. No sign-up, no email, nothing stored.
 
 - [IQ Test](https://niftyutilities.com/quizzes/iq-test.html): Estimate your reasoning ability with an original, timed test spanning pattern, number, verbal, and spatial puzzles.
+- [Typing Speed Test](https://niftyutilities.com/quizzes/typing-speed-test.html): Type a passage and measure your live WPM and accuracy in 15, 30, or 60 second modes — nothing saved.
+- [Reaction Time Test](https://niftyutilities.com/quizzes/reaction-time-test.html): Click the moment the pad turns green across five rounds to measure your average reaction time in milliseconds.
+- [Click Speed Test](https://niftyutilities.com/quizzes/click-speed-test.html): Click a pad as fast as you can in 5, 10, or 30 seconds to find your clicks-per-second (CPS) score.
+- [Memory Test](https://niftyutilities.com/quizzes/memory-test.html): See how many digits your working memory can hold with a progressive digit-span recall test.
+- [Color Blindness Test](https://niftyutilities.com/quizzes/color-blindness-test.html): Take a free at-home Ishihara-style red-green color-vision screening with plates drawn fresh in your browser.
+- [Love Calculator](https://niftyutilities.com/quizzes/love-calculator.html): Enter two names for an instant, just-for-fun compatibility score — the same pair always gives the same result.
 - [Personality Type Test](https://niftyutilities.com/quizzes/personality-type-test.html): Find your dominant personality type and your affinity for every type with an original color-style profiler.
 - [Zodiac Compatibility](https://niftyutilities.com/quizzes/zodiac-compatibility.html): See how any two star signs work together, with an in-depth strengths breakdown and a few things to watch.
