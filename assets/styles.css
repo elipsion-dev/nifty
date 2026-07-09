@@ -534,6 +534,17 @@ th { background: var(--surface-2); font-size: .7rem; text-transform: uppercase; 
 .score-bar > span { display: block; height: 100%; background: var(--qa); border-radius: 999px; }
 .quiz-share-note { margin-top: 1rem; color: var(--muted); font-size: .82rem; }
 
+/* social share bar on results screens */
+.share-bar { display: flex; flex-wrap: wrap; align-items: center; gap: .7rem 1rem; margin-top: 1.4rem; padding: 1rem 1.2rem; border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--line)); border-radius: 12px; background: color-mix(in srgb, var(--accent) 7%, var(--surface)); }
+.share-label { font: 700 .72rem/1.2 ui-monospace, "SFMono-Regular", Consolas, monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.share-btns { display: flex; flex-wrap: wrap; gap: .5rem; }
+.share-btn { display: inline-flex; align-items: center; gap: .4rem; padding: .5rem .7rem; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); color: var(--ink); font-size: .82rem; font-weight: 650; line-height: 1; font-family: inherit; cursor: pointer; transition: border-color .15s, background .15s, transform .1s; }
+.share-btn:hover { border-color: var(--accent); transform: translateY(-1px); }
+.share-btn svg { width: 17px; height: 17px; flex: 0 0 auto; }
+.share-btn.share-x:hover { background: #101418; }
+.share-btn.share-fb:hover { background: #16273f; border-color: #1877f2; }
+.share-btn.share-wa:hover { background: #12332a; border-color: #25d366; }
+
 /* personality type cards */
 .type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .9rem; margin: 1.3rem 0; }
 .type-card { padding: 1rem; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); border-top: 4px solid var(--tc, var(--qa)); }

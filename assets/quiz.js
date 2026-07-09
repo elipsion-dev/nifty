@@ -32,6 +32,69 @@
   };
   const pct = (n) => `${Math.round(n)}%`;
 
+  /* ---------- social share bar (used by every results screen) ----------
+   * shareBar() returns the HTML; call wireShare(text) AFTER the results
+   * innerHTML is set. Instagram has no web share URL, so the "More" button
+   * uses the native share sheet (navigator.share) where Instagram, Messenger,
+   * SMS, etc. appear on mobile. */
+  const SHARE_ICONS = {
+    x: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
+    facebook: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073C24 5.446 18.627.073 12 .073S0 5.446 0 12.073c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953h-1.514c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
+    whatsapp: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>',
+    copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
+    more: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>'
+  };
+  const shareBar = () => `
+    <div class="share-bar">
+      <span class="share-label">Share your result</span>
+      <div class="share-btns">
+        <button type="button" class="share-btn share-x" data-share="x" aria-label="Share on X (Twitter)">${SHARE_ICONS.x}</button>
+        <button type="button" class="share-btn share-fb" data-share="facebook" aria-label="Share on Facebook">${SHARE_ICONS.facebook}</button>
+        <button type="button" class="share-btn share-wa" data-share="whatsapp" aria-label="Share on WhatsApp">${SHARE_ICONS.whatsapp}</button>
+        <button type="button" class="share-btn share-more" data-share="native" aria-label="More sharing options (Instagram, Messages…)">${SHARE_ICONS.more}<span>More</span></button>
+        <button type="button" class="share-btn share-copy" data-share="copy" aria-label="Copy result to clipboard">${SHARE_ICONS.copy}<span>Copy</span></button>
+      </div>
+    </div>`;
+  function wireShare(text) {
+    const bar = root.querySelector(".share-bar");
+    if (!bar) return;
+    const url = location.origin + location.pathname;
+    const full = `${text} ${url}`;
+    const enc = encodeURIComponent;
+    const open = (u) => window.open(u, "_blank", "noopener,noreferrer,width=680,height=560");
+    const nativeBtn = bar.querySelector('[data-share="native"]');
+    if (nativeBtn && typeof navigator.share !== "function") nativeBtn.remove();
+    bar.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-share]");
+      if (!btn) return;
+      const kind = btn.dataset.share;
+      if (kind === "x") open(`https://twitter.com/intent/tweet?text=${enc(text)}&url=${enc(url)}`);
+      else if (kind === "facebook") open(`https://www.facebook.com/sharer/sharer.php?u=${enc(url)}&quote=${enc(text)}`);
+      else if (kind === "whatsapp") open(`https://wa.me/?text=${enc(full)}`);
+      else if (kind === "native") navigator.share({ text, url }).catch(() => {});
+      else if (kind === "copy") {
+        const done = () => {
+          const label = btn.querySelector("span");
+          if (label) { label.textContent = "Copied!"; setTimeout(() => { label.textContent = "Copy"; }, 1600); }
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(full).then(done, () => legacyCopy(full, done));
+        } else legacyCopy(full, done);
+      }
+    });
+  }
+  function legacyCopy(value, done) {
+    const ta = document.createElement("textarea");
+    ta.value = value;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); done(); } catch (_) { /* clipboard unavailable */ }
+    ta.remove();
+  }
+
   if (slug === "iq-test") renderIqTest();
   else if (slug === "personality-type-test") renderPersonalityTest();
   else if (slug === "zodiac-compatibility") renderZodiac();
@@ -71,46 +134,61 @@
     const glyphPath = "M32 20v50h6V46l22 10V26L38 36V20z";
     const glyph = (transform) =>
       SVG(`<g transform="${transform}"><path d="${glyphPath}" fill="currentColor" stroke="currentColor" stroke-width="2"/></g>`);
+    // cell built from line segments (for XOR-rule matrices):
+    // h = horizontal, v = vertical, d = diagonal TL-BR, u = diagonal BL-TR.
+    const SEG_PATHS = { h: "M20 45h50", v: "M45 20v50", d: "M24 24l42 42", u: "M24 66l42-42" };
+    const segCell = (segs) => SVG(segs.map((s) => `<path d="${SEG_PATHS[s]}"/>`).join(""));
 
     /* ---- item bank (all original) ---- */
-    // Each item: { cat, prompt, promptSvg?, options:[{t?/svg?}], correct } where
+    // Each item: { cat, b, prompt, promptSvg?, options:[{t?/svg?}], correct } where
     // correct is the index into options BEFORE shuffle.
+    // `b` is the item's difficulty in logits on an adult-population scale
+    // (θ ~ N(0,1)): b = ability level at which ~62% answer correctly under the
+    // 3PL model used in results(). Values are calibrated estimates informed by
+    // published pass-rate patterns for each item family (simple visible-rule
+    // series ≈ 85-90% adult pass rate → b ≈ -1.8; interleaved/second-order
+    // series ≈ 45-60% → b ≈ 0-0.7; belief-bias syllogisms ≈ 35-55% → b ≈ 0.7-1.6;
+    // two-rule and distribution matrices ≈ 25-40% → b ≈ 1.5-2.5).
     const txt = (t) => ({ t });
     const items = [
-      // Number series
-      { cat: "Numerical", prompt: "What number continues the series?  2, 4, 8, 16, __", options: [txt("24"), txt("32"), txt("20"), txt("64")], correct: 1 },
-      { cat: "Numerical", prompt: "What number continues the series?  1, 4, 9, 16, __", options: [txt("20"), txt("24"), txt("25"), txt("36")], correct: 2 },
-      { cat: "Numerical", prompt: "What number continues the series?  1, 1, 2, 3, 5, 8, __", options: [txt("11"), txt("13"), txt("10"), txt("15")], correct: 1 },
-      { cat: "Numerical", prompt: "What number continues the series?  2, 3, 5, 7, 11, __", options: [txt("12"), txt("13"), txt("14"), txt("15")], correct: 1 },
-      { cat: "Numerical", prompt: "What number continues the series?  81, 27, 9, 3, __", options: [txt("0"), txt("1"), txt("2"), txt("3")], correct: 1 },
-      { cat: "Numerical", prompt: "What number continues the series?  2, 6, 12, 20, __", options: [txt("28"), txt("30"), txt("24"), txt("32")], correct: 1 },
-      { cat: "Numerical", prompt: "What number continues the series?  100, 96, 88, 72, __", options: [txt("64"), txt("56"), txt("48"), txt("40")], correct: 3 },
-      { cat: "Numerical", prompt: "What number continues the series?  7, 14, 12, 24, 22, __", options: [txt("44"), txt("20"), txt("11"), txt("33")], correct: 0 },
-      // Verbal analogies
-      { cat: "Verbal", prompt: "Hand is to glove as foot is to __", options: [txt("sock"), txt("shoe leather"), txt("toe"), txt("ankle")], correct: 0 },
-      { cat: "Verbal", prompt: "Cub is to bear as kitten is to __", options: [txt("dog"), txt("cat"), txt("lion"), txt("mouse")], correct: 1 },
-      { cat: "Verbal", prompt: "Water is to thirst as food is to __", options: [txt("plate"), txt("cook"), txt("hunger"), txt("taste")], correct: 2 },
-      { cat: "Verbal", prompt: "Petal is to flower as page is to __", options: [txt("word"), txt("book"), txt("cover"), txt("ink")], correct: 1 },
-      { cat: "Verbal", prompt: "Painter is to brush as writer is to __", options: [txt("paper"), txt("story"), txt("pen"), txt("desk")], correct: 2 },
-      { cat: "Verbal", prompt: "Island is to water as oasis is to __", options: [txt("sand"), txt("desert"), txt("palm"), txt("camel")], correct: 1 },
-      { cat: "Verbal", prompt: "Whisper is to shout as dim is to __", options: [txt("dark"), txt("faint"), txt("bright"), txt("quiet")], correct: 2 },
-      { cat: "Verbal", prompt: "Second is to minute as minute is to __", options: [txt("hour"), txt("day"), txt("clock"), txt("time")], correct: 0 },
-      // Odd one out
-      { cat: "Verbal", prompt: "Which word does NOT belong with the others?", options: [txt("rose"), txt("tulip"), txt("oak"), txt("daisy")], correct: 2 },
-      { cat: "Verbal", prompt: "Which does NOT belong with the others?", options: [txt("copper"), txt("iron"), txt("gold"), txt("plastic")], correct: 3 },
-      { cat: "Verbal", prompt: "Which animal does NOT belong with the others?", options: [txt("whale"), txt("shark"), txt("dolphin"), txt("seal")], correct: 1 },
-      { cat: "Numerical", prompt: "Which number does NOT belong with the others?", options: [txt("2"), txt("3"), txt("9"), txt("11")], correct: 2 },
-      { cat: "Verbal", prompt: "Which instrument does NOT belong with the others?", options: [txt("violin"), txt("guitar"), txt("flute"), txt("cello")], correct: 2 },
-      // Logical deduction
-      { cat: "Logical", prompt: "All roses are flowers. Some flowers fade quickly. Does it follow that all roses fade quickly?", options: [txt("Yes, it must"), txt("No, it does not follow"), txt("Only red roses"), txt("Cannot tell at all")], correct: 1 },
-      { cat: "Logical", prompt: "If it rains, the ground gets wet. The ground is wet. Did it necessarily rain?", options: [txt("Yes, definitely"), txt("No, something else could have wet it"), txt("Only if it is cloudy"), txt("It never rained")], correct: 1 },
-      { cat: "Logical", prompt: "Some cats are black. All black things absorb heat. Therefore, some cats absorb heat.", options: [txt("Valid — it follows"), txt("Invalid — it does not follow"), txt("Only in sunlight"), txt("Depends on the cat")], correct: 0 },
-      { cat: "Logical", prompt: "Tom is taller than Sam. Sam is taller than Bo. Who is shortest?", options: [txt("Tom"), txt("Sam"), txt("Bo"), txt("Cannot tell")], correct: 2 },
-      { cat: "Logical", prompt: "Town A is north of B. C is south of B. Which town is furthest north?", options: [txt("A"), txt("B"), txt("C"), txt("They are level")], correct: 0 },
-      { cat: "Logical", prompt: "Every day it is sunny, Mia walks. Today Mia did not walk. What can you conclude?", options: [txt("It was sunny"), txt("It was not sunny"), txt("Mia was ill"), txt("Nothing at all")], correct: 1 },
-      // Figural — count progression matrix
+      /* ---------- Numerical (11) ---------- */
+      { cat: "Numerical", b: -1.8, prompt: "What number continues the series?  2, 4, 8, 16, __", options: [txt("24"), txt("32"), txt("20"), txt("64")], correct: 1 },
+      { cat: "Numerical", b: -1.4, prompt: "What number continues the series?  81, 27, 9, 3, __", options: [txt("0"), txt("1"), txt("2"), txt("3")], correct: 1 },
+      { cat: "Numerical", b: -0.9, prompt: "What number continues the series?  1, 1, 2, 3, 5, 8, __", options: [txt("11"), txt("13"), txt("10"), txt("15")], correct: 1 },
+      { cat: "Numerical", b: -0.4, prompt: "Which number does NOT belong with the others?", options: [txt("2"), txt("3"), txt("9"), txt("11")], correct: 2 },
+      { cat: "Numerical", b: 0.1, prompt: "What number continues the series?  3, 5, 8, 10, 13, 15, __", options: [txt("18"), txt("17"), txt("20"), txt("16")], correct: 0 },
+      { cat: "Numerical", b: 0.4, prompt: "What number continues the series?  7, 14, 12, 24, 22, __", options: [txt("44"), txt("20"), txt("11"), txt("33")], correct: 0 },
+      { cat: "Numerical", b: 0.6, prompt: "Which number does NOT belong with the others?", options: [txt("16"), txt("27"), txt("36"), txt("49")], correct: 1 },
+      { cat: "Numerical", b: 0.7, prompt: "What number continues the series?  2, 3, 6, 11, 18, 27, __", options: [txt("36"), txt("38"), txt("40"), txt("34")], correct: 1 },
+      { cat: "Numerical", b: 1.2, prompt: "What number continues the series?  3, 4, 7, 11, 18, 29, __", options: [txt("40"), txt("47"), txt("43"), txt("52")], correct: 1 },
+      { cat: "Numerical", b: 1.5, prompt: "What number continues the series?  2, 3, 5, 9, 17, 33, __", options: [txt("49"), txt("57"), txt("65"), txt("66")], correct: 2 },
+      { cat: "Numerical", b: 2.5, prompt: "What number continues the series?  4, 9, 25, 49, 121, __", options: [txt("144"), txt("169"), txt("143"), txt("225")], correct: 1 },
+      /* ---------- Verbal (11) ---------- */
+      { cat: "Verbal", b: -2.0, prompt: "Hand is to glove as foot is to __", options: [txt("sock"), txt("shoe leather"), txt("toe"), txt("ankle")], correct: 0 },
+      { cat: "Verbal", b: -1.6, prompt: "Water is to thirst as food is to __", options: [txt("plate"), txt("cook"), txt("hunger"), txt("taste")], correct: 2 },
+      { cat: "Verbal", b: -1.2, prompt: "Whisper is to shout as dim is to __", options: [txt("dark"), txt("faint"), txt("bright"), txt("quiet")], correct: 2 },
+      { cat: "Verbal", b: -0.9, prompt: "Petal is to flower as page is to __", options: [txt("word"), txt("book"), txt("cover"), txt("ink")], correct: 1 },
+      { cat: "Verbal", b: -0.7, prompt: "Which word does NOT belong with the others?", options: [txt("rose"), txt("tulip"), txt("oak"), txt("daisy")], correct: 2 },
+      { cat: "Verbal", b: -0.4, prompt: "Island is to water as oasis is to __", options: [txt("sand"), txt("desert"), txt("palm"), txt("camel")], correct: 1 },
+      { cat: "Verbal", b: 0.5, prompt: "Which instrument does NOT belong with the others?", options: [txt("trumpet"), txt("trombone"), txt("oboe"), txt("tuba")], correct: 2 },
+      { cat: "Verbal", b: 0.8, prompt: "Ornithology is to birds as entomology is to __", options: [txt("fossils"), txt("insects"), txt("languages"), txt("weather")], correct: 1 },
+      { cat: "Verbal", b: 1.3, prompt: "Ephemeral is to permanent as scarce is to __", options: [txt("rare"), txt("valuable"), txt("abundant"), txt("empty")], correct: 2 },
+      { cat: "Verbal", b: 1.7, prompt: "Mitigate is to aggravate as bolster is to __", options: [txt("support"), txt("undermine"), txt("repair"), txt("strengthen")], correct: 1 },
+      { cat: "Verbal", b: 2.0, prompt: "Candid is to evasive as gregarious is to __", options: [txt("friendly"), txt("talkative"), txt("hostile"), txt("solitary")], correct: 3 },
+      /* ---------- Logical (9) ---------- */
+      { cat: "Logical", b: -1.4, prompt: "Tom is taller than Sam. Sam is taller than Bo. Who is shortest?", options: [txt("Tom"), txt("Sam"), txt("Bo"), txt("Cannot tell")], correct: 2 },
+      { cat: "Logical", b: -1.0, prompt: "Town A is north of B. C is south of B. Which town is furthest north?", options: [txt("A"), txt("B"), txt("C"), txt("They are level")], correct: 0 },
+      { cat: "Logical", b: -0.2, prompt: "All roses are flowers. Some flowers fade quickly. Does it follow that all roses fade quickly?", options: [txt("Yes, it must"), txt("No, it does not follow"), txt("Only red roses"), txt("Cannot tell at all")], correct: 1 },
+      { cat: "Logical", b: 0.0, prompt: "If it rains, the ground gets wet. The ground is wet. Did it necessarily rain?", options: [txt("Yes, definitely"), txt("No, something else could have wet it"), txt("Only if it is cloudy"), txt("It never rained")], correct: 1 },
+      { cat: "Logical", b: 0.3, prompt: "Every day it is sunny, Mia walks. Today Mia did not walk. What can you conclude?", options: [txt("It was sunny"), txt("It was not sunny"), txt("Mia was ill"), txt("Nothing at all")], correct: 1 },
+      { cat: "Logical", b: 0.7, prompt: "All bloops are razzies. No razzies are loppies. Does it follow that no bloops are loppies?", options: [txt("Yes — it must follow"), txt("No — it does not follow"), txt("Only some bloops"), txt("Cannot tell at all")], correct: 0 },
+      { cat: "Logical", b: 1.2, prompt: "No pilots are careless. Some students are careless. Therefore some students are not pilots.", options: [txt("Valid — it follows"), txt("Invalid — it does not follow"), txt("True only for careful students"), txt("Cannot tell at all")], correct: 0 },
+      { cat: "Logical", b: 1.5, prompt: "Five runners finish a race. Anna finishes ahead of Ben but behind Carla. Dan finishes ahead of Anna but behind Carla. Erin finishes last. Who comes third?", options: [txt("Anna"), txt("Ben"), txt("Dan"), txt("Cannot tell")], correct: 0 },
+      { cat: "Logical", b: 2.3, prompt: "A coin is in box A, B, or C. Exactly ONE of these statements is true: (1) “The coin is in box A.” (2) “The coin is not in box B.” Where is the coin?", options: [txt("Box A"), txt("Box B"), txt("Box C"), txt("Cannot be determined")], correct: 2 },
+      /* ---------- Spatial (9) ---------- */
+      // Count progression matrix
       {
-        cat: "Spatial", prompt: "Complete the pattern. Which figure belongs in the empty cell?",
+        cat: "Spatial", b: -1.1, prompt: "Complete the pattern. Which figure belongs in the empty cell?",
         matrix: [
           shapesCell({ kind: "circle", n: 1 }), shapesCell({ kind: "circle", n: 2 }), shapesCell({ kind: "circle", n: 3 }),
           shapesCell({ kind: "square", n: 1 }), shapesCell({ kind: "square", n: 2 }), shapesCell({ kind: "square", n: 3 }),
@@ -123,21 +201,9 @@
           { svg: shapesCell({ kind: "circle", n: 3 }) }
         ], correct: 0
       },
-      // Figural — rotation matrix (each column +45°, each row +45°)
+      // Fill alternation matrix (columns: circle/square/triangle; rows toggle fill)
       {
-        cat: "Spatial", prompt: "Complete the pattern. Which figure belongs in the empty cell?",
-        matrix: [
-          arrowCell(0), arrowCell(45), arrowCell(90),
-          arrowCell(45), arrowCell(90), arrowCell(135),
-          arrowCell(90), arrowCell(135), null
-        ],
-        options: [
-          { svg: arrowCell(180) }, { svg: arrowCell(135) }, { svg: arrowCell(90) }, { svg: arrowCell(0) }
-        ], correct: 0
-      },
-      // Figural — fill alternation matrix (columns: circle/square/triangle; rows toggle fill)
-      {
-        cat: "Spatial", prompt: "Complete the pattern. Which figure belongs in the empty cell?",
+        cat: "Spatial", b: -0.6, prompt: "Complete the pattern. Which figure belongs in the empty cell?",
         matrix: [
           shapesCell({ kind: "circle", fill: false }), shapesCell({ kind: "square", fill: false }), shapesCell({ kind: "triangle", fill: false }),
           shapesCell({ kind: "circle", fill: true }), shapesCell({ kind: "square", fill: true }), shapesCell({ kind: "triangle", fill: true }),
@@ -150,9 +216,21 @@
           { svg: shapesCell({ kind: "square", fill: false }) }
         ], correct: 0
       },
+      // Rotation matrix (each column +45°, each row +45°)
+      {
+        cat: "Spatial", b: 0.2, prompt: "Complete the pattern. Which figure belongs in the empty cell?",
+        matrix: [
+          arrowCell(0), arrowCell(45), arrowCell(90),
+          arrowCell(45), arrowCell(90), arrowCell(135),
+          arrowCell(90), arrowCell(135), null
+        ],
+        options: [
+          { svg: arrowCell(180) }, { svg: arrowCell(135) }, { svg: arrowCell(90) }, { svg: arrowCell(0) }
+        ], correct: 0
+      },
       // Mental rotation — which option is the SAME glyph rotated (not mirrored)?
       {
-        cat: "Spatial", prompt: "The figure on the left is shown first. Which option is the SAME figure simply rotated (not flipped/mirrored)?",
+        cat: "Spatial", b: 0.5, prompt: "The figure on the left is shown first. Which option is the SAME figure simply rotated (not flipped/mirrored)?",
         promptSvg: glyph("rotate(0 45 45)"),
         options: [
           { svg: glyph("rotate(90 45 45)") },
@@ -162,7 +240,7 @@
         ], correct: 0
       },
       {
-        cat: "Spatial", prompt: "Which option is the SAME figure simply rotated (not flipped/mirrored)?",
+        cat: "Spatial", b: 0.9, prompt: "Which option is the SAME figure simply rotated (not flipped/mirrored)?",
         promptSvg: glyph("rotate(0 45 45)"),
         options: [
           { svg: glyph("matrix(-1,0,0,1,90,0)") },
@@ -170,14 +248,77 @@
           { svg: glyph("matrix(-1,0,0,1,90,0) rotate(90 45 45)") },
           { svg: glyph("matrix(1,0,0,-1,0,90)") }
         ], correct: 1
+      },
+      // Two simultaneous rules: shape fixed per row, count grows per column,
+      // fill alternates on a checkerboard.
+      {
+        cat: "Spatial", b: 1.1, prompt: "Complete the pattern. Which figure belongs in the empty cell? (Two rules operate at once.)",
+        matrix: [
+          shapesCell({ kind: "circle", n: 1, fill: false }), shapesCell({ kind: "circle", n: 2, fill: true }), shapesCell({ kind: "circle", n: 3, fill: false }),
+          shapesCell({ kind: "square", n: 1, fill: true }), shapesCell({ kind: "square", n: 2, fill: false }), shapesCell({ kind: "square", n: 3, fill: true }),
+          shapesCell({ kind: "triangle", n: 1, fill: false }), shapesCell({ kind: "triangle", n: 2, fill: true }), null
+        ],
+        options: [
+          { svg: shapesCell({ kind: "triangle", n: 3, fill: false }) },
+          { svg: shapesCell({ kind: "triangle", n: 3, fill: true }) },
+          { svg: shapesCell({ kind: "triangle", n: 2, fill: false }) },
+          { svg: shapesCell({ kind: "square", n: 3, fill: false }) }
+        ], correct: 0
+      },
+      // XOR rule: third column shows the segments that appear in exactly ONE
+      // of the first two cells of the row.
+      {
+        cat: "Spatial", b: 1.5, prompt: "In each row, the third cell keeps only the lines that appear in exactly ONE of the first two cells. Which figure completes the last row?",
+        matrix: [
+          segCell(["h"]), segCell(["v"]), segCell(["h", "v"]),
+          segCell(["h", "v"]), segCell(["v", "d"]), segCell(["h", "d"]),
+          segCell(["d", "u"]), segCell(["u", "v"]), null
+        ],
+        options: [
+          { svg: segCell(["d", "v"]) },
+          { svg: segCell(["d", "u", "v"]) },
+          { svg: segCell(["u"]) },
+          { svg: segCell(["h", "v"]) }
+        ], correct: 0
+      },
+      // Distribution of three: every row and column contains each shape once
+      // AND each count once (double Latin square).
+      {
+        cat: "Spatial", b: 1.9, prompt: "Complete the pattern. Every row and every column follows the same two rules. Which figure belongs in the empty cell?",
+        matrix: [
+          shapesCell({ kind: "circle", n: 1 }), shapesCell({ kind: "square", n: 2 }), shapesCell({ kind: "triangle", n: 3 }),
+          shapesCell({ kind: "triangle", n: 2 }), shapesCell({ kind: "circle", n: 3 }), shapesCell({ kind: "square", n: 1 }),
+          shapesCell({ kind: "square", n: 3 }), shapesCell({ kind: "triangle", n: 1 }), null
+        ],
+        options: [
+          { svg: shapesCell({ kind: "circle", n: 2 }) },
+          { svg: shapesCell({ kind: "circle", n: 3 }) },
+          { svg: shapesCell({ kind: "triangle", n: 2 }) },
+          { svg: shapesCell({ kind: "square", n: 2 }) }
+        ], correct: 0
+      },
+      // Hard mental rotation: odd angles, all distractors mirrored.
+      {
+        cat: "Spatial", b: 2.4, prompt: "Which option is the SAME figure simply rotated (not flipped/mirrored)?",
+        promptSvg: glyph("rotate(0 45 45)"),
+        options: [
+          { svg: glyph("matrix(-1,0,0,1,90,0) rotate(45 45 45)") },
+          { svg: glyph("rotate(135 45 45)") },
+          { svg: glyph("matrix(-1,0,0,1,90,0) rotate(225 45 45)") },
+          { svg: glyph("matrix(1,0,0,-1,0,90) rotate(45 45 45)") }
+        ], correct: 1
       }
     ];
 
     const TOTAL = items.length;
-    const TIME_LIMIT = 25 * 60; // seconds, soft cap; auto-submits at 0.
+    const TIME_LIMIT = 30 * 60; // seconds, soft cap; auto-submits at 0.
 
-    // Prepare a shuffled run: shuffle item order and each item's options.
-    const run = shuffle(items).map((item) => {
+    // Present items easiest-first (standard practice on ability tests) but
+    // shuffle within each difficulty tier so retakes still vary. Options are
+    // always shuffled.
+    const tierOf = (b) => (b < -0.5 ? 0 : b < 0.5 ? 1 : b < 1.5 ? 2 : 3);
+    const ordered = [0, 1, 2, 3].flatMap((t) => shuffle(items.filter((it) => tierOf(it.b) === t)));
+    const run = ordered.map((item) => {
       const order = shuffle(item.options.map((_, i) => i));
       return {
         item,
@@ -198,13 +339,13 @@
       root.innerHTML = `
         <div class="quiz quiz-intro">
           <div class="quiz-badges">
-            <span class="quiz-badge time">⏱ Estimated time: about 20 minutes</span>
+            <span class="quiz-badge time">⏱ Estimated time: 25–30 minutes</span>
             <span class="quiz-badge">${TOTAL} questions</span>
             <span class="quiz-badge ok">✓ 100% free · no sign-up · no email</span>
           </div>
           <h2>A free reasoning (IQ-style) test</h2>
           <p class="quiz-lede"><strong>Completely FREE IQ Test. No signup, no email, no credit card. Instant results, no catch.</strong></p>
-          <p>This test estimates fluid reasoning the way established cognitive assessments do — through <strong>original</strong> puzzles across four proven item families used in real intelligence research. No question here is copied from any published test.</p>
+          <p>This test estimates fluid reasoning the way established cognitive assessments do — through <strong>original</strong> puzzles across four proven item families used in real intelligence research. Questions start easy and ramp up to genuinely hard; your score is estimated from <em>which</em> difficulty levels you can solve, not just how many you get right. No question here is copied from any published test.</p>
           <ul class="quiz-facts">
             <li><span>🔢</span><div><strong>Number &amp; series</strong> — spot the numerical rule and continue the pattern.</div></li>
             <li><span>🔤</span><div><strong>Verbal reasoning</strong> — analogies and odd-one-out relationships.</div></li>
@@ -213,7 +354,7 @@
           </ul>
           <div class="quiz-note">
             <strong>How to get an accurate result</strong>
-            <p>Work somewhere quiet and answer without help or a calculator. There is a gentle 25-minute timer, and every question is multiple-choice with one best answer. Your result is an <em>unnormed self-assessment estimate</em> — a useful practice indicator, not a clinical IQ score.</p>
+            <p>Work somewhere quiet and answer without help or a calculator. There is a gentle 30-minute timer, and every question is multiple-choice with one best answer. Later questions are meant to be hard — most people miss several, and guessing is better than leaving blanks. Your result is an <em>unnormed self-assessment estimate</em> — a useful practice indicator, not a clinical IQ score.</p>
           </div>
           <div class="actions"><button class="button primary" id="start">Start the test →</button></div>
         </div>`;
@@ -298,18 +439,53 @@
       // Score
       let correct = 0;
       const byCat = {};
+      const scored = []; // { b, right } per item, for the ability estimate
       run.forEach((q, i) => {
         const c = q.item.cat;
         byCat[c] = byCat[c] || { correct: 0, total: 0 };
         byCat[c].total += 1;
-        if (answers[i] === q.correctIndex) { correct += 1; byCat[c].correct += 1; }
+        const right = answers[i] === q.correctIndex;
+        if (right) { correct += 1; byCat[c].correct += 1; }
+        scored.push({ b: q.item.b, right });
       });
       const p = correct / TOTAL;
-      // Honest, clearly-unnormed mapping: centre average performance near 100.
-      let est = Math.round(100 + (p - 0.55) * 62);
-      est = Math.max(70, Math.min(145, est));
-      const lo = Math.max(60, est - 7);
-      const hi = Math.min(160, est + 7);
+
+      // Ability estimate via a 3-parameter IRT model. Each item has a
+      // difficulty b (logits, adult population θ ~ N(0,1)); with 4 options the
+      // guessing floor is c = 0.25. P(correct | θ) = c + (1-c)·σ(θ - b).
+      // θ is the maximum-likelihood estimate found by bisection on the score
+      // equation Σ P_i(θ) = raw score, so solving hard items moves the
+      // estimate far more than solving easy ones.
+      const GUESS = 0.25;
+      const pAt = (theta, b) => GUESS + (1 - GUESS) / (1 + Math.exp(-(theta - b)));
+      const expectedScore = (theta) => scored.reduce((s, it) => s + pAt(theta, it.b), 0);
+      let theta;
+      if (correct <= expectedScore(-4)) theta = -4;
+      else if (correct >= expectedScore(4)) theta = 4;
+      else {
+        let lo = -4, hi = 4;
+        for (let k = 0; k < 50; k++) {
+          const mid = (lo + hi) / 2;
+          if (expectedScore(mid) < correct) lo = mid; else hi = mid;
+        }
+        theta = (lo + hi) / 2;
+      }
+      // Standard error from the Fisher information of the 3PL model:
+      // I(θ) = Σ (Q/P)·((P-c)/(1-c))², SE = 1/√I. Gives an honest, ability-
+      // dependent confidence band (wider at the extremes).
+      const info = scored.reduce((s, it) => {
+        const P = pAt(theta, it.b);
+        const r = (P - GUESS) / (1 - GUESS);
+        return s + ((1 - P) / P) * r * r;
+      }, 0);
+      const se = info > 0 ? 1 / Math.sqrt(info) : 1.5;
+
+      // Convert to the familiar IQ scale (mean 100, SD 15).
+      let est = Math.round(100 + 15 * theta);
+      est = Math.max(65, Math.min(150, est));
+      const spread = Math.max(4, Math.min(15, Math.round(15 * se)));
+      const lo = Math.max(55, est - spread);
+      const hi = Math.min(160, est + spread);
       const percentile = Math.max(1, Math.min(99, Math.round(normCdf((est - 100) / 15) * 100)));
       const band =
         est >= 130 ? "Very high" : est >= 120 ? "High" : est >= 110 ? "Above average" :
@@ -343,14 +519,16 @@
           <h3>How you did by reasoning type</h3>
           <div class="score-rows">${catRows}</div>
           <div class="quiz-note">
-            <strong>What these categories mean</strong>
-            <p><strong>Number &amp; series</strong> and <strong>logical reasoning</strong> lean on sequential, rule-finding thinking. <strong>Verbal reasoning</strong> reflects how you map relationships between concepts. <strong>Pattern &amp; spatial</strong> is the closest to "fluid intelligence" — reasoning about brand-new visual problems with no learned answer.</p>
+            <strong>How this score was calculated</strong>
+            <p>Every question carries a difficulty weight, and your estimate comes from an item-response model (the same family of statistics behind professionally normed tests): solving hard items raises the estimate far more than solving easy ones, and a 25% guessing floor is built in because each question has four options. The range shown is the model's own statistical uncertainty, so it widens at extreme scores. <strong>Number &amp; series</strong> and <strong>logical reasoning</strong> lean on sequential, rule-finding thinking; <strong>verbal reasoning</strong> reflects how you map relationships between concepts; <strong>pattern &amp; spatial</strong> is the closest to pure "fluid intelligence."</p>
           </div>
+          ${shareBar()}
           <div class="actions">
             <button class="button primary" id="retake">Retake the test</button>
           </div>
           <p class="quiz-share-note">Nothing was uploaded or saved — refresh and it's gone. Retaking reshuffles the questions and answer order.</p>
         </div>`;
+      wireShare(`I scored an estimated IQ of ${est} (${band.toLowerCase()} band, ~${percentile}${ordinal(percentile)} percentile) on this free ${TOTAL}-question IQ test 🧠 Think you can beat it?`);
       root.querySelector("#retake").onclick = () => location.reload();
       root.scrollIntoView({ block: "start", behavior: "smooth" });
     }
@@ -607,9 +785,11 @@
             <strong>Remember</strong>
             <p>No type is better than another, and this is a self-reflection tool, not a clinical assessment. Your result is a snapshot of how you answered today — use it as a mirror and a conversation starter, not a label.</p>
           </div>
+          ${shareBar()}
           <div class="actions"><button class="button primary" id="retake">Retake the test</button></div>
           <p class="quiz-share-note">Nothing was uploaded or saved — refresh and it's gone.</p>
         </div>`;
+      wireShare(`My personality type is ${top.t.name} — "${top.t.tagline}" ✨ Take the free test and find yours!`);
       root.querySelector("#retake").onclick = () => location.reload();
       root.scrollIntoView({ block: "start", behavior: "smooth" });
     }
@@ -969,11 +1149,13 @@
             <strong>Take it lightly</strong>
             <p>Sun-sign compatibility is a fun lens, not a rulebook. A full astrological picture involves far more than two birthdays, and any two people can make it work — or not — regardless of their signs. Enjoy it for what it is.</p>
           </div>
+          ${shareBar()}
           <div class="actions">
             <button class="button primary" id="again">Try another pairing</button>
           </div>
           <p class="quiz-share-note">Nothing was uploaded or saved — this all runs in your browser.</p>
         </div>`;
+      wireShare(`${A.name} + ${B.name} = ${score}% compatibility (${label(score)} match) 💫 Check your zodiac pairing free:`);
       root.querySelector("#again").onclick = () => { intro(); root.scrollIntoView({ block: "start", behavior: "smooth" }); };
       root.scrollIntoView({ block: "start", behavior: "smooth" });
     }
@@ -1289,11 +1471,13 @@
             <strong>How to read this number</strong>
             <p>An average typist lands near 40 WPM; 40–60 is good, 60–80 is fast, and 80+ is professional territory. Your score shifts with the keyboard you used, the sample words, and how familiar they were — treat it as a personal benchmark, not a certified credential.</p>
           </div>
+          ${shareBar()}
           <div class="actions">
             <button class="button primary" id="typing-again">Try again</button>
           </div>
           <p class="quiz-share-note">Nothing was uploaded or saved — refresh and it's gone. Trying again shuffles a brand-new passage.</p>
         </div>`;
+      wireShare(`I just typed ${netWpm} WPM at ${pct(accuracy)} accuracy on this free typing speed test ⌨️ Can you beat it?`);
       root.querySelector("#typing-again").onclick = () => intro();
       root.scrollIntoView({ block: "start", behavior: "smooth" });
     }
@@ -1552,12 +1736,14 @@ function renderReactionTest() {
           <strong>Important</strong>
           <p>Reaction times on this test depend on your device hardware, display refresh rate, input method (mouse vs. touch), browser, and background CPU load. Results vary run-to-run. This is not a medical or diagnostic measure of neurological health — it's a fun self-comparison tool.</p>
         </div>
+        ${shareBar()}
         <div class="actions">
           <button class="button primary" id="rt-retake">Try again</button>
         </div>
         <p class="quiz-share-note">Nothing was uploaded or saved — refresh and it's gone. Retaking starts fresh rounds.</p>
       </div>`;
 
+    wireShare(`My average reaction time is ${avg} ms (${band.label.toLowerCase()}, best round ${best} ms) ⚡ Test yours free:`);
     root.querySelector("#rt-retake").onclick = () => location.reload();
     root.scrollIntoView({ block: "start", behavior: "smooth" });
   }
@@ -1804,6 +1990,7 @@ function renderClickSpeedTest() {
           <strong>A note on high scores</strong>
           <p>Scores above 10 CPS usually involve specialised techniques: <strong>jitter clicking</strong> (tensing the forearm to vibrate), <strong>butterfly clicking</strong> (alternating two fingers), or <strong>drag clicking</strong> (dragging a finger across the button to register multiple contacts). These produce big numbers but carry injury risk and don't reflect natural clicking speed. This test is calibrated for ordinary single-finger technique.</p>
         </div>
+        ${shareBar()}
         <div class="actions">
           <button class="button primary" id="cps-again">Try again</button>
           <button class="button" id="cps-change">Change duration</button>
@@ -1811,6 +1998,7 @@ function renderClickSpeedTest() {
         <p class="quiz-share-note">Nothing was uploaded or saved — refresh and it's gone. Each run is independent.</p>
       </div>`;
 
+    wireShare(`I hit ${cpsDisplay} clicks per second (${clicks} clicks in ${duration}s) on this free click speed test 🖱️ Beat my score!`);
     root.querySelector("#cps-again").addEventListener("click", () => pad());
     root.querySelector("#cps-change").addEventListener("click", () => intro());
     root.scrollIntoView({ block: "start", behavior: "smooth" });
@@ -2134,12 +2322,14 @@ function renderMemoryTest() {
           <strong>Keep this in perspective</strong>
           <p>This is a casual, browser-based measure — not a clinical digit-span task administered by a professional. Your score reflects how you performed right now, under these conditions, in a text-input format. Treat it as a fun snapshot, not a definitive assessment of your memory.</p>
         </div>
+        ${shareBar()}
         <div class="actions">
           <button class="button primary" id="mt-retry">Try again</button>
         </div>
         <p class="quiz-share-note">Nothing was uploaded or saved — refresh and it's gone. Retaking generates a fresh set of random sequences.</p>
       </div>`;
 
+    wireShare(`I remembered a ${span}-digit sequence on this free memory span test 🧠 (average is ~7). Try to beat it!`);
     root.querySelector("#mt-retry").onclick = () => { intro(); };
     root.scrollIntoView({ block: "start", behavior: "smooth" });
   }
@@ -2495,11 +2685,13 @@ function renderMemoryTest() {
           <div class="plate-tips">
             <strong>Why plates like these work:</strong> the figure dots and background dots are chosen to differ mainly in <em>hue</em> along the red-green axis while staying close in brightness. Someone with typical color vision separates them by color and reads the number; a red-green difference makes them blend together. Because brightness and screen settings can fake or hide that effect, at-home results are only ever a hint.
           </div>
+          ${shareBar()}
           <div class="actions">
             <button class="button primary" id="retake">Try again</button>
           </div>
           <p class="quiz-share-note">Nothing was uploaded or saved — refresh and it's gone. Trying again reshuffles the plates and the hidden numbers.</p>
         </div>`;
+      wireShare(`I read ${rgCorrect}/${rgTotal} hidden numbers on this free color vision screening 👁️ See how many you can spot:`);
       root.querySelector("#retake").onclick = () => { newRun(); plate(); };
       root.scrollIntoView({ block: "start", behavior: "smooth" });
     }
@@ -2733,12 +2925,14 @@ function renderLoveCalculator() {
           <strong>Same pair, same result — always</strong>
           <p>The score is worked out from the letters in both names using a fixed algorithm, so ${dA} and ${dB} will always get ${score}% on this calculator. Swap the order and the result is the same. It's deterministic, not magic — but a little of both, maybe.</p>
         </div>
+        ${shareBar()}
         <div class="actions">
           <button class="button primary" id="love-again">Try another pair</button>
         </div>
         <p class="quiz-share-note">Nothing was uploaded or saved — this all runs in your browser. Refresh and it's gone.</p>
       </div>`;
 
+    wireShare(`${rawA} + ${rawB} = ${score}% on the love calculator 💘 (${verdict.label}) Try your names free:`);
     root.querySelector("#love-again").onclick = () => {
       intro();
       root.scrollIntoView({ block: "start", behavior: "smooth" });
