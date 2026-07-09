@@ -9,6 +9,8 @@ The site is static and requires no account. Tool inputs are processed locally in
 - [All tools](https://niftyutilities.com/): Search and browse the complete tool directory.
 - [About](https://niftyutilities.com/about.html): Site purpose and operating model.
 - [Privacy](https://niftyutilities.com/privacy.html): Local-processing and no-data-storage policy.
+- [Terms](https://niftyutilities.com/terms.html): Terms of use for the tools.
+- [Contact](https://niftyutilities.com/contact.html): How to reach the site operator.
 
 ## Finance / CSV
 

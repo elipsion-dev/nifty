@@ -1459,7 +1459,7 @@ const header = (prefix = "") => `
 const footer = (prefix = "") => `
   <footer class="site-footer">
     <div><strong>${SITE_NAME}</strong><br><span>Everything runs in your browser. We never see your data and can't save it.</span></div>
-    <div class="footer-links"><a href="${prefix}privacy.html">Privacy</a><a href="${prefix}about.html">About</a><a href="mailto:${SUPPORT_EMAIL}">Support</a></div>
+    <div class="footer-links"><a href="${prefix}about.html">About</a><a href="${prefix}privacy.html">Privacy</a><a href="${prefix}terms.html">Terms</a><a href="${prefix}contact.html">Contact</a></div>
   </footer>`;
 
 const page = ({ title, description, body, pathname, prefix = "", scripts = "", pageType = "WebPage", extraSchema = [], indexable = true, titleTag }) => {
@@ -1537,7 +1537,7 @@ const page = ({ title, description, body, pathname, prefix = "", scripts = "", p
   <link rel="icon" href="${prefix}assets/icons/favicon-32x32.png" type="image/png" sizes="32x32">
   <link rel="icon" href="${prefix}assets/icons/favicon-16x16.png" type="image/png" sizes="16x16">
   <link rel="apple-touch-icon" href="${prefix}assets/icons/apple-touch-icon.png" sizes="180x180">
-  <link rel="mask-icon" href="${prefix}assets/icons/safari-pinned-tab.svg" color="#0085ff">
+  <link rel="mask-icon" href="${prefix}assets/icons/safari-pinned-tab.svg" color="#2dd4bf">
   <link rel="manifest" href="${prefix}site.webmanifest">
   <link rel="stylesheet" href="${prefix}assets/styles.css">
   <script type="application/ld+json">${JSON.stringify(schema).replaceAll("<", "\\u003c")}</script>${headTags}
@@ -1645,7 +1645,7 @@ const homeBody = `
             </div>
           </div>
           <div class="hero-workbench-row">
-            <div class="hero-chip"><span>Best for</span><strong>CSV cleanup, cost checks, printable forms</strong></div>
+            <div class="hero-chip"><span>Best for</span><strong>CSV cleanup, cost checks, forms, quizzes</strong></div>
             <div class="hero-chip"><span>Search</span><strong>Tool names, tasks, and categories</strong></div>
           </div>
         </div>
@@ -1717,6 +1717,11 @@ const homeBody = `
           <p>Generate receipts, logs, inventory sheets, and printable records without a separate template app.</p>
           <a href="documents/index.html">Open document tools</a>
         </article>
+        <article class="workflow-card">
+          <h3>Take a quiz</h3>
+          <p>Try the timed IQ test, find your personality type, or check zodiac compatibility — original tests, instant results.</p>
+          <a href="quizzes/iq-test.html">Start the IQ test</a>
+        </article>
       </div>
     </div>
   </section>
@@ -1743,7 +1748,7 @@ const homeBody = `
 fs.writeFileSync("index.html", page({
   title: `${allTools.length} Browser Tools for Everyday Work`,
   titleTag: `FREE Online Tools – ${allTools.length} Browser Utilities, No Sign-Up | ${SITE_NAME}`,
-  description: "Practical browser tools for CSV files, personal finance, documents, home costs, business math, and one-off cleanup jobs. No sign-up; data stays on your device.",
+  description: "Practical browser tools for CSV files, finance, documents, home costs, and business math, plus a free IQ test and quizzes. No sign-up; data stays on your device.",
   pathname: "/",
   pageType: "CollectionPage",
   body: homeBody,
@@ -1928,6 +1933,68 @@ fs.writeFileSync("about.html", page({
   </main>`
 }));
 
+fs.writeFileSync("terms.html", page({
+  title: "Terms of Use",
+  description: `Terms of use for ${SITE_NAME}: free browser-based tools provided as-is, with estimates and generated documents that are not professional advice.`,
+  pathname: "/terms.html",
+  body: `<main id="main" class="prose-page">
+    <p class="eyebrow">${SITE_NAME}</p>
+    <h1>Terms of use.</h1>
+    <p>These terms describe the basis on which ${SITE_NAME} makes its tools available. By using this website you agree to them. They are written in plain language on purpose; there is no separate legalese version that says something different.</p>
+
+    <h2>What the site provides</h2>
+    <p>${SITE_NAME} offers free utilities — calculators, file cleaners, document generators, and quizzes — that run in your web browser. No account is required and no payment is collected. You may use the tools for personal or commercial work.</p>
+
+    <h2>Estimates, documents, and quizzes are not professional advice</h2>
+    <p>The calculators produce estimates built from the figures you enter. The document generators produce general-purpose drafts. The quizzes are recreational and educational. None of this output is financial, tax, legal, medical, or other professional advice, and the IQ and personality quizzes are not clinical or psychometric instruments. Before relying on a result that matters — a filing deadline, a legal document, a large purchase decision — verify it with a qualified professional or an authoritative source.</p>
+
+    <h2>No warranty</h2>
+    <p>The tools are provided "as is" and "as available," without warranties of any kind, express or implied, including fitness for a particular purpose and accuracy of results. We work to keep the tools correct and available, but we do not guarantee that they are error-free or uninterrupted. To the fullest extent permitted by law, ${SITE_NAME} and its operator are not liable for any damages arising from your use of, or inability to use, this website or its output.</p>
+
+    <h2>Your data</h2>
+    <p>Tool inputs are processed in your browser and are not transmitted to us; the details are on the <a href="privacy.html">privacy page</a>. Because processing is local, you are responsible for keeping copies of anything you generate — we have no copy to recover for you.</p>
+
+    <h2>Acceptable use</h2>
+    <p>Don't use the site to break the law, don't attempt to disrupt or overload it, and don't scrape it in a way that degrades it for others. Automated access that respects <a href="robots.txt">robots.txt</a> is fine.</p>
+
+    <h2>Content and ownership</h2>
+    <p>The site's design, articles, and code that delivers the tools belong to ${SITE_NAME}. Everything you create with the tools — the documents, cleaned files, and results built from your own inputs — is yours.</p>
+
+    <h2>Third-party services</h2>
+    <p>Pages may load open-source libraries from public CDNs so tools can run locally, and the site uses Google services for analytics and advertising as described in the <a href="privacy.html">privacy policy</a>. Those services operate under their own terms.</p>
+
+    <h2>Changes</h2>
+    <p>Tools are added and revised regularly, and these terms may be updated as the site evolves. The date stamp in this page's metadata reflects the last revision. Continued use after a change means you accept the updated terms.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about these terms? Email ${mailtoLink} or use the <a href="contact.html">contact page</a>.</p>
+  </main>`
+}));
+
+fs.writeFileSync("contact.html", page({
+  title: "Contact",
+  pageType: "ContactPage",
+  description: `Contact ${SITE_NAME} — report a problem with a tool, suggest a new utility, or ask a question. Every email reaches a real person.`,
+  pathname: "/contact.html",
+  body: `<main id="main" class="prose-page">
+    <p class="eyebrow">${SITE_NAME}</p>
+    <h1>Get in touch.</h1>
+    <p>The best way to reach us is email: ${mailtoLink}. Every message is read by a real person — usually within a couple of days — and reader email genuinely shapes which tools get built and fixed next.</p>
+
+    <h2>Reporting a problem with a tool</h2>
+    <p>If a calculator gives a result that looks wrong or a tool won't accept your file, include the tool's name (or paste its web address), what you entered or what kind of file you used, what you expected, and what happened instead. Because the tools run entirely in your browser and nothing you enter reaches us, we can't look up your session — those details are the only way we can reproduce the issue.</p>
+
+    <h2>Suggesting a new tool</h2>
+    <p>Ideas are welcome. The most useful suggestions describe the job you were trying to get done — "I needed to split one big CSV into files per region" — rather than a feature name. If it can run privately in a browser, there's a good chance it fits here.</p>
+
+    <h2>Why there's no contact form</h2>
+    <p>${SITE_NAME} is a static site with no backend server, which is the same reason your tool inputs never leave your device. A contact form would need a server to receive it, so plain email it is.</p>
+
+    <h2>Everything else</h2>
+    <p>For questions about how the site handles data, see the <a href="privacy.html">privacy page</a>. For the ground rules, see the <a href="terms.html">terms of use</a>. For who builds this and why, see the <a href="about.html">about page</a>.</p>
+  </main>`
+}));
+
 fs.writeFileSync("404.html", page({
   title: "Page not found",
   description: "The requested page could not be found.",
@@ -1940,6 +2007,8 @@ const publicPaths = [
   "",
   "about.html",
   "privacy.html",
+  "terms.html",
+  "contact.html",
   ...categories.flatMap((category) => [
     `${category.slug}/`,
     ...category.tools.map(([slug]) => `${category.slug}/${slug}.html`)
@@ -1983,8 +2052,8 @@ fs.writeFileSync("site.webmanifest", JSON.stringify({
   start_url: "/",
   scope: "/",
   display: "standalone",
-  background_color: "#f7fafc",
-  theme_color: "#0085ff",
+  background_color: "#0f1720",
+  theme_color: "#0f1720",
   categories: ["utilities", "productivity", "finance", "business"],
   icons: [
     { src: "/assets/icons/icon-192x192.png", sizes: "192x192", type: "image/png", purpose: "any" },
@@ -2002,7 +2071,7 @@ fs.writeFileSync("browserconfig.xml", `<?xml version="1.0" encoding="utf-8"?>
       <square150x150logo src="/assets/icons/mstile-150x150.png"/>
       <wide310x150logo src="/assets/icons/mstile-310x150.png"/>
       <square310x310logo src="/assets/icons/mstile-310x310.png"/>
-      <TileColor>#0085ff</TileColor>
+      <TileColor>#0f1720</TileColor>
     </tile>
   </msapplication>
 </browserconfig>
@@ -2025,6 +2094,8 @@ The site is static and requires no account. Tool inputs are processed locally in
 - [All tools](${SITE_URL}/): Search and browse the complete tool directory.
 - [About](${SITE_URL}/about.html): Site purpose and operating model.
 - [Privacy](${SITE_URL}/privacy.html): Local-processing and no-data-storage policy.
+- [Terms](${SITE_URL}/terms.html): Terms of use for the tools.
+- [Contact](${SITE_URL}/contact.html): How to reach the site operator.
 
 ${llmsSections}
 `);

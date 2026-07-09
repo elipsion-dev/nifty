@@ -234,7 +234,7 @@ h2 { letter-spacing: -0.03em; }
 .feature-list span { display: block; color: var(--muted); font-size: .88rem; }
 .workflow-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
 }
 .workflow-card {
