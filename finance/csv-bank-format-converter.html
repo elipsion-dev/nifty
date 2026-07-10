@@ -34,7 +34,7 @@
   <link rel="mask-icon" href="../assets/icons/safari-pinned-tab.svg" color="#2dd4bf">
   <link rel="manifest" href="../site.webmanifest">
   <link rel="stylesheet" href="../assets/styles.css">
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://niftyutilities.com/#organization","name":"Nifty Utilities","url":"https://niftyutilities.com/","logo":{"@type":"ImageObject","url":"https://niftyutilities.com/assets/icons/icon-512x512.png","width":512,"height":512}},{"@type":"WebSite","@id":"https://niftyutilities.com/#website","name":"Nifty Utilities","url":"https://niftyutilities.com/","description":"Free browser-based tools for finance, CSV files, documents, home decisions, business math, images, and everyday tasks.","publisher":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://niftyutilities.com/finance/csv-bank-format-converter.html#webpage","url":"https://niftyutilities.com/finance/csv-bank-format-converter.html","name":"Free CSV Bank Format Converter","description":"Free online csv bank format converter. Map statement columns into a simple date, description, amount format. No sign-up; processing stays in your browser.","isPartOf":{"@id":"https://niftyutilities.com/#website"},"about":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US","dateModified":"2026-07-09"},{"@type":"WebApplication","@id":"https://niftyutilities.com/finance/csv-bank-format-converter.html#application","name":"CSV Bank Format Converter","description":"Map statement columns into a simple date, description, amount format.","url":"https://niftyutilities.com/finance/csv-bank-format-converter.html","applicationCategory":"Finance / CSV","operatingSystem":"Any","browserRequirements":"Requires a modern web browser with JavaScript enabled.","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://niftyutilities.com/#organization"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://niftyutilities.com/"},{"@type":"ListItem","position":2,"name":"Finance / CSV","item":"https://niftyutilities.com/finance/"},{"@type":"ListItem","position":3,"name":"CSV Bank Format Converter","item":"https://niftyutilities.com/finance/csv-bank-format-converter.html"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://niftyutilities.com/#organization","name":"Nifty Utilities","url":"https://niftyutilities.com/","logo":{"@type":"ImageObject","url":"https://niftyutilities.com/assets/icons/icon-512x512.png","width":512,"height":512}},{"@type":"WebSite","@id":"https://niftyutilities.com/#website","name":"Nifty Utilities","url":"https://niftyutilities.com/","description":"Free browser-based tools for finance, CSV files, documents, home decisions, business math, images, and everyday tasks.","publisher":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://niftyutilities.com/finance/csv-bank-format-converter.html#webpage","url":"https://niftyutilities.com/finance/csv-bank-format-converter.html","name":"Free CSV Bank Format Converter","description":"Free online csv bank format converter. Map statement columns into a simple date, description, amount format. No sign-up; processing stays in your browser.","isPartOf":{"@id":"https://niftyutilities.com/#website"},"about":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US","dateModified":"2026-07-10"},{"@type":"WebApplication","@id":"https://niftyutilities.com/finance/csv-bank-format-converter.html#application","name":"CSV Bank Format Converter","description":"Map statement columns into a simple date, description, amount format.","url":"https://niftyutilities.com/finance/csv-bank-format-converter.html","applicationCategory":"Finance / CSV","operatingSystem":"Any","browserRequirements":"Requires a modern web browser with JavaScript enabled.","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://niftyutilities.com/#organization"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://niftyutilities.com/"},{"@type":"ListItem","position":2,"name":"Finance / CSV","item":"https://niftyutilities.com/finance/"},{"@type":"ListItem","position":3,"name":"CSV Bank Format Converter","item":"https://niftyutilities.com/finance/csv-bank-format-converter.html"}]}]}</script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -63,21 +63,35 @@
     </a>
     <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
     <nav id="site-nav" class="site-nav" aria-label="Main navigation">
-      <a href="../finance/index.html">Finance</a><a href="../spreadsheet/index.html">Spreadsheet</a><a href="../documents/index.html">Documents</a><a href="../homeowner/index.html">Homeowner / Life</a><a href="../business/index.html">Business</a><a href="../government/index.html">Government &amp; Deadlines</a><a href="../useful/index.html">Weirdly Useful</a><a href="../quizzes/index.html">Quizzes &amp; Tests</a>
+      <div class="nav-dropdown">
+        <button class="nav-drop-button" type="button" aria-expanded="false" aria-controls="nav-categories" aria-haspopup="true">Categories<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div id="nav-categories" class="nav-drop-menu">
+          <a href="../index.html">All tools</a>
+          <a href="../finance/index.html">Finance</a>
+          <a href="../spreadsheet/index.html">Spreadsheet</a>
+          <a href="../convert/index.html">Convert Files</a>
+          <a href="../documents/index.html">Documents</a>
+          <a href="../homeowner/index.html">Homeowner / Life</a>
+          <a href="../business/index.html">Business</a>
+          <a href="../government/index.html">Government &amp; Deadlines</a>
+          <a href="../useful/index.html">Weirdly Useful</a>
+          <a href="../quizzes/index.html">Quizzes &amp; Tests</a>
+        </div>
+      </div>
     </nav>
   </header>
     
         <main id="main">
+          <section class="category-hero tool-hero-band" style="--tool-accent:#6aa9ff">
+            <p class="breadcrumbs"><a href="../index.html">All tools</a><span>/</span><a href="index.html">Finance / CSV</a></p>
+            <p class="eyebrow">Finance / CSV</p>
+            <h1>CSV Bank Format Converter</h1>
+            <p>Map statement columns into a simple date, description, amount format.</p>
+            <div class="local-badge"><span class="status-light"></span>No data sent or stored</div>
+          </section>
           <div class="tool-layout">
             <article class="tool-page" style="--tool-accent:#6aa9ff">
-              <p class="breadcrumbs"><a href="../index.html">All tools</a><span>/</span><a href="index.html">Finance / CSV</a></p>
-              <header class="tool-title">
-                <p class="eyebrow">Finance / CSV</p>
-                <h1>CSV Bank Format Converter</h1>
-                <p>Map statement columns into a simple date, description, amount format.</p>
-                <div class="local-badge"><span class="status-light"></span>No data sent or stored</div>
-              </header>
-              <div class="tool-hero tool-hero-emoji tool-hero-top" aria-hidden="true"><span>🔀</span></div>
+              
               <section class="tool-intro"><p>The pain shows up the moment you try to combine accounts. One bank puts the date first, another puts it third. One uses a single signed amount, another splits debits and credits into two columns. One calls the payee "Description," another calls it "Memo." Stack those files together and nothing lines up.</p>
 
 <p>This converter exists to make many banks speak one language: it maps whatever your source file calls its columns into a clean date, description, and single signed-amount layout that imports anywhere and merges without a fight.</p>
@@ -91,6 +105,20 @@
               <section class="related-tools" aria-label="More tools you might like">
                 <h2>Try these other Finance tools</h2>
                 <div class="related-links"><a class="related-link" href="bank-statement-cleaner.html">Bank Statement Cleaner</a><a class="related-link" href="recurring-subscription-finder.html">Recurring Subscription Finder</a><a class="related-link" href="merchant-name-normalizer.html">Merchant Name Normalizer</a><a class="related-link" href="personal-spending-categorizer.html">Personal Spending Categorizer</a><a class="related-link" href="duplicate-transaction-finder.html">Duplicate Transaction Finder</a><a class="related-link" href="credit-card-statement-analyzer.html">Credit Card Statement Analyzer</a><a class="related-link" href="debt-snowball-calculator.html">Debt Snowball Calculator</a><a class="related-link" href="debt-avalanche-calculator.html">Debt Avalanche Calculator</a><a class="related-link" href="net-worth-tracker.html">Net Worth Tracker</a></div>
+                <h2>Pairs well with this tool</h2>
+                <div class="tool-grid related-quizzes">
+                  <a class="tool-card tool-card-related" href="../spreadsheet/column-mapper.html">
+                    <span class="tool-badge tool-badge-related">Spreadsheet</span>
+                    <span class="tool-arrow" aria-hidden="true">↗</span>
+                    <h3>Column Mapper</h3>
+                    <p>Rename and reorder columns into a target schema.</p>
+                  </a>
+                  <a class="tool-card tool-card-related" href="../spreadsheet/delimiter-converter.html">
+                    <span class="tool-badge tool-badge-related">Spreadsheet</span>
+                    <span class="tool-arrow" aria-hidden="true">↗</span>
+                    <h3>Delimiter Converter</h3>
+                    <p>Convert comma, tab, semicolon, or pipe-delimited data.</p>
+                  </a></div>
                 <h2>Popular quizzes</h2>
                 <div class="tool-grid related-quizzes">
                   <a class="tool-card tool-card-featured" href="../quizzes/iq-test.html">
@@ -169,7 +197,6 @@
             </article>
             <aside class="tool-sidebar">
               
-              <div class="sidebar-card"><strong>Nothing is sent to us</strong><p>This static site has no server endpoint or database capable of receiving your files or entries.</p></div>
             </aside>
           </div>
         </main>

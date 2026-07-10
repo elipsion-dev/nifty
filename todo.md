@@ -1,49 +1,5 @@
 # To-do
 
-## Copy-paste prompt: next GSC indexing batch (run tomorrow, 2026-07-05 or later)
-
-> Google Search Console indexing, batch 2. Pick up where we left off yesterday and
-> request indexing for the next ~8 pages that are NOT already indexed. Property is
-> the `niftyutilities.com` domain property in GSC (I'm already logged in in Chrome).
->
-> Process for EACH URL: open the URL Inspection box in GSC, inspect it, and:
-> - If it shows "URL is not on Google" / "Discovered – currently not indexed" /
->   "Crawled – currently not indexed" → click **Request Indexing** and confirm.
-> - If it shows "URL is on Google" (already indexed) → **skip it**, don't spend a
->   request. Move to the next candidate.
-> Keep going down the candidate list below until you've made ~8 actual requests
-> (Google's soft limit is ~10/day, so stop around 8–10). Report which were
-> requested vs. already-indexed.
->
-> Candidate list, in priority order (skip any already indexed):
-> 1. business/cost-of-missed-calls-calculator.html
-> 2. business/cost-of-employee-turnover-calculator.html
-> 3. business/sales-commission-calculator.html
-> 4. documents/bill-of-sale-generator.html
-> 5. documents/rent-receipt-generator.html
-> 6. documents/invoice-number-generator.html
-> 7. spreadsheet/merge-csv-files.html
-> 8. spreadsheet/json-csv-converter.html
-> 9. spreadsheet/remove-duplicate-rows.html
-> 10. government/rmd-calculator.html
-> 11. government/social-security-claiming-age-calculator.html
-> 12. homeowner/rent-vs-buy-calculator.html
-> 13. homeowner/real-cost-of-owning-a-car.html
-> 14. useful/vin-decoder.html
-> 15. useful/qr-batch-generator.html
->
-> After the batch, glance at GSC → Pages and tell me if the "Discovered –
-> currently not indexed" count (was 63) has started dropping.
-
-### Context (already done — don't redo)
-- **Batch 1 (2026-07-04), requested:** quizzes iq-test, personality-type-test,
-  zodiac-compatibility, quizzes hub; business profit-margin, customer-lifetime-value,
-  job-cost, service-pricing, lead-value. (9 requests)
-- **Already indexed, skipped:** business break-even-calculator, hourly-rate-calculator.
-- Full URLs are `https://niftyutilities.com/<path above>`.
-- No manual penalty exists; the "low value" warning was AdSense, not GSC.
-- Internal-linking + robots.txt `/content/` fixes are already deployed.
-
 ## New utility suggestions (added 2026-07-08)
 
 All of these run fully client-side, so they fit the site's "nothing leaves your
@@ -51,7 +7,7 @@ device" promise. Roughly ordered by expected search traffic within each group.
 Same build process as before: register in `generate-site.mjs`, unique long-form
 article per page, dedupe against the live sitemap.
 
-### Tier 1 — high-search interactive tests (same playbook as the IQ test)
+### COMPLETE - Tier 1 — high-search interactive tests (same playbook as the IQ test)
 
 The IQ test was added because tons of people search for it; these are the other
 evergreen self-test searches, and each is easy to do genuinely well in a browser:
@@ -71,9 +27,18 @@ evergreen self-test searches, and each is easy to do genuinely well in a browser
 6. **Love calculator / name compatibility** — pure fun, big search volume,
    zodiac-compatibility sibling; reuse the quiz result-card components.
 
-### Tier 2 — in-browser file conversion (explicitly wanted: "any conversion we can do in the browser")
+### COMPLETE - Tier 2 — in-browser file conversion (explicitly wanted: "any conversion we can do in the browser")
 
-Suggest a new **Convert** category so these cross-link each other:
+Shipped 2026-07-10 as the new **Convert Files** category (12 tools, `assets/convert.js`,
+one article fragment each). Notes: image converter/compressor/resizer handle HEIC via
+heic2any; PDF tools use pdf-lib + pdf.js; DOCX via mammoth; MP3 via @breezystack/lamejs
+(`dist/lamejs.iife.js` — the upstream lamejs npm build is broken); CSV→Excel via SheetJS.
+Item 7 shipped as "PDF & Word Text Extractor" (word counts included); item 11 shipped
+without video→GIF (deferred, as suggested). Also added the curated cross-category
+"Pairs well with this tool" related-links system and collapsed the navbar into a single
+Categories dropdown while landing this batch.
+
+Original list, for reference:
 
 1. **Image format converter** (HEIC/PNG/JPG/WebP/AVIF → PNG/JPG/WebP) —
    canvas handles PNG/JPG/WebP natively; HEIC needs `heic2any` (wasm, CDN).

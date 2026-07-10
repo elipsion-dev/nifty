@@ -1241,9 +1241,7 @@ const heroHtml = (meta) => {
   const hero = meta && meta.hero;
   if (!hero) return "";
   const position = meta.heroPosition === "bottom" ? " tool-hero-bottom" : " tool-hero-top";
-  if (hero.type === "emoji" && hero.value) {
-    return `<div class="tool-hero tool-hero-emoji${position}" aria-hidden="true"><span>${hero.value}</span></div>`;
-  }
+  // Emoji heroes retired 2026-07: platform-rendered emoji looked low-quality at banner size.
   if (hero.type === "svg" && heroSvgs[hero.id]) {
     return `<div class="tool-hero tool-hero-svg${position}" aria-hidden="true">${heroSvgs[hero.id]}</div>`;
   }
@@ -1298,6 +1296,25 @@ const categories = [
       ["spreadsheet-error-finder", "Spreadsheet Error Finder", "Scan CSV data for blanks, inconsistent widths, and suspicious values."],
       ["delimiter-converter", "Delimiter Converter", "Convert comma, tab, semicolon, or pipe-delimited data."],
       ["json-csv-converter", "JSON ↔ CSV Converter", "Convert arrays of JSON objects to CSV and CSV back to JSON."]
+    ]
+  },
+  {
+    slug: "convert",
+    name: "Convert Files",
+    description: "Convert images, PDFs, audio, and documents right in your browser — no uploads, no watermarks, no sign-up.",
+    tools: [
+      ["image-format-converter", "Image Format Converter", "Convert HEIC, PNG, JPG, WebP, and AVIF photos to PNG, JPG, or WebP."],
+      ["image-compressor", "Image Compressor", "Shrink JPG, PNG, and WebP file sizes with a quality slider and a live before-and-after comparison."],
+      ["image-resizer", "Image Resizer", "Resize images to exact pixels, a percentage, or common social-media sizes."],
+      ["images-to-pdf", "Images to PDF Converter", "Combine JPG, PNG, and WebP images into one PDF with selectable page size."],
+      ["pdf-merge-split", "PDF Merger & Splitter", "Merge PDFs into one file, or pull out the pages you need from a single PDF."],
+      ["pdf-to-images", "PDF to Image Converter", "Render every page of a PDF as a downloadable PNG or JPG image."],
+      ["pdf-word-text-extractor", "PDF & Word Text Extractor", "Pull clean text out of PDF and DOCX files with instant word and character counts."],
+      ["markdown-html-converter", "Markdown to HTML Converter", "Convert Markdown to clean HTML with a live preview, or turn HTML back into Markdown."],
+      ["svg-to-png-converter", "SVG to PNG Converter", "Rasterize an SVG to PNG at any size, or generate a full favicon size set."],
+      ["exif-viewer-remover", "EXIF Viewer & Remover", "See the hidden metadata in a photo — including GPS location — and download a clean copy."],
+      ["audio-converter", "Audio Converter & Trimmer", "Convert audio files to MP3 or WAV and trim the start and end."],
+      ["csv-to-excel-converter", "CSV to Excel Converter", "Turn one or more CSV files into a downloadable Excel workbook."]
     ]
   },
   {
@@ -1458,7 +1475,13 @@ const header = (prefix = "") => `
     </a>
     <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
     <nav id="site-nav" class="site-nav" aria-label="Main navigation">
-      ${categories.map((category) => `<a href="${prefix}${category.slug}/index.html">${escapeHtml(category.name.replace(" / CSV", "").replace(" / Data", ""))}</a>`).join("")}
+      <div class="nav-dropdown">
+        <button class="nav-drop-button" type="button" aria-expanded="false" aria-controls="nav-categories" aria-haspopup="true">Categories<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div id="nav-categories" class="nav-drop-menu">
+          <a href="${prefix}index.html">All tools</a>
+          ${categories.map((category) => `<a href="${prefix}${category.slug}/index.html">${escapeHtml(category.name.replace(" / CSV", "").replace(" / Data", ""))}</a>`).join("\n          ")}
+        </div>
+      </div>
     </nav>
   </header>`;
 
@@ -1571,15 +1594,87 @@ const toolCards = (tools, prefix = "../") => tools.map(([slug, name, description
 // Quizzes highlighted on every individual tool page for internal backlinking.
 const FEATURED_QUIZ_SLUGS = ["iq-test", "typing-speed-test", "reaction-time-test", "love-calculator"];
 
+const toolBySlug = new Map(allTools.map((tool) => [tool.slug, tool]));
+
+// Curated cross-category "related tools" pairs. Same-category siblings already get a
+// full link mesh, so only list genuinely related tools that live in a DIFFERENT
+// category. Links are made symmetric at build time (list a pair once, both pages get
+// it) and capped per page. Unknown slugs fail the build so typos can't ship.
+const crossLinks = {
+  "image-format-converter": ["image-dimensions-inspector", "duplicate-photo-detector"],
+  "image-compressor": ["image-dimensions-inspector"],
+  "image-resizer": ["image-dimensions-inspector", "screenshot-measurement-calculator"],
+  "images-to-pdf": ["printable-receipt-generator", "receipt-warranty-tracker"],
+  "pdf-merge-split": ["printable-receipt-generator"],
+  "pdf-to-images": ["screenshot-table-extractor", "screenshot-to-csv"],
+  "pdf-word-text-extractor": ["screenshot-to-csv", "screenshot-table-extractor"],
+  "markdown-html-converter": ["json-csv-converter", "csv-formula-generator"],
+  "svg-to-png-converter": ["qr-batch-generator", "barcode-generator", "image-dimensions-inspector"],
+  "exif-viewer-remover": ["duplicate-photo-detector", "image-dimensions-inspector", "filename-cleaner"],
+  "audio-converter": ["bulk-file-renamer", "filename-cleaner"],
+  "csv-to-excel-converter": ["excel-to-csv-cleaner", "json-csv-converter", "delimiter-converter", "bank-statement-cleaner"],
+  "personal-spending-categorizer": ["csv-to-excel-converter"],
+  "credit-card-statement-analyzer": ["csv-to-excel-converter"],
+  "bank-statement-cleaner": ["excel-to-csv-cleaner", "remove-duplicate-rows"],
+  "csv-bank-format-converter": ["column-mapper", "delimiter-converter"],
+  "duplicate-transaction-finder": ["remove-duplicate-rows", "compare-two-csvs"],
+  "net-worth-tracker": ["estate-inventory-worksheet", "rmd-calculator"],
+  "social-security-claiming-age-calculator": ["net-worth-tracker"],
+  "mileage-log-generator": ["real-cost-of-owning-a-car"],
+  "bill-of-sale-generator": ["vin-decoder"],
+  "home-inventory-generator": ["home-maintenance-budget-calculator", "moving-cost-estimator"],
+  "rent-receipt-generator": ["rent-vs-buy-calculator"],
+  "real-cost-of-owning-a-rental-property": ["rent-receipt-generator"],
+  "invoice-number-generator": ["service-pricing-calculator", "hourly-rate-calculator"],
+  "equipment-inventory-generator": ["job-cost-calculator"],
+  "affidavit-generator": ["small-claims-deadline-calculator"],
+  "receipt-warranty-tracker": ["printable-receipt-generator"],
+  "vin-decoder": ["real-cost-of-owning-a-car", "lease-vs-buy-calculator"]
+};
+
+const relatedBySlug = new Map();
+const addRelated = (from, to) => {
+  if (from === to) return;
+  if (!relatedBySlug.has(from)) relatedBySlug.set(from, new Set());
+  relatedBySlug.get(from).add(to);
+};
+for (const [slug, targets] of Object.entries(crossLinks)) {
+  if (!toolBySlug.has(slug)) throw new Error(`crossLinks key "${slug}" is not a registered tool`);
+  for (const target of targets) {
+    if (!toolBySlug.has(target)) throw new Error(`crossLinks target "${target}" (under "${slug}") is not a registered tool`);
+    addRelated(slug, target);
+    addRelated(target, slug);
+  }
+}
+
 // "More tools" block injected into each individual tool page (never hub pages).
-// Lists every same-category sibling as a compact link (full internal mesh) plus a
-// highlighted set of quizzes. Never self-links; skips quizzes already shown as siblings.
+// Lists every same-category sibling as a compact link (full internal mesh), curated
+// cross-category related tools as badged cards, plus a highlighted set of quizzes.
+// Never self-links; skips anything already shown higher in the section.
 const relatedToolsSection = (category, currentSlug) => {
   const cleanCat = category.name.replace(" / CSV", "").replace(" / Data", "");
   const siblings = category.tools.filter(([slug]) => slug !== currentSlug);
   const shown = new Set(siblings.map(([slug]) => slug));
   const siblingLinks = siblings
     .map(([slug, name]) => `<a class="related-link" href="${slug}.html">${escapeHtml(name)}</a>`)
+    .join("");
+
+  const crossCards = [...(relatedBySlug.get(currentSlug) || [])]
+    .filter((slug) => !shown.has(slug))
+    .slice(0, 4)
+    .map((slug) => {
+      const tool = toolBySlug.get(slug);
+      shown.add(slug);
+      const href = tool.category === category.slug ? `${slug}.html` : `../${tool.category}/${slug}.html`;
+      const badge = tool.categoryName.replace(" / CSV", "").replace(" / Data", "");
+      return `
+                  <a class="tool-card tool-card-related" href="${href}">
+                    <span class="tool-badge tool-badge-related">${escapeHtml(badge)}</span>
+                    <span class="tool-arrow" aria-hidden="true">↗</span>
+                    <h3>${escapeHtml(tool.name)}</h3>
+                    <p>${escapeHtml(tool.description)}</p>
+                  </a>`;
+    })
     .join("");
 
   const quizTools = categories.find((c) => c.slug === "quizzes").tools;
@@ -1597,11 +1692,13 @@ const relatedToolsSection = (category, currentSlug) => {
                   </a>`)
     .join("");
 
-  if (!siblingLinks && !featuredCards) return "";
+  if (!siblingLinks && !crossCards && !featuredCards) return "";
   return `
               <section class="related-tools" aria-label="More tools you might like">
                 ${siblingLinks ? `<h2>Try these other ${escapeHtml(cleanCat)} tools</h2>
                 <div class="related-links">${siblingLinks}</div>` : ""}
+                ${crossCards ? `<h2>Pairs well with this tool</h2>
+                <div class="tool-grid related-quizzes">${crossCards}</div>` : ""}
                 ${featuredCards ? `<h2>Popular quizzes</h2>
                 <div class="tool-grid related-quizzes">${featuredCards}</div>` : ""}
               </section>`;
@@ -1625,38 +1722,6 @@ const homeBody = `
         <div id="search-results" class="search-results" hidden></div>
       </div>
     </div>
-    <aside class="hero-panel" aria-label="Local processing summary">
-      <div class="hero-panel-header">
-        <div>
-          <strong>Everything stays on your device</strong>
-          <span>Tools run in your browser — nothing gets uploaded</span>
-        </div>
-        <div class="status-light" aria-hidden="true"></div>
-      </div>
-      <div class="hero-panel-graphic" aria-hidden="true">
-        <div class="hero-workbench">
-          <div class="hero-workbench-row">
-            <div class="hero-stat"><span>Tools</span><strong>${allTools.length} utilities</strong></div>
-            <div class="hero-stat"><span>Scope</span><strong>${categories.length} categories</strong></div>
-          </div>
-          <div class="hero-meter">
-            <svg viewBox="0 0 64 64" role="img" aria-hidden="true" focusable="false">
-              <rect x="10" y="10" width="44" height="44" rx="12" fill="none" stroke="currentColor" stroke-width="2"></rect>
-              <path d="M20 34h24M20 26h10M20 42h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
-              <path d="M38 21l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-            <div class="meter-copy">
-              <strong>0 uploads required</strong>
-              <p>Files, entries, and calculations stay in the browser while you work.</p>
-            </div>
-          </div>
-          <div class="hero-workbench-row">
-            <div class="hero-chip"><span>Best for</span><strong>CSV cleanup, cost checks, forms, quizzes</strong></div>
-            <div class="hero-chip"><span>Search</span><strong>Tool names, tasks, and categories</strong></div>
-          </div>
-        </div>
-      </div>
-    </aside>
   </section>
   ${adWide}
   <section class="proof-strip" aria-label="Site trust points">
@@ -1853,15 +1918,15 @@ for (const category of categories) {
       ],
       body: `
         <main id="main">
+          <section class="category-hero tool-hero-band${layoutClass}"${accentStyle}>
+            <p class="breadcrumbs"><a href="../index.html">All tools</a><span>/</span><a href="index.html">${escapeHtml(category.name)}</a></p>
+            <p class="eyebrow">${escapeHtml(category.name)}</p>
+            <h1>${escapeHtml(name)}</h1>
+            <p>${escapeHtml(description)}</p>
+            <div class="local-badge"><span class="status-light"></span>No data sent or stored</div>
+          </section>
           <div class="tool-layout">
             <article class="tool-page${layoutClass}"${accentStyle}>
-              <p class="breadcrumbs"><a href="../index.html">All tools</a><span>/</span><a href="index.html">${escapeHtml(category.name)}</a></p>
-              <header class="tool-title">
-                <p class="eyebrow">${escapeHtml(category.name)}</p>
-                <h1>${escapeHtml(name)}</h1>
-                <p>${escapeHtml(description)}</p>
-                <div class="local-badge"><span class="status-light"></span>No data sent or stored</div>
-              </header>
               ${heroTop}
               ${introHtml}
               <section id="tool-root" class="tool-workspace" data-tool="${slug}">
@@ -1883,7 +1948,6 @@ for (const category of categories) {
             </article>
             <aside class="tool-sidebar">
               ${adTall}
-              <div class="sidebar-card"><strong>Nothing is sent to us</strong><p>This static site has no server endpoint or database capable of receiving your files or entries.</p></div>
             </aside>
           </div>
         </main>`,

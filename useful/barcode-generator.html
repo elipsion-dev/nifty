@@ -34,7 +34,7 @@
   <link rel="mask-icon" href="../assets/icons/safari-pinned-tab.svg" color="#2dd4bf">
   <link rel="manifest" href="../site.webmanifest">
   <link rel="stylesheet" href="../assets/styles.css">
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://niftyutilities.com/#organization","name":"Nifty Utilities","url":"https://niftyutilities.com/","logo":{"@type":"ImageObject","url":"https://niftyutilities.com/assets/icons/icon-512x512.png","width":512,"height":512}},{"@type":"WebSite","@id":"https://niftyutilities.com/#website","name":"Nifty Utilities","url":"https://niftyutilities.com/","description":"Free browser-based tools for finance, CSV files, documents, home decisions, business math, images, and everyday tasks.","publisher":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://niftyutilities.com/useful/barcode-generator.html#webpage","url":"https://niftyutilities.com/useful/barcode-generator.html","name":"Free Barcode Generator","description":"Free online barcode generator. Generate a printable CODE128 barcode in the browser. No sign-up; processing stays in your browser.","isPartOf":{"@id":"https://niftyutilities.com/#website"},"about":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US","dateModified":"2026-07-09"},{"@type":"WebApplication","@id":"https://niftyutilities.com/useful/barcode-generator.html#application","name":"Barcode Generator","description":"Generate a printable CODE128 barcode in the browser.","url":"https://niftyutilities.com/useful/barcode-generator.html","applicationCategory":"Weirdly Useful","operatingSystem":"Any","browserRequirements":"Requires a modern web browser with JavaScript enabled.","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://niftyutilities.com/#organization"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://niftyutilities.com/"},{"@type":"ListItem","position":2,"name":"Weirdly Useful","item":"https://niftyutilities.com/useful/"},{"@type":"ListItem","position":3,"name":"Barcode Generator","item":"https://niftyutilities.com/useful/barcode-generator.html"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://niftyutilities.com/#organization","name":"Nifty Utilities","url":"https://niftyutilities.com/","logo":{"@type":"ImageObject","url":"https://niftyutilities.com/assets/icons/icon-512x512.png","width":512,"height":512}},{"@type":"WebSite","@id":"https://niftyutilities.com/#website","name":"Nifty Utilities","url":"https://niftyutilities.com/","description":"Free browser-based tools for finance, CSV files, documents, home decisions, business math, images, and everyday tasks.","publisher":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://niftyutilities.com/useful/barcode-generator.html#webpage","url":"https://niftyutilities.com/useful/barcode-generator.html","name":"Free Barcode Generator","description":"Free online barcode generator. Generate a printable CODE128 barcode in the browser. No sign-up; processing stays in your browser.","isPartOf":{"@id":"https://niftyutilities.com/#website"},"about":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US","dateModified":"2026-07-10"},{"@type":"WebApplication","@id":"https://niftyutilities.com/useful/barcode-generator.html#application","name":"Barcode Generator","description":"Generate a printable CODE128 barcode in the browser.","url":"https://niftyutilities.com/useful/barcode-generator.html","applicationCategory":"Weirdly Useful","operatingSystem":"Any","browserRequirements":"Requires a modern web browser with JavaScript enabled.","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://niftyutilities.com/#organization"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://niftyutilities.com/"},{"@type":"ListItem","position":2,"name":"Weirdly Useful","item":"https://niftyutilities.com/useful/"},{"@type":"ListItem","position":3,"name":"Barcode Generator","item":"https://niftyutilities.com/useful/barcode-generator.html"}]}]}</script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -63,21 +63,35 @@
     </a>
     <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
     <nav id="site-nav" class="site-nav" aria-label="Main navigation">
-      <a href="../finance/index.html">Finance</a><a href="../spreadsheet/index.html">Spreadsheet</a><a href="../documents/index.html">Documents</a><a href="../homeowner/index.html">Homeowner / Life</a><a href="../business/index.html">Business</a><a href="../government/index.html">Government &amp; Deadlines</a><a href="../useful/index.html">Weirdly Useful</a><a href="../quizzes/index.html">Quizzes &amp; Tests</a>
+      <div class="nav-dropdown">
+        <button class="nav-drop-button" type="button" aria-expanded="false" aria-controls="nav-categories" aria-haspopup="true">Categories<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div id="nav-categories" class="nav-drop-menu">
+          <a href="../index.html">All tools</a>
+          <a href="../finance/index.html">Finance</a>
+          <a href="../spreadsheet/index.html">Spreadsheet</a>
+          <a href="../convert/index.html">Convert Files</a>
+          <a href="../documents/index.html">Documents</a>
+          <a href="../homeowner/index.html">Homeowner / Life</a>
+          <a href="../business/index.html">Business</a>
+          <a href="../government/index.html">Government &amp; Deadlines</a>
+          <a href="../useful/index.html">Weirdly Useful</a>
+          <a href="../quizzes/index.html">Quizzes &amp; Tests</a>
+        </div>
+      </div>
     </nav>
   </header>
     
         <main id="main">
+          <section class="category-hero tool-hero-band" style="--tool-accent:#f0a830">
+            <p class="breadcrumbs"><a href="../index.html">All tools</a><span>/</span><a href="index.html">Weirdly Useful</a></p>
+            <p class="eyebrow">Weirdly Useful</p>
+            <h1>Barcode Generator</h1>
+            <p>Generate a printable CODE128 barcode in the browser.</p>
+            <div class="local-badge"><span class="status-light"></span>No data sent or stored</div>
+          </section>
           <div class="tool-layout">
             <article class="tool-page" style="--tool-accent:#f0a830">
-              <p class="breadcrumbs"><a href="../index.html">All tools</a><span>/</span><a href="index.html">Weirdly Useful</a></p>
-              <header class="tool-title">
-                <p class="eyebrow">Weirdly Useful</p>
-                <h1>Barcode Generator</h1>
-                <p>Generate a printable CODE128 barcode in the browser.</p>
-                <div class="local-badge"><span class="status-light"></span>No data sent or stored</div>
-              </header>
-              <div class="tool-hero tool-hero-emoji tool-hero-top" aria-hidden="true"><span>🏷️</span></div>
+              
               <section class="tool-intro"><p>Sometimes you just need a scannable barcode for something that lives inside your own world — a shelf location, an asset tag, an order number, a box of inventory. You do not need a retail product code registered with a global authority; you need a label your own scanner will read.</p>
 
 <p>This tool generates a CODE128 barcode from any text or number and gives you a crisp SVG you can drop straight into a label, document, or design file.</p>
@@ -91,6 +105,14 @@
               <section class="related-tools" aria-label="More tools you might like">
                 <h2>Try these other Weirdly Useful tools</h2>
                 <div class="related-links"><a class="related-link" href="screenshot-measurement-calculator.html">Screenshot Measurement Calculator</a><a class="related-link" href="receipt-warranty-tracker.html">Receipt Scanner &amp; Warranty Tracker</a><a class="related-link" href="screenshot-to-csv.html">Screenshot to CSV</a><a class="related-link" href="screenshot-table-extractor.html">Screenshot Table Extractor</a><a class="related-link" href="image-dimensions-inspector.html">Image Dimensions Inspector</a><a class="related-link" href="bulk-file-renamer.html">Bulk File Renamer</a><a class="related-link" href="filename-cleaner.html">Filename Cleaner</a><a class="related-link" href="duplicate-photo-detector.html">Duplicate Photo Detector</a><a class="related-link" href="qr-batch-generator.html">QR Batch Generator</a><a class="related-link" href="upc-validator.html">UPC Validator</a><a class="related-link" href="vin-decoder.html">VIN Decoder</a></div>
+                <h2>Pairs well with this tool</h2>
+                <div class="tool-grid related-quizzes">
+                  <a class="tool-card tool-card-related" href="../convert/svg-to-png-converter.html">
+                    <span class="tool-badge tool-badge-related">Convert Files</span>
+                    <span class="tool-arrow" aria-hidden="true">↗</span>
+                    <h3>SVG to PNG Converter</h3>
+                    <p>Rasterize an SVG to PNG at any size, or generate a full favicon size set.</p>
+                  </a></div>
                 <h2>Popular quizzes</h2>
                 <div class="tool-grid related-quizzes">
                   <a class="tool-card tool-card-featured" href="../quizzes/iq-test.html">
@@ -177,7 +199,6 @@
             </article>
             <aside class="tool-sidebar">
               
-              <div class="sidebar-card"><strong>Nothing is sent to us</strong><p>This static site has no server endpoint or database capable of receiving your files or entries.</p></div>
             </aside>
           </div>
         </main>

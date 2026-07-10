@@ -7,6 +7,20 @@
     nav?.classList.toggle("open", !open);
   });
 
+  const dropdown = document.querySelector(".nav-dropdown");
+  const dropButton = document.querySelector(".nav-drop-button");
+  const setDropdown = (open) => {
+    dropdown?.classList.toggle("open", open);
+    dropButton?.setAttribute("aria-expanded", String(open));
+  };
+  dropButton?.addEventListener("click", () => setDropdown(!dropdown.classList.contains("open")));
+  document.addEventListener("click", (event) => {
+    if (dropdown?.classList.contains("open") && !dropdown.contains(event.target)) setDropdown(false);
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && dropdown?.classList.contains("open")) setDropdown(false);
+  });
+
   const input = document.querySelector("#tool-search");
   const results = document.querySelector("#search-results");
   const categories = document.querySelector("#category-list");

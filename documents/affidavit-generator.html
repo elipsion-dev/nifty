@@ -34,7 +34,7 @@
   <link rel="mask-icon" href="../assets/icons/safari-pinned-tab.svg" color="#2dd4bf">
   <link rel="manifest" href="../site.webmanifest">
   <link rel="stylesheet" href="../assets/styles.css">
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://niftyutilities.com/#organization","name":"Nifty Utilities","url":"https://niftyutilities.com/","logo":{"@type":"ImageObject","url":"https://niftyutilities.com/assets/icons/icon-512x512.png","width":512,"height":512}},{"@type":"WebSite","@id":"https://niftyutilities.com/#website","name":"Nifty Utilities","url":"https://niftyutilities.com/","description":"Free browser-based tools for finance, CSV files, documents, home decisions, business math, images, and everyday tasks.","publisher":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://niftyutilities.com/documents/affidavit-generator.html#webpage","url":"https://niftyutilities.com/documents/affidavit-generator.html","name":"Free Affidavit Generator","description":"Free online affidavit generator. Draft a basic affidavit worksheet for review and notarization. No sign-up; processing stays in your browser.","isPartOf":{"@id":"https://niftyutilities.com/#website"},"about":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US","dateModified":"2026-07-09"},{"@type":"WebApplication","@id":"https://niftyutilities.com/documents/affidavit-generator.html#application","name":"Affidavit Generator","description":"Draft a basic affidavit worksheet for review and notarization.","url":"https://niftyutilities.com/documents/affidavit-generator.html","applicationCategory":"Documents","operatingSystem":"Any","browserRequirements":"Requires a modern web browser with JavaScript enabled.","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://niftyutilities.com/#organization"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://niftyutilities.com/"},{"@type":"ListItem","position":2,"name":"Documents","item":"https://niftyutilities.com/documents/"},{"@type":"ListItem","position":3,"name":"Affidavit Generator","item":"https://niftyutilities.com/documents/affidavit-generator.html"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://niftyutilities.com/#organization","name":"Nifty Utilities","url":"https://niftyutilities.com/","logo":{"@type":"ImageObject","url":"https://niftyutilities.com/assets/icons/icon-512x512.png","width":512,"height":512}},{"@type":"WebSite","@id":"https://niftyutilities.com/#website","name":"Nifty Utilities","url":"https://niftyutilities.com/","description":"Free browser-based tools for finance, CSV files, documents, home decisions, business math, images, and everyday tasks.","publisher":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://niftyutilities.com/documents/affidavit-generator.html#webpage","url":"https://niftyutilities.com/documents/affidavit-generator.html","name":"Free Affidavit Generator","description":"Free online affidavit generator. Draft a basic affidavit worksheet for review and notarization. No sign-up; processing stays in your browser.","isPartOf":{"@id":"https://niftyutilities.com/#website"},"about":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US","dateModified":"2026-07-10"},{"@type":"WebApplication","@id":"https://niftyutilities.com/documents/affidavit-generator.html#application","name":"Affidavit Generator","description":"Draft a basic affidavit worksheet for review and notarization.","url":"https://niftyutilities.com/documents/affidavit-generator.html","applicationCategory":"Documents","operatingSystem":"Any","browserRequirements":"Requires a modern web browser with JavaScript enabled.","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://niftyutilities.com/#organization"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://niftyutilities.com/"},{"@type":"ListItem","position":2,"name":"Documents","item":"https://niftyutilities.com/documents/"},{"@type":"ListItem","position":3,"name":"Affidavit Generator","item":"https://niftyutilities.com/documents/affidavit-generator.html"}]}]}</script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -63,21 +63,35 @@
     </a>
     <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
     <nav id="site-nav" class="site-nav" aria-label="Main navigation">
-      <a href="../finance/index.html">Finance</a><a href="../spreadsheet/index.html">Spreadsheet</a><a href="../documents/index.html">Documents</a><a href="../homeowner/index.html">Homeowner / Life</a><a href="../business/index.html">Business</a><a href="../government/index.html">Government &amp; Deadlines</a><a href="../useful/index.html">Weirdly Useful</a><a href="../quizzes/index.html">Quizzes &amp; Tests</a>
+      <div class="nav-dropdown">
+        <button class="nav-drop-button" type="button" aria-expanded="false" aria-controls="nav-categories" aria-haspopup="true">Categories<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div id="nav-categories" class="nav-drop-menu">
+          <a href="../index.html">All tools</a>
+          <a href="../finance/index.html">Finance</a>
+          <a href="../spreadsheet/index.html">Spreadsheet</a>
+          <a href="../convert/index.html">Convert Files</a>
+          <a href="../documents/index.html">Documents</a>
+          <a href="../homeowner/index.html">Homeowner / Life</a>
+          <a href="../business/index.html">Business</a>
+          <a href="../government/index.html">Government &amp; Deadlines</a>
+          <a href="../useful/index.html">Weirdly Useful</a>
+          <a href="../quizzes/index.html">Quizzes &amp; Tests</a>
+        </div>
+      </div>
     </nav>
   </header>
     
         <main id="main">
+          <section class="category-hero tool-hero-band" style="--tool-accent:#6aa9ff">
+            <p class="breadcrumbs"><a href="../index.html">All tools</a><span>/</span><a href="index.html">Documents</a></p>
+            <p class="eyebrow">Documents</p>
+            <h1>Affidavit Generator</h1>
+            <p>Draft a basic affidavit worksheet for review and notarization.</p>
+            <div class="local-badge"><span class="status-light"></span>No data sent or stored</div>
+          </section>
           <div class="tool-layout">
             <article class="tool-page" style="--tool-accent:#6aa9ff">
-              <p class="breadcrumbs"><a href="../index.html">All tools</a><span>/</span><a href="index.html">Documents</a></p>
-              <header class="tool-title">
-                <p class="eyebrow">Documents</p>
-                <h1>Affidavit Generator</h1>
-                <p>Draft a basic affidavit worksheet for review and notarization.</p>
-                <div class="local-badge"><span class="status-light"></span>No data sent or stored</div>
-              </header>
-              <div class="tool-hero tool-hero-emoji tool-hero-top" aria-hidden="true"><span>✍️</span></div>
+              
               <section class="tool-intro"><p>An affidavit is testimony you give on paper instead of from a witness stand: a set of facts you swear are true, signed in front of someone authorized to put you under oath. Courts, agencies, and institutions accept them in place of live testimony precisely because that oath carries weight, and penalties.</p>
 <p>This worksheet helps you draft the statement cleanly so it is ready for review and notarization. Treat it as a starting draft, not legal advice.</p>
 </section>
@@ -89,6 +103,14 @@
               <section class="related-tools" aria-label="More tools you might like">
                 <h2>Try these other Documents tools</h2>
                 <div class="related-links"><a class="related-link" href="bill-of-sale-generator.html">Bill of Sale Generator</a><a class="related-link" href="rent-receipt-generator.html">Rent Receipt Generator</a><a class="related-link" href="mileage-log-generator.html">Mileage Log Generator</a><a class="related-link" href="equipment-inventory-generator.html">Equipment Inventory Generator</a><a class="related-link" href="invoice-number-generator.html">Invoice Number Generator</a><a class="related-link" href="business-asset-register.html">Business Asset Register</a><a class="related-link" href="home-inventory-generator.html">Home Inventory Generator</a><a class="related-link" href="estate-inventory-worksheet.html">Estate Inventory Worksheet</a><a class="related-link" href="printable-receipt-generator.html">Printable Receipt Generator</a></div>
+                <h2>Pairs well with this tool</h2>
+                <div class="tool-grid related-quizzes">
+                  <a class="tool-card tool-card-related" href="../government/small-claims-deadline-calculator.html">
+                    <span class="tool-badge tool-badge-related">Government &amp; Deadlines</span>
+                    <span class="tool-arrow" aria-hidden="true">↗</span>
+                    <h3>Small Claims Deadline Calculator</h3>
+                    <p>Apply a locally verified limitation period and personal safety margin to a claim date.</p>
+                  </a></div>
                 <h2>Popular quizzes</h2>
                 <div class="tool-grid related-quizzes">
                   <a class="tool-card tool-card-featured" href="../quizzes/iq-test.html">
@@ -165,7 +187,6 @@
             </article>
             <aside class="tool-sidebar">
               
-              <div class="sidebar-card"><strong>Nothing is sent to us</strong><p>This static site has no server endpoint or database capable of receiving your files or entries.</p></div>
             </aside>
           </div>
         </main>

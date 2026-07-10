@@ -34,7 +34,7 @@
   <link rel="mask-icon" href="../assets/icons/safari-pinned-tab.svg" color="#2dd4bf">
   <link rel="manifest" href="../site.webmanifest">
   <link rel="stylesheet" href="../assets/styles.css">
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://niftyutilities.com/#organization","name":"Nifty Utilities","url":"https://niftyutilities.com/","logo":{"@type":"ImageObject","url":"https://niftyutilities.com/assets/icons/icon-512x512.png","width":512,"height":512}},{"@type":"WebSite","@id":"https://niftyutilities.com/#website","name":"Nifty Utilities","url":"https://niftyutilities.com/","description":"Free browser-based tools for finance, CSV files, documents, home decisions, business math, images, and everyday tasks.","publisher":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://niftyutilities.com/quizzes/love-calculator.html#webpage","url":"https://niftyutilities.com/quizzes/love-calculator.html","name":"Free Love Calculator","description":"Completely FREE Love Calculator. No signup, no email, no credit card. Instant results, no catch. Enter two names and get a deterministic love-compatibility score based on the letters — same pair always gives the same result.","isPartOf":{"@id":"https://niftyutilities.com/#website"},"about":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US","dateModified":"2026-07-09"},{"@type":"WebApplication","@id":"https://niftyutilities.com/quizzes/love-calculator.html#application","name":"Love Calculator","description":"Enter two names for an instant, just-for-fun compatibility score — the same pair always gives the same result.","url":"https://niftyutilities.com/quizzes/love-calculator.html","applicationCategory":"Quizzes & Tests","operatingSystem":"Any","browserRequirements":"Requires a modern web browser with JavaScript enabled.","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://niftyutilities.com/#organization"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://niftyutilities.com/"},{"@type":"ListItem","position":2,"name":"Quizzes & Tests","item":"https://niftyutilities.com/quizzes/"},{"@type":"ListItem","position":3,"name":"Love Calculator","item":"https://niftyutilities.com/quizzes/love-calculator.html"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://niftyutilities.com/#organization","name":"Nifty Utilities","url":"https://niftyutilities.com/","logo":{"@type":"ImageObject","url":"https://niftyutilities.com/assets/icons/icon-512x512.png","width":512,"height":512}},{"@type":"WebSite","@id":"https://niftyutilities.com/#website","name":"Nifty Utilities","url":"https://niftyutilities.com/","description":"Free browser-based tools for finance, CSV files, documents, home decisions, business math, images, and everyday tasks.","publisher":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://niftyutilities.com/quizzes/love-calculator.html#webpage","url":"https://niftyutilities.com/quizzes/love-calculator.html","name":"Free Love Calculator","description":"Completely FREE Love Calculator. No signup, no email, no credit card. Instant results, no catch. Enter two names and get a deterministic love-compatibility score based on the letters — same pair always gives the same result.","isPartOf":{"@id":"https://niftyutilities.com/#website"},"about":{"@id":"https://niftyutilities.com/#organization"},"inLanguage":"en-US","dateModified":"2026-07-10"},{"@type":"WebApplication","@id":"https://niftyutilities.com/quizzes/love-calculator.html#application","name":"Love Calculator","description":"Enter two names for an instant, just-for-fun compatibility score — the same pair always gives the same result.","url":"https://niftyutilities.com/quizzes/love-calculator.html","applicationCategory":"Quizzes & Tests","operatingSystem":"Any","browserRequirements":"Requires a modern web browser with JavaScript enabled.","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://niftyutilities.com/#organization"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://niftyutilities.com/"},{"@type":"ListItem","position":2,"name":"Quizzes & Tests","item":"https://niftyutilities.com/quizzes/"},{"@type":"ListItem","position":3,"name":"Love Calculator","item":"https://niftyutilities.com/quizzes/love-calculator.html"}]}]}</script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -63,21 +63,35 @@
     </a>
     <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
     <nav id="site-nav" class="site-nav" aria-label="Main navigation">
-      <a href="../finance/index.html">Finance</a><a href="../spreadsheet/index.html">Spreadsheet</a><a href="../documents/index.html">Documents</a><a href="../homeowner/index.html">Homeowner / Life</a><a href="../business/index.html">Business</a><a href="../government/index.html">Government &amp; Deadlines</a><a href="../useful/index.html">Weirdly Useful</a><a href="../quizzes/index.html">Quizzes &amp; Tests</a>
+      <div class="nav-dropdown">
+        <button class="nav-drop-button" type="button" aria-expanded="false" aria-controls="nav-categories" aria-haspopup="true">Categories<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div id="nav-categories" class="nav-drop-menu">
+          <a href="../index.html">All tools</a>
+          <a href="../finance/index.html">Finance</a>
+          <a href="../spreadsheet/index.html">Spreadsheet</a>
+          <a href="../convert/index.html">Convert Files</a>
+          <a href="../documents/index.html">Documents</a>
+          <a href="../homeowner/index.html">Homeowner / Life</a>
+          <a href="../business/index.html">Business</a>
+          <a href="../government/index.html">Government &amp; Deadlines</a>
+          <a href="../useful/index.html">Weirdly Useful</a>
+          <a href="../quizzes/index.html">Quizzes &amp; Tests</a>
+        </div>
+      </div>
     </nav>
   </header>
     
         <main id="main">
+          <section class="category-hero tool-hero-band layout-feature" style="--tool-accent:#f43f5e">
+            <p class="breadcrumbs"><a href="../index.html">All tools</a><span>/</span><a href="index.html">Quizzes &amp; Tests</a></p>
+            <p class="eyebrow">Quizzes &amp; Tests</p>
+            <h1>Love Calculator</h1>
+            <p>Enter two names for an instant, just-for-fun compatibility score — the same pair always gives the same result.</p>
+            <div class="local-badge"><span class="status-light"></span>No data sent or stored</div>
+          </section>
           <div class="tool-layout">
             <article class="tool-page layout-feature" style="--tool-accent:#f43f5e">
-              <p class="breadcrumbs"><a href="../index.html">All tools</a><span>/</span><a href="index.html">Quizzes &amp; Tests</a></p>
-              <header class="tool-title">
-                <p class="eyebrow">Quizzes &amp; Tests</p>
-                <h1>Love Calculator</h1>
-                <p>Enter two names for an instant, just-for-fun compatibility score — the same pair always gives the same result.</p>
-                <div class="local-badge"><span class="status-light"></span>No data sent or stored</div>
-              </header>
-              <div class="tool-hero tool-hero-emoji tool-hero-top" aria-hidden="true"><span>💘</span></div>
+              
               <section class="tool-intro"><p><strong>Completely FREE Love Calculator. No signup, no email, no credit card. Instant results, no catch.</strong> Type two names and get an instant love-compatibility score worked out from the letters — no birthdays, no personal data, nothing sent anywhere. Same pair of names always gives the same result.</p>
 <p>The score breaks down into four playful factors — shared letters, name-length harmony, vowel balance, and rhythm resonance — shown as animated bars so you can see exactly where the points came from. It runs entirely in your browser and disappears the moment you refresh.</p>
 </section>
@@ -89,6 +103,7 @@
               <section class="related-tools" aria-label="More tools you might like">
                 <h2>Try these other Quizzes &amp; Tests tools</h2>
                 <div class="related-links"><a class="related-link" href="iq-test.html">IQ Test</a><a class="related-link" href="typing-speed-test.html">Typing Speed Test</a><a class="related-link" href="reaction-time-test.html">Reaction Time Test</a><a class="related-link" href="click-speed-test.html">Click Speed Test</a><a class="related-link" href="memory-test.html">Memory Test</a><a class="related-link" href="color-blindness-test.html">Color Blindness Test</a><a class="related-link" href="personality-type-test.html">Personality Type Test</a><a class="related-link" href="zodiac-compatibility.html">Zodiac Compatibility</a></div>
+                
                 
               </section>
               <section class="tool-help">
@@ -127,7 +142,6 @@
             </article>
             <aside class="tool-sidebar">
               
-              <div class="sidebar-card"><strong>Nothing is sent to us</strong><p>This static site has no server endpoint or database capable of receiving your files or entries.</p></div>
             </aside>
           </div>
         </main>

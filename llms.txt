@@ -42,6 +42,23 @@ Repair, reshape, compare, and convert everyday data files.
 - [Delimiter Converter](https://niftyutilities.com/spreadsheet/delimiter-converter.html): Convert comma, tab, semicolon, or pipe-delimited data.
 - [JSON ↔ CSV Converter](https://niftyutilities.com/spreadsheet/json-csv-converter.html): Convert arrays of JSON objects to CSV and CSV back to JSON.
 
+## Convert Files
+
+Convert images, PDFs, audio, and documents right in your browser — no uploads, no watermarks, no sign-up.
+
+- [Image Format Converter](https://niftyutilities.com/convert/image-format-converter.html): Convert HEIC, PNG, JPG, WebP, and AVIF photos to PNG, JPG, or WebP.
+- [Image Compressor](https://niftyutilities.com/convert/image-compressor.html): Shrink JPG, PNG, and WebP file sizes with a quality slider and a live before-and-after comparison.
+- [Image Resizer](https://niftyutilities.com/convert/image-resizer.html): Resize images to exact pixels, a percentage, or common social-media sizes.
+- [Images to PDF Converter](https://niftyutilities.com/convert/images-to-pdf.html): Combine JPG, PNG, and WebP images into one PDF with selectable page size.
+- [PDF Merger & Splitter](https://niftyutilities.com/convert/pdf-merge-split.html): Merge PDFs into one file, or pull out the pages you need from a single PDF.
+- [PDF to Image Converter](https://niftyutilities.com/convert/pdf-to-images.html): Render every page of a PDF as a downloadable PNG or JPG image.
+- [PDF & Word Text Extractor](https://niftyutilities.com/convert/pdf-word-text-extractor.html): Pull clean text out of PDF and DOCX files with instant word and character counts.
+- [Markdown to HTML Converter](https://niftyutilities.com/convert/markdown-html-converter.html): Convert Markdown to clean HTML with a live preview, or turn HTML back into Markdown.
+- [SVG to PNG Converter](https://niftyutilities.com/convert/svg-to-png-converter.html): Rasterize an SVG to PNG at any size, or generate a full favicon size set.
+- [EXIF Viewer & Remover](https://niftyutilities.com/convert/exif-viewer-remover.html): See the hidden metadata in a photo — including GPS location — and download a clean copy.
+- [Audio Converter & Trimmer](https://niftyutilities.com/convert/audio-converter.html): Convert audio files to MP3 or WAV and trim the start and end.
+- [CSV to Excel Converter](https://niftyutilities.com/convert/csv-to-excel-converter.html): Turn one or more CSV files into a downloadable Excel workbook.
+
 ## Documents
 
 Create practical records and printable forms from straightforward inputs.
