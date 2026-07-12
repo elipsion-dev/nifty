@@ -59,6 +59,21 @@ Convert images, PDFs, audio, and documents right in your browser — no uploads,
 - [Audio Converter & Trimmer](https://niftyutilities.com/convert/audio-converter.html): Convert audio files to MP3 or WAV and trim the start and end.
 - [CSV to Excel Converter](https://niftyutilities.com/convert/csv-to-excel-converter.html): Turn one or more CSV files into a downloadable Excel workbook.
 
+## Everyday Calculators
+
+Fast, free calculators for dates, money, health, and school — instant answers, no sign-up.
+
+- [Percentage Calculator](https://niftyutilities.com/calculators/percentage-calculator.html): Work out X% of Y, what percent one number is of another, and percent change.
+- [Age Calculator](https://niftyutilities.com/calculators/age-calculator.html): Find an exact age in years, months, and days, plus weeks, days, and the next birthday.
+- [Date Calculator](https://niftyutilities.com/calculators/date-calculator.html): Count days between dates, add or subtract time, or count business days.
+- [Tip Calculator](https://niftyutilities.com/calculators/tip-calculator.html): Split a bill, set a tip percentage, and get the per-person total with optional rounding.
+- [Loan & Mortgage Calculator](https://niftyutilities.com/calculators/loan-payment-calculator.html): Estimate a monthly payment, total interest, and a full amortization schedule.
+- [Salary to Hourly Calculator](https://niftyutilities.com/calculators/salary-to-hourly-calculator.html): Convert between hourly, weekly, monthly, and annual pay from any starting figure.
+- [BMI Calculator](https://niftyutilities.com/calculators/bmi-calculator.html): Estimate body mass index from height and weight in metric or imperial units.
+- [GPA Calculator](https://niftyutilities.com/calculators/gpa-calculator.html): Add your courses, grades, and credits for a weighted and unweighted GPA.
+- [Pregnancy Due Date Calculator](https://niftyutilities.com/calculators/due-date-calculator.html): Estimate a due date and current week from a last period, conception, or IVF date.
+- [Time Zone Meeting Planner](https://niftyutilities.com/calculators/time-zone-meeting-planner.html): Compare one meeting time across several time zones with daylight-saving handled.
+
 ## Documents
 
 Create practical records and printable forms from straightforward inputs.

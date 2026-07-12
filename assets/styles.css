@@ -311,6 +311,11 @@ h2 { letter-spacing: -0.03em; }
 .tool-card-related h3 { margin-top: 1.5rem; }
 .tool-badge-related { color: #04211c; background: var(--accent); }
 
+/* GPA calculator course rows */
+.gpa-row { display: grid; grid-template-columns: 2fr 1.5fr 1fr 1.5fr auto; gap: .75rem; align-items: end; margin-bottom: .75rem; }
+.gpa-row .g-remove { padding: .55rem .75rem; }
+@media (max-width: 680px) { .gpa-row { grid-template-columns: 1fr 1fr; } }
+
 /* Per-tool accent: defaults to brand teal, overridden by inline --tool-accent. */
 .tool-page { --tool-accent: var(--accent); }
 .tool-page .eyebrow { color: var(--tool-accent); }

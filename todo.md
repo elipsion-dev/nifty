@@ -63,7 +63,18 @@ Original list, for reference:
 12. **CSV → Excel (.xlsx)** via `SheetJS` — complements the existing
     Excel → CSV cleaner (currently one-directional).
 
-### Tier 3 — high-volume everyday calculators (cheap to build, huge queries)
+### COMPLETE - Tier 3 — high-volume everyday calculators (cheap to build, huge queries)
+
+Shipped 2026-07-12 as the new **Everyday Calculators** category (10 tools, `assets/calc.js`,
+one article fragment each). All computations browser-verified against known values, including
+DST handling in the timezone planner, leap-year edges in the age calculator, and the 0%-rate
+edge in the loan amortization. Duplicate audit vs. the existing 117 tools: no true duplicates —
+no prior standalone loan-payment/amortization, percentage, age, or date tool existed; the
+nearest adjacency is Salary→Hourly (wage conversion) vs. the Business "Hourly Rate Calculator"
+(freelance pricing), kept as distinct tools with cross-links. Added crossLinks entries meshing
+the calculators into Finance/Homeowner/Business/Government/Quizzes.
+
+Original list, for reference:
 
 1. **Age calculator** ("how old am I / age between dates") — giant search term.
 2. **Date calculator** — days between dates, add/subtract days, business days.

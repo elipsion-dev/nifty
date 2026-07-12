@@ -1318,6 +1318,23 @@ const categories = [
     ]
   },
   {
+    slug: "calculators",
+    name: "Everyday Calculators",
+    description: "Fast, free calculators for dates, money, health, and school — instant answers, no sign-up.",
+    tools: [
+      ["percentage-calculator", "Percentage Calculator", "Work out X% of Y, what percent one number is of another, and percent change."],
+      ["age-calculator", "Age Calculator", "Find an exact age in years, months, and days, plus weeks, days, and the next birthday."],
+      ["date-calculator", "Date Calculator", "Count days between dates, add or subtract time, or count business days."],
+      ["tip-calculator", "Tip Calculator", "Split a bill, set a tip percentage, and get the per-person total with optional rounding."],
+      ["loan-payment-calculator", "Loan & Mortgage Calculator", "Estimate a monthly payment, total interest, and a full amortization schedule."],
+      ["salary-to-hourly-calculator", "Salary to Hourly Calculator", "Convert between hourly, weekly, monthly, and annual pay from any starting figure."],
+      ["bmi-calculator", "BMI Calculator", "Estimate body mass index from height and weight in metric or imperial units."],
+      ["gpa-calculator", "GPA Calculator", "Add your courses, grades, and credits for a weighted and unweighted GPA."],
+      ["due-date-calculator", "Pregnancy Due Date Calculator", "Estimate a due date and current week from a last period, conception, or IVF date."],
+      ["time-zone-meeting-planner", "Time Zone Meeting Planner", "Compare one meeting time across several time zones with daylight-saving handled."]
+    ]
+  },
+  {
     slug: "documents",
     name: "Documents",
     description: "Create practical records and printable forms from straightforward inputs.",
@@ -1629,7 +1646,17 @@ const crossLinks = {
   "equipment-inventory-generator": ["job-cost-calculator"],
   "affidavit-generator": ["small-claims-deadline-calculator"],
   "receipt-warranty-tracker": ["printable-receipt-generator"],
-  "vin-decoder": ["real-cost-of-owning-a-car", "lease-vs-buy-calculator"]
+  "vin-decoder": ["real-cost-of-owning-a-car", "lease-vs-buy-calculator"],
+  "loan-payment-calculator": ["rent-vs-buy-calculator", "debt-avalanche-calculator", "debt-snowball-calculator", "real-cost-of-owning-a-rental-property"],
+  "salary-to-hourly-calculator": ["hourly-rate-calculator", "net-worth-tracker"],
+  "tip-calculator": ["roommate-expense-splitter"],
+  "percentage-calculator": ["profit-margin-calculator", "sales-commission-calculator"],
+  "date-calculator": ["small-claims-deadline-calculator", "naturalization-residency-date-calculator"],
+  "age-calculator": ["social-security-claiming-age-calculator", "rmd-calculator"],
+  "gpa-calculator": ["iq-test"],
+  "due-date-calculator": ["home-inventory-generator"],
+  "bmi-calculator": ["reaction-time-test"],
+  "time-zone-meeting-planner": ["invoice-number-generator"]
 };
 
 const relatedBySlug = new Map();
