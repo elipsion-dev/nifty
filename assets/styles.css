@@ -156,7 +156,11 @@ h2 { letter-spacing: -0.03em; }
   border-radius: var(--radius);
   background: var(--surface);
   box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
 }
+.ph-badge { margin-top: auto; align-self: center; padding-top: 1.5rem; }
+.ph-badge img { display: block; }
 .feature-panel h3 { margin-bottom: .5rem; font-size: 1.22rem; }
 .feature-panel p { margin-bottom: .8rem; color: var(--muted); }
 .feature-list { display: grid; gap: .7rem; margin: 0; padding: 0; list-style: none; }

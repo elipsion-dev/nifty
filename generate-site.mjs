@@ -1795,6 +1795,7 @@ const homeBody = `
           </div>
         </li>
       </ul>
+      <a class="ph-badge" href="https://www.producthunt.com/products/nifty-utilities?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-nifty-utilities" target="_blank" rel="noopener noreferrer"><img alt="Nifty Utilities - 100+ everyday tools that never upload your files | Product Hunt" width="250" height="54" loading="lazy" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1194559&amp;theme=light&amp;t=1783885492202"></a>
     </div>
     <div class="feature-panel">
       <p class="eyebrow">Best starting points</p>
