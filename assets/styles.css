@@ -159,7 +159,7 @@ h2 { letter-spacing: -0.03em; }
   display: flex;
   flex-direction: column;
 }
-.ph-badge { margin-top: auto; align-self: center; padding-top: 1.5rem; }
+.ph-badges { margin-top: auto; padding-top: 1.5rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-evenly; gap: 1rem; }
 .ph-badge img { display: block; }
 .feature-panel h3 { margin-bottom: .5rem; font-size: 1.22rem; }
 .feature-panel p { margin-bottom: .8rem; color: var(--muted); }
