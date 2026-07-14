@@ -58,13 +58,54 @@
     a.href = url; a.download = filename; a.click();
     setTimeout(() => URL.revokeObjectURL(url), 2000);
   };
+  // ---------- shareable result URLs ----------
+  // Every field renders as #field-<id>, so we can serialize the whole input
+  // state into the URL hash. A shared link reproduces the same result: on load
+  // we restore the fields from the hash, and a "Copy link" button writes the
+  // current state and copies the URL. State is only written on user input or a
+  // share click, so an untouched page keeps a clean URL.
+  const stateFields = () => root.querySelectorAll("[id^='field-']");
+  const saveState = () => {
+    const params = new URLSearchParams();
+    stateFields().forEach((el) => params.set(el.id.slice(6), el.value));
+    const query = params.toString();
+    history.replaceState(null, "", query ? `#${query}` : location.pathname + location.search);
+  };
+  const restoreState = () => {
+    if (location.hash.length < 2) return;
+    const params = new URLSearchParams(location.hash.slice(1));
+    stateFields().forEach((el) => {
+      const v = params.get(el.id.slice(6));
+      if (v !== null) el.value = v;
+    });
+  };
+  const addShareButton = () => {
+    const result = root.querySelector("#result");
+    if (!result || root.querySelector(".calc-share")) return;
+    const bar = document.createElement("div");
+    bar.className = "calc-share";
+    bar.innerHTML = `<button type="button" class="calc-share-btn"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg><span>Copy link to this result</span></button>`;
+    result.insertAdjacentElement("afterend", bar);
+    const btn = bar.querySelector(".calc-share-btn");
+    const label = btn.querySelector("span");
+    btn.addEventListener("click", () => {
+      saveState();
+      const done = () => { label.textContent = "Link copied!"; setTimeout(() => { label.textContent = "Copy link to this result"; }, 1800); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(location.href).then(done, done);
+      } else { done(); }
+    });
+  };
   // Wire every input/select in the tool to a recompute function, then run once.
   const live = (compute) => {
+    restoreState();
+    const run = () => { compute(); saveState(); };
     root.querySelectorAll("input, select").forEach((el) => {
-      el.addEventListener("input", compute);
-      el.addEventListener("change", compute);
+      el.addEventListener("input", run);
+      el.addEventListener("change", run);
     });
     compute();
+    addShareButton();
   };
   const toggleFields = (ids, showSet) => ids.forEach((id) => {
     const el = root.querySelector(`[data-field="${id}"]`);

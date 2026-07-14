@@ -23,3 +23,7 @@ Allow: /
 Disallow: /content/
 
 Sitemap: https://niftyutilities.com/sitemap.xml
+
+# Machine-readable index of interactive tools (2026 tools.txt / tools.json convention):
+# https://niftyutilities.com/tools.txt
+# https://niftyutilities.com/tools.json

@@ -1,0 +1,1009 @@
+{
+  "name": "Nifty Utilities",
+  "url": "https://niftyutilities.com/",
+  "description": "Free browser-based utilities for CSV/spreadsheet data, personal finance, documents, home and life decisions, business math, images, and everyday tasks.",
+  "updated": "2026-07-13",
+  "count": 117,
+  "privacy": "Every tool runs locally in the visitor's browser. There is no backend, upload endpoint, database, or account — tool inputs are never transmitted to or stored by the site.",
+  "license": "Free to use, no sign-up.",
+  "categories": [
+    {
+      "slug": "finance",
+      "name": "Finance / CSV",
+      "url": "https://niftyutilities.com/finance/",
+      "count": 10
+    },
+    {
+      "slug": "spreadsheet",
+      "name": "Spreadsheet / Data",
+      "url": "https://niftyutilities.com/spreadsheet/",
+      "count": 10
+    },
+    {
+      "slug": "convert",
+      "name": "Convert Files",
+      "url": "https://niftyutilities.com/convert/",
+      "count": 12
+    },
+    {
+      "slug": "calculators",
+      "name": "Everyday Calculators",
+      "url": "https://niftyutilities.com/calculators/",
+      "count": 10
+    },
+    {
+      "slug": "documents",
+      "name": "Documents",
+      "url": "https://niftyutilities.com/documents/",
+      "count": 10
+    },
+    {
+      "slug": "homeowner",
+      "name": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/",
+      "count": 27
+    },
+    {
+      "slug": "business",
+      "name": "Business",
+      "url": "https://niftyutilities.com/business/",
+      "count": 10
+    },
+    {
+      "slug": "government",
+      "name": "Government & Deadlines",
+      "url": "https://niftyutilities.com/government/",
+      "count": 7
+    },
+    {
+      "slug": "useful",
+      "name": "Weirdly Useful",
+      "url": "https://niftyutilities.com/useful/",
+      "count": 12
+    },
+    {
+      "slug": "quizzes",
+      "name": "Quizzes & Tests",
+      "url": "https://niftyutilities.com/quizzes/",
+      "count": 9
+    }
+  ],
+  "tools": [
+    {
+      "slug": "bank-statement-cleaner",
+      "name": "Bank Statement Cleaner",
+      "description": "Standardize dates, amounts, descriptions, and blank rows in statement CSVs.",
+      "category": "finance",
+      "categoryName": "Finance / CSV",
+      "url": "https://niftyutilities.com/finance/bank-statement-cleaner.html"
+    },
+    {
+      "slug": "recurring-subscription-finder",
+      "name": "Recurring Subscription Finder",
+      "description": "Find merchants and charges that appear on a repeating schedule.",
+      "category": "finance",
+      "categoryName": "Finance / CSV",
+      "url": "https://niftyutilities.com/finance/recurring-subscription-finder.html"
+    },
+    {
+      "slug": "merchant-name-normalizer",
+      "name": "Merchant Name Normalizer",
+      "description": "Turn noisy transaction descriptions into consistent merchant names.",
+      "category": "finance",
+      "categoryName": "Finance / CSV",
+      "url": "https://niftyutilities.com/finance/merchant-name-normalizer.html"
+    },
+    {
+      "slug": "personal-spending-categorizer",
+      "name": "Personal Spending Categorizer",
+      "description": "Assign common spending categories using editable keyword rules.",
+      "category": "finance",
+      "categoryName": "Finance / CSV",
+      "url": "https://niftyutilities.com/finance/personal-spending-categorizer.html"
+    },
+    {
+      "slug": "duplicate-transaction-finder",
+      "name": "Duplicate Transaction Finder",
+      "description": "Flag transactions with matching dates, amounts, and descriptions.",
+      "category": "finance",
+      "categoryName": "Finance / CSV",
+      "url": "https://niftyutilities.com/finance/duplicate-transaction-finder.html"
+    },
+    {
+      "slug": "csv-bank-format-converter",
+      "name": "CSV Bank Format Converter",
+      "description": "Map statement columns into a simple date, description, amount format.",
+      "category": "finance",
+      "categoryName": "Finance / CSV",
+      "url": "https://niftyutilities.com/finance/csv-bank-format-converter.html"
+    },
+    {
+      "slug": "credit-card-statement-analyzer",
+      "name": "Credit Card Statement Analyzer",
+      "description": "Summarize charges by category and merchant from a CSV statement.",
+      "category": "finance",
+      "categoryName": "Finance / CSV",
+      "url": "https://niftyutilities.com/finance/credit-card-statement-analyzer.html"
+    },
+    {
+      "slug": "debt-snowball-calculator",
+      "name": "Debt Snowball Calculator",
+      "description": "Estimate a payoff schedule using smallest-balance-first payments.",
+      "category": "finance",
+      "categoryName": "Finance / CSV",
+      "url": "https://niftyutilities.com/finance/debt-snowball-calculator.html"
+    },
+    {
+      "slug": "debt-avalanche-calculator",
+      "name": "Debt Avalanche Calculator",
+      "description": "Estimate a payoff schedule using highest-interest-first payments.",
+      "category": "finance",
+      "categoryName": "Finance / CSV",
+      "url": "https://niftyutilities.com/finance/debt-avalanche-calculator.html"
+    },
+    {
+      "slug": "net-worth-tracker",
+      "name": "Net Worth Tracker",
+      "description": "Track assets and liabilities locally in this browser.",
+      "category": "finance",
+      "categoryName": "Finance / CSV",
+      "url": "https://niftyutilities.com/finance/net-worth-tracker.html"
+    },
+    {
+      "slug": "merge-csv-files",
+      "name": "Merge CSV Files",
+      "description": "Combine multiple CSV files that share the same columns.",
+      "category": "spreadsheet",
+      "categoryName": "Spreadsheet / Data",
+      "url": "https://niftyutilities.com/spreadsheet/merge-csv-files.html"
+    },
+    {
+      "slug": "split-csv-files",
+      "name": "Split CSV Files",
+      "description": "Break a large CSV into smaller files by row count.",
+      "category": "spreadsheet",
+      "categoryName": "Spreadsheet / Data",
+      "url": "https://niftyutilities.com/spreadsheet/split-csv-files.html"
+    },
+    {
+      "slug": "remove-duplicate-rows",
+      "name": "Remove Duplicate Rows",
+      "description": "Remove repeated rows using all columns or selected columns.",
+      "category": "spreadsheet",
+      "categoryName": "Spreadsheet / Data",
+      "url": "https://niftyutilities.com/spreadsheet/remove-duplicate-rows.html"
+    },
+    {
+      "slug": "compare-two-csvs",
+      "name": "Compare Two CSVs",
+      "description": "Find rows that were added, removed, or kept between two files.",
+      "category": "spreadsheet",
+      "categoryName": "Spreadsheet / Data",
+      "url": "https://niftyutilities.com/spreadsheet/compare-two-csvs.html"
+    },
+    {
+      "slug": "excel-to-csv-cleaner",
+      "name": "Excel to CSV Cleaner",
+      "description": "Convert an Excel sheet to clean CSV in your browser.",
+      "category": "spreadsheet",
+      "categoryName": "Spreadsheet / Data",
+      "url": "https://niftyutilities.com/spreadsheet/excel-to-csv-cleaner.html"
+    },
+    {
+      "slug": "column-mapper",
+      "name": "Column Mapper",
+      "description": "Rename and reorder columns into a target schema.",
+      "category": "spreadsheet",
+      "categoryName": "Spreadsheet / Data",
+      "url": "https://niftyutilities.com/spreadsheet/column-mapper.html"
+    },
+    {
+      "slug": "csv-formula-generator",
+      "name": "CSV Formula Generator",
+      "description": "Build spreadsheet formulas from a plain-English recipe.",
+      "category": "spreadsheet",
+      "categoryName": "Spreadsheet / Data",
+      "url": "https://niftyutilities.com/spreadsheet/csv-formula-generator.html"
+    },
+    {
+      "slug": "spreadsheet-error-finder",
+      "name": "Spreadsheet Error Finder",
+      "description": "Scan CSV data for blanks, inconsistent widths, and suspicious values.",
+      "category": "spreadsheet",
+      "categoryName": "Spreadsheet / Data",
+      "url": "https://niftyutilities.com/spreadsheet/spreadsheet-error-finder.html"
+    },
+    {
+      "slug": "delimiter-converter",
+      "name": "Delimiter Converter",
+      "description": "Convert comma, tab, semicolon, or pipe-delimited data.",
+      "category": "spreadsheet",
+      "categoryName": "Spreadsheet / Data",
+      "url": "https://niftyutilities.com/spreadsheet/delimiter-converter.html"
+    },
+    {
+      "slug": "json-csv-converter",
+      "name": "JSON ↔ CSV Converter",
+      "description": "Convert arrays of JSON objects to CSV and CSV back to JSON.",
+      "category": "spreadsheet",
+      "categoryName": "Spreadsheet / Data",
+      "url": "https://niftyutilities.com/spreadsheet/json-csv-converter.html"
+    },
+    {
+      "slug": "image-format-converter",
+      "name": "Image Format Converter",
+      "description": "Convert HEIC, PNG, JPG, WebP, and AVIF photos to PNG, JPG, or WebP.",
+      "category": "convert",
+      "categoryName": "Convert Files",
+      "url": "https://niftyutilities.com/convert/image-format-converter.html"
+    },
+    {
+      "slug": "image-compressor",
+      "name": "Image Compressor",
+      "description": "Shrink JPG, PNG, and WebP file sizes with a quality slider and a live before-and-after comparison.",
+      "category": "convert",
+      "categoryName": "Convert Files",
+      "url": "https://niftyutilities.com/convert/image-compressor.html"
+    },
+    {
+      "slug": "image-resizer",
+      "name": "Image Resizer",
+      "description": "Resize images to exact pixels, a percentage, or common social-media sizes.",
+      "category": "convert",
+      "categoryName": "Convert Files",
+      "url": "https://niftyutilities.com/convert/image-resizer.html"
+    },
+    {
+      "slug": "images-to-pdf",
+      "name": "Images to PDF Converter",
+      "description": "Combine JPG, PNG, and WebP images into one PDF with selectable page size.",
+      "category": "convert",
+      "categoryName": "Convert Files",
+      "url": "https://niftyutilities.com/convert/images-to-pdf.html"
+    },
+    {
+      "slug": "pdf-merge-split",
+      "name": "PDF Merger & Splitter",
+      "description": "Merge PDFs into one file, or pull out the pages you need from a single PDF.",
+      "category": "convert",
+      "categoryName": "Convert Files",
+      "url": "https://niftyutilities.com/convert/pdf-merge-split.html"
+    },
+    {
+      "slug": "pdf-to-images",
+      "name": "PDF to Image Converter",
+      "description": "Render every page of a PDF as a downloadable PNG or JPG image.",
+      "category": "convert",
+      "categoryName": "Convert Files",
+      "url": "https://niftyutilities.com/convert/pdf-to-images.html"
+    },
+    {
+      "slug": "pdf-word-text-extractor",
+      "name": "PDF & Word Text Extractor",
+      "description": "Pull clean text out of PDF and DOCX files with instant word and character counts.",
+      "category": "convert",
+      "categoryName": "Convert Files",
+      "url": "https://niftyutilities.com/convert/pdf-word-text-extractor.html"
+    },
+    {
+      "slug": "markdown-html-converter",
+      "name": "Markdown to HTML Converter",
+      "description": "Convert Markdown to clean HTML with a live preview, or turn HTML back into Markdown.",
+      "category": "convert",
+      "categoryName": "Convert Files",
+      "url": "https://niftyutilities.com/convert/markdown-html-converter.html"
+    },
+    {
+      "slug": "svg-to-png-converter",
+      "name": "SVG to PNG Converter",
+      "description": "Rasterize an SVG to PNG at any size, or generate a full favicon size set.",
+      "category": "convert",
+      "categoryName": "Convert Files",
+      "url": "https://niftyutilities.com/convert/svg-to-png-converter.html"
+    },
+    {
+      "slug": "exif-viewer-remover",
+      "name": "EXIF Viewer & Remover",
+      "description": "See the hidden metadata in a photo — including GPS location — and download a clean copy.",
+      "category": "convert",
+      "categoryName": "Convert Files",
+      "url": "https://niftyutilities.com/convert/exif-viewer-remover.html"
+    },
+    {
+      "slug": "audio-converter",
+      "name": "Audio Converter & Trimmer",
+      "description": "Convert audio files to MP3 or WAV and trim the start and end.",
+      "category": "convert",
+      "categoryName": "Convert Files",
+      "url": "https://niftyutilities.com/convert/audio-converter.html"
+    },
+    {
+      "slug": "csv-to-excel-converter",
+      "name": "CSV to Excel Converter",
+      "description": "Turn one or more CSV files into a downloadable Excel workbook.",
+      "category": "convert",
+      "categoryName": "Convert Files",
+      "url": "https://niftyutilities.com/convert/csv-to-excel-converter.html"
+    },
+    {
+      "slug": "percentage-calculator",
+      "name": "Percentage Calculator",
+      "description": "Work out X% of Y, what percent one number is of another, and percent change.",
+      "category": "calculators",
+      "categoryName": "Everyday Calculators",
+      "url": "https://niftyutilities.com/calculators/percentage-calculator.html"
+    },
+    {
+      "slug": "age-calculator",
+      "name": "Age Calculator",
+      "description": "Find an exact age in years, months, and days, plus weeks, days, and the next birthday.",
+      "category": "calculators",
+      "categoryName": "Everyday Calculators",
+      "url": "https://niftyutilities.com/calculators/age-calculator.html"
+    },
+    {
+      "slug": "date-calculator",
+      "name": "Date Calculator",
+      "description": "Count days between dates, add or subtract time, or count business days.",
+      "category": "calculators",
+      "categoryName": "Everyday Calculators",
+      "url": "https://niftyutilities.com/calculators/date-calculator.html"
+    },
+    {
+      "slug": "tip-calculator",
+      "name": "Tip Calculator",
+      "description": "Split a bill, set a tip percentage, and get the per-person total with optional rounding.",
+      "category": "calculators",
+      "categoryName": "Everyday Calculators",
+      "url": "https://niftyutilities.com/calculators/tip-calculator.html"
+    },
+    {
+      "slug": "loan-payment-calculator",
+      "name": "Loan & Mortgage Calculator",
+      "description": "Estimate a monthly payment, total interest, and a full amortization schedule.",
+      "category": "calculators",
+      "categoryName": "Everyday Calculators",
+      "url": "https://niftyutilities.com/calculators/loan-payment-calculator.html"
+    },
+    {
+      "slug": "salary-to-hourly-calculator",
+      "name": "Salary to Hourly Calculator",
+      "description": "Convert between hourly, weekly, monthly, and annual pay from any starting figure.",
+      "category": "calculators",
+      "categoryName": "Everyday Calculators",
+      "url": "https://niftyutilities.com/calculators/salary-to-hourly-calculator.html"
+    },
+    {
+      "slug": "bmi-calculator",
+      "name": "BMI Calculator",
+      "description": "Estimate body mass index from height and weight in metric or imperial units.",
+      "category": "calculators",
+      "categoryName": "Everyday Calculators",
+      "url": "https://niftyutilities.com/calculators/bmi-calculator.html"
+    },
+    {
+      "slug": "gpa-calculator",
+      "name": "GPA Calculator",
+      "description": "Add your courses, grades, and credits for a weighted and unweighted GPA.",
+      "category": "calculators",
+      "categoryName": "Everyday Calculators",
+      "url": "https://niftyutilities.com/calculators/gpa-calculator.html"
+    },
+    {
+      "slug": "due-date-calculator",
+      "name": "Pregnancy Due Date Calculator",
+      "description": "Estimate a due date and current week from a last period, conception, or IVF date.",
+      "category": "calculators",
+      "categoryName": "Everyday Calculators",
+      "url": "https://niftyutilities.com/calculators/due-date-calculator.html"
+    },
+    {
+      "slug": "time-zone-meeting-planner",
+      "name": "Time Zone Meeting Planner",
+      "description": "Compare one meeting time across several time zones with daylight-saving handled.",
+      "category": "calculators",
+      "categoryName": "Everyday Calculators",
+      "url": "https://niftyutilities.com/calculators/time-zone-meeting-planner.html"
+    },
+    {
+      "slug": "bill-of-sale-generator",
+      "name": "Bill of Sale Generator",
+      "description": "Create a printable general-purpose bill of sale.",
+      "category": "documents",
+      "categoryName": "Documents",
+      "url": "https://niftyutilities.com/documents/bill-of-sale-generator.html"
+    },
+    {
+      "slug": "rent-receipt-generator",
+      "name": "Rent Receipt Generator",
+      "description": "Create a clean receipt for a rent payment.",
+      "category": "documents",
+      "categoryName": "Documents",
+      "url": "https://niftyutilities.com/documents/rent-receipt-generator.html"
+    },
+    {
+      "slug": "mileage-log-generator",
+      "name": "Mileage Log Generator",
+      "description": "Build and export a mileage log for business trips.",
+      "category": "documents",
+      "categoryName": "Documents",
+      "url": "https://niftyutilities.com/documents/mileage-log-generator.html"
+    },
+    {
+      "slug": "equipment-inventory-generator",
+      "name": "Equipment Inventory Generator",
+      "description": "Record equipment, serial numbers, locations, and values.",
+      "category": "documents",
+      "categoryName": "Documents",
+      "url": "https://niftyutilities.com/documents/equipment-inventory-generator.html"
+    },
+    {
+      "slug": "invoice-number-generator",
+      "name": "Invoice Number Generator",
+      "description": "Generate sequential, dated, or random invoice numbers.",
+      "category": "documents",
+      "categoryName": "Documents",
+      "url": "https://niftyutilities.com/documents/invoice-number-generator.html"
+    },
+    {
+      "slug": "business-asset-register",
+      "name": "Business Asset Register",
+      "description": "Create a downloadable register of business assets.",
+      "category": "documents",
+      "categoryName": "Documents",
+      "url": "https://niftyutilities.com/documents/business-asset-register.html"
+    },
+    {
+      "slug": "home-inventory-generator",
+      "name": "Home Inventory Generator",
+      "description": "Catalog household belongings and estimated replacement values.",
+      "category": "documents",
+      "categoryName": "Documents",
+      "url": "https://niftyutilities.com/documents/home-inventory-generator.html"
+    },
+    {
+      "slug": "estate-inventory-worksheet",
+      "name": "Estate Inventory Worksheet",
+      "description": "Organize estate assets, debts, accounts, and notes.",
+      "category": "documents",
+      "categoryName": "Documents",
+      "url": "https://niftyutilities.com/documents/estate-inventory-worksheet.html"
+    },
+    {
+      "slug": "affidavit-generator",
+      "name": "Affidavit Generator",
+      "description": "Draft a basic affidavit worksheet for review and notarization.",
+      "category": "documents",
+      "categoryName": "Documents",
+      "url": "https://niftyutilities.com/documents/affidavit-generator.html"
+    },
+    {
+      "slug": "printable-receipt-generator",
+      "name": "Printable Receipt Generator",
+      "description": "Create a simple printable receipt for a payment or sale.",
+      "category": "documents",
+      "categoryName": "Documents",
+      "url": "https://niftyutilities.com/documents/printable-receipt-generator.html"
+    },
+    {
+      "slug": "rent-vs-buy-calculator",
+      "name": "Rent vs Buy Calculator",
+      "description": "Compare estimated monthly and long-term renting and buying costs.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/rent-vs-buy-calculator.html"
+    },
+    {
+      "slug": "lease-vs-buy-calculator",
+      "name": "Lease vs Buy Calculator",
+      "description": "Compare the estimated net cost of leasing and buying a vehicle.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/lease-vs-buy-calculator.html"
+    },
+    {
+      "slug": "real-cost-of-owning-a-pool",
+      "name": "Real Cost of Owning a Pool",
+      "description": "Estimate annual pool chemicals, energy, service, and repair costs.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/real-cost-of-owning-a-pool.html"
+    },
+    {
+      "slug": "real-cost-of-owning-a-boat",
+      "name": "Real Cost of Owning a Boat",
+      "description": "Estimate financing, fuel, storage, insurance, and maintenance.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/real-cost-of-owning-a-boat.html"
+    },
+    {
+      "slug": "real-cost-of-owning-an-rv",
+      "name": "Real Cost of Owning an RV",
+      "description": "Estimate financing, campsites, fuel, storage, and maintenance.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/real-cost-of-owning-an-rv.html"
+    },
+    {
+      "slug": "real-cost-of-owning-a-horse",
+      "name": "Real Cost of Owning a Horse",
+      "description": "Estimate annual boarding, feed, farrier, vet, and training costs.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/real-cost-of-owning-a-horse.html"
+    },
+    {
+      "slug": "real-cost-of-owning-a-dog",
+      "name": "Real Cost of Owning a Dog",
+      "description": "Estimate annual food, vet, grooming, insurance, and boarding costs.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/real-cost-of-owning-a-dog.html"
+    },
+    {
+      "slug": "real-cost-of-owning-a-cat",
+      "name": "Real Cost of Owning a Cat",
+      "description": "Estimate annual food, litter, vet, and supply costs for a cat.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/real-cost-of-owning-a-cat.html"
+    },
+    {
+      "slug": "real-cost-of-owning-a-hot-tub",
+      "name": "Real Cost of Owning a Hot Tub",
+      "description": "Estimate annual energy, chemicals, water, and service costs.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/real-cost-of-owning-a-hot-tub.html"
+    },
+    {
+      "slug": "real-cost-of-owning-a-car",
+      "name": "Real Cost of Owning a Car",
+      "description": "Estimate financing, fuel, insurance, maintenance, and registration costs.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/real-cost-of-owning-a-car.html"
+    },
+    {
+      "slug": "real-cost-of-raising-backyard-chickens",
+      "name": "Real Cost of Raising Backyard Chickens",
+      "description": "Estimate annual feed, bedding, health, and coop costs for a flock.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/real-cost-of-raising-backyard-chickens.html"
+    },
+    {
+      "slug": "real-cost-of-lawn-care",
+      "name": "Real Cost of Lawn Care",
+      "description": "Estimate annual mowing, fertilizer, irrigation, and equipment costs.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/real-cost-of-lawn-care.html"
+    },
+    {
+      "slug": "real-cost-of-owning-a-septic-system",
+      "name": "Real Cost of Owning a Septic System",
+      "description": "Estimate annual pumping, inspection, repair, and drainfield reserve costs.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/real-cost-of-owning-a-septic-system.html"
+    },
+    {
+      "slug": "real-cost-of-owning-a-motorcycle",
+      "name": "Real Cost of Owning a Motorcycle",
+      "description": "Estimate financing, fuel, insurance, tires, gear, and registration costs.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/real-cost-of-owning-a-motorcycle.html"
+    },
+    {
+      "slug": "solar-panel-payback-calculator",
+      "name": "Solar Panel Payback Calculator",
+      "description": "Estimate net system cost after incentives, annual savings, and payback period.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/solar-panel-payback-calculator.html"
+    },
+    {
+      "slug": "real-cost-of-owning-a-rental-property",
+      "name": "Real Cost of Owning a Rental Property",
+      "description": "Estimate mortgage, operating costs, vacancy, and annual rental cash flow.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/real-cost-of-owning-a-rental-property.html"
+    },
+    {
+      "slug": "real-cost-of-owning-an-electric-car",
+      "name": "Real Cost of Owning an Electric Car",
+      "description": "Estimate financing, charging, insurance, tires, maintenance, and registration costs.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/real-cost-of-owning-an-electric-car.html"
+    },
+    {
+      "slug": "real-cost-of-owning-a-jet-ski",
+      "name": "Real Cost of Owning a Jet Ski",
+      "description": "Estimate annual storage, fuel, insurance, winterization, and registration costs.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/real-cost-of-owning-a-jet-ski.html"
+    },
+    {
+      "slug": "real-cost-of-owning-a-second-home",
+      "name": "Real Cost of Owning a Second Home",
+      "description": "Estimate mortgage, property tax, insurance, utilities, upkeep, and travel costs.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/real-cost-of-owning-a-second-home.html"
+    },
+    {
+      "slug": "real-cost-of-owning-a-classic-car",
+      "name": "Real Cost of Owning a Classic Car",
+      "description": "Estimate agreed-value insurance, storage, upkeep, and appreciation for a collector car.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/real-cost-of-owning-a-classic-car.html"
+    },
+    {
+      "slug": "real-cost-of-owning-a-vacation-rental",
+      "name": "Real Cost of Owning a Vacation Rental",
+      "description": "Estimate mortgage, operating costs, platform fees, and net short-term rental income.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/real-cost-of-owning-a-vacation-rental.html"
+    },
+    {
+      "slug": "moving-cost-estimator",
+      "name": "Moving Cost Estimator",
+      "description": "Estimate truck, movers, mileage, supplies, lodging, and other costs.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/moving-cost-estimator.html"
+    },
+    {
+      "slug": "roommate-expense-splitter",
+      "name": "Roommate Expense Splitter",
+      "description": "Split shared expenses evenly or by custom percentages.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/roommate-expense-splitter.html"
+    },
+    {
+      "slug": "home-maintenance-budget-calculator",
+      "name": "Home Maintenance Budget Calculator",
+      "description": "Build an annual maintenance reserve from home value, age, and systems.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/home-maintenance-budget-calculator.html"
+    },
+    {
+      "slug": "property-tax-estimator",
+      "name": "Property Tax Estimator",
+      "description": "Estimate annual and monthly property tax from assessed value and rate.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/property-tax-estimator.html"
+    },
+    {
+      "slug": "property-tax-appeal-estimator",
+      "name": "Property Tax Appeal Estimator",
+      "description": "Gauge appeal success odds and tax savings from your assessment, purchase price, and comparable homes.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/property-tax-appeal-estimator.html"
+    },
+    {
+      "slug": "vacation-budget-planner",
+      "name": "Vacation Budget Planner",
+      "description": "Plan transportation, lodging, food, activities, and contingency spending.",
+      "category": "homeowner",
+      "categoryName": "Homeowner / Life",
+      "url": "https://niftyutilities.com/homeowner/vacation-budget-planner.html"
+    },
+    {
+      "slug": "lead-value-calculator",
+      "name": "Lead Value Calculator",
+      "description": "Estimate the expected revenue and profit value of each lead.",
+      "category": "business",
+      "categoryName": "Business",
+      "url": "https://niftyutilities.com/business/lead-value-calculator.html"
+    },
+    {
+      "slug": "customer-lifetime-value-calculator",
+      "name": "Customer Lifetime Value Calculator",
+      "description": "Estimate customer value using revenue, margin, churn, and acquisition cost.",
+      "category": "business",
+      "categoryName": "Business",
+      "url": "https://niftyutilities.com/business/customer-lifetime-value-calculator.html"
+    },
+    {
+      "slug": "cost-of-missed-calls-calculator",
+      "name": "Cost of Missed Calls Calculator",
+      "description": "Estimate revenue lost when customer calls go unanswered.",
+      "category": "business",
+      "categoryName": "Business",
+      "url": "https://niftyutilities.com/business/cost-of-missed-calls-calculator.html"
+    },
+    {
+      "slug": "cost-of-employee-turnover-calculator",
+      "name": "Cost of Employee Turnover Calculator",
+      "description": "Estimate recruiting, vacancy, training, and productivity costs.",
+      "category": "business",
+      "categoryName": "Business",
+      "url": "https://niftyutilities.com/business/cost-of-employee-turnover-calculator.html"
+    },
+    {
+      "slug": "hourly-rate-calculator",
+      "name": "Hourly Rate Calculator",
+      "description": "Turn income goals and business costs into a sustainable hourly rate.",
+      "category": "business",
+      "categoryName": "Business",
+      "url": "https://niftyutilities.com/business/hourly-rate-calculator.html"
+    },
+    {
+      "slug": "profit-margin-calculator",
+      "name": "Profit Margin Calculator",
+      "description": "Calculate gross profit, margin, markup, and target sale price.",
+      "category": "business",
+      "categoryName": "Business",
+      "url": "https://niftyutilities.com/business/profit-margin-calculator.html"
+    },
+    {
+      "slug": "break-even-calculator",
+      "name": "Break-Even Calculator",
+      "description": "Find the units and revenue needed to cover fixed costs.",
+      "category": "business",
+      "categoryName": "Business",
+      "url": "https://niftyutilities.com/business/break-even-calculator.html"
+    },
+    {
+      "slug": "job-cost-calculator",
+      "name": "Job Cost Calculator",
+      "description": "Calculate labor, materials, overhead, markup, and job price.",
+      "category": "business",
+      "categoryName": "Business",
+      "url": "https://niftyutilities.com/business/job-cost-calculator.html"
+    },
+    {
+      "slug": "service-pricing-calculator",
+      "name": "Service Pricing Calculator",
+      "description": "Price a service from time, costs, overhead, and desired margin.",
+      "category": "business",
+      "categoryName": "Business",
+      "url": "https://niftyutilities.com/business/service-pricing-calculator.html"
+    },
+    {
+      "slug": "sales-commission-calculator",
+      "name": "Sales Commission Calculator",
+      "description": "Calculate tiered or flat sales commissions.",
+      "category": "business",
+      "categoryName": "Business",
+      "url": "https://niftyutilities.com/business/sales-commission-calculator.html"
+    },
+    {
+      "slug": "social-security-claiming-age-calculator",
+      "name": "Social Security Claiming Age Calculator",
+      "description": "Compare a planned claiming age with full retirement age and estimate the monthly adjustment.",
+      "category": "government",
+      "categoryName": "Government & Deadlines",
+      "url": "https://niftyutilities.com/government/social-security-claiming-age-calculator.html"
+    },
+    {
+      "slug": "rmd-calculator",
+      "name": "Required Minimum Distribution Calculator",
+      "description": "Estimate an owner RMD using the IRS Uniform Lifetime Table and a prior year-end balance.",
+      "category": "government",
+      "categoryName": "Government & Deadlines",
+      "url": "https://niftyutilities.com/government/rmd-calculator.html"
+    },
+    {
+      "slug": "tax-refund-timing-estimator",
+      "name": "Tax Refund Timing Estimator",
+      "description": "Build a typical federal refund processing window from the return type and accepted date.",
+      "category": "government",
+      "categoryName": "Government & Deadlines",
+      "url": "https://niftyutilities.com/government/tax-refund-timing-estimator.html"
+    },
+    {
+      "slug": "fmla-eligibility-calculator",
+      "name": "FMLA Eligibility Calculator",
+      "description": "Screen the four basic federal employee-eligibility requirements for FMLA leave.",
+      "category": "government",
+      "categoryName": "Government & Deadlines",
+      "url": "https://niftyutilities.com/government/fmla-eligibility-calculator.html"
+    },
+    {
+      "slug": "naturalization-residency-date-calculator",
+      "name": "Naturalization Residency Date Calculator",
+      "description": "Estimate the 90-day early-filing date and screen residence and physical-presence inputs.",
+      "category": "government",
+      "categoryName": "Government & Deadlines",
+      "url": "https://niftyutilities.com/government/naturalization-residency-date-calculator.html"
+    },
+    {
+      "slug": "i94-overstay-date-calculator",
+      "name": "I-94 Admit Until Date Calculator",
+      "description": "Compare a planned departure or current date with a date-certain I-94 admission record.",
+      "category": "government",
+      "categoryName": "Government & Deadlines",
+      "url": "https://niftyutilities.com/government/i94-overstay-date-calculator.html"
+    },
+    {
+      "slug": "small-claims-deadline-calculator",
+      "name": "Small Claims Deadline Calculator",
+      "description": "Apply a locally verified limitation period and personal safety margin to a claim date.",
+      "category": "government",
+      "categoryName": "Government & Deadlines",
+      "url": "https://niftyutilities.com/government/small-claims-deadline-calculator.html"
+    },
+    {
+      "slug": "screenshot-measurement-calculator",
+      "name": "Screenshot Measurement Calculator",
+      "description": "Draw on a photo, set one known length, and estimate wall lengths, dimensions, and floor area.",
+      "category": "useful",
+      "categoryName": "Weirdly Useful",
+      "url": "https://niftyutilities.com/useful/screenshot-measurement-calculator.html"
+    },
+    {
+      "slug": "receipt-warranty-tracker",
+      "name": "Receipt Scanner & Warranty Tracker",
+      "description": "Scan a receipt, capture the purchase, and create a warranty expiration reminder for your calendar.",
+      "category": "useful",
+      "categoryName": "Weirdly Useful",
+      "url": "https://niftyutilities.com/useful/receipt-warranty-tracker.html"
+    },
+    {
+      "slug": "screenshot-to-csv",
+      "name": "Screenshot to CSV",
+      "description": "Extract text from a screenshot and arrange detected lines as CSV.",
+      "category": "useful",
+      "categoryName": "Weirdly Useful",
+      "url": "https://niftyutilities.com/useful/screenshot-to-csv.html"
+    },
+    {
+      "slug": "screenshot-table-extractor",
+      "name": "Screenshot Table Extractor",
+      "description": "Use in-browser OCR to turn a table image into editable rows.",
+      "category": "useful",
+      "categoryName": "Weirdly Useful",
+      "url": "https://niftyutilities.com/useful/screenshot-table-extractor.html"
+    },
+    {
+      "slug": "image-dimensions-inspector",
+      "name": "Image Dimensions Inspector",
+      "description": "Inspect pixel size, aspect ratio, file type, and file size.",
+      "category": "useful",
+      "categoryName": "Weirdly Useful",
+      "url": "https://niftyutilities.com/useful/image-dimensions-inspector.html"
+    },
+    {
+      "slug": "bulk-file-renamer",
+      "name": "Bulk File Renamer",
+      "description": "Preview cleaned, numbered filenames and download renamed copies.",
+      "category": "useful",
+      "categoryName": "Weirdly Useful",
+      "url": "https://niftyutilities.com/useful/bulk-file-renamer.html"
+    },
+    {
+      "slug": "filename-cleaner",
+      "name": "Filename Cleaner",
+      "description": "Remove clutter, normalize spacing, and standardize filename casing.",
+      "category": "useful",
+      "categoryName": "Weirdly Useful",
+      "url": "https://niftyutilities.com/useful/filename-cleaner.html"
+    },
+    {
+      "slug": "duplicate-photo-detector",
+      "name": "Duplicate Photo Detector",
+      "description": "Find exact duplicate images using local file hashes.",
+      "category": "useful",
+      "categoryName": "Weirdly Useful",
+      "url": "https://niftyutilities.com/useful/duplicate-photo-detector.html"
+    },
+    {
+      "slug": "qr-batch-generator",
+      "name": "QR Batch Generator",
+      "description": "Generate multiple downloadable QR codes from lines of text.",
+      "category": "useful",
+      "categoryName": "Weirdly Useful",
+      "url": "https://niftyutilities.com/useful/qr-batch-generator.html"
+    },
+    {
+      "slug": "barcode-generator",
+      "name": "Barcode Generator",
+      "description": "Generate a printable CODE128 barcode in the browser.",
+      "category": "useful",
+      "categoryName": "Weirdly Useful",
+      "url": "https://niftyutilities.com/useful/barcode-generator.html"
+    },
+    {
+      "slug": "upc-validator",
+      "name": "UPC Validator",
+      "description": "Validate UPC-A check digits or calculate a missing check digit.",
+      "category": "useful",
+      "categoryName": "Weirdly Useful",
+      "url": "https://niftyutilities.com/useful/upc-validator.html"
+    },
+    {
+      "slug": "vin-decoder",
+      "name": "VIN Decoder",
+      "description": "Validate a VIN and decode its year and basic structure locally.",
+      "category": "useful",
+      "categoryName": "Weirdly Useful",
+      "url": "https://niftyutilities.com/useful/vin-decoder.html"
+    },
+    {
+      "slug": "iq-test",
+      "name": "IQ Test",
+      "description": "Estimate your reasoning ability with an original, timed test spanning pattern, number, verbal, and spatial puzzles.",
+      "category": "quizzes",
+      "categoryName": "Quizzes & Tests",
+      "url": "https://niftyutilities.com/quizzes/iq-test.html"
+    },
+    {
+      "slug": "typing-speed-test",
+      "name": "Typing Speed Test",
+      "description": "Type a passage and measure your live WPM and accuracy in 15, 30, or 60 second modes — nothing saved.",
+      "category": "quizzes",
+      "categoryName": "Quizzes & Tests",
+      "url": "https://niftyutilities.com/quizzes/typing-speed-test.html"
+    },
+    {
+      "slug": "reaction-time-test",
+      "name": "Reaction Time Test",
+      "description": "Click the moment the pad turns green across five rounds to measure your average reaction time in milliseconds.",
+      "category": "quizzes",
+      "categoryName": "Quizzes & Tests",
+      "url": "https://niftyutilities.com/quizzes/reaction-time-test.html"
+    },
+    {
+      "slug": "click-speed-test",
+      "name": "Click Speed Test",
+      "description": "Click a pad as fast as you can in 5, 10, or 30 seconds to find your clicks-per-second (CPS) score.",
+      "category": "quizzes",
+      "categoryName": "Quizzes & Tests",
+      "url": "https://niftyutilities.com/quizzes/click-speed-test.html"
+    },
+    {
+      "slug": "memory-test",
+      "name": "Memory Test",
+      "description": "See how many digits your working memory can hold with a progressive digit-span recall test.",
+      "category": "quizzes",
+      "categoryName": "Quizzes & Tests",
+      "url": "https://niftyutilities.com/quizzes/memory-test.html"
+    },
+    {
+      "slug": "color-blindness-test",
+      "name": "Color Blindness Test",
+      "description": "Take a free at-home Ishihara-style red-green color-vision screening with plates drawn fresh in your browser.",
+      "category": "quizzes",
+      "categoryName": "Quizzes & Tests",
+      "url": "https://niftyutilities.com/quizzes/color-blindness-test.html"
+    },
+    {
+      "slug": "love-calculator",
+      "name": "Love Calculator",
+      "description": "Enter two names for an instant, just-for-fun compatibility score — the same pair always gives the same result.",
+      "category": "quizzes",
+      "categoryName": "Quizzes & Tests",
+      "url": "https://niftyutilities.com/quizzes/love-calculator.html"
+    },
+    {
+      "slug": "personality-type-test",
+      "name": "Personality Type Test",
+      "description": "Find your dominant personality type and your affinity for every type with an original color-style profiler.",
+      "category": "quizzes",
+      "categoryName": "Quizzes & Tests",
+      "url": "https://niftyutilities.com/quizzes/personality-type-test.html"
+    },
+    {
+      "slug": "zodiac-compatibility",
+      "name": "Zodiac Compatibility",
+      "description": "See how any two star signs work together, with an in-depth strengths breakdown and a few things to watch.",
+      "category": "quizzes",
+      "categoryName": "Quizzes & Tests",
+      "url": "https://niftyutilities.com/quizzes/zodiac-compatibility.html"
+    }
+  ]
+}

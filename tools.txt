@@ -1,0 +1,141 @@
+# Nifty Utilities — tools.txt
+# Machine-readable index of interactive browser tools. Structured data: https://niftyutilities.com/tools.json
+# All tools run locally in the visitor's browser: no uploads, no accounts, no data stored.
+# Updated: 2026-07-13 | 117 tools
+
+## Finance / CSV
+- Bank Statement Cleaner: Standardize dates, amounts, descriptions, and blank rows in statement CSVs. — https://niftyutilities.com/finance/bank-statement-cleaner.html
+- Recurring Subscription Finder: Find merchants and charges that appear on a repeating schedule. — https://niftyutilities.com/finance/recurring-subscription-finder.html
+- Merchant Name Normalizer: Turn noisy transaction descriptions into consistent merchant names. — https://niftyutilities.com/finance/merchant-name-normalizer.html
+- Personal Spending Categorizer: Assign common spending categories using editable keyword rules. — https://niftyutilities.com/finance/personal-spending-categorizer.html
+- Duplicate Transaction Finder: Flag transactions with matching dates, amounts, and descriptions. — https://niftyutilities.com/finance/duplicate-transaction-finder.html
+- CSV Bank Format Converter: Map statement columns into a simple date, description, amount format. — https://niftyutilities.com/finance/csv-bank-format-converter.html
+- Credit Card Statement Analyzer: Summarize charges by category and merchant from a CSV statement. — https://niftyutilities.com/finance/credit-card-statement-analyzer.html
+- Debt Snowball Calculator: Estimate a payoff schedule using smallest-balance-first payments. — https://niftyutilities.com/finance/debt-snowball-calculator.html
+- Debt Avalanche Calculator: Estimate a payoff schedule using highest-interest-first payments. — https://niftyutilities.com/finance/debt-avalanche-calculator.html
+- Net Worth Tracker: Track assets and liabilities locally in this browser. — https://niftyutilities.com/finance/net-worth-tracker.html
+
+## Spreadsheet / Data
+- Merge CSV Files: Combine multiple CSV files that share the same columns. — https://niftyutilities.com/spreadsheet/merge-csv-files.html
+- Split CSV Files: Break a large CSV into smaller files by row count. — https://niftyutilities.com/spreadsheet/split-csv-files.html
+- Remove Duplicate Rows: Remove repeated rows using all columns or selected columns. — https://niftyutilities.com/spreadsheet/remove-duplicate-rows.html
+- Compare Two CSVs: Find rows that were added, removed, or kept between two files. — https://niftyutilities.com/spreadsheet/compare-two-csvs.html
+- Excel to CSV Cleaner: Convert an Excel sheet to clean CSV in your browser. — https://niftyutilities.com/spreadsheet/excel-to-csv-cleaner.html
+- Column Mapper: Rename and reorder columns into a target schema. — https://niftyutilities.com/spreadsheet/column-mapper.html
+- CSV Formula Generator: Build spreadsheet formulas from a plain-English recipe. — https://niftyutilities.com/spreadsheet/csv-formula-generator.html
+- Spreadsheet Error Finder: Scan CSV data for blanks, inconsistent widths, and suspicious values. — https://niftyutilities.com/spreadsheet/spreadsheet-error-finder.html
+- Delimiter Converter: Convert comma, tab, semicolon, or pipe-delimited data. — https://niftyutilities.com/spreadsheet/delimiter-converter.html
+- JSON ↔ CSV Converter: Convert arrays of JSON objects to CSV and CSV back to JSON. — https://niftyutilities.com/spreadsheet/json-csv-converter.html
+
+## Convert Files
+- Image Format Converter: Convert HEIC, PNG, JPG, WebP, and AVIF photos to PNG, JPG, or WebP. — https://niftyutilities.com/convert/image-format-converter.html
+- Image Compressor: Shrink JPG, PNG, and WebP file sizes with a quality slider and a live before-and-after comparison. — https://niftyutilities.com/convert/image-compressor.html
+- Image Resizer: Resize images to exact pixels, a percentage, or common social-media sizes. — https://niftyutilities.com/convert/image-resizer.html
+- Images to PDF Converter: Combine JPG, PNG, and WebP images into one PDF with selectable page size. — https://niftyutilities.com/convert/images-to-pdf.html
+- PDF Merger & Splitter: Merge PDFs into one file, or pull out the pages you need from a single PDF. — https://niftyutilities.com/convert/pdf-merge-split.html
+- PDF to Image Converter: Render every page of a PDF as a downloadable PNG or JPG image. — https://niftyutilities.com/convert/pdf-to-images.html
+- PDF & Word Text Extractor: Pull clean text out of PDF and DOCX files with instant word and character counts. — https://niftyutilities.com/convert/pdf-word-text-extractor.html
+- Markdown to HTML Converter: Convert Markdown to clean HTML with a live preview, or turn HTML back into Markdown. — https://niftyutilities.com/convert/markdown-html-converter.html
+- SVG to PNG Converter: Rasterize an SVG to PNG at any size, or generate a full favicon size set. — https://niftyutilities.com/convert/svg-to-png-converter.html
+- EXIF Viewer & Remover: See the hidden metadata in a photo — including GPS location — and download a clean copy. — https://niftyutilities.com/convert/exif-viewer-remover.html
+- Audio Converter & Trimmer: Convert audio files to MP3 or WAV and trim the start and end. — https://niftyutilities.com/convert/audio-converter.html
+- CSV to Excel Converter: Turn one or more CSV files into a downloadable Excel workbook. — https://niftyutilities.com/convert/csv-to-excel-converter.html
+
+## Everyday Calculators
+- Percentage Calculator: Work out X% of Y, what percent one number is of another, and percent change. — https://niftyutilities.com/calculators/percentage-calculator.html
+- Age Calculator: Find an exact age in years, months, and days, plus weeks, days, and the next birthday. — https://niftyutilities.com/calculators/age-calculator.html
+- Date Calculator: Count days between dates, add or subtract time, or count business days. — https://niftyutilities.com/calculators/date-calculator.html
+- Tip Calculator: Split a bill, set a tip percentage, and get the per-person total with optional rounding. — https://niftyutilities.com/calculators/tip-calculator.html
+- Loan & Mortgage Calculator: Estimate a monthly payment, total interest, and a full amortization schedule. — https://niftyutilities.com/calculators/loan-payment-calculator.html
+- Salary to Hourly Calculator: Convert between hourly, weekly, monthly, and annual pay from any starting figure. — https://niftyutilities.com/calculators/salary-to-hourly-calculator.html
+- BMI Calculator: Estimate body mass index from height and weight in metric or imperial units. — https://niftyutilities.com/calculators/bmi-calculator.html
+- GPA Calculator: Add your courses, grades, and credits for a weighted and unweighted GPA. — https://niftyutilities.com/calculators/gpa-calculator.html
+- Pregnancy Due Date Calculator: Estimate a due date and current week from a last period, conception, or IVF date. — https://niftyutilities.com/calculators/due-date-calculator.html
+- Time Zone Meeting Planner: Compare one meeting time across several time zones with daylight-saving handled. — https://niftyutilities.com/calculators/time-zone-meeting-planner.html
+
+## Documents
+- Bill of Sale Generator: Create a printable general-purpose bill of sale. — https://niftyutilities.com/documents/bill-of-sale-generator.html
+- Rent Receipt Generator: Create a clean receipt for a rent payment. — https://niftyutilities.com/documents/rent-receipt-generator.html
+- Mileage Log Generator: Build and export a mileage log for business trips. — https://niftyutilities.com/documents/mileage-log-generator.html
+- Equipment Inventory Generator: Record equipment, serial numbers, locations, and values. — https://niftyutilities.com/documents/equipment-inventory-generator.html
+- Invoice Number Generator: Generate sequential, dated, or random invoice numbers. — https://niftyutilities.com/documents/invoice-number-generator.html
+- Business Asset Register: Create a downloadable register of business assets. — https://niftyutilities.com/documents/business-asset-register.html
+- Home Inventory Generator: Catalog household belongings and estimated replacement values. — https://niftyutilities.com/documents/home-inventory-generator.html
+- Estate Inventory Worksheet: Organize estate assets, debts, accounts, and notes. — https://niftyutilities.com/documents/estate-inventory-worksheet.html
+- Affidavit Generator: Draft a basic affidavit worksheet for review and notarization. — https://niftyutilities.com/documents/affidavit-generator.html
+- Printable Receipt Generator: Create a simple printable receipt for a payment or sale. — https://niftyutilities.com/documents/printable-receipt-generator.html
+
+## Homeowner / Life
+- Rent vs Buy Calculator: Compare estimated monthly and long-term renting and buying costs. — https://niftyutilities.com/homeowner/rent-vs-buy-calculator.html
+- Lease vs Buy Calculator: Compare the estimated net cost of leasing and buying a vehicle. — https://niftyutilities.com/homeowner/lease-vs-buy-calculator.html
+- Real Cost of Owning a Pool: Estimate annual pool chemicals, energy, service, and repair costs. — https://niftyutilities.com/homeowner/real-cost-of-owning-a-pool.html
+- Real Cost of Owning a Boat: Estimate financing, fuel, storage, insurance, and maintenance. — https://niftyutilities.com/homeowner/real-cost-of-owning-a-boat.html
+- Real Cost of Owning an RV: Estimate financing, campsites, fuel, storage, and maintenance. — https://niftyutilities.com/homeowner/real-cost-of-owning-an-rv.html
+- Real Cost of Owning a Horse: Estimate annual boarding, feed, farrier, vet, and training costs. — https://niftyutilities.com/homeowner/real-cost-of-owning-a-horse.html
+- Real Cost of Owning a Dog: Estimate annual food, vet, grooming, insurance, and boarding costs. — https://niftyutilities.com/homeowner/real-cost-of-owning-a-dog.html
+- Real Cost of Owning a Cat: Estimate annual food, litter, vet, and supply costs for a cat. — https://niftyutilities.com/homeowner/real-cost-of-owning-a-cat.html
+- Real Cost of Owning a Hot Tub: Estimate annual energy, chemicals, water, and service costs. — https://niftyutilities.com/homeowner/real-cost-of-owning-a-hot-tub.html
+- Real Cost of Owning a Car: Estimate financing, fuel, insurance, maintenance, and registration costs. — https://niftyutilities.com/homeowner/real-cost-of-owning-a-car.html
+- Real Cost of Raising Backyard Chickens: Estimate annual feed, bedding, health, and coop costs for a flock. — https://niftyutilities.com/homeowner/real-cost-of-raising-backyard-chickens.html
+- Real Cost of Lawn Care: Estimate annual mowing, fertilizer, irrigation, and equipment costs. — https://niftyutilities.com/homeowner/real-cost-of-lawn-care.html
+- Real Cost of Owning a Septic System: Estimate annual pumping, inspection, repair, and drainfield reserve costs. — https://niftyutilities.com/homeowner/real-cost-of-owning-a-septic-system.html
+- Real Cost of Owning a Motorcycle: Estimate financing, fuel, insurance, tires, gear, and registration costs. — https://niftyutilities.com/homeowner/real-cost-of-owning-a-motorcycle.html
+- Solar Panel Payback Calculator: Estimate net system cost after incentives, annual savings, and payback period. — https://niftyutilities.com/homeowner/solar-panel-payback-calculator.html
+- Real Cost of Owning a Rental Property: Estimate mortgage, operating costs, vacancy, and annual rental cash flow. — https://niftyutilities.com/homeowner/real-cost-of-owning-a-rental-property.html
+- Real Cost of Owning an Electric Car: Estimate financing, charging, insurance, tires, maintenance, and registration costs. — https://niftyutilities.com/homeowner/real-cost-of-owning-an-electric-car.html
+- Real Cost of Owning a Jet Ski: Estimate annual storage, fuel, insurance, winterization, and registration costs. — https://niftyutilities.com/homeowner/real-cost-of-owning-a-jet-ski.html
+- Real Cost of Owning a Second Home: Estimate mortgage, property tax, insurance, utilities, upkeep, and travel costs. — https://niftyutilities.com/homeowner/real-cost-of-owning-a-second-home.html
+- Real Cost of Owning a Classic Car: Estimate agreed-value insurance, storage, upkeep, and appreciation for a collector car. — https://niftyutilities.com/homeowner/real-cost-of-owning-a-classic-car.html
+- Real Cost of Owning a Vacation Rental: Estimate mortgage, operating costs, platform fees, and net short-term rental income. — https://niftyutilities.com/homeowner/real-cost-of-owning-a-vacation-rental.html
+- Moving Cost Estimator: Estimate truck, movers, mileage, supplies, lodging, and other costs. — https://niftyutilities.com/homeowner/moving-cost-estimator.html
+- Roommate Expense Splitter: Split shared expenses evenly or by custom percentages. — https://niftyutilities.com/homeowner/roommate-expense-splitter.html
+- Home Maintenance Budget Calculator: Build an annual maintenance reserve from home value, age, and systems. — https://niftyutilities.com/homeowner/home-maintenance-budget-calculator.html
+- Property Tax Estimator: Estimate annual and monthly property tax from assessed value and rate. — https://niftyutilities.com/homeowner/property-tax-estimator.html
+- Property Tax Appeal Estimator: Gauge appeal success odds and tax savings from your assessment, purchase price, and comparable homes. — https://niftyutilities.com/homeowner/property-tax-appeal-estimator.html
+- Vacation Budget Planner: Plan transportation, lodging, food, activities, and contingency spending. — https://niftyutilities.com/homeowner/vacation-budget-planner.html
+
+## Business
+- Lead Value Calculator: Estimate the expected revenue and profit value of each lead. — https://niftyutilities.com/business/lead-value-calculator.html
+- Customer Lifetime Value Calculator: Estimate customer value using revenue, margin, churn, and acquisition cost. — https://niftyutilities.com/business/customer-lifetime-value-calculator.html
+- Cost of Missed Calls Calculator: Estimate revenue lost when customer calls go unanswered. — https://niftyutilities.com/business/cost-of-missed-calls-calculator.html
+- Cost of Employee Turnover Calculator: Estimate recruiting, vacancy, training, and productivity costs. — https://niftyutilities.com/business/cost-of-employee-turnover-calculator.html
+- Hourly Rate Calculator: Turn income goals and business costs into a sustainable hourly rate. — https://niftyutilities.com/business/hourly-rate-calculator.html
+- Profit Margin Calculator: Calculate gross profit, margin, markup, and target sale price. — https://niftyutilities.com/business/profit-margin-calculator.html
+- Break-Even Calculator: Find the units and revenue needed to cover fixed costs. — https://niftyutilities.com/business/break-even-calculator.html
+- Job Cost Calculator: Calculate labor, materials, overhead, markup, and job price. — https://niftyutilities.com/business/job-cost-calculator.html
+- Service Pricing Calculator: Price a service from time, costs, overhead, and desired margin. — https://niftyutilities.com/business/service-pricing-calculator.html
+- Sales Commission Calculator: Calculate tiered or flat sales commissions. — https://niftyutilities.com/business/sales-commission-calculator.html
+
+## Government & Deadlines
+- Social Security Claiming Age Calculator: Compare a planned claiming age with full retirement age and estimate the monthly adjustment. — https://niftyutilities.com/government/social-security-claiming-age-calculator.html
+- Required Minimum Distribution Calculator: Estimate an owner RMD using the IRS Uniform Lifetime Table and a prior year-end balance. — https://niftyutilities.com/government/rmd-calculator.html
+- Tax Refund Timing Estimator: Build a typical federal refund processing window from the return type and accepted date. — https://niftyutilities.com/government/tax-refund-timing-estimator.html
+- FMLA Eligibility Calculator: Screen the four basic federal employee-eligibility requirements for FMLA leave. — https://niftyutilities.com/government/fmla-eligibility-calculator.html
+- Naturalization Residency Date Calculator: Estimate the 90-day early-filing date and screen residence and physical-presence inputs. — https://niftyutilities.com/government/naturalization-residency-date-calculator.html
+- I-94 Admit Until Date Calculator: Compare a planned departure or current date with a date-certain I-94 admission record. — https://niftyutilities.com/government/i94-overstay-date-calculator.html
+- Small Claims Deadline Calculator: Apply a locally verified limitation period and personal safety margin to a claim date. — https://niftyutilities.com/government/small-claims-deadline-calculator.html
+
+## Weirdly Useful
+- Screenshot Measurement Calculator: Draw on a photo, set one known length, and estimate wall lengths, dimensions, and floor area. — https://niftyutilities.com/useful/screenshot-measurement-calculator.html
+- Receipt Scanner & Warranty Tracker: Scan a receipt, capture the purchase, and create a warranty expiration reminder for your calendar. — https://niftyutilities.com/useful/receipt-warranty-tracker.html
+- Screenshot to CSV: Extract text from a screenshot and arrange detected lines as CSV. — https://niftyutilities.com/useful/screenshot-to-csv.html
+- Screenshot Table Extractor: Use in-browser OCR to turn a table image into editable rows. — https://niftyutilities.com/useful/screenshot-table-extractor.html
+- Image Dimensions Inspector: Inspect pixel size, aspect ratio, file type, and file size. — https://niftyutilities.com/useful/image-dimensions-inspector.html
+- Bulk File Renamer: Preview cleaned, numbered filenames and download renamed copies. — https://niftyutilities.com/useful/bulk-file-renamer.html
+- Filename Cleaner: Remove clutter, normalize spacing, and standardize filename casing. — https://niftyutilities.com/useful/filename-cleaner.html
+- Duplicate Photo Detector: Find exact duplicate images using local file hashes. — https://niftyutilities.com/useful/duplicate-photo-detector.html
+- QR Batch Generator: Generate multiple downloadable QR codes from lines of text. — https://niftyutilities.com/useful/qr-batch-generator.html
+- Barcode Generator: Generate a printable CODE128 barcode in the browser. — https://niftyutilities.com/useful/barcode-generator.html
+- UPC Validator: Validate UPC-A check digits or calculate a missing check digit. — https://niftyutilities.com/useful/upc-validator.html
+- VIN Decoder: Validate a VIN and decode its year and basic structure locally. — https://niftyutilities.com/useful/vin-decoder.html
+
+## Quizzes & Tests
+- IQ Test: Estimate your reasoning ability with an original, timed test spanning pattern, number, verbal, and spatial puzzles. — https://niftyutilities.com/quizzes/iq-test.html
+- Typing Speed Test: Type a passage and measure your live WPM and accuracy in 15, 30, or 60 second modes — nothing saved. — https://niftyutilities.com/quizzes/typing-speed-test.html
+- Reaction Time Test: Click the moment the pad turns green across five rounds to measure your average reaction time in milliseconds. — https://niftyutilities.com/quizzes/reaction-time-test.html
+- Click Speed Test: Click a pad as fast as you can in 5, 10, or 30 seconds to find your clicks-per-second (CPS) score. — https://niftyutilities.com/quizzes/click-speed-test.html
+- Memory Test: See how many digits your working memory can hold with a progressive digit-span recall test. — https://niftyutilities.com/quizzes/memory-test.html
+- Color Blindness Test: Take a free at-home Ishihara-style red-green color-vision screening with plates drawn fresh in your browser. — https://niftyutilities.com/quizzes/color-blindness-test.html
+- Love Calculator: Enter two names for an instant, just-for-fun compatibility score — the same pair always gives the same result. — https://niftyutilities.com/quizzes/love-calculator.html
+- Personality Type Test: Find your dominant personality type and your affinity for every type with an original color-style profiler. — https://niftyutilities.com/quizzes/personality-type-test.html
+- Zodiac Compatibility: See how any two star signs work together, with an in-depth strengths breakdown and a few things to watch. — https://niftyutilities.com/quizzes/zodiac-compatibility.html

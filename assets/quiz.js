@@ -58,7 +58,10 @@
   function wireShare(text) {
     const bar = root.querySelector(".share-bar");
     if (!bar) return;
-    const url = location.origin + location.pathname;
+    // Shareable result permalink: encode the result text into the URL hash so
+    // the link itself carries the result. Opening it shows a "shared result"
+    // banner (see showSharedResult) above the quiz.
+    const url = location.origin + location.pathname + "#r=" + encodeURIComponent(text);
     const full = `${text} ${url}`;
     const enc = encodeURIComponent;
     const open = (u) => window.open(u, "_blank", "noopener,noreferrer,width=680,height=560");
@@ -94,6 +97,29 @@
     try { document.execCommand("copy"); done(); } catch (_) { /* clipboard unavailable */ }
     ta.remove();
   }
+
+  // If the page was opened from a shared result permalink (#r=<encoded result>),
+  // show a banner above the tool with that result. Decoded text goes in via
+  // textContent (never innerHTML), so a crafted link can't inject markup.
+  function showSharedResult() {
+    const match = location.hash.match(/(?:^#|&)r=([^&]+)/);
+    if (!match) return;
+    let text;
+    try { text = decodeURIComponent(match[1]); } catch (_) { return; }
+    if (!text.trim()) return;
+    const banner = document.createElement("div");
+    banner.className = "shared-result";
+    const label = document.createElement("strong");
+    label.textContent = "A shared result";
+    const body = document.createElement("p");
+    body.textContent = text;
+    const cta = document.createElement("p");
+    cta.className = "shared-result-cta";
+    cta.textContent = "Curious how you compare? Take the test below to see your own result.";
+    banner.append(label, body, cta);
+    root.parentNode.insertBefore(banner, root);
+  }
+  showSharedResult();
 
   if (slug === "iq-test") renderIqTest();
   else if (slug === "personality-type-test") renderPersonalityTest();

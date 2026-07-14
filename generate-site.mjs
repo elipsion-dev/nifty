@@ -1504,12 +1504,13 @@ const header = (prefix = "") => `
 
 const footer = (prefix = "") => `
   <footer class="site-footer">
-    <div><strong>${SITE_NAME}</strong><br><span>Everything runs in your browser. We never see your data and can't save it.</span></div>
-    <div class="footer-links"><a href="${prefix}about.html">About</a><a href="${prefix}privacy.html">Privacy</a><a href="${prefix}terms.html">Terms</a><a href="${prefix}contact.html">Contact</a></div>
+    <div><strong>${SITE_NAME}</strong><br><span>Everything runs in your browser. We never see your data and can't save it.</span><br><a class="footer-badge" href="${prefix}promise.html"><span class="status-light"></span>All data stays on your device</a></div>
+    <div class="footer-links"><a href="${prefix}about.html">About</a><a href="${prefix}promise.html">Our promise</a><a href="${prefix}privacy.html">Privacy</a><a href="${prefix}terms.html">Terms</a><a href="${prefix}contact.html">Contact</a></div>
   </footer>`;
 
-const page = ({ title, description, body, pathname, prefix = "", scripts = "", pageType = "WebPage", extraSchema = [], indexable = true, titleTag }) => {
+const page = ({ title, description, body, pathname, prefix = "", scripts = "", pageType = "WebPage", extraSchema = [], indexable = true, titleTag, ogImage }) => {
   const canonical = `${SITE_URL}${pathname}`;
+  const socialImage = ogImage || `${SITE_URL}/assets/brand/nifty-utilities-social-card.png`;
   // titleTag, when provided, is the verbatim <title>/social title (no brand suffix appended).
   const metaTitle = titleTag || `${title} | ${SITE_NAME}`;
   const schema = {
@@ -1567,14 +1568,14 @@ const page = ({ title, description, body, pathname, prefix = "", scripts = "", p
   <meta property="og:title" content="${escapeHtml(metaTitle)}">
   <meta property="og:description" content="${escapeHtml(description)}">
   <meta property="og:url" content="${canonical}">
-  <meta property="og:image" content="${SITE_URL}/assets/brand/nifty-utilities-social-card.png">
+  <meta property="og:image" content="${socialImage}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="${SITE_NAME} toolbox logo">
+  <meta property="og:image:alt" content="${escapeHtml(ogImage ? `${title} — ${SITE_NAME}` : `${SITE_NAME} toolbox logo`)}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${escapeHtml(metaTitle)}">
   <meta name="twitter:description" content="${escapeHtml(description)}">
-  <meta name="twitter:image" content="${SITE_URL}/assets/brand/nifty-utilities-social-card.png">
+  <meta name="twitter:image" content="${socialImage}">
   <title>${escapeHtml(metaTitle)}</title>
   <link rel="canonical" href="${canonical}">
   <link rel="alternate" hreflang="en-US" href="${canonical}">
@@ -1601,6 +1602,80 @@ const page = ({ title, description, body, pathname, prefix = "", scripts = "", p
 </html>`;
 };
 
+// FAQ. Every tool's article already ends in a visible "Frequently asked
+// questions" section (<h3> question / <p> answer pairs). extractFaq() harvests
+// those into structured [{q, a}] pairs so we can emit FAQPage JSON-LD that
+// mirrors the on-page text exactly — no duplicate visible block, no authoring.
+// faqSection() remains available to render a visible block for any future tool
+// that supplies an authored `faq` array in its meta but has no article FAQ.
+const normalizeFaq = (faq) =>
+  (Array.isArray(faq) ? faq : []).filter((item) => item && item.q && item.a);
+
+const stripTags = (html) => html
+  .replace(/<[^>]+>/g, " ")
+  .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+  .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&nbsp;/g, " ")
+  .replace(/\s+/g, " ")
+  .trim();
+
+// Pull the <h3>/<p> pairs out of an article's "Frequently asked questions"
+// <h2> section. Returns [] when the article has no such section.
+const extractFaq = (html) => {
+  const heading = html.match(/<h2[^>]*>\s*Frequently asked questions\s*<\/h2>/i);
+  if (!heading) return [];
+  let region = html.slice(heading.index + heading[0].length);
+  const nextH2 = region.search(/<h2[\s>]/i);
+  if (nextH2 >= 0) region = region.slice(0, nextH2);
+  const items = [];
+  // Layout A (most tools): <h3>question</h3> followed by one or more <p>answers.
+  const pair = /<h3[^>]*>([\s\S]*?)<\/h3>([\s\S]*?)(?=<h3[\s>]|$)/gi;
+  let match;
+  while ((match = pair.exec(region))) {
+    const q = stripTags(match[1]);
+    const a = [...match[2].matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi)]
+      .map((p) => stripTags(p[1]))
+      .filter(Boolean)
+      .join(" ");
+    if (q && a) items.push({ q, a });
+  }
+  if (items.length) return items;
+  // Layout B (quizzes): <p><strong>question?</strong> answer</p> per Q&A.
+  const inline = /<p[^>]*>\s*<strong>([\s\S]*?)<\/strong>([\s\S]*?)<\/p>/gi;
+  while ((match = inline.exec(region))) {
+    const q = stripTags(match[1]);
+    const a = stripTags(match[2]);
+    if (q && a) items.push({ q, a });
+  }
+  return items;
+};
+
+const faqSection = (faq) => {
+  const items = normalizeFaq(faq);
+  if (!items.length) return "";
+  return `
+                <section class="tool-faq" aria-labelledby="faq-heading">
+                  <h2 id="faq-heading">Frequently asked questions</h2>${items.map(({ q, a }) => `
+                  <div class="faq-item">
+                    <h3>${escapeHtml(q)}</h3>
+                    <p>${escapeHtml(a)}</p>
+                  </div>`).join("")}
+                </section>`;
+};
+
+const faqSchema = (faq, url) => {
+  const items = normalizeFaq(faq);
+  if (!items.length) return [];
+  return [{
+    "@type": "FAQPage",
+    "@id": `${url}#faq`,
+    mainEntity: items.map(({ q, a }) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a }
+    }))
+  }];
+};
+
 const toolCards = (tools, prefix = "../") => tools.map(([slug, name, description]) => `
   <a class="tool-card" href="${prefix}${slug}.html">
     <span class="tool-arrow" aria-hidden="true">↗</span>
@@ -1612,6 +1687,19 @@ const toolCards = (tools, prefix = "../") => tools.map(([slug, name, description
 const FEATURED_QUIZ_SLUGS = ["iq-test", "typing-speed-test", "reaction-time-test", "love-calculator"];
 
 const toolBySlug = new Map(allTools.map((tool) => [tool.slug, tool]));
+
+// Tools that specifically handle real-world, messy tabular input (currency
+// symbols, stray whitespace, blank rows, mismatched columns). They get a
+// "Built for real, messy CSVs" capability badge in the hero.
+const messyCsvTools = new Set([
+  "bank-statement-cleaner", "excel-to-csv-cleaner", "remove-duplicate-rows",
+  "merchant-name-normalizer", "personal-spending-categorizer", "credit-card-statement-analyzer",
+  "csv-bank-format-converter", "column-mapper", "delimiter-converter",
+  "compare-two-csvs", "duplicate-transaction-finder"
+]);
+for (const slug of messyCsvTools) {
+  if (!toolBySlug.has(slug)) throw new Error(`messyCsvTools slug "${slug}" is not a registered tool`);
+}
 
 // Curated cross-category "related tools" pairs. Same-category siblings already get a
 // full link mesh, so only list genuinely related tools that live in a DIFFERENT
@@ -1731,6 +1819,29 @@ const relatedToolsSection = (category, currentSlug) => {
               </section>`;
 };
 
+// Tool-chaining CTA: a single, prominent "Next step" link shown right under the
+// tool workspace. Picks the most-relevant curated cross-link (first entry in
+// relatedBySlug), falling back to the first same-category sibling. Turns one
+// tool-use into the start of a workflow.
+const nextStepCta = (category, slug) => {
+  const related = [...(relatedBySlug.get(slug) || [])];
+  let target = related.length ? toolBySlug.get(related[0]) : null;
+  if (!target) {
+    const sibling = category.tools.find(([s]) => s !== slug);
+    target = sibling ? toolBySlug.get(sibling[0]) : null;
+  }
+  if (!target) return "";
+  const href = target.category === category.slug
+    ? `${target.slug}.html`
+    : `../${target.category}/${target.slug}.html`;
+  return `
+              <a class="next-step" href="${href}">
+                <span class="next-step-label">Next step</span>
+                <span class="next-step-name">${escapeHtml(target.name)} <span class="next-step-arrow" aria-hidden="true">→</span></span>
+                <span class="next-step-desc">${escapeHtml(target.description)}</span>
+              </a>`;
+};
+
 fs.mkdirSync("assets", { recursive: true });
 
 const homeBody = `
@@ -1750,6 +1861,7 @@ const homeBody = `
       </div>
     </div>
   </section>
+  <section id="recent-tools" class="recent-tools" aria-label="Recently used tools" hidden></section>
   ${adWide}
   <section class="proof-strip" aria-label="Site trust points">
     <div class="proof-item">
@@ -1914,12 +2026,25 @@ for (const category of categories) {
     const splitIndex = article.indexOf("<!--more-->");
     const introHtml = splitIndex >= 0 ? `<section class="tool-intro">${expandArticleSvgs(article.slice(0, splitIndex))}</section>` : "";
     const bodyHtml = expandArticleSvgs(splitIndex >= 0 ? article.slice(splitIndex + "<!--more-->".length) : article);
+    // Harvest the article's existing "Frequently asked questions" section into
+    // FAQPage JSON-LD. If a tool has no article FAQ but supplies an authored
+    // meta.faq, render a visible block from that instead. The two are mutually
+    // exclusive so the visible FAQ is never duplicated.
+    const articleFaq = extractFaq(article);
+    const authoredFaq = normalizeFaq(meta.faq);
+    const faq = articleFaq.length ? articleFaq : authoredFaq;
+    const authoredFaqSection = articleFaq.length ? "" : faqSection(authoredFaq);
+    // Per-tool OG image (built by scripts/generate-og-images.mjs). Falls back to
+    // the generic social card when the tool's image hasn't been rendered yet.
+    const ogImagePath = path.join("assets", "og", `${slug}.jpg`);
+    const ogImage = fs.existsSync(ogImagePath) ? `${SITE_URL}/assets/og/${slug}.jpg` : undefined;
     fs.writeFileSync(path.join(category.slug, `${slug}.html`), page({
       title: `Free ${name}`,
       titleTag: meta.titleTag || seoTitle(name, description),
       description: meta.metaDescription || `Free online ${name.toLowerCase()}. ${description} No sign-up; processing stays in your browser.`,
       pathname: `/${category.slug}/${slug}.html`,
       prefix: "../",
+      ogImage,
       extraSchema: [
         {
           "@type": "WebApplication",
@@ -1945,7 +2070,8 @@ for (const category of categories) {
             { "@type": "ListItem", position: 2, name: category.name, item: `${SITE_URL}/${category.slug}/` },
             { "@type": "ListItem", position: 3, name, item: `${SITE_URL}/${category.slug}/${slug}.html` }
           ]
-        }
+        },
+        ...faqSchema(faq, `${SITE_URL}/${category.slug}/${slug}.html`)
       ],
       body: `
         <main id="main">
@@ -1954,15 +2080,16 @@ for (const category of categories) {
             <p class="eyebrow">${escapeHtml(category.name)}</p>
             <h1>${escapeHtml(name)}</h1>
             <p>${escapeHtml(description)}</p>
-            <div class="local-badge"><span class="status-light"></span>No data sent or stored</div>
+            <div class="hero-badges"><div class="local-badge"><span class="status-light"></span>No data sent or stored</div>${messyCsvTools.has(slug) ? `<div class="messy-badge">Built for real, messy CSVs</div>` : ""}</div>
           </section>
           <div class="tool-layout">
             <article class="tool-page${layoutClass}"${accentStyle}>
               ${heroTop}
               ${introHtml}
-              <section id="tool-root" class="tool-workspace" data-tool="${slug}">
+              <section id="tool-root" class="tool-workspace" data-tool="${slug}" data-tool-name="${escapeHtml(name)}" data-tool-cat="${escapeHtml(category.name)}">
                 <div class="loading-state">Loading tool…</div>
               </section>
+              ${nextStepCta(category, slug)}
               ${heroBottom}
               ${relatedToolsSection(category, slug)}
               <section class="tool-help">
@@ -1971,6 +2098,7 @@ for (const category of categories) {
                   <p>${SITE_NAME} has no backend server, database, user accounts, or endpoint capable of receiving your tool inputs. Files and entries are processed inside your browser. We cannot view, capture, or store them.</p>
                 </div>
                 ${bodyHtml}
+                ${authoredFaqSection}
                 <h2>Important</h2>
                 <p>${meta.disclaimer || "This tool provides estimates and general-purpose documents, not financial, tax, legal, or professional advice. Verify important results before relying on them."}</p>
                 <h2>Support</h2>
@@ -1991,7 +2119,13 @@ fs.writeFileSync("privacy.html", page({
   title: "Privacy",
   description: `${SITE_NAME} privacy information and local browser processing policy.`,
   pathname: "/privacy.html",
-  body: `<main id="main" class="prose-page"><p class="eyebrow">${SITE_NAME}</p><h1>Your data never reaches us.</h1><p>${SITE_NAME} is a static website. It has no application backend, database, user accounts, upload service, or form submission endpoint. There is no ${SITE_NAME} system capable of receiving, viewing, capturing, or storing the files and information you enter into these tools.</p><p>Calculations and file processing happen inside your web browser on your device. Your inputs are not transmitted to ${SITE_NAME}.</p><h2>Local storage</h2><p>The Net Worth Tracker can save information in your browser's local storage so it remains available on that device. That information still does not leave your browser. You can remove it with the tool's clear button or your browser settings.</p><h2>Downloaded libraries</h2><p>A few advanced tools download software libraries from a public content delivery network. The libraries run in your browser; ${SITE_NAME} does not send your tool inputs or files to those providers.</p>${privacyAnalyticsSection}</main>`
+  body: `<main id="main" class="prose-page"><p class="eyebrow">${SITE_NAME}</p><h1>Your data never reaches us.</h1><p>${SITE_NAME} is a static website. It has no application backend, database, user accounts, upload service, or form submission endpoint. There is no ${SITE_NAME} system capable of receiving, viewing, capturing, or storing the files and information you enter into these tools.</p><p>Calculations and file processing happen inside your web browser on your device. Your inputs are not transmitted to ${SITE_NAME}.</p><h2>Local storage</h2><p>The Net Worth Tracker can save information in your browser's local storage so it remains available on that device. That information still does not leave your browser. You can remove it with the tool's clear button or your browser settings.</p><h2>Downloaded libraries</h2><p>A few advanced tools download software libraries from a public content delivery network. The libraries run in your browser; ${SITE_NAME} does not send your tool inputs or files to those providers.</p><h2>Security and script policy</h2><p>${SITE_NAME} loads a deliberately small, fixed set of code, and none of it has any channel back to us for your data. This is the complete list of what any page is allowed to load:</p><ul><li><strong>Our own files</strong> (scripts, styles, images) served from <code>niftyutilities.com</code>.</li><li><strong>Google Analytics and Google AdSense</strong> — from <code>googletagmanager.com</code> and <code>googlesyndication.com</code> — for anonymous traffic measurement and the ads that keep the tools free. They load with consent controls and operate at the page level; they never receive the contents of what you type, upload, or calculate.</li><li><strong>One code library host</strong>, <code>cdn.jsdelivr.net</code>, used only by a few advanced tools (for example PDF and audio conversion) to load open-source libraries that then run entirely in your browser.</li></ul><p>There are no other third-party scripts, no external trackers beyond the two Google services above, and no web fonts or beacons. Expressed as a Content Security Policy, the intended posture is:</p><pre class="code-block">default-src 'self';
+script-src 'self' https://www.googletagmanager.com https://pagead2.googlesyndication.com https://cdn.jsdelivr.net;
+connect-src 'self' https://www.google-analytics.com;
+img-src 'self' data: https:;
+style-src 'self' 'unsafe-inline';
+frame-src https://googleads.g.doubleclick.net;
+object-src 'none'; base-uri 'self'</pre><p>Because the site is hosted as static files, this policy is published here rather than sent as a server header — but you can verify it holds at any time in your browser's developer tools under the Network tab: no request ever carries your tool input off your device.</p>${privacyAnalyticsSection}</main>`
 }));
 
 fs.writeFileSync("about.html", page({
@@ -2014,6 +2148,9 @@ fs.writeFileSync("about.html", page({
     <h1>Useful tools that keep your data on your device.</h1>
     <p>${SITE_NAME} is a growing collection of free, browser-based utilities for the small jobs that come up in everyday financial, home, business, and document work: cleaning a messy bank-statement CSV, estimating what a boat or a dog truly costs per year, splitting expenses with roommates, generating a printable bill of sale, or checking a filing deadline. Every tool runs entirely inside your web browser.</p>
 
+    <h2>For when you almost opened Excel — but didn't want to</h2>
+    <p>Most of these tools live in the gap between "too small to open a big app for" and "too annoying to do by hand." You almost launched Excel to dedupe a list, almost fired up an accounting suite to tidy one statement, almost installed something to resize an image — and then didn't want the friction. ${SITE_NAME} is the quiet toolbox for exactly those moments: open a page, do the one thing, close the tab.</p>
+
     <h2>Why this site exists</h2>
     <p>Most "free online tools" ask you to upload your spreadsheet, your statement, or your photo to a server you know nothing about. For the kinds of files these tools handle — bank exports, receipts, personal inventories — that always felt like the wrong trade. ${SITE_NAME} was built around the opposite default: the tool comes to your data, not the other way around. There is no account to create, nothing to install, and no upload step, because there is no server on our side that could receive your files in the first place.</p>
 
@@ -2031,6 +2168,42 @@ fs.writeFileSync("about.html", page({
 
     <h2>Contact</h2>
     <p>Found a problem with a tool, spotted a number that looks off, or have an idea for one we should build? Email ${mailtoLink}. Every message reaches a real person.</p>
+  </main>`
+}));
+
+fs.writeFileSync("promise.html", page({
+  title: "Our Promise",
+  titleTag: `We Will Never — The ${SITE_NAME} Promise`,
+  description: `The ${SITE_NAME} promise: never a login, never an upload, never a tool that sees or stores your data. A plain-language list of the things we will never do.`,
+  pathname: "/promise.html",
+  body: `<main id="main" class="prose-page">
+    <p class="eyebrow">${SITE_NAME}</p>
+    <h1>We will never.</h1>
+    <p>Most "free online tools" quietly cost you something — an account, an upload, an inbox full of email, or your data sold on to someone you never agreed to. ${SITE_NAME} is built on the opposite promise. Here, in plain language, is what we will never do. These are not aspirations; they are baked into how the site is built.</p>
+
+    <h2>We will never require a login or account</h2>
+    <p>There is no sign-up, no password, and no profile. Every tool works the moment the page loads. We could not build an account system into these pages even if we wanted to, because there is no server on our side to hold one.</p>
+
+    <h2>We will never make you upload your files</h2>
+    <p>When you drop a CSV, a bank statement, or a photo into a tool, it is read and processed by code running inside your own browser. The file never travels to us. You can prove it: disconnect from the internet after the page loads and the tools still work.</p>
+
+    <h2>We will never see or store what you enter</h2>
+    <p>${SITE_NAME} is a static website with no application backend, database, or upload endpoint capable of receiving your tool inputs. We have no copy of your numbers, your files, or your results — not because we promise to delete them, but because they never reach us in the first place.</p>
+
+    <h2>We will never sell or broker your data</h2>
+    <p>Selling your tool data is impossible here by design: we never receive it, so there is nothing to sell, share, or hand to a data broker. The one exception people ask about — tools like the Net Worth Tracker that remember figures between visits — save that information only in your own browser's local storage, which you can clear at any time.</p>
+
+    <h2>We will never paywall a tool you're using</h2>
+    <p>No tool is a free trial that later demands payment, and no result is blurred until you subscribe. If a utility is on the site, it is free to use in full, for personal or commercial work.</p>
+
+    <h2>We will never gate a tool behind your email</h2>
+    <p>You will never have to "enter your email to see your result," and we will not throw up exit-intent pop-ups or nag walls to catch you on the way out. The tool is the point; you should be able to use it and leave.</p>
+
+    <h2>What about ads and analytics?</h2>
+    <p>To keep the tools free, some pages show ads and we measure basic, privacy-respecting traffic statistics — and we would rather tell you plainly than pretend otherwise. Those systems load with consent controls and are used only to count visits and keep the lights on. Crucially, they operate at the page level and never receive the contents of what you type, upload, or calculate. Your tool inputs stay between you and your browser. The full detail lives on our <a href="privacy.html">privacy page</a>.</p>
+
+    <h2>What we will always do</h2>
+    <p>Keep the tools fast and free, keep your data on your device, explain what each tool does in plain language, and answer real email from real people. Have a question about any promise on this page? Email ${mailtoLink}.</p>
   </main>`
 }));
 
@@ -2107,6 +2280,7 @@ fs.writeFileSync("404.html", page({
 const publicPaths = [
   "",
   "about.html",
+  "promise.html",
   "privacy.html",
   "terms.html",
   "contact.html",
@@ -2143,6 +2317,10 @@ Allow: /
 Disallow: /content/
 
 Sitemap: ${SITE_URL}/sitemap.xml
+
+# Machine-readable index of interactive tools (2026 tools.txt / tools.json convention):
+# ${SITE_URL}/tools.txt
+# ${SITE_URL}/tools.json
 `);
 
 fs.writeFileSync("site.webmanifest", JSON.stringify({
@@ -2214,6 +2392,105 @@ ${llmsSections}
 - Uploaded files remain in the browser and are not transmitted to ${SITE_NAME}.
 - The Net Worth Tracker may save information only in the visitor's own browser local storage.
 `);
+
+// Machine-readable tool index for AI/LLM crawlers and programmatic clients.
+// tools.json is the structured source of truth; tools.txt is a lean plaintext
+// manifest that points to it and lists every tool URL.
+const toolsIndex = {
+  name: SITE_NAME,
+  url: `${SITE_URL}/`,
+  description: "Free browser-based utilities for CSV/spreadsheet data, personal finance, documents, home and life decisions, business math, images, and everyday tasks.",
+  updated: BUILD_DATE,
+  count: allTools.length,
+  privacy: "Every tool runs locally in the visitor's browser. There is no backend, upload endpoint, database, or account — tool inputs are never transmitted to or stored by the site.",
+  license: "Free to use, no sign-up.",
+  categories: categories.map((category) => ({
+    slug: category.slug,
+    name: category.name,
+    url: `${SITE_URL}/${category.slug}/`,
+    count: category.tools.length
+  })),
+  tools: allTools.map((tool) => ({
+    slug: tool.slug,
+    name: tool.name,
+    description: tool.description,
+    category: tool.category,
+    categoryName: tool.categoryName,
+    url: `${SITE_URL}/${tool.category}/${tool.slug}.html`
+  }))
+};
+fs.writeFileSync("tools.json", JSON.stringify(toolsIndex, null, 2) + "\n");
+
+fs.writeFileSync("tools.txt", `# ${SITE_NAME} — tools.txt
+# Machine-readable index of interactive browser tools. Structured data: ${SITE_URL}/tools.json
+# All tools run locally in the visitor's browser: no uploads, no accounts, no data stored.
+# Updated: ${BUILD_DATE} | ${allTools.length} tools
+
+${categories.map((category) => `## ${category.name}
+${category.tools.map(([slug, name, description]) => `- ${name}: ${description} — ${SITE_URL}/${category.slug}/${slug}.html`).join("\n")}`).join("\n\n")}
+`);
+
+// Service worker: makes the site installable and lets visited tools work
+// offline. Cache is versioned by build date so a deploy fully refreshes it.
+// Navigations are network-first (fresh content wins; cache is the offline
+// fallback); same-origin assets are stale-while-revalidate. Cross-origin
+// requests (Google ads/analytics, CDN libs) are never intercepted.
+fs.writeFileSync("sw.js", `// Generated by generate-site.mjs — do not edit by hand.
+const VERSION = ${JSON.stringify(BUILD_DATE)};
+const CACHE = "nifty-" + VERSION;
+const PRECACHE = ["/", "/offline.html", "/assets/styles.css", "/assets/site.js"];
+
+self.addEventListener("install", (event) => {
+  event.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));
+});
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches.keys()
+      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
+      .then(() => self.clients.claim())
+  );
+});
+
+self.addEventListener("fetch", (event) => {
+  const req = event.request;
+  if (req.method !== "GET") return;
+  const url = new URL(req.url);
+  if (url.origin !== self.location.origin) return; // never touch ads/analytics/CDN
+
+  if (req.mode === "navigate") {
+    event.respondWith(
+      fetch(req)
+        .then((res) => { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); return res; })
+        .catch(() => caches.match(req).then((r) => r || caches.match("/offline.html")))
+    );
+    return;
+  }
+
+  event.respondWith(
+    caches.match(req).then((cached) => {
+      const network = fetch(req)
+        .then((res) => { if (res && res.status === 200) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); } return res; })
+        .catch(() => cached);
+      return cached || network;
+    })
+  );
+});
+`);
+
+fs.writeFileSync("offline.html", page({
+  title: "Offline",
+  description: `${SITE_NAME} is offline.`,
+  pathname: "/offline.html",
+  indexable: false,
+  body: `<main id="main" class="prose-page">
+    <p class="eyebrow">${SITE_NAME}</p>
+    <h1>You're offline.</h1>
+    <p>It looks like your device isn't connected to the internet right now. ${SITE_NAME} is a browser-based toolbox, so any tool page you've already opened will keep working offline — check back to a tool you've used recently.</p>
+    <p>Once you're back online, everything loads normally. Nothing you entered was ever sent anywhere, so there's nothing to recover or resend.</p>
+    <p><a href="/">Return to all tools</a></p>
+  </main>`
+}));
 
 fs.writeFileSync("CNAME", "niftyutilities.com\n");
 fs.writeFileSync(".nojekyll", "");
