@@ -1238,12 +1238,14 @@
     let rafId = null;       // requestAnimationFrame handle for the live stat loop
     let endTimer = null;    // setTimeout that ends the test when time expires
     let input = null;       // the (real, on-screen) input element
+    let onResize = null;    // full-width stage re-measure, removed on teardown
     const onBlur = () => { if (active && input) setTimeout(() => { if (active && input) input.focus(); }, 0); };
 
     function teardown() {
       active = false;
       if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
       if (endTimer !== null) { clearTimeout(endTimer); endTimer = null; }
+      if (onResize) { window.removeEventListener("resize", onResize); onResize = null; }
       if (input) { input.removeEventListener("blur", onBlur); }
       input = null;
     }
@@ -1335,6 +1337,19 @@
 
       input = root.querySelector("#typing-input");
       const stage = root.querySelector("#typing-stage");
+      // Stretch the stage to the full viewport width. Measured rather than done
+      // with a 50vw margin trick because the sidebar leaves the content column
+      // off viewport-center, and clientWidth sidesteps the scrollbar overhang.
+      const fitStage = () => {
+        stage.style.marginLeft = "0px";
+        stage.style.width = "";
+        const left = stage.getBoundingClientRect().left;
+        stage.style.marginLeft = `${-left}px`;
+        stage.style.width = `${document.documentElement.clientWidth}px`;
+      };
+      fitStage();
+      onResize = fitStage;
+      window.addEventListener("resize", onResize);
       // Clicking anywhere in the stage refocuses the input so keystrokes are never lost.
       stage.onclick = () => { if (active && input) input.focus(); };
       input.addEventListener("blur", onBlur);
@@ -1347,11 +1362,15 @@
     }
 
     /* ---- per-character passage markup ---- */
+    // Each word's character spans are grouped in an unbreakable .tw chunk and
+    // spaces are real spaces between chunks, so lines wrap only at word
+    // boundaries — a word is never split across two lines.
     function renderPassage(current) {
       let html = "";
+      let word = "";
+      const flushWord = () => { if (word) { html += `<span class="tw">${word}</span>`; word = ""; } };
       for (let i = 0; i < target.length; i++) {
         const ch = target[i];
-        const shown = ch === " " ? "&nbsp;" : esc(ch);
         let cls = "tc";
         let id = "";
         if (i < current.length) {
@@ -1360,8 +1379,11 @@
           cls += " tc-cur";
           id = ' id="tc-cursor"';
         }
-        html += `<span class="${cls}"${id}>${shown}</span>`;
+        const span = `<span class="${cls}"${id}>${ch === " " ? " " : esc(ch)}</span>`;
+        if (ch === " ") { flushWord(); html += span; }
+        else word += span;
       }
+      flushWord();
       return html;
     }
 
@@ -1396,10 +1418,17 @@
       const passage = document.getElementById("typing-passage");
       if (passage) {
         passage.innerHTML = renderPassage(typed);
-        // Keep the active character visible without disturbing input focus
-        // (the input is a sibling, so scrolling inside the passage is safe).
+        // Keep the active line pinned one line from the top of the window, so
+        // finishing a line scrolls the text up and the upcoming lines are
+        // always in view — the cursor never reaches the bottom edge.
         const cursor = document.getElementById("tc-cursor");
-        if (cursor) cursor.scrollIntoView({ block: "nearest" });
+        if (cursor) {
+          const anchor = cursor.parentElement && cursor.parentElement.classList.contains("tw")
+            ? cursor.parentElement : cursor;
+          const lineH = parseFloat(getComputedStyle(passage).lineHeight) || 36;
+          const want = Math.max(0, anchor.offsetTop - lineH);
+          if (Math.abs(passage.scrollTop - want) > 1) passage.scrollTop = want;
+        }
       }
 
       updateStats();

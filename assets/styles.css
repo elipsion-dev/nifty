@@ -683,14 +683,21 @@ th { background: var(--surface-2); font-size: .7rem; text-transform: uppercase; 
 .typing-stat span { display: block; margin-top: .25rem; font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
 
 .typing-stage { position: relative; }
+/* During the live run the stage breaks out of the content column to span the
+   full viewport width. The width and left offset are set inline by quiz.js
+   (measured, because the sidebar leaves the column off viewport-center). */
+.typing-live .typing-stage { padding-inline: clamp(1.25rem, 4vw, 3.5rem); }
 .typing-passage {
+  position: relative; /* anchors offsetTop for the auto-scroll */
   font: 500 clamp(1.1rem, 2.6vw, 1.4rem)/1.9 ui-monospace, "SFMono-Regular", Consolas, monospace;
   padding: 1.1rem 1.15rem; border: 1px solid var(--line); border-radius: 14px;
   background: var(--surface-2); color: var(--muted);
   user-select: none; -webkit-user-select: none; cursor: text;
-  word-break: break-word; overflow-wrap: break-word; letter-spacing: .01em;
-  max-height: calc(1.9em * 6); overflow-y: auto; scroll-behavior: smooth;
+  letter-spacing: .01em;
+  max-height: calc(1.9em * 6); overflow-y: auto;
 }
+/* Whole words are unbreakable chunks: lines wrap only at the spaces between them. */
+.typing-passage .tw { display: inline-block; white-space: nowrap; }
 .typing-passage .tc { border-radius: 3px; }
 .typing-passage .tc-ok { color: var(--green); }
 .typing-passage .tc-bad { color: var(--red); background: color-mix(in srgb, var(--red) 22%, transparent); }
