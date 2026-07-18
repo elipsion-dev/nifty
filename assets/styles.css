@@ -79,7 +79,8 @@ h2 { letter-spacing: -0.03em; }
 .menu-button { display: none; margin-left: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); padding: .45rem .7rem; }
 .hero {
   position: relative;
-  overflow: hidden;
+  /* No overflow:hidden here — the search-results dropdown must extend past the
+     hero's bottom edge. The hero art (::after) is inset within the bounds anyway. */
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: end;
