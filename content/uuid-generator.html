@@ -1,0 +1,21 @@
+<!--meta {"accent":"#818cf8","script":"text.js","titleTag":"FREE UUID Generator – Bulk v4 UUIDs, Copy or Download","metaDescription":"Completely FREE UUID generator. Create 1 to 1,000 version 4 UUIDs in lowercase, uppercase, braced, or no-dash format — generated locally with cryptographic randomness."} -->
+<p><strong>Completely FREE UUID generator. No signup, generated locally.</strong> Create anywhere from one to a thousand version 4 UUIDs at once, formatted the way your system expects — standard lowercase, uppercase, wrapped in braces, or with the dashes stripped. Copy them individually, copy the whole list, or download it as a text file.</p>
+<!--more-->
+<h2>What a UUID actually is</h2>
+<p>A UUID (universally unique identifier, also called a GUID in Microsoft ecosystems) is a 128-bit value written as 32 hexadecimal digits in a 8-4-4-4-12 pattern, like <code>3f2504e0-4f89-41d3-9a0c-0305e82c3301</code>. Version 4 UUIDs — the kind generated here — are built from 122 random bits, with the remaining six bits fixed to mark the version and variant. Their entire job is to be an identifier you can mint anywhere, with no central authority, and still trust it won't collide with anyone else's.</p>
+{{svg:tag}}
+<h2>Why collisions aren't a practical worry</h2>
+<p>With 122 random bits there are about 5.3 undecillion (5.3 × 10³⁶) possible v4 UUIDs. You would need to generate roughly a billion UUIDs per second for about 85 years to reach even a 50% chance of a single collision. For any real workload — database keys, request IDs, file names, order numbers — the collision probability is so far below the chance of hardware error that it's treated as zero.</p>
+<h2>The format options</h2>
+<p>The canonical form is lowercase with dashes, and it's what most databases, APIs, and specs expect. <strong>Uppercase</strong> matches older Microsoft conventions and some registry contexts. <strong>Braced</strong> (<code>{…}</code>) is the COM/Windows registry style. <strong>No dashes</strong> gives you the raw 32 hex characters, common when a UUID is stored in a fixed-width column or embedded in a URL where dashes are unwelcome. All four are the same 128 bits — only the presentation differs.</p>
+<h2>Where the randomness comes from</h2>
+<p>UUIDs here come from <code>crypto.randomUUID()</code>, the browser's built-in generator backed by cryptographically secure randomness. That matters more than it sounds: naive generators built on <code>Math.random()</code> can produce predictable or colliding IDs under load. Nothing is sent to a server — the list on your screen was created on your machine and exists nowhere else.</p>
+<h2>Typical uses for a batch</h2>
+<p>Seeding test data with realistic primary keys. Pre-allocating IDs for a spreadsheet that will be imported later. Generating correlation IDs for a set of documents or tickets. Filling in a config file that wants one unique token per entry. The download option gives you one UUID per line, which pastes cleanly into spreadsheets and scripts.</p>
+<h2>Frequently asked questions</h2>
+<h3>What's the difference between UUID versions?</h3>
+<p>Version 1 embeds a timestamp and historically the machine's MAC address; version 4 is pure randomness; version 5 is a deterministic hash of a name; version 7 (newer) combines a timestamp with randomness so IDs sort by creation time. Version 4 is the default choice when you just need unique, unguessable identifiers with no embedded information.</p>
+<h3>Are UUIDs safe to expose publicly, like in URLs?</h3>
+<p>Generally yes — a v4 UUID reveals nothing about when or where it was created. But "unguessable" is not "access control": anything sensitive behind a UUID URL should still check that the requester is allowed to see it, rather than relying on the ID staying secret.</p>
+<h3>Is a GUID the same thing as a UUID?</h3>
+<p>Yes. GUID is Microsoft's historical name for the same 128-bit structure. Some Windows tooling prefers uppercase or braces, which is why those format options exist here.</p>

@@ -1,6 +1,6 @@
 # Nifty Utilities: Complete Tool Directory
 
-Nifty Utilities is a free collection of 117 practical web utilities. No account is required. The website has no application backend, upload endpoint, or database capable of receiving tool inputs. Processing happens in the visitor's browser.
+Nifty Utilities is a free collection of 128 practical web utilities. No account is required. The website has no application backend, upload endpoint, or database capable of receiving tool inputs. Processing happens in the visitor's browser.
 
 ## Finance / CSV
 
@@ -154,6 +154,22 @@ Small browser utilities for images, filenames, codes, and awkward one-off jobs.
 - [Barcode Generator](https://niftyutilities.com/useful/barcode-generator.html): Generate a printable CODE128 barcode in the browser.
 - [UPC Validator](https://niftyutilities.com/useful/upc-validator.html): Validate UPC-A check digits or calculate a missing check digit.
 - [VIN Decoder](https://niftyutilities.com/useful/vin-decoder.html): Validate a VIN and decode its year and basic structure locally.
+
+## Text & Generators
+
+Count, convert, compare, and generate — text utilities, passwords, UUIDs, hashes, and timers that run entirely in your browser.
+
+- [Word & Character Counter](https://niftyutilities.com/text/word-counter.html): Count words, characters, sentences, and paragraphs with an instant reading-time estimate.
+- [Case Converter](https://niftyutilities.com/text/case-converter.html): Switch text between UPPERCASE, lowercase, Title Case, sentence case, camelCase, and snake_case.
+- [Text Diff Checker](https://niftyutilities.com/text/text-diff.html): Compare two blocks of text line by line and see exactly what was added, removed, or changed.
+- [JSON Formatter & Validator](https://niftyutilities.com/text/json-formatter.html): Pretty-print, minify, and validate JSON with a clear pointer to the first syntax error.
+- [Password Generator](https://niftyutilities.com/text/password-generator.html): Create strong random passwords with custom length and character sets — generated locally, never sent anywhere.
+- [UUID Generator](https://niftyutilities.com/text/uuid-generator.html): Generate one or many version 4 UUIDs and copy them individually or as a list.
+- [Hash Generator](https://niftyutilities.com/text/hash-generator.html): Compute MD5, SHA-1, SHA-256, and SHA-512 hashes of text or a file, right in your browser.
+- [Random Picker](https://niftyutilities.com/text/random-picker.html): Paste a list of names or options and draw one or more winners at random — fair and instant.
+- [Lorem Ipsum Generator](https://niftyutilities.com/text/lorem-ipsum-generator.html): Generate placeholder paragraphs, sentences, or words for mockups and layouts.
+- [Signature Drawer](https://niftyutilities.com/text/signature-drawer.html): Draw a signature with your mouse or finger and download it as a transparent PNG.
+- [Countdown Timer & Stopwatch](https://niftyutilities.com/text/countdown-timer.html): Run a countdown, stopwatch, or Pomodoro focus timer with an alert when time is up.
 
 ## Quizzes & Tests
 

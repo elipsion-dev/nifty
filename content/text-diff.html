@@ -1,0 +1,21 @@
+<!--meta {"accent":"#a78bfa","script":"text.js","titleTag":"FREE Text Diff Checker – Compare Two Texts Line by Line","metaDescription":"Completely FREE text diff tool. Paste two versions of any text and see added, removed, and unchanged lines highlighted instantly — compared privately in your browser."} -->
+<p><strong>Completely FREE text comparison. No signup, nothing uploaded.</strong> Paste the original text on one side and the changed version on the other, and see every added and removed line highlighted — green for additions, red for removals. It's the same line-by-line comparison programmers use for code, applied to anything: contracts, essays, product descriptions, config files, meeting notes.</p>
+<!--more-->
+<h2>How the comparison works</h2>
+<p>The tool computes a <em>longest common subsequence</em> across the lines of both texts — the same core algorithm behind <code>git diff</code> and other developer tools. It finds the largest set of lines the two versions share in order, then classifies everything else: lines only in the original are marked removed (−), lines only in the changed version are marked added (+). A changed line shows up as a removal plus an addition, which is exactly how professional diff tools present an edit.</p>
+{{svg:scale}}
+<h2>When a line diff is the right tool</h2>
+<p>Line-by-line comparison shines when the text has natural line structure: revised documents pasted from an editor, lists, code, configuration, CSV rows, terms that a counterparty "only changed one thing" in. If someone sends back "the same" contract and you want to know what actually moved, paste both versions and the answer is immediate — no reading two documents side by side hunting for the needle.</p>
+<h2>The ignore options</h2>
+<p>Two checkboxes handle the noise that creates false differences. <strong>Ignore leading/trailing spaces</strong> treats lines as equal if they differ only by indentation or a stray space at the end — useful for text copied from web pages or PDFs, which love to add invisible whitespace. <strong>Ignore letter case</strong> treats "Total" and "total" as the same line. With both on, the diff shows only substantive changes.</p>
+<h2>Reading the result</h2>
+<p>The summary line counts additions and removals; the detail below shows every line in order with its marker. Unchanged lines stay dim so the changes pop. If the two texts are identical (after any ignore options), the tool says so plainly — "no differences found" is often the answer you were hoping to confirm.</p>
+<h2>Privacy matters for this one</h2>
+<p>Text you'd want to diff is often text you wouldn't want uploaded: contracts, offers, unpublished writing. This comparison runs entirely in your browser's memory. The site has no server that could receive the text, and closing the tab discards everything.</p>
+<h2>Frequently asked questions</h2>
+<h3>Can it compare Word documents or PDFs?</h3>
+<p>Not directly — it compares plain text. Copy the text out of the document and paste it in (in Word, Ctrl+A then Ctrl+C). If you need to extract text from a PDF first, the PDF &amp; Word Text Extractor on this site does that locally too.</p>
+<h3>Why does an edited line show as one removed and one added?</h3>
+<p>The comparison is line-level: a line either matches or it doesn't. An edit means the old line disappeared and a new line took its place, so it renders as a − followed by a +. Reading the pair together shows you what changed within the line.</p>
+<h3>Is there a size limit?</h3>
+<p>The comparison table grows with the product of the two line counts, so extremely long texts (thousands of lines on both sides) may be refused to keep the browser responsive. Splitting into sections and comparing chapter by chapter works well for long documents.</p>

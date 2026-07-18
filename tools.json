@@ -2,8 +2,8 @@
   "name": "Nifty Utilities",
   "url": "https://niftyutilities.com/",
   "description": "Free browser-based utilities for CSV/spreadsheet data, personal finance, documents, home and life decisions, business math, images, and everyday tasks.",
-  "updated": "2026-07-13",
-  "count": 117,
+  "updated": "2026-07-18",
+  "count": 128,
   "privacy": "Every tool runs locally in the visitor's browser. There is no backend, upload endpoint, database, or account — tool inputs are never transmitted to or stored by the site.",
   "license": "Free to use, no sign-up.",
   "categories": [
@@ -60,6 +60,12 @@
       "name": "Weirdly Useful",
       "url": "https://niftyutilities.com/useful/",
       "count": 12
+    },
+    {
+      "slug": "text",
+      "name": "Text & Generators",
+      "url": "https://niftyutilities.com/text/",
+      "count": 11
     },
     {
       "slug": "quizzes",
@@ -932,6 +938,94 @@
       "category": "useful",
       "categoryName": "Weirdly Useful",
       "url": "https://niftyutilities.com/useful/vin-decoder.html"
+    },
+    {
+      "slug": "word-counter",
+      "name": "Word & Character Counter",
+      "description": "Count words, characters, sentences, and paragraphs with an instant reading-time estimate.",
+      "category": "text",
+      "categoryName": "Text & Generators",
+      "url": "https://niftyutilities.com/text/word-counter.html"
+    },
+    {
+      "slug": "case-converter",
+      "name": "Case Converter",
+      "description": "Switch text between UPPERCASE, lowercase, Title Case, sentence case, camelCase, and snake_case.",
+      "category": "text",
+      "categoryName": "Text & Generators",
+      "url": "https://niftyutilities.com/text/case-converter.html"
+    },
+    {
+      "slug": "text-diff",
+      "name": "Text Diff Checker",
+      "description": "Compare two blocks of text line by line and see exactly what was added, removed, or changed.",
+      "category": "text",
+      "categoryName": "Text & Generators",
+      "url": "https://niftyutilities.com/text/text-diff.html"
+    },
+    {
+      "slug": "json-formatter",
+      "name": "JSON Formatter & Validator",
+      "description": "Pretty-print, minify, and validate JSON with a clear pointer to the first syntax error.",
+      "category": "text",
+      "categoryName": "Text & Generators",
+      "url": "https://niftyutilities.com/text/json-formatter.html"
+    },
+    {
+      "slug": "password-generator",
+      "name": "Password Generator",
+      "description": "Create strong random passwords with custom length and character sets — generated locally, never sent anywhere.",
+      "category": "text",
+      "categoryName": "Text & Generators",
+      "url": "https://niftyutilities.com/text/password-generator.html"
+    },
+    {
+      "slug": "uuid-generator",
+      "name": "UUID Generator",
+      "description": "Generate one or many version 4 UUIDs and copy them individually or as a list.",
+      "category": "text",
+      "categoryName": "Text & Generators",
+      "url": "https://niftyutilities.com/text/uuid-generator.html"
+    },
+    {
+      "slug": "hash-generator",
+      "name": "Hash Generator",
+      "description": "Compute MD5, SHA-1, SHA-256, and SHA-512 hashes of text or a file, right in your browser.",
+      "category": "text",
+      "categoryName": "Text & Generators",
+      "url": "https://niftyutilities.com/text/hash-generator.html"
+    },
+    {
+      "slug": "random-picker",
+      "name": "Random Picker",
+      "description": "Paste a list of names or options and draw one or more winners at random — fair and instant.",
+      "category": "text",
+      "categoryName": "Text & Generators",
+      "url": "https://niftyutilities.com/text/random-picker.html"
+    },
+    {
+      "slug": "lorem-ipsum-generator",
+      "name": "Lorem Ipsum Generator",
+      "description": "Generate placeholder paragraphs, sentences, or words for mockups and layouts.",
+      "category": "text",
+      "categoryName": "Text & Generators",
+      "url": "https://niftyutilities.com/text/lorem-ipsum-generator.html"
+    },
+    {
+      "slug": "signature-drawer",
+      "name": "Signature Drawer",
+      "description": "Draw a signature with your mouse or finger and download it as a transparent PNG.",
+      "category": "text",
+      "categoryName": "Text & Generators",
+      "url": "https://niftyutilities.com/text/signature-drawer.html"
+    },
+    {
+      "slug": "countdown-timer",
+      "name": "Countdown Timer & Stopwatch",
+      "description": "Run a countdown, stopwatch, or Pomodoro focus timer with an alert when time is up.",
+      "category": "text",
+      "categoryName": "Text & Generators",
+      "url": "https://niftyutilities.com/text/countdown-timer.html"
     },
     {
       "slug": "iq-test",

@@ -1,0 +1,21 @@
+<!--meta {"accent":"#f472b6","script":"text.js","titleTag":"FREE Hash Generator – MD5, SHA-1, SHA-256, SHA-512 in Browser","metaDescription":"Completely FREE hash generator. Compute MD5, SHA-1, SHA-256, and SHA-512 hashes of any text or file locally in your browser — verify downloads and checksums without uploading anything."} -->
+<p><strong>Completely FREE hash generator. No signup, nothing uploaded.</strong> Type text or choose a file and get its MD5, SHA-1, SHA-256, and SHA-512 hashes side by side, computed entirely on your device. Verify a download against a published checksum, deduplicate files, or generate a fingerprint for any piece of data — without your data going anywhere.</p>
+<!--more-->
+<h2>What a hash is</h2>
+<p>A cryptographic hash function turns any input — a five-word sentence or a five-gigabyte file — into a fixed-length fingerprint. The same input always produces the same hash; change a single byte and the hash changes completely. That makes hashes the standard way to answer "is this file exactly what it's supposed to be?" without comparing the files byte by byte.</p>
+{{svg:shield}}
+<h2>The most common use: verifying a download</h2>
+<p>Software projects publish a checksum (usually SHA-256) next to each release. After downloading, hash the file here and compare against the published value — if they match, the file arrived intact and unmodified; if they differ, the download is corrupted or has been tampered with and shouldn't be run. The comparison is a simple visual check: the first and last few characters differing is enough to reject a file.</p>
+<h2>Which algorithm to use</h2>
+<p><strong>SHA-256</strong> is the modern default — fast, universally supported, and collision-resistant. <strong>SHA-512</strong> is its longer sibling, common on Linux distributions. <strong>MD5</strong> and <strong>SHA-1</strong> are cryptographically broken — researchers can manufacture two different files with the same hash — so they must not be used for security decisions. They remain everywhere in legacy systems, ETag headers, cache keys, and deduplication jobs, which is why this tool still computes them: sometimes the checksum you need to match simply is an MD5.</p>
+<h2>Hashing files vs. hashing text</h2>
+<p>File hashing reads the file's raw bytes locally — the file is never uploaded, and files up to hundreds of megabytes hash in seconds. Text hashing encodes your input as UTF-8 first, which is the convention nearly every system uses; note that a trailing newline or space changes the hash entirely, a classic source of "why doesn't my hash match" confusion.</p>
+<h2>What hashes are not</h2>
+<p>Hashing is not encryption — there's no key and no way to "decrypt" a hash back into the input. And a plain hash is not how passwords should be stored (that job calls for slow, salted algorithms like bcrypt or Argon2). A hash is a fingerprint: excellent for integrity and identity, irrelevant for secrecy.</p>
+<h2>Frequently asked questions</h2>
+<h3>Is my file uploaded when I hash it?</h3>
+<p>No. The file is read directly by your browser using the local file API and hashed with WebCrypto on your own processor. This site has no server capable of receiving the file, and nothing is retained after you leave.</p>
+<h3>Why does my text hash differ from an online example?</h3>
+<p>Almost always whitespace or encoding. A trailing newline, a carriage return from Windows line endings, or a stray space produces a completely different hash. Check that your input matches the example exactly, character for character.</p>
+<h3>Can two different files ever have the same hash?</h3>
+<p>For SHA-256, no case has ever been found, and the mathematics make it effectively impossible by accident. For MD5 and SHA-1, deliberate collisions have been demonstrated — that's precisely why they're retired from security use but still fine for detecting accidental corruption.</p>

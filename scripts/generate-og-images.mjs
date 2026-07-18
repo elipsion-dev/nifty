@@ -11,8 +11,9 @@
 // image changes; the resulting assets/og/*.jpg are committed. generate-site.mjs
 // references them and falls back to the generic social card if one is missing.
 //
-//   node scripts/generate-og-images.mjs          # all tools
-//   node scripts/generate-og-images.mjs 3        # first 3 (quick smoke test)
+//   node scripts/generate-og-images.mjs           # all tools
+//   node scripts/generate-og-images.mjs 3         # first 3 (quick smoke test)
+//   node scripts/generate-og-images.mjs --missing # only tools with no card yet
 //
 import fs from "fs";
 import path from "path";
@@ -32,8 +33,11 @@ if (!fs.existsSync("tools.json")) throw new Error("tools.json missing — run `n
 fs.mkdirSync(OG_DIR, { recursive: true });
 const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "og-"));
 
+const missingOnly = process.argv.includes("--missing");
 const limit = Number(process.argv[2]) || Infinity;
-const tools = JSON.parse(fs.readFileSync("tools.json", "utf8")).tools.slice(0, limit);
+let tools = JSON.parse(fs.readFileSync("tools.json", "utf8")).tools.slice(0, limit);
+if (missingOnly) tools = tools.filter((t) => !fs.existsSync(path.join(OG_DIR, `${t.slug}.jpg`)));
+if (!tools.length) { console.log("Nothing to render — every tool already has an OG card."); process.exit(0); }
 
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));

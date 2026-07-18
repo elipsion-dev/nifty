@@ -1,0 +1,19 @@
+<!--meta {"accent":"#fb923c","script":"text.js","titleTag":"FREE Random Picker – Fair Name Drawer & List Shuffler","metaDescription":"Completely FREE random picker. Paste a list of names or options and draw one or more winners with cryptographic fairness, or shuffle the whole list into a random order."} -->
+<p><strong>Completely FREE random picker. No signup, provably fair draws.</strong> Paste your options — one per line — and pick a single winner, draw several at once, or shuffle the entire list into a random order. Every draw uses your browser's cryptographic randomness, so each entry has an exactly equal chance, and nothing you type leaves the page.</p>
+<!--more-->
+<h2>The three things it does</h2>
+<p><strong>Pick one</strong>: the classic name-from-a-hat draw — a giveaway winner, who presents first, tonight's restaurant. <strong>Pick several</strong>: draw two, three, or ten at once, either without repeats (a real raffle, where each entry can win once) or with repeats allowed (independent draws, where the same option can come up twice). <strong>Shuffle</strong>: reorder the whole list randomly — perfect for presentation order, a chore rotation, or seeding a tournament bracket.</p>
+{{svg:users}}
+<h2>What "fair" means here</h2>
+<p>Each selection uses <code>crypto.getRandomValues()</code> — the browser's cryptographically secure generator — with rejection sampling to remove modulo bias, so a list of 7 names is exactly as fair as a list of 8. The shuffle is a Fisher–Yates shuffle, the standard algorithm that makes every possible ordering equally likely. There is no weighting, no house thumb on the scale, and no memory between draws: rerunning the pick is a fresh, independent draw.</p>
+<h2>Running a draw people can trust</h2>
+<p>For a giveaway or raffle, fairness is as much about process as randomness. Paste the entries in a fixed order (say, comment order), announce how many winners you'll draw, and do the draw once — redrawing until you like the answer defeats the purpose. Since the draw runs on your screen, you can share it live on a call or record it for transparency. Duplicate entries mean duplicate chances, so deduplicate the list first if each person should get one ticket.</p>
+<h2>Everyday decision-making</h2>
+<p>Beyond giveaways, a random pick is the honest tiebreaker for decisions where the options are genuinely equivalent: which of three equally-good restaurants, who takes the first shift, which team name wins. Committing to accept the result before drawing is the whole trick — the picker supplies the impartiality, you supply the follow-through.</p>
+<h2>Frequently asked questions</h2>
+<h3>Is the draw really random, or does it favor the top of the list?</h3>
+<p>Position in the list has no effect. Each entry's chance is exactly 1 divided by the number of entries, enforced by unbiased cryptographic sampling. Shuffles make all orderings equally likely.</p>
+<h3>Can I use it for a raffle with multiple winners?</h3>
+<p>Yes — set how many to pick and keep "no repeats" checked, and it draws without replacement like pulling successive tickets from a hat. Winners are shown in the order drawn, so "first name drawn wins the big prize" works naturally.</p>
+<h3>Does it save my list anywhere?</h3>
+<p>No. The list lives only in the text box on your screen. There's no server behind the page and no storage — refresh and it's gone, so copy the results before closing if you need a record.</p>

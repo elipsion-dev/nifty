@@ -1436,6 +1436,24 @@ const categories = [
     ]
   },
   {
+    slug: "text",
+    name: "Text & Generators",
+    description: "Count, convert, compare, and generate — text utilities, passwords, UUIDs, hashes, and timers that run entirely in your browser.",
+    tools: [
+      ["word-counter", "Word & Character Counter", "Count words, characters, sentences, and paragraphs with an instant reading-time estimate."],
+      ["case-converter", "Case Converter", "Switch text between UPPERCASE, lowercase, Title Case, sentence case, camelCase, and snake_case."],
+      ["text-diff", "Text Diff Checker", "Compare two blocks of text line by line and see exactly what was added, removed, or changed."],
+      ["json-formatter", "JSON Formatter & Validator", "Pretty-print, minify, and validate JSON with a clear pointer to the first syntax error."],
+      ["password-generator", "Password Generator", "Create strong random passwords with custom length and character sets — generated locally, never sent anywhere."],
+      ["uuid-generator", "UUID Generator", "Generate one or many version 4 UUIDs and copy them individually or as a list."],
+      ["hash-generator", "Hash Generator", "Compute MD5, SHA-1, SHA-256, and SHA-512 hashes of text or a file, right in your browser."],
+      ["random-picker", "Random Picker", "Paste a list of names or options and draw one or more winners at random — fair and instant."],
+      ["lorem-ipsum-generator", "Lorem Ipsum Generator", "Generate placeholder paragraphs, sentences, or words for mockups and layouts."],
+      ["signature-drawer", "Signature Drawer", "Draw a signature with your mouse or finger and download it as a transparent PNG."],
+      ["countdown-timer", "Countdown Timer & Stopwatch", "Run a countdown, stopwatch, or Pomodoro focus timer with an alert when time is up."]
+    ]
+  },
+  {
     slug: "quizzes",
     name: "Quizzes & Tests",
     description: "Free self-assessments, skill tests, and just-for-fun quizzes with instant results: an original reasoning (IQ-style) test, typing and reaction speed tests, a memory test, a personality profiler, a color-blindness screening, and more. No sign-up, no email, nothing stored.",
@@ -1744,7 +1762,18 @@ const crossLinks = {
   "gpa-calculator": ["iq-test"],
   "due-date-calculator": ["home-inventory-generator"],
   "bmi-calculator": ["reaction-time-test"],
-  "time-zone-meeting-planner": ["invoice-number-generator"]
+  "time-zone-meeting-planner": ["invoice-number-generator"],
+  "word-counter": ["pdf-word-text-extractor", "typing-speed-test"],
+  "case-converter": ["filename-cleaner"],
+  "text-diff": ["compare-two-csvs"],
+  "json-formatter": ["json-csv-converter", "markdown-html-converter"],
+  "password-generator": ["qr-batch-generator"],
+  "uuid-generator": ["invoice-number-generator"],
+  "hash-generator": ["duplicate-photo-detector"],
+  "random-picker": ["roommate-expense-splitter", "love-calculator"],
+  "lorem-ipsum-generator": ["markdown-html-converter"],
+  "signature-drawer": ["bill-of-sale-generator", "affidavit-generator"],
+  "countdown-timer": ["time-zone-meeting-planner", "reaction-time-test"]
 };
 
 const relatedBySlug = new Map();

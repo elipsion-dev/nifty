@@ -1,0 +1,19 @@
+<!--meta {"accent":"#f87171","script":"text.js","titleTag":"FREE Countdown Timer, Stopwatch & Pomodoro – In Your Browser","metaDescription":"Completely FREE online timer. Run a countdown with a chime, a lap-capable stopwatch, or a 25/5 Pomodoro focus cycle — the remaining time shows in the tab title while you work."} -->
+<p><strong>Completely FREE timer. No signup, no app to install.</strong> Three modes in one page: a countdown that chimes when time is up, a stopwatch with lap times, and a Pomodoro cycle that alternates 25-minute focus rounds with 5-minute breaks automatically. The remaining time appears in the browser tab title, so you can work in another tab and still see the clock.</p>
+<!--more-->
+<h2>Countdown</h2>
+<p>Set minutes and seconds, hit start, and the display counts down. When it reaches zero the page flashes and plays a short chime (if your browser allows sound — clicking Start counts as the interaction most browsers require before audio). Pause and resume preserve the remaining time exactly. It covers the usual suspects: the pasta, the parking meter, the "wrap up in five minutes" meeting warning, timed exam sections, kids' turns on anything.</p>
+{{svg:clock}}
+<h2>Stopwatch with laps</h2>
+<p>The stopwatch counts up with centisecond precision and adds a <strong>Lap</strong> button. Each lap records both the split (time since the previous lap) and the running total, newest first — the format used for timing intervals at the track, circuits of a workout, or how long each step of a process actually takes. Timing is based on your machine's monotonic clock, so a paused stopwatch never drifts.</p>
+<h2>The Pomodoro cycle</h2>
+<p>Pomodoro is the simplest focus protocol that actually survives contact with a workday: 25 minutes of single-task focus, 5 minutes genuinely away, repeat. This mode runs the alternation for you — when a focus round ends, the chime sounds and the break starts automatically; when the break ends, the next round begins and the round counter increments. The discipline it enforces isn't the 25 minutes of work — it's the decision, made once per round, of what the round is <em>for</em>. Name the task before you press start and the technique does the rest.</p>
+<h2>Why the tab title matters</h2>
+<p>A timer you have to keep visible is a timer you'll stop using. While this timer runs, the remaining time (or elapsed stopwatch time) is written into the page title, so it stays readable in the tab bar while you work elsewhere. Keep the tab open — browsers throttle background pages' timers, but this implementation computes from timestamps rather than counting ticks, so the displayed time stays correct even after heavy throttling.</p>
+<h2>Frequently asked questions</h2>
+<h3>Will the alarm sound if I'm in another tab?</h3>
+<p>Usually yes, since you started the timer with a click, which grants the page audio permission in most browsers. The tab title and the flashing display act as a backup signal. The tab must stay open — closing it ends the timer.</p>
+<h3>Is the timing accurate if my browser throttles background tabs?</h3>
+<p>Yes. The timer computes elapsed time from high-resolution timestamps rather than accumulating one-second ticks, so throttling can delay the screen update but never skews the measured time. When you return to the tab, the display is exactly right.</p>
+<h3>Can I change the Pomodoro lengths?</h3>
+<p>This runs the classic 25/5 cycle. If you need custom intervals, run them as ordinary countdowns — set 50 minutes for a long-focus round, then 10 for the break. The chime and tab-title behavior are identical.</p>

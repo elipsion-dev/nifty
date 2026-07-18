@@ -1,0 +1,21 @@
+<!--meta {"accent":"#fbbf24","script":"text.js","titleTag":"FREE JSON Formatter & Validator – Pretty-Print, Minify, No Signup","metaDescription":"Completely FREE JSON formatter and validator. Pretty-print with 2-space, 4-space, or tab indentation, minify to one line, sort keys, and pinpoint the first syntax error — all in your browser."} -->
+<p><strong>Completely FREE JSON formatter and validator. No signup, no upload.</strong> Paste JSON and instantly get it validated and re-formatted: pretty-printed with your choice of indentation, minified to a single line, or with object keys sorted alphabetically. Invalid JSON gets a clear error with the line and column of the first problem. API responses, config files, and payloads never leave your browser.</p>
+<!--more-->
+<h2>Validate first, format second</h2>
+<p>The tool parses your input with the browser's native JSON parser — the same strict parser your code will use. If parsing succeeds you get a green checkmark plus structure statistics: how many objects, arrays, strings, and numbers, and how deeply nested the data goes. If parsing fails, the error message is shown along with the line, column, and a snippet of the text surrounding the problem, so you can jump straight to the offending character instead of scanning the whole payload.</p>
+{{svg:checklist}}
+<h2>The errors that cause most invalid JSON</h2>
+<p>A few mistakes account for nearly all validation failures. <strong>Trailing commas</strong> — legal in JavaScript, illegal in JSON — after the last item of an object or array. <strong>Single quotes</strong> instead of double quotes around strings and keys. <strong>Unquoted keys</strong>, again a JavaScript habit. <strong>Comments</strong>, which JSON does not allow at all. And <strong>stray control characters</strong> from copying out of terminals or logs. When the error message says "Unexpected token", the snippet this tool shows you almost always contains one of these.</p>
+<h2>Pretty vs. minified</h2>
+<p>Pretty-printed JSON with 2-space or 4-space indentation is for humans: code reviews, documentation, debugging a fat API response. Minified JSON — everything on one line, no whitespace — is for machines and transfer size; it's the format you paste into an environment variable or ship in a request body. The two are byte-for-byte equivalent to a parser, so convert freely in both directions.</p>
+<h2>Sorting keys</h2>
+<p>Enabling <strong>sort keys</strong> rewrites every object with its keys in alphabetical order, recursively. JSON key order carries no meaning to a parser, but sorted keys make two payloads comparable: sort both, then diff them, and structural differences surface immediately instead of hiding behind ordering noise. It also makes long config files easier to scan.</p>
+<h2>Privacy note for API data</h2>
+<p>JSON payloads routinely contain tokens, emails, and account data — exactly the things not to paste into a random web form. This formatter runs entirely in your browser. There is no server component, no logging, and nothing survives closing the tab.</p>
+<h2>Frequently asked questions</h2>
+<h3>Does this tool fix invalid JSON automatically?</h3>
+<p>No — it tells you precisely where the first error is so you can fix it. Automatic "repair" tools have to guess what you meant, and a wrong guess in a config file or payload is worse than an error message. The line, column, and context snippet make manual fixes fast.</p>
+<h3>What's the difference between JSON and a JavaScript object?</h3>
+<p>JSON is stricter: keys must be double-quoted strings, strings must use double quotes, and there are no comments, trailing commas, <code>undefined</code>, or functions. Valid JSON is valid JavaScript, but much valid JavaScript is invalid JSON — which is why code pasted from a JS file often fails validation.</p>
+<h3>Can it handle large files?</h3>
+<p>It comfortably handles payloads up to several megabytes — typical API responses and config files parse instantly. Extremely large files (tens of megabytes) may be slow to render in the output box even though parsing succeeds.</p>
