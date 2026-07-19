@@ -1,7 +1,7 @@
 # Nifty Utilities — tools.txt
 # Machine-readable index of interactive browser tools. Structured data: https://niftyutilities.com/tools.json
 # All tools run locally in the visitor's browser: no uploads, no accounts, no data stored.
-# Updated: 2026-07-18 | 128 tools
+# Updated: 2026-07-19 | 128 tools
 
 ## Finance / CSV
 - Bank Statement Cleaner: Standardize dates, amounts, descriptions, and blank rows in statement CSVs. — https://niftyutilities.com/finance/bank-statement-cleaner.html

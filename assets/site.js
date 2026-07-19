@@ -76,6 +76,13 @@
 
   input?.addEventListener("input", render);
   input?.addEventListener("focus", () => { if (input.value.trim()) render(); });
+  // Support /?q=term links (used by the WebSite SearchAction schema).
+  const presetQuery = new URLSearchParams(location.search).get("q");
+  if (presetQuery && input) {
+    input.value = presetQuery;
+    render();
+    input.focus();
+  }
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && results && !results.hidden) { setOpen(false); return; }
     if (event.key === "/" && document.activeElement?.tagName !== "INPUT" && document.activeElement?.tagName !== "TEXTAREA") {
