@@ -2,8 +2,8 @@
   "name": "Nifty Utilities",
   "url": "https://niftyutilities.com/",
   "description": "Free browser-based utilities for CSV/spreadsheet data, personal finance, documents, home and life decisions, business math, images, and everyday tasks.",
-  "updated": "2026-07-19",
-  "count": 128,
+  "updated": "2026-07-23",
+  "count": 136,
   "privacy": "Every tool runs locally in the visitor's browser. There is no backend, upload endpoint, database, or account — tool inputs are never transmitted to or stored by the site.",
   "license": "Free to use, no sign-up.",
   "categories": [
@@ -72,6 +72,12 @@
       "name": "Quizzes & Tests",
       "url": "https://niftyutilities.com/quizzes/",
       "count": 9
+    },
+    {
+      "slug": "typing-games",
+      "name": "Typing Games",
+      "url": "https://niftyutilities.com/typing-games/",
+      "count": 8
     }
   ],
   "tools": [
@@ -1038,7 +1044,7 @@
     {
       "slug": "typing-speed-test",
       "name": "Typing Speed Test",
-      "description": "Type a passage and measure your live WPM and accuracy in 15, 30, or 60 second modes — nothing saved.",
+      "description": "Type a passage and measure your live WPM and accuracy in timed, word-count, or quote modes — your keystrokes never leave your browser.",
       "category": "quizzes",
       "categoryName": "Quizzes & Tests",
       "url": "https://niftyutilities.com/quizzes/typing-speed-test.html"
@@ -1098,6 +1104,70 @@
       "category": "quizzes",
       "categoryName": "Quizzes & Tests",
       "url": "https://niftyutilities.com/quizzes/zodiac-compatibility.html"
+    },
+    {
+      "slug": "falling-letters",
+      "name": "Falling Letters",
+      "description": "Type each letter before it drifts to the floor — a fast, fun way to learn where every key is, with capitals mixing in as you speed up.",
+      "category": "typing-games",
+      "categoryName": "Typing Games",
+      "url": "https://niftyutilities.com/typing-games/falling-letters.html"
+    },
+    {
+      "slug": "word-cannon",
+      "name": "Word Cannon",
+      "description": "Blast words out of the air by typing them before they land, building whole-word typing speed as they come faster and longer.",
+      "category": "typing-games",
+      "categoryName": "Typing Games",
+      "url": "https://niftyutilities.com/typing-games/word-cannon.html"
+    },
+    {
+      "slug": "balloon-pop",
+      "name": "Balloon Pop",
+      "description": "Pop rising balloons by typing the letter each one carries before it escapes the top — cheerful key-finding practice.",
+      "category": "typing-games",
+      "categoryName": "Typing Games",
+      "url": "https://niftyutilities.com/typing-games/balloon-pop.html"
+    },
+    {
+      "slug": "key-trainer",
+      "name": "Key Trainer",
+      "description": "A key lights up on an on-screen keyboard — press it fast. Learn the layout from the home row out to every key.",
+      "category": "typing-games",
+      "categoryName": "Typing Games",
+      "url": "https://niftyutilities.com/typing-games/key-trainer.html"
+    },
+    {
+      "slug": "word-sprint",
+      "name": "Word Sprint",
+      "description": "Type as many words as you can in 60 seconds as they grow longer, then see your word count and WPM.",
+      "category": "typing-games",
+      "categoryName": "Typing Games",
+      "url": "https://niftyutilities.com/typing-games/word-sprint.html"
+    },
+    {
+      "slug": "musical-typing",
+      "name": "Musical Typing",
+      "description": "Type a home-row-to-whole-keyboard drill while each keystroke plays the next note of a public-domain tune.",
+      "category": "typing-games",
+      "categoryName": "Typing Games",
+      "url": "https://niftyutilities.com/typing-games/musical-typing.html"
+    },
+    {
+      "slug": "key-memory",
+      "name": "Key Memory",
+      "description": "Watch keys light up in sequence, then type them back from memory — a Simon-style workout for key positions.",
+      "category": "typing-games",
+      "categoryName": "Typing Games",
+      "url": "https://niftyutilities.com/typing-games/key-memory.html"
+    },
+    {
+      "slug": "ztype",
+      "name": "ZType",
+      "description": "Play ZType, the free word-shooter typing game, embedded here — type the words on incoming ships to blast them.",
+      "category": "typing-games",
+      "categoryName": "Typing Games",
+      "url": "https://niftyutilities.com/typing-games/ztype.html"
     }
   ]
 }

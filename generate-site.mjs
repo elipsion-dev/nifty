@@ -1459,7 +1459,7 @@ const categories = [
     description: "Free self-assessments, skill tests, and just-for-fun quizzes with instant results: an original reasoning (IQ-style) test, typing and reaction speed tests, a memory test, a personality profiler, a color-blindness screening, and more. No sign-up, no email, nothing stored.",
     tools: [
       ["iq-test", "IQ Test", "Estimate your reasoning ability with an original, timed test spanning pattern, number, verbal, and spatial puzzles."],
-      ["typing-speed-test", "Typing Speed Test", "Type a passage and measure your live WPM and accuracy in 15, 30, or 60 second modes — nothing saved."],
+      ["typing-speed-test", "Typing Speed Test", "Type a passage and measure your live WPM and accuracy in timed, word-count, or quote modes — your keystrokes never leave your browser."],
       ["reaction-time-test", "Reaction Time Test", "Click the moment the pad turns green across five rounds to measure your average reaction time in milliseconds."],
       ["click-speed-test", "Click Speed Test", "Click a pad as fast as you can in 5, 10, or 30 seconds to find your clicks-per-second (CPS) score."],
       ["memory-test", "Memory Test", "See how many digits your working memory can hold with a progressive digit-span recall test."],
@@ -1467,6 +1467,21 @@ const categories = [
       ["love-calculator", "Love Calculator", "Enter two names for an instant, just-for-fun compatibility score — the same pair always gives the same result."],
       ["personality-type-test", "Personality Type Test", "Find your dominant personality type and your affinity for every type with an original color-style profiler."],
       ["zodiac-compatibility", "Zodiac Compatibility", "See how any two star signs work together, with an in-depth strengths breakdown and a few things to watch."]
+    ]
+  },
+  {
+    slug: "typing-games",
+    name: "Typing Games",
+    description: "Free browser games that make you a faster, more accurate typist while you have fun: catch falling letters to learn the keys, blast arcing words from a cannon, and play real melodies by typing the notes. No sign-up, no download, nothing stored.",
+    tools: [
+      ["falling-letters", "Falling Letters", "Type each letter before it drifts to the floor — a fast, fun way to learn where every key is, with capitals mixing in as you speed up."],
+      ["word-cannon", "Word Cannon", "Blast words out of the air by typing them before they land, building whole-word typing speed as they come faster and longer."],
+      ["balloon-pop", "Balloon Pop", "Pop rising balloons by typing the letter each one carries before it escapes the top — cheerful key-finding practice."],
+      ["key-trainer", "Key Trainer", "A key lights up on an on-screen keyboard — press it fast. Learn the layout from the home row out to every key."],
+      ["word-sprint", "Word Sprint", "Type as many words as you can in 60 seconds as they grow longer, then see your word count and WPM."],
+      ["musical-typing", "Musical Typing", "Type a home-row-to-whole-keyboard drill while each keystroke plays the next note of a public-domain tune."],
+      ["key-memory", "Key Memory", "Watch keys light up in sequence, then type them back from memory — a Simon-style workout for key positions."],
+      ["ztype", "ZType", "Play ZType, the free word-shooter typing game, embedded here — type the words on incoming ships to blast them."]
     ]
   }
 ];
@@ -1729,6 +1744,8 @@ for (const slug of messyCsvTools) {
 // category. Links are made symmetric at build time (list a pair once, both pages get
 // it) and capped per page. Unknown slugs fail the build so typos can't ship.
 const crossLinks = {
+  "typing-speed-test": ["falling-letters", "word-cannon", "musical-typing"],
+  "word-cannon": ["falling-letters", "musical-typing"],
   "image-format-converter": ["image-dimensions-inspector", "duplicate-photo-detector"],
   "image-compressor": ["image-dimensions-inspector"],
   "image-resizer": ["image-dimensions-inspector", "screenshot-measurement-calculator"],

@@ -186,7 +186,7 @@ Count, convert, compare, and generate — text utilities, passwords, UUIDs, hash
 Free self-assessments, skill tests, and just-for-fun quizzes with instant results: an original reasoning (IQ-style) test, typing and reaction speed tests, a memory test, a personality profiler, a color-blindness screening, and more. No sign-up, no email, nothing stored.
 
 - [IQ Test](https://niftyutilities.com/quizzes/iq-test.html): Estimate your reasoning ability with an original, timed test spanning pattern, number, verbal, and spatial puzzles.
-- [Typing Speed Test](https://niftyutilities.com/quizzes/typing-speed-test.html): Type a passage and measure your live WPM and accuracy in 15, 30, or 60 second modes — nothing saved.
+- [Typing Speed Test](https://niftyutilities.com/quizzes/typing-speed-test.html): Type a passage and measure your live WPM and accuracy in timed, word-count, or quote modes — your keystrokes never leave your browser.
 - [Reaction Time Test](https://niftyutilities.com/quizzes/reaction-time-test.html): Click the moment the pad turns green across five rounds to measure your average reaction time in milliseconds.
 - [Click Speed Test](https://niftyutilities.com/quizzes/click-speed-test.html): Click a pad as fast as you can in 5, 10, or 30 seconds to find your clicks-per-second (CPS) score.
 - [Memory Test](https://niftyutilities.com/quizzes/memory-test.html): See how many digits your working memory can hold with a progressive digit-span recall test.
@@ -194,3 +194,16 @@ Free self-assessments, skill tests, and just-for-fun quizzes with instant result
 - [Love Calculator](https://niftyutilities.com/quizzes/love-calculator.html): Enter two names for an instant, just-for-fun compatibility score — the same pair always gives the same result.
 - [Personality Type Test](https://niftyutilities.com/quizzes/personality-type-test.html): Find your dominant personality type and your affinity for every type with an original color-style profiler.
 - [Zodiac Compatibility](https://niftyutilities.com/quizzes/zodiac-compatibility.html): See how any two star signs work together, with an in-depth strengths breakdown and a few things to watch.
+
+## Typing Games
+
+Free browser games that make you a faster, more accurate typist while you have fun: catch falling letters to learn the keys, blast arcing words from a cannon, and play real melodies by typing the notes. No sign-up, no download, nothing stored.
+
+- [Falling Letters](https://niftyutilities.com/typing-games/falling-letters.html): Type each letter before it drifts to the floor — a fast, fun way to learn where every key is, with capitals mixing in as you speed up.
+- [Word Cannon](https://niftyutilities.com/typing-games/word-cannon.html): Blast words out of the air by typing them before they land, building whole-word typing speed as they come faster and longer.
+- [Balloon Pop](https://niftyutilities.com/typing-games/balloon-pop.html): Pop rising balloons by typing the letter each one carries before it escapes the top — cheerful key-finding practice.
+- [Key Trainer](https://niftyutilities.com/typing-games/key-trainer.html): A key lights up on an on-screen keyboard — press it fast. Learn the layout from the home row out to every key.
+- [Word Sprint](https://niftyutilities.com/typing-games/word-sprint.html): Type as many words as you can in 60 seconds as they grow longer, then see your word count and WPM.
+- [Musical Typing](https://niftyutilities.com/typing-games/musical-typing.html): Type a home-row-to-whole-keyboard drill while each keystroke plays the next note of a public-domain tune.
+- [Key Memory](https://niftyutilities.com/typing-games/key-memory.html): Watch keys light up in sequence, then type them back from memory — a Simon-style workout for key positions.
+- [ZType](https://niftyutilities.com/typing-games/ztype.html): Play ZType, the free word-shooter typing game, embedded here — type the words on incoming ships to blast them.

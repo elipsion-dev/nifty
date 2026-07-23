@@ -598,6 +598,48 @@ th { background: var(--surface-2); font-size: .7rem; text-transform: uppercase; 
 .share-btn.share-fb:hover { background: #16273f; border-color: #1877f2; }
 .share-btn.share-wa:hover { background: #12332a; border-color: #25d366; }
 
+/* Spotlit share block on the typing result — bigger, brighter, hard to miss. */
+.share-spotlight { margin-top: 1.4rem; }
+/* Support line runs beneath the buttons, matching the share-label's caps mono. */
+.share-spotlight-cue { margin: .9rem 0 0; font: 700 .84rem/1.5 ui-monospace, "SFMono-Regular", Consolas, monospace; letter-spacing: .09em; text-transform: uppercase; color: var(--gold); }
+.share-spotlight .share-bar {
+  margin-top: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .85rem;
+  padding: 1.2rem 1.35rem;
+  border: 1.5px solid color-mix(in srgb, var(--accent) 58%, var(--line));
+  background: color-mix(in srgb, var(--accent) 15%, var(--surface));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 24%, transparent), 0 12px 34px -14px color-mix(in srgb, var(--accent) 85%, transparent);
+  animation: sharePulse 2.4s ease-in-out 2;
+}
+/* The generic "Share your result" label is replaced by the support line below. */
+.share-spotlight .share-label { display: none; }
+.share-spotlight .share-btn {
+  padding: .64rem .95rem;
+  border: 1.5px solid color-mix(in srgb, var(--accent) 44%, var(--line));
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface-2));
+  color: var(--ink);
+  font-size: .92rem;
+  box-shadow: 0 2px 12px -7px color-mix(in srgb, var(--accent) 75%, transparent);
+}
+.share-spotlight .share-btn svg { width: 22px; height: 22px; }
+.share-spotlight .share-btn:hover { transform: translateY(-2px); border-color: var(--accent); background: color-mix(in srgb, var(--accent) 28%, var(--surface-2)); }
+/* Brand-tinted icons at rest so the row reads as colourful, not grey. */
+.share-spotlight .share-x svg { color: #f4f6f8; }
+.share-spotlight .share-fb svg { color: #4c9bff; }
+.share-spotlight .share-wa svg { color: #3ee08f; }
+.share-spotlight .share-btn.share-x:hover { background: #101418; border-color: #f4f6f8; }
+.share-spotlight .share-btn.share-fb:hover { background: #1877f2; border-color: #1877f2; }
+.share-spotlight .share-btn.share-fb:hover svg { color: #fff; }
+.share-spotlight .share-btn.share-wa:hover { background: #25d366; border-color: #25d366; }
+.share-spotlight .share-btn.share-wa:hover svg { color: #0b1f16; }
+@keyframes sharePulse {
+  0%, 100% { box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 24%, transparent), 0 12px 34px -14px color-mix(in srgb, var(--accent) 85%, transparent); }
+  50% { box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 48%, transparent), 0 14px 44px -10px color-mix(in srgb, var(--accent) 100%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) { .share-spotlight .share-bar { animation: none; } }
+
 /* personality type cards */
 .type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .9rem; margin: 1.3rem 0; }
 .type-card { padding: 1rem; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); border-top: 4px solid var(--tc, var(--qa)); }
@@ -676,6 +718,119 @@ th { background: var(--surface-2); font-size: .7rem; text-transform: uppercase; 
 .typing-modes { display: flex; flex-wrap: wrap; gap: .55rem; margin: 1.3rem 0 .4rem; }
 .typing-mode { flex: 1 1 auto; min-width: 120px; }
 .typing-mode.on { border-color: var(--qa); background: color-mix(in srgb, var(--qa) 18%, var(--surface)); color: var(--ink); box-shadow: 0 0 0 1px var(--qa) inset; }
+
+/* compact multi-row setup panel (Test type / Length / Extras) */
+.typing-setup { display: grid; gap: .7rem; margin: 1.2rem 0 .6rem; }
+.typing-setup-row { display: flex; align-items: center; gap: .5rem .9rem; flex-wrap: wrap; }
+.typing-setup-label { flex: 0 0 auto; min-width: 3.4rem; font: 700 .68rem/1.2 ui-monospace, "SFMono-Regular", Consolas, monospace; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.typing-setup-row .typing-modes { flex: 1 1 220px; margin: 0; }
+.typing-setup-row .typing-mode { min-width: 84px; }
+.typing-kbd-hint { display: inline-block; margin-left: .5rem; font-size: .78rem; color: var(--muted); opacity: .85; }
+@media (max-width: 640px) { .typing-kbd-hint { display: block; margin: .25rem 0 0; } .typing-setup-label { min-width: 100%; } }
+
+/* speed-over-time graph on the result */
+.wpm-graph { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); }
+.wpm-graph-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin-bottom: .7rem; font-size: .82rem; color: var(--muted); }
+.wpm-graph-head span:first-child { font-weight: 700; color: var(--ink); }
+.wpm-graph-head strong { color: var(--qa); }
+.wpm-graph-svg { display: block; width: 100%; height: 92px; overflow: visible; }
+.wpm-graph-fill { fill: color-mix(in srgb, var(--qa) 15%, transparent); stroke: none; }
+.wpm-graph-line { fill: none; stroke: var(--qa); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
+.wpm-graph-foot { margin: .6rem 0 0; font-size: .8rem; color: var(--muted); }
+
+/* personal best + recent runs (local-only history) */
+.quiz-flash.best { color: var(--gold); border-color: color-mix(in srgb, var(--gold) 45%, var(--line)); background: color-mix(in srgb, var(--gold) 12%, var(--surface)); }
+.typing-progress { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid color-mix(in srgb, var(--qa) 24%, var(--line)); border-radius: 12px; background: color-mix(in srgb, var(--qa) 6%, var(--surface-2)); }
+.typing-progress-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: .8rem; }
+.typing-progress-head > span { font-weight: 700; }
+.linklike { border: 0; background: none; padding: 0; font: inherit; font-size: .8rem; color: var(--muted); text-decoration: underline; cursor: pointer; }
+.linklike:hover { color: var(--ink); }
+.typing-progress-grid { display: flex; flex-wrap: wrap; align-items: stretch; gap: .6rem 1rem; }
+.typing-progress-best { flex: 0 0 auto; display: flex; flex-direction: column; justify-content: center; padding: .5rem .9rem; border-radius: 10px; background: color-mix(in srgb, var(--qa) 12%, var(--surface)); }
+.typing-progress-best strong { font: 800 1.7rem/1 "Iowan Old Style", Georgia, serif; color: var(--qa); font-variant-numeric: tabular-nums; }
+.typing-progress-best span { margin-top: .2rem; font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.typing-runs { flex: 1 1 200px; display: flex; flex-wrap: wrap; gap: .4rem; align-content: center; }
+.typing-run { min-width: 52px; padding: .4rem .3rem; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); text-align: center; }
+.typing-run.now { border-color: var(--qa); box-shadow: 0 0 0 1px var(--qa) inset; }
+.typing-run strong { display: block; font-weight: 800; font-variant-numeric: tabular-nums; }
+.typing-run span { display: block; font-size: .68rem; color: var(--muted); }
+.typing-progress-note { margin: .8rem 0 0; font-size: .8rem; color: var(--muted); }
+
+/* average-speed reference table in the article */
+.wpm-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.2rem; font-size: .95rem; }
+.wpm-table th, .wpm-table td { text-align: left; padding: .6rem .8rem; border-bottom: 1px solid var(--line); }
+.wpm-table thead th { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); border-bottom-color: color-mix(in srgb, var(--qa) 40%, var(--line)); }
+.wpm-table td:last-child { font-variant-numeric: tabular-nums; color: var(--qa); font-weight: 650; white-space: nowrap; }
+.wpm-table tbody tr:last-child td { border-bottom: 0; }
+
+/* results → typing-games call to action (wide, glowing) */
+.tutor-cta { display: block; margin: 1.4rem 0; padding: 1.1rem 1.3rem; border: 1.5px solid color-mix(in srgb, var(--accent) 60%, var(--line)); border-radius: 14px; background: linear-gradient(140deg, color-mix(in srgb, var(--accent) 16%, var(--surface)), color-mix(in srgb, #8b5cf6 14%, var(--surface))); text-align: center; text-decoration: none; box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent), 0 14px 40px -16px color-mix(in srgb, var(--accent) 90%, transparent); animation: tutorGlow 3s ease-in-out infinite; transition: transform .12s ease; }
+.tutor-cta:hover { transform: translateY(-2px); }
+.tutor-cta-top { display: block; margin-bottom: .7rem; font-size: .98rem; font-weight: 650; color: var(--ink); }
+.tutor-cta-btn { display: inline-block; padding: .7rem 1.4rem; border-radius: 10px; background: var(--accent); color: #06231f; font-size: 1.05rem; font-weight: 800; letter-spacing: .01em; }
+@keyframes tutorGlow {
+  0%, 100% { box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent), 0 14px 40px -16px color-mix(in srgb, var(--accent) 90%, transparent); }
+  50% { box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent), 0 16px 52px -12px color-mix(in srgb, var(--accent) 100%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) { .tutor-cta { animation: none; } }
+
+/* ---------------- Typing Games ---------------- */
+.game-wrap { margin: 1rem 0; }
+.game-hud { display: flex; gap: .6rem; margin-bottom: .7rem; }
+.game-hud-item { flex: 1 1 0; padding: .55rem .5rem; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2); text-align: center; }
+.game-hud-item span { display: block; font-size: .66rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.game-hud-item strong { display: block; margin-top: .15rem; font: 800 1.4rem/1 "Iowan Old Style", Georgia, serif; color: var(--qa); font-variant-numeric: tabular-nums; }
+.game-canvas { display: block; width: 100%; height: 460px; border: 1px solid color-mix(in srgb, var(--qa) 22%, var(--line)); border-radius: 12px; background: radial-gradient(120% 100% at 50% 0%, #0f1a24, #0a1119); touch-action: none; }
+.game-hint { margin: .7rem 0 .2rem; color: var(--muted); font-size: .85rem; }
+@media (max-width: 640px) { .game-canvas { height: 60vh; } .game-hud-item strong { font-size: 1.15rem; } }
+
+/* musical typing */
+.song-label { margin: 1.2rem 0 .5rem; font-weight: 700; }
+.song-picker { display: flex; flex-wrap: wrap; gap: .55rem; }
+.mt-play .quiz-topbar { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: .85rem; margin-bottom: 1rem; }
+.mt-notes { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: 1rem 0 1.3rem; padding: 1.2rem; border: 1px solid var(--line); border-radius: 14px; background: var(--surface-2); }
+.mt-note { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 52px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface); font: 700 1.5rem/1 "Iowan Old Style", Georgia, serif; text-transform: uppercase; color: var(--muted); }
+.mt-note.done { color: #06231f; background: var(--qa); border-color: var(--qa); }
+.mt-note.mt-cur { color: var(--ink); border-color: var(--qa); box-shadow: 0 0 0 2px var(--qa) inset, 0 0 22px -6px var(--qa); animation: mtPulse 1.4s ease-in-out infinite; }
+.mt-gap { flex-basis: 100%; height: 0; }
+.mt-bar { margin: 0 0 .4rem; }
+.mt-note.shake { animation: mtShake .3s ease; }
+@keyframes mtPulse { 0%,100% { box-shadow: 0 0 0 2px var(--qa) inset, 0 0 16px -8px var(--qa); } 50% { box-shadow: 0 0 0 2px var(--qa) inset, 0 0 26px -4px var(--qa); } }
+@keyframes mtShake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+@media (prefers-reduced-motion: reduce) { .mt-note.mt-cur { animation: none; } }
+
+/* musical typing — flowing practice passage */
+.mt-passage { margin: 1rem 0 1.2rem; padding: 1.3rem; border: 1px solid var(--line); border-radius: 14px; background: var(--surface-2); font: 700 1.6rem/2.1 ui-monospace, "SFMono-Regular", Menlo, monospace; word-spacing: .5rem; letter-spacing: .05rem; }
+.mt-ch { color: var(--muted); padding: .1rem .1rem; border-radius: 5px; transition: color .1s; }
+.mt-ch.done { color: var(--qa); }
+.mt-ch.mt-cur { color: #06231f; background: var(--qa); box-shadow: 0 0 18px -4px var(--qa); }
+.mt-ch.shake { display: inline-block; animation: mtShake .3s ease; }
+
+/* key trainer — on-screen keyboard */
+.kt-board { display: flex; flex-direction: column; gap: .5rem; align-items: center; margin: 1.4rem 0; }
+.kt-row { display: flex; gap: .5rem; }
+.kt-row-1 { padding-left: 1.3rem; }
+.kt-row-2 { padding-left: 3rem; }
+.kt-key { display: inline-flex; align-items: center; justify-content: center; width: clamp(30px, 8vw, 52px); height: clamp(38px, 9vw, 56px); border: 1px solid var(--line); border-radius: 9px; background: var(--surface-2); color: var(--muted); font: 700 1.1rem/1 ui-monospace, Menlo, monospace; text-transform: uppercase; transition: transform .08s, background .12s; }
+.kt-key.target { color: #06231f; background: var(--qa); border-color: var(--qa); box-shadow: 0 0 24px -4px var(--qa); transform: translateY(-2px); }
+.kt-key.hit { background: #22c55e; border-color: #22c55e; color: #052e16; }
+.kt-key.miss { background: #ef4444; border-color: #ef4444; color: #fff; }
+
+/* word sprint */
+.ws-word { margin: 1.6rem 0 1rem; text-align: center; font: 800 2.6rem/1 "Iowan Old Style", Georgia, serif; color: var(--qa); letter-spacing: .02em; }
+.ws-input { display: block; width: 100%; max-width: 360px; margin: 0 auto; padding: .7rem 1rem; border: 1.5px solid color-mix(in srgb, var(--qa) 40%, var(--line)); border-radius: 10px; background: var(--surface-2); color: var(--ink); font: 600 1.3rem/1.2 ui-monospace, Menlo, monospace; text-align: center; }
+.ws-input:focus { outline: none; border-color: var(--qa); box-shadow: 0 0 0 3px color-mix(in srgb, var(--qa) 22%, transparent); }
+.ws-input.bad { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,.2); }
+
+/* key memory — Simon pads */
+.km-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; max-width: 320px; margin: 1.5rem auto; }
+.km-pad { display: flex; align-items: center; justify-content: center; aspect-ratio: 1; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); color: var(--muted); font: 800 1.6rem/1 "Iowan Old Style", Georgia, serif; text-transform: uppercase; transition: transform .08s, background .12s, box-shadow .12s; }
+.km-pad.on { color: #06231f; background: var(--qa); border-color: var(--qa); box-shadow: 0 0 28px -4px var(--qa); transform: scale(1.05); }
+
+/* ztype embed */
+.ztype-embed { margin: 1rem 0; }
+.ztype-frame { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: #000; }
+.ztype-frame iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
 .typing-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin: 1rem 0 1.1rem; }
 .typing-stat { padding: .7rem .5rem; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); text-align: center; }

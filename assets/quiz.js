@@ -1196,8 +1196,11 @@
    *  saved or uploaded. Timer starts on the first keystroke.
    * ===================================================================== */
   function renderTypingTest() {
-    /* ---- original pool of ~180 common English words (assembled for this site) ---- */
-    const WORDS = (
+    /* ---- device: a coarse pointer on a narrow screen ⇒ treat as a phone ---- */
+    const isMobile = !!(window.matchMedia && window.matchMedia("(pointer: coarse)").matches) && window.innerWidth < 900;
+
+    /* ---- desktop pool of common English words (assembled for this site) ---- */
+    const DESKTOP_WORDS = (
       "the of and to in is it you that he was for on are with as his they at be this " +
       "from or one had by word but not what all were when we there can an your which " +
       "their said each she do how if will up other about out many then them these so " +
@@ -1216,29 +1219,68 @@
       "those both paper together got group often run important until children side feet " +
       "car mile night walk white sea began grow took river four carry state once book " +
       "hear stop without second later miss idea enough eat face watch far really almost " +
-      "above girl sometimes mountain cut young talk soon list song being leave family "
+      "above girl sometimes mountain cut young talk soon list song being leave family " +
+      "money story point since power human water travel market office reason common simple " +
+      "morning window garden street summer winter market coffee travel picture history nature"
     ).trim().split(/\s+/);
 
-    /* ---- modes (seconds) ---- */
-    const MODES = [
-      { s: 15, label: "15 seconds" },
-      { s: 30, label: "30 seconds" },
-      { s: 60, label: "60 seconds" }
+    /* ---- mobile pool: shorter, thumb-friendly words for two-thumb typing ---- */
+    const MOBILE_WORDS = (
+      "the and you for are was but not all any can had her him his how man may new now " +
+      "old one our out own put say she too two use way who why yet get got let big red " +
+      "run top box car cat dog day end eye far few fun job key kid lot map pay set sit " +
+      "sun ten yes ago air arm art ask bad bag bed bit boy bus buy cup cut ear eat egg " +
+      "fit fix fly fog gas gun hat hit hot ice ink jam law leg lie low mad mix mud net " +
+      "nod oil pan pen pet pie pig pin pot raw rib rid row rub rug sad saw sea sky spy " +
+      "tea tie tip toe toy try van war wax web wet win zip good time work make like here " +
+      "from this that they them then some what when very just take give last next well"
+    ).trim().split(/\s+/);
+
+    const WORDS = isMobile ? MOBILE_WORDS : DESKTOP_WORDS;
+
+    /* ---- original short practice lines for Quote mode (written for this site) ---- */
+    const QUOTES = [
+      "a calm mind and loose hands will always type faster than a rushed one",
+      "speed is simply what happens on its own once your fingers stop searching for the keys",
+      "small daily practice will beat a single long session almost every single time",
+      "put accuracy first and the speed will quietly follow along behind it",
+      "the keyboard never moves so let your hands learn exactly where each key lives",
+      "every fast typist you have ever admired was once slow and simply refused to stop",
+      "keep your eyes on the screen and trust that the letters are still where you left them",
+      "a steady rhythm will carry you much further than a frantic burst that quickly fades",
+      "type the word you actually see and not the word you expect and your errors will shrink",
+      "progress feels boring up close but it adds up faster than you would ever think"
     ];
-    let modeSeconds = 60; // default
+
+    const NUM_TOKENS = ["3", "7", "9", "12", "21", "40", "64", "95", "100", "256", "2026", "18", "5", "8"];
+
+    /* ---- selectable settings ---- */
+    let testType = "time";                 // "time" | "words" | "quote"
+    let timeSeconds = isMobile ? 30 : 60;  // used when testType === "time"
+    let wordCount = 25;                     // used when testType === "words"
+    let punctuation = false;
+    let numbers = false;
+    const TIME_OPTS = [15, 30, 60, 120, 300];
+    const WORD_OPTS = [10, 25, 50, 100];
+    const timeLabel = (s) => (s >= 60 ? `${s / 60} min` : `${s}s`);
+    const isTimed = () => testType === "time";
 
     /* ---- per-run state / teardown ---- */
-    let target = "";        // the passage string (lowercase word stream)
+    let target = "";        // the passage string
     let typed = "";         // what the user has entered so far
+    let prevVal = "";       // previous input value, for common-prefix diffing
     let correctChars = 0;   // keystroke-based: correct chars ever committed
     let totalTyped = 0;     // keystroke-based: total chars ever committed (no decrement on backspace)
-    let prevLen = 0;        // previous typed length, to detect insert vs. delete
     let startTime = null;   // performance.now() at first keystroke
     let active = false;     // true only during the live typing phase
     let rafId = null;       // requestAnimationFrame handle for the live stat loop
-    let endTimer = null;    // setTimeout that ends the test when time expires
+    let endTimer = null;    // setTimeout that ends a timed run
     let input = null;       // the (real, on-screen) input element
     let onResize = null;    // full-width stage re-measure, removed on teardown
+    let samples = [];       // instantaneous net WPM sampled each ~second (for the graph)
+    let lastSampleT = 0;    // performance.now() of the last sample boundary
+    let lastSampleCorrect = 0;
+    let keyHandler = null;  // document-level keydown for the results screen
     const onBlur = () => { if (active && input) setTimeout(() => { if (active && input) input.focus(); }, 0); };
 
     function teardown() {
@@ -1247,56 +1289,174 @@
       if (endTimer !== null) { clearTimeout(endTimer); endTimer = null; }
       if (onResize) { window.removeEventListener("resize", onResize); onResize = null; }
       if (input) { input.removeEventListener("blur", onBlur); }
+      if (keyHandler) { document.removeEventListener("keydown", keyHandler); keyHandler = null; }
       input = null;
     }
 
-    /* ---- build a passage from the pool ---- */
-    function buildPassage(seconds) {
-      // Roughly size the passage so a fast typist won't run out; ~2.4 words/sec ceiling.
-      const wordCount = Math.max(40, Math.round(seconds * 2.6) + 30);
+    /* ---- passage building ---- */
+    function drawWords(n) {
       const out = [];
       let bag = [];
-      for (let i = 0; i < wordCount; i++) {
+      for (let i = 0; i < n; i++) {
         if (bag.length === 0) bag = shuffle(WORDS);
         out.push(bag.pop());
       }
-      return out.join(" ");
+      return out;
+    }
+    function withNumbers(words) {
+      return words.map((w, i) => (i > 0 && i % 6 === 0) ? NUM_TOKENS[Math.floor(Math.random() * NUM_TOKENS.length)] : w);
+    }
+    function withPunctuation(words) {
+      let cap = true, since = 0;
+      const out = words.map((w, i) => {
+        let s = cap ? w.charAt(0).toUpperCase() + w.slice(1) : w;
+        cap = false;
+        since++;
+        const last = i === words.length - 1;
+        if (!last && since >= 3 && Math.random() < 0.12) s += ",";
+        else if (!last && since >= 6 && Math.random() < 0.28) { s += (Math.random() < 0.15 ? "?" : "."); since = 0; cap = true; }
+        return s;
+      });
+      out[out.length - 1] = out[out.length - 1].replace(/[.,?!]$/, "") + ".";
+      return out;
+    }
+    function buildPassage() {
+      if (testType === "quote") return QUOTES[Math.floor(Math.random() * QUOTES.length)];
+      // Size a timed passage so even a fast typist won't run out; word mode is exact.
+      const n = isTimed()
+        ? Math.max(30, Math.round(timeSeconds * (isMobile ? 1.6 : 2.6)) + 20)
+        : wordCount;
+      let words = drawWords(n);
+      if (numbers) words = withNumbers(words);
+      if (punctuation) words = withPunctuation(words);
+      return words.join(" ");
     }
 
     const round1 = (n) => Math.round(n * 10) / 10;
+    const chip = (label, on, attrs) => `<button type="button" class="button typing-mode${on ? " on" : ""}" ${attrs}>${esc(label)}</button>`;
 
-    /* ---- intro screen ---- */
+    /* ---- inline SVG sparkline of net WPM across the run ---- */
+    function sparkline(series) {
+      const n = series.length;
+      const maxY = Math.max(10, ...series) * 1.12;
+      const pts = series.map((v, i) => {
+        const x = n === 1 ? 0 : (i / (n - 1)) * 100;
+        const y = 40 - Math.max(0, Math.min(38, (v / maxY) * 38));
+        return `${x.toFixed(2)},${y.toFixed(2)}`;
+      });
+      const line = pts.join(" ");
+      return `<svg class="wpm-graph-svg" viewBox="0 0 100 40" preserveAspectRatio="none" role="img" aria-label="Net words per minute over the run">
+        <polygon class="wpm-graph-fill" points="0,40 ${line} 100,40"></polygon>
+        <polyline class="wpm-graph-line" points="${line}"></polyline>
+      </svg>`;
+    }
+
+    /* ---- shareable result card, drawn on a canvas (1200×630, OG proportions) ---- */
+    function roundRect(g, x, y, w, h, r) {
+      g.beginPath();
+      g.moveTo(x + r, y);
+      g.arcTo(x + w, y, x + w, y + h, r);
+      g.arcTo(x + w, y + h, x, y + h, r);
+      g.arcTo(x, y + h, x, y, r);
+      g.arcTo(x, y, x + w, y, r);
+      g.closePath();
+    }
+    function drawCertificate({ netWpm, accuracy, band, mobile }) {
+      const W = 1200, H = 630, c = document.createElement("canvas");
+      c.width = W; c.height = H;
+      const g = c.getContext("2d");
+      const grad = g.createLinearGradient(0, 0, 0, H);
+      grad.addColorStop(0, "#101b24"); grad.addColorStop(1, "#0b1118");
+      g.fillStyle = grad; g.fillRect(0, 0, W, H);
+      const m = 40;
+      roundRect(g, m, m, W - 2 * m, H - 2 * m, 28);
+      g.strokeStyle = "#2dd4bf"; g.lineWidth = 3; g.stroke();
+      roundRect(g, m, m, W - 2 * m, 12, 6); g.fillStyle = "#2dd4bf"; g.fill();
+      g.textAlign = "left";
+      g.fillStyle = "#2dd4bf";
+      g.font = "700 34px Georgia, 'Times New Roman', serif";
+      g.fillText("NIFTY UTILITIES", 92, 152);
+      g.fillStyle = "#8b98a5";
+      g.font = "600 26px Arial, Helvetica, sans-serif";
+      g.fillText(mobile ? "FREE MOBILE TYPING TEST" : "FREE TYPING SPEED TEST", 92, 196);
+      g.textAlign = "center";
+      g.fillStyle = "#e6edf3";
+      g.font = "800 240px Georgia, 'Times New Roman', serif";
+      g.fillText(String(netWpm), W / 2, 440);
+      g.fillStyle = "#2dd4bf";
+      g.font = "700 40px Arial, Helvetica, sans-serif";
+      g.fillText("NET WORDS PER MINUTE", W / 2, 498);
+      g.fillStyle = "#cbd5e1";
+      g.font = "400 34px Arial, Helvetica, sans-serif";
+      g.fillText(`${band}  ·  ${accuracy} accuracy`, W / 2, 552);
+      g.fillStyle = "#6b7885";
+      g.font = "400 26px Arial, Helvetica, sans-serif";
+      g.fillText("niftyutilities.com/quizzes/typing-speed-test.html", W / 2, 594);
+      return c;
+    }
+
+    /* ---- progress store: best score + recent runs, kept only in this browser's
+     * localStorage so runs can be compared over time. Nothing is ever uploaded.
+     * Bucketed by device because phone and keyboard scores aren't comparable. ---- */
+    const STORE_KEY = "nu_typing_v1";
+    const deviceKey = isMobile ? "mobile" : "desktop";
+    function loadStore() {
+      try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch (_) { return {}; }
+    }
+    function saveStore(obj) {
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(obj)); return true; } catch (_) { return false; }
+    }
+
+    /* ---- intro / setup screen ---- */
     function intro() {
       teardown();
+      const typeChips = [
+        chip("Time", testType === "time", 'data-type="time"'),
+        chip("Words", testType === "words", 'data-type="words"'),
+        chip("Quote", testType === "quote", 'data-type="quote"')
+      ].join("");
+      let lengthChips = "";
+      if (testType === "time") lengthChips = TIME_OPTS.map((s) => chip(timeLabel(s), s === timeSeconds, `data-secs="${s}"`)).join("");
+      else if (testType === "words") lengthChips = WORD_OPTS.map((w) => chip(`${w} words`, w === wordCount, `data-words="${w}"`)).join("");
+      const toggleChips = testType === "quote" ? "" :
+        chip("Punctuation", punctuation, 'data-toggle="punctuation"') + chip("Numbers", numbers, 'data-toggle="numbers"');
+
+      const mobileNote = isMobile ? `
+          <div class="quiz-note">
+            <strong>📱 This is a mobile typing test</strong>
+            <p>You're on a phone, so this measures <b>two-thumb</b> typing — expect a lower number than a full keyboard, and that's completely normal. Your result is compared against other phone typists, not desktop ones. If your keyboard's autocorrect or predictive text rewrites your words, switch it off for the truest score.</p>
+          </div>` : `
+          <div class="quiz-note">
+            <strong>How to get an accurate result</strong>
+            <p>Use a real keyboard if you can, keep your eyes on the screen, and don't worry about the odd typo — fixing it with backspace is fine. Autocorrect and auto-capitalisation are turned off so what you type is exactly what is measured.</p>
+          </div>`;
+
       root.innerHTML = `
         <div class="quiz quiz-intro">
           <div class="quiz-badges">
             <span class="quiz-badge time">⌨️ Live WPM &amp; accuracy</span>
-            <span class="quiz-badge">Choose 15 / 30 / 60 seconds</span>
+            ${isMobile ? `<span class="quiz-badge">📱 Mobile two-thumb test</span>` : `<span class="quiz-badge">Time · Words · Quote</span>`}
             <span class="quiz-badge ok">✓ 100% free · no sign-up · no email</span>
           </div>
-          <h2>A free typing speed test</h2>
+          <h2>${isMobile ? "A free mobile typing test" : "A free typing speed test"}</h2>
           <p class="quiz-lede"><strong>Completely FREE Typing Speed Test. No signup, no email, no credit card. Instant results, no catch.</strong></p>
-          <p>Type the passage as fast and as accurately as you can. Your speed in <strong>words per minute</strong> and your <strong>accuracy</strong> update live as you go, and the timer only starts on your first keystroke. Nothing you type is saved or uploaded.</p>
-          <ul class="quiz-facts">
-            <li><span>⏱</span><div><strong>Pick a length</strong> — a 15, 30, or 60 second sprint. Shorter runs reward bursts; longer runs reward stamina.</div></li>
-            <li><span>🎯</span><div><strong>Accuracy counts</strong> — every keystroke is checked against the target, so mistakes lower your net speed.</div></li>
-            <li><span>📊</span><div><strong>Honest scoring</strong> — WPM uses the standard 5-characters-per-word rule, exactly like the big typing tests.</div></li>
-          </ul>
-          <div class="typing-modes" role="group" aria-label="Test length">
-            ${MODES.map((m) => `<button type="button" class="button typing-mode${m.s === modeSeconds ? " on" : ""}" data-s="${m.s}">${esc(m.label)}</button>`).join("")}
+          <p>Type the passage as fast and as accurately as you can. Your <strong>words per minute</strong> and <strong>accuracy</strong> update live, and the timer only starts on your first keystroke. Your keystrokes are never uploaded or seen by us — only your best score is saved in this browser so you can track your progress.</p>
+          <div class="typing-setup">
+            <div class="typing-setup-row"><span class="typing-setup-label">Test</span><div class="typing-modes" role="group" aria-label="Test type">${typeChips}</div></div>
+            ${lengthChips ? `<div class="typing-setup-row"><span class="typing-setup-label">Length</span><div class="typing-modes" role="group" aria-label="Length">${lengthChips}</div></div>` : ""}
+            ${toggleChips ? `<div class="typing-setup-row"><span class="typing-setup-label">Extras</span><div class="typing-modes" role="group" aria-label="Extras">${toggleChips}</div></div>` : ""}
           </div>
-          <div class="quiz-note">
-            <strong>How to get an accurate result</strong>
-            <p>Use a real keyboard if you can, keep your eyes on the screen, and don't worry about the odd typo — fixing it with backspace is fine. Auto-correct and auto-capitalisation are turned off so what you type is exactly what is measured.</p>
-          </div>
+          ${mobileNote}
           <div class="actions"><button class="button primary" id="start">Start typing →</button></div>
         </div>`;
-      root.querySelectorAll(".typing-mode").forEach((b) => {
-        b.onclick = () => {
-          modeSeconds = Number(b.dataset.s);
-          root.querySelectorAll(".typing-mode").forEach((x) => x.classList.toggle("on", x === b));
-        };
+
+      // Re-render the setup on any change so the contextual controls stay in sync.
+      root.querySelectorAll("[data-type]").forEach((b) => b.onclick = () => { testType = b.dataset.type; intro(); });
+      root.querySelectorAll("[data-secs]").forEach((b) => b.onclick = () => { timeSeconds = Number(b.dataset.secs); intro(); });
+      root.querySelectorAll("[data-words]").forEach((b) => b.onclick = () => { wordCount = Number(b.dataset.words); intro(); });
+      root.querySelectorAll("[data-toggle]").forEach((b) => b.onclick = () => {
+        if (b.dataset.toggle === "punctuation") punctuation = !punctuation; else numbers = !numbers;
+        intro();
       });
       root.querySelector("#start").onclick = () => startTest();
     }
@@ -1304,19 +1464,25 @@
     /* ---- typing phase ---- */
     function startTest() {
       teardown();
-      target = buildPassage(modeSeconds);
+      target = buildPassage();
       typed = "";
+      prevVal = "";
       correctChars = 0;
       totalTyped = 0;
-      prevLen = 0;
       startTime = null;
+      samples = [];
+      lastSampleT = 0;
+      lastSampleCorrect = 0;
       active = true;
+
+      const clockInit = isTimed() ? `${timeSeconds}.0s` : "0.0s";
+      const catLabel = isMobile ? "Mobile typing test" : "Typing speed test";
 
       root.innerHTML = `
         <div class="quiz quiz-question typing-live">
           <div class="quiz-topbar">
-            <span class="quiz-cat">Typing speed test</span>
-            <span class="quiz-timer-wrap">⏱ <span id="typing-clock">${modeSeconds}.0s</span></span>
+            <span class="quiz-cat">${catLabel}</span>
+            <span class="quiz-timer-wrap">⏱ <span id="typing-clock">${clockInit}</span></span>
           </div>
           <div class="typing-stats">
             <div class="typing-stat"><strong id="typing-wpm">0</strong><span>WPM</span></div>
@@ -1329,9 +1495,10 @@
               autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
               aria-label="Type the passage shown above" />
           </div>
-          <p class="typing-hint" id="typing-hint">Start typing to begin the timer.</p>
+          <p class="typing-hint" id="typing-hint">Start typing to begin${isTimed() ? " the timer" : ""}.<span class="typing-kbd-hint">Tab restarts · Esc for settings</span></p>
           <div class="actions">
             <button class="button" id="typing-restart">Restart</button>
+            <button class="button" id="typing-settings">Change settings</button>
           </div>
         </div>`;
 
@@ -1355,9 +1522,16 @@
       input.addEventListener("blur", onBlur);
       input.addEventListener("paste", (e) => e.preventDefault());
       input.addEventListener("input", onInput);
-      root.querySelector("#typing-restart").onclick = () => intro();
+      // Keyboard shortcuts, scoped to the input so the rest of the page's Tab
+      // navigation is untouched. Tab = fresh passage, Esc = back to settings.
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Tab") { e.preventDefault(); startTest(); }
+        else if (e.key === "Escape") { e.preventDefault(); intro(); }
+      });
+      root.querySelector("#typing-restart").onclick = () => startTest();
+      root.querySelector("#typing-settings").onclick = () => intro();
 
-      // Auto-focus (raises the mobile keyboard).
+      // Auto-focus synchronously (this call is what raises the mobile keyboard).
       input.focus();
     }
 
@@ -1394,24 +1568,32 @@
       // Never let the user type past the passage length.
       if (val.length > target.length) { val = val.slice(0, target.length); input.value = val; }
 
-      if (startTime === null) {
+      if (startTime === null && val.length > 0) {
         startTime = performance.now();
+        lastSampleT = startTime;
+        lastSampleCorrect = 0;
         const hint = document.getElementById("typing-hint");
-        if (hint) hint.textContent = "Timer running — keep going!";
-        // End the run when the chosen time elapses.
-        endTimer = window.setTimeout(() => finish(true), modeSeconds * 1000);
+        if (hint) hint.textContent = isTimed() ? "Timer running — keep going!" : "Go — finish the passage!";
+        // A timed run ends on the clock; word/quote runs end when the passage is done.
+        if (isTimed()) endTimer = window.setTimeout(() => finish(true), timeSeconds * 1000);
         loop();
       }
 
-      // Count only newly-committed characters (insertions). Deletions never
-      // decrement the tallies — the standard "backspace can't erase a mistake".
-      if (val.length > prevLen) {
-        for (let i = prevLen; i < val.length; i++) {
-          totalTyped += 1;
-          if (val[i] === target[i]) correctChars += 1;
-        }
+      // Score by common-prefix diff: every character from the first point where
+      // the value diverges from the previous value is treated as newly entered
+      // this event. This catches autocorrect / IME replacements that rewrite
+      // earlier characters without growing the length (so the tally can never
+      // drift from the on-screen highlighting, which is redrawn from the same
+      // value). Deletions add nothing and never decrement — "backspace can't
+      // erase a mistake".
+      let cp = 0;
+      const m = Math.min(prevVal.length, val.length);
+      while (cp < m && prevVal[cp] === val[cp]) cp++;
+      for (let i = cp; i < val.length; i++) {
+        totalTyped += 1;
+        if (val[i] === target[i]) correctChars += 1;
       }
-      prevLen = val.length;
+      prevVal = val;
       typed = val;
 
       // Re-render highlighting.
@@ -1432,6 +1614,7 @@
       }
 
       updateStats();
+      maybeSample();
 
       // Finish early if the whole passage has been typed.
       if (typed.length >= target.length) finish(false);
@@ -1441,14 +1624,38 @@
     function loop() {
       if (!active) return;
       updateStats();
+      const now = performance.now();
       const clock = document.getElementById("typing-clock");
       if (clock && startTime !== null) {
-        const elapsed = (performance.now() - startTime) / 1000;
-        const left = Math.max(0, modeSeconds - elapsed);
-        clock.textContent = `${left.toFixed(1)}s`;
-        if (left <= 5) clock.classList.add("low");
+        const elapsed = (now - startTime) / 1000;
+        if (isTimed()) {
+          const left = Math.max(0, timeSeconds - elapsed);
+          clock.textContent = `${left.toFixed(1)}s`;
+          if (left <= 5) clock.classList.add("low");
+        } else {
+          clock.textContent = `${elapsed.toFixed(1)}s`;
+        }
       }
+      maybeSample();
       rafId = requestAnimationFrame(loop);
+    }
+
+    // Sample the instantaneous net WPM once per whole second elapsed, for the
+    // post-run graph and consistency score. Called from both the rAF loop and
+    // each keystroke so samples still accumulate if rAF is throttled (e.g. a
+    // backgrounded tab).
+    function maybeSample() {
+      if (startTime === null) return;
+      const now = performance.now();
+      if (samples.length < Math.floor((now - startTime) / 1000)) {
+        const dtMin = (now - lastSampleT) / 60000;
+        const inst = dtMin > 0 ? ((correctChars - lastSampleCorrect) / 5) / dtMin : 0;
+        // Cap at a humanly-possible ceiling so a burst landing in a tiny interval
+        // can't spike the y-scale or tank the consistency score.
+        samples.push(Math.max(0, Math.min(400, Math.round(inst))));
+        lastSampleT = now;
+        lastSampleCorrect = correctChars;
+      }
     }
 
     function currentWpm() {
@@ -1484,29 +1691,115 @@
       const incorrect = Math.max(0, totalTyped - correctChars);
       const accuracy = totalTyped === 0 ? 100 : (correctChars / totalTyped) * 100;
 
-      const band =
-        netWpm >= 80 ? { name: "Professional", note: "Genuinely fast — that's the territory of typists who do it for a living." } :
-        netWpm >= 60 ? { name: "Fast", note: "Well above average. Your fingers clearly know the keyboard." } :
-        netWpm >= 40 ? { name: "Good", note: "Around and above the typical typist's pace of roughly 40 WPM." } :
-        netWpm >= 25 ? { name: "Steady", note: "A solid everyday pace. Regular practice moves this up quickly." } :
-        { name: "Warming up", note: "A short, honest starting point — accuracy first, speed follows." };
+      // Bands differ by device — a fast phone score is a different number from a
+      // fast keyboard score, so we grade phones against phone typists.
+      const band = isMobile
+        ? ( netWpm >= 50 ? { name: "Pro thumbs", note: "Seriously fast for a phone — near the top of two-thumb typists." } :
+            netWpm >= 38 ? { name: "Fast", note: "Above the ~36 WPM phone average. Your thumbs know the layout." } :
+            netWpm >= 27 ? { name: "Good", note: "A solid phone pace, right around what most people manage on glass." } :
+            netWpm >= 18 ? { name: "Steady", note: "A comfortable everyday thumb pace. Practice nudges it up fast." } :
+            { name: "Warming up", note: "An honest phone starting point — accuracy first, speed follows." } )
+        : ( netWpm >= 80 ? { name: "Professional", note: "Genuinely fast — that's the territory of typists who do it for a living." } :
+            netWpm >= 60 ? { name: "Fast", note: "Well above average. Your fingers clearly know the keyboard." } :
+            netWpm >= 40 ? { name: "Good", note: "Around and above the typical typist's pace of roughly 40 WPM." } :
+            netWpm >= 25 ? { name: "Steady", note: "A solid everyday pace. Regular practice moves this up quickly." } :
+            { name: "Warming up", note: "A short, honest starting point — accuracy first, speed follows." } );
 
-      const WPM_MAX = 120; // scale ceiling for the bar
+      const WPM_MAX = isMobile ? 80 : 120; // scale ceiling for the bar
       const wpmBar = Math.max(2, Math.min(100, (netWpm / WPM_MAX) * 100));
       const accBar = Math.max(2, Math.min(100, accuracy));
+
+      // ---- how you compare to others ----
+      // Model typing speed as roughly normal. Desktop centres on the ~40 WPM adult
+      // average (SD ≈ 18); mobile on the ~36 WPM two-thumb average from the Aalto
+      // 37k-user study (SD ≈ 14). normCdf turns a net score into an approx percentile.
+      const ord = (n) => { const s = ["th", "st", "nd", "rd"], v = n % 100; return s[(v - 20) % 10] || s[v] || s[0]; };
+      const MEAN = isMobile ? 36 : 40;
+      const SD = isMobile ? 14 : 18;
+      const who = isMobile ? "phone typists" : "people";
+      const avgPhrase = isMobile ? "the ~36 WPM phone average (two thumbs)" : "the ~40 WPM average for adults";
+      const percentile = Math.max(1, Math.min(99, Math.round(normCdf((netWpm - MEAN) / SD) * 100)));
+      const diff = netWpm - MEAN;
+      const compareLine =
+        diff > 2 ? `That's about <strong>${diff} WPM above</strong> ${avgPhrase} — faster than roughly <strong>${percentile}% of ${who}</strong> (around the ${percentile}${ord(percentile)} percentile).` :
+        diff < -2 ? `${isMobile ? "The average phone typist manages about 36 WPM with two thumbs" : "The average adult types about 40 WPM"}, so you're roughly <strong>${-diff} WPM under</strong> that for now — around the <strong>${percentile}${ord(percentile)} percentile</strong>. That number climbs quickly with practice.` :
+        `That's right around ${avgPhrase} — about the ${percentile}${ord(percentile)} percentile, squarely in the middle of the pack.`;
+
+      // ---- speed-over-time graph + consistency (#11) ----
+      const peak = samples.length ? Math.max(...samples) : netWpm;
+      let consistency = null;
+      if (samples.length >= 2) {
+        const mean = samples.reduce((a, b) => a + b, 0) / samples.length;
+        if (mean > 0) {
+          const variance = samples.reduce((a, b) => a + (b - mean) * (b - mean), 0) / samples.length;
+          const cv = Math.sqrt(variance) / mean;
+          consistency = Math.max(0, Math.min(100, Math.round((1 - cv) * 100)));
+        }
+      }
+      const graphBlock = samples.length >= 2 ? `
+          <div class="wpm-graph">
+            <div class="wpm-graph-head"><span>Speed through the run</span><span>peak ${peak} WPM${consistency !== null ? ` · <strong>${consistency}%</strong> consistent` : ""}</span></div>
+            ${sparkline(samples)}
+            <p class="wpm-graph-foot">Each point is your net WPM for one second. A flatter line means a steadier pace — that's what a high consistency score rewards.</p>
+          </div>` : "";
+
+      // ---- personal best + recent runs (#3), kept in this browser only ----
+      let progressBlock = "";
+      let bestFlash = "";
+      if (totalTyped > 0) {
+        const store = loadStore();
+        const bucket = store[deviceKey] || { best: 0, bestAcc: 0, runs: [] };
+        const prevBest = bucket.best || 0;
+        const isBest = netWpm > prevBest;
+        bucket.runs = [{ wpm: netWpm, acc: Math.round(accuracy), ts: Date.now() }].concat(bucket.runs || []).slice(0, 8);
+        if (isBest) { bucket.best = netWpm; bucket.bestAcc = Math.round(accuracy); bucket.bestTs = Date.now(); }
+        store[deviceKey] = bucket;
+        if (saveStore(store)) {
+          if (isBest && prevBest > 0) bestFlash = `<p class="quiz-flash best">🏆 New personal best — up from ${prevBest} WPM!</p>`;
+          const runsHtml = bucket.runs.map((r, i) => `<div class="typing-run${i === 0 ? " now" : ""}"><strong>${r.wpm}</strong><span>${r.acc}%</span></div>`).join("");
+          progressBlock = `
+          <div class="typing-progress">
+            <div class="typing-progress-head"><span>Your progress${isMobile ? " (phone)" : ""}</span><button type="button" class="linklike" id="typing-clear">Clear history</button></div>
+            <div class="typing-progress-grid">
+              <div class="typing-progress-best"><strong>${bucket.best}</strong><span>personal best · WPM${bucket.bestAcc ? ` · ${bucket.bestAcc}% acc` : ""}</span></div>
+              <div class="typing-runs">${runsHtml}</div>
+            </div>
+            <p class="typing-progress-note">These numbers are saved only in <strong>this browser's local storage</strong> so you can compare your runs and watch yourself improve over time. Nothing is uploaded — your results never leave your device, exactly like everything else on the site. Clear them whenever you like.</p>
+          </div>`;
+        }
+      }
+
+      const readNote = isMobile
+        ? `On a phone the average is about 36 WPM with two thumbs; 38–50 is fast and 50+ is exceptional on glass. Your score shifts with your keyboard, autocorrect, and the words you drew — treat it as a personal benchmark, not a certified credential.`
+        : `An average typist lands near 40 WPM; 40–60 is good, 60–80 is fast, and 80+ is professional territory. Your score shifts with the keyboard you used, the sample words, and how familiar they were — treat it as a personal benchmark, not a certified credential.`;
+
+      // ---- why net differs from raw ----
+      const gap = Math.max(0, rawWpm - netWpm);
+      const rawLine = gap <= 0
+        ? `You didn't lose a single character to errors, so your <b>raw</b> and <b>net</b> speeds came out identical — a perfectly clean run.`
+        : `Your <b>raw</b> speed was ${rawWpm} WPM, which counts every key you pressed. Your <b>net</b> speed of ${netWpm} WPM counts only the ${correctChars} keys you got right — and that's the figure that reflects typing you could actually use. The <b>${gap} WPM gap</b> between them is the cost of ${incorrect} mistyped character${incorrect === 1 ? "" : "s"}: type cleaner and net rises toward raw.`;
 
       root.innerHTML = `
         <div class="quiz quiz-results">
           ${timedOut ? `<p class="quiz-flash">⏱ Time is up — here is how you did.</p>` : `<p class="quiz-flash">✓ Passage complete — here is how you did.</p>`}
-          <p class="eyebrow">Your typing result</p>
+          ${bestFlash}
+          <p class="eyebrow">Your ${isMobile ? "mobile " : ""}typing result</p>
           <div class="score-hero">
             <div class="score-big">${netWpm}<small>net words per minute</small></div>
             <div class="score-meta">
-              <p><strong>${esc(band.name)}</strong> · ${pct(accuracy)} accuracy</p>
+              <p><strong>${esc(band.name)}</strong> · ${pct(accuracy)} accuracy · ${round1(minutes * 60)}s</p>
               <p>${esc(band.note)}</p>
-              <p>Raw speed ${rawWpm} WPM over ${round1(minutes * 60)}s.</p>
+              <p class="score-compare">${compareLine}</p>
             </div>
           </div>
+          <div class="share-spotlight">
+            ${shareBar()}
+            <p class="share-spotlight-cue">🙌 Please share your result as a way to support our free utilities</p>
+          </div>
+          <a class="tutor-cta" href="../typing-games/index.html">
+            <span class="tutor-cta-top">Play the fun Nifty Utilities Typing Tutor Games to improve your typing speed while having a little fun!</span>
+            <span class="tutor-cta-btn">🎮 Play the Typing Games →</span>
+          </a>
           <div class="score-rows">
             <div class="score-row">
               <div class="score-row-head"><span>Net speed (of ${WPM_MAX} WPM scale)</span><strong>${netWpm} WPM</strong></div>
@@ -1517,23 +1810,73 @@
               <div class="score-bar"><span style="width:${accBar}%"></span></div>
             </div>
           </div>
+          ${graphBlock}
+          ${progressBlock}
           <div class="typing-tally">
             <div class="typing-tally-item"><strong>${correctChars}</strong><span>correct characters</span></div>
             <div class="typing-tally-item"><strong>${incorrect}</strong><span>incorrect characters</span></div>
             <div class="typing-tally-item"><strong>${totalTyped}</strong><span>characters typed</span></div>
           </div>
+          <div class="quiz-note">
+            <strong>Net vs. raw — why they differ</strong>
+            <p>${rawLine}</p>
+          </div>
           <div class="quiz-note warn">
             <strong>How to read this number</strong>
-            <p>An average typist lands near 40 WPM; 40–60 is good, 60–80 is fast, and 80+ is professional territory. Your score shifts with the keyboard you used, the sample words, and how familiar they were — treat it as a personal benchmark, not a certified credential.</p>
+            <p>${readNote}</p>
           </div>
-          ${shareBar()}
           <div class="actions">
-            <button class="button primary" id="typing-again">Try again</button>
+            <button class="button primary" id="typing-again">Try again →</button>
+            <button class="button" id="typing-change">Change length / mode</button>
+            <button class="button" id="typing-cert">🎖 Save result image</button>
           </div>
-          <p class="quiz-share-note">Nothing was uploaded or saved — refresh and it's gone. Trying again shuffles a brand-new passage.</p>
+          <p class="quiz-share-note">Your keystrokes are never uploaded — only your best score and recent runs are kept in this browser so you can track progress. “Try again” drops you straight into a fresh passage (same settings); “Change length / mode” lets you pick a different test.</p>
         </div>`;
-      wireShare(`I just typed ${netWpm} WPM at ${pct(accuracy)} accuracy on this free typing speed test ⌨️ Can you beat it?`);
-      root.querySelector("#typing-again").onclick = () => intro();
+      wireShare(`I just typed ${netWpm} WPM at ${pct(accuracy)} accuracy on this free ${isMobile ? "mobile " : ""}typing speed test ⌨️ Can you beat it?`);
+      // "Try again" jumps straight into a ready test — no second "start" click needed.
+      root.querySelector("#typing-again").onclick = () => startTest();
+      root.querySelector("#typing-change").onclick = () => intro();
+      // Clear the locally-stored history for this device on request.
+      const clearBtn = root.querySelector("#typing-clear");
+      if (clearBtn) clearBtn.onclick = () => {
+        const s = loadStore();
+        delete s[deviceKey];
+        saveStore(s);
+        const panel = root.querySelector(".typing-progress");
+        if (panel) panel.innerHTML = `<p class="typing-progress-note">Cleared — your saved runs were removed from this browser.</p>`;
+      };
+
+      // Downloadable / shareable result card, drawn on a canvas in the browser.
+      const certBtn = root.querySelector("#typing-cert");
+      if (certBtn) certBtn.onclick = () => {
+        const canvas = drawCertificate({ netWpm, accuracy: pct(accuracy), band: band.name, mobile: isMobile });
+        canvas.toBlob((blob) => {
+          if (!blob) return;
+          const file = new File([blob], `nifty-typing-${netWpm}wpm.png`, { type: "image/png" });
+          const shareText = `I typed ${netWpm} WPM at ${pct(accuracy)} accuracy on the free Nifty Utilities typing test ⌨️`;
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({ files: [file], text: shareText }).catch(() => {});
+          } else {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = file.name;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+          }
+        }, "image/png");
+      };
+      // Keyboard on the results view: Enter = try again, Esc = settings. Ignored
+      // when a button/link is focused so it never hijacks the share controls.
+      keyHandler = (e) => {
+        if (!root.querySelector(".quiz-results")) return;
+        if (e.target && (e.target.closest("button") || e.target.closest("a") || e.target.tagName === "INPUT")) return;
+        if (e.key === "Enter") { e.preventDefault(); startTest(); }
+        else if (e.key === "Escape") { e.preventDefault(); intro(); }
+      };
+      document.addEventListener("keydown", keyHandler);
       root.scrollIntoView({ block: "start", behavior: "smooth" });
     }
 
