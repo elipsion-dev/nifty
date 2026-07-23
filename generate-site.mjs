@@ -1486,6 +1486,27 @@ const categories = [
   }
 ];
 
+// Per-category hero artwork (assets/images/*.png). Every page inside a category —
+// its index and every tool — uses the category's hero via an inline --hero-img
+// variable. The homepage and prose pages (About/Promise/Privacy/Terms/Contact)
+// keep the default hero.png (the CSS fallback).
+const CATEGORY_HERO = {
+  finance: "finance.png",
+  spreadsheet: "speadsheets.png",
+  convert: "converters.png",
+  calculators: "calculators.png",
+  documents: "documents.png",
+  homeowner: "homeowner.png",
+  business: "business.png",
+  government: "government.png",
+  useful: "weirdly-useful.png",
+  text: "text-generate.png",
+  quizzes: "quizzes.png",
+  "typing-games": "typing-games.png"
+};
+const heroImgVar = (categorySlug) =>
+  CATEGORY_HERO[categorySlug] ? `--hero-img:url('../assets/images/${CATEGORY_HERO[categorySlug]}')` : "";
+
 const allTools = categories.flatMap((category) =>
   category.tools.map(([slug, name, description]) => ({
     slug,
@@ -2059,7 +2080,7 @@ for (const category of categories) {
     ],
     body: `
       <main id="main">
-        <section class="category-hero">
+        <section class="category-hero"${heroImgVar(category.slug) ? ` style="${heroImgVar(category.slug)}"` : ""}>
           <p class="breadcrumbs"><a href="../index.html">All tools</a><span>/</span>${escapeHtml(category.name)}</p>
           <p class="eyebrow">${category.tools.length} free tools</p>
           <h1>${escapeHtml(category.name)}</h1>
@@ -2085,6 +2106,8 @@ for (const category of categories) {
   for (const [slug, name, description] of category.tools) {
     const meta = toolMeta[slug] || {};
     const accentStyle = meta.accent ? ` style="--tool-accent:${meta.accent}"` : "";
+    const heroStyleBits = [heroImgVar(category.slug), meta.accent ? `--tool-accent:${meta.accent}` : ""].filter(Boolean);
+    const heroStyle = heroStyleBits.length ? ` style="${heroStyleBits.join(";")}"` : "";
     const layoutClass = meta.layout ? ` layout-${meta.layout}` : "";
     const hero = heroHtml(meta);
     const heroTop = meta.heroPosition !== "bottom" ? hero : "";
@@ -2147,7 +2170,7 @@ for (const category of categories) {
       ],
       body: `
         <main id="main">
-          <section class="category-hero tool-hero-band${layoutClass}"${accentStyle}>
+          <section class="category-hero tool-hero-band${layoutClass}"${heroStyle}>
             <p class="breadcrumbs"><a href="../index.html">All tools</a><span>/</span><a href="index.html">${escapeHtml(category.name)}</a></p>
             <p class="eyebrow">${escapeHtml(category.name)}</p>
             <h1>${escapeHtml(name)}</h1>

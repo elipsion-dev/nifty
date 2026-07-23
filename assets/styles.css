@@ -103,7 +103,8 @@ h2 { letter-spacing: -0.03em; }
   right: 0;
   bottom: 0;
   width: min(60%, 980px);
-  background: url("images/hero.png") right center / cover no-repeat;
+  /* Per-category pages set --hero-img inline; the homepage .hero falls back to hero.png */
+  background: var(--hero-img, url("images/hero.png")) right center / cover no-repeat;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 55%);
   mask-image: linear-gradient(90deg, transparent, #000 55%);
   pointer-events: none;
