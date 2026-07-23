@@ -831,8 +831,10 @@ th { background: var(--surface-2); font-size: .7rem; text-transform: uppercase; 
 
 /* ztype embed */
 .ztype-embed { margin: 1rem 0; }
-.ztype-frame { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: #000; }
-.ztype-frame iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+/* zty.pe renders a fixed 2:3 portrait canvas, so we shape the frame to match —
+   otherwise a wide 16:9 box scales the game down into a tiny centered column. */
+.ztype-frame { position: relative; width: min(560px, 100%); aspect-ratio: 2 / 3; margin: 0 auto; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: #000; }
+.ztype-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
 
 .typing-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin: 1rem 0 1.1rem; }
 .typing-stat { padding: .7rem .5rem; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); text-align: center; }
