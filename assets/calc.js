@@ -12,6 +12,14 @@
   const number = new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 });
   const int = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
   const pct = (value, digits = 2) => `${number.format(Math.round(value * 10 ** digits) / 10 ** digits)}%`;
+  // Fixed 2-decimal formatting silently zeroes out small results (1 ft in miles
+  // would print "0"). Scale decimals to the result's own magnitude instead.
+  const convNum = (value) => {
+    if (!Number.isFinite(value)) return "—";
+    const abs = Math.abs(value);
+    const digits = abs === 0 ? 2 : abs >= 100 ? 2 : abs >= 1 ? 4 : 6;
+    return new Intl.NumberFormat("en-US", { maximumFractionDigits: digits }).format(value);
+  };
 
   const DAY = 86400000;
   const parseDate = (value) => {
@@ -517,10 +525,67 @@
     });
   }
 
+  // ---------- length units / square footage ----------
+  const LENGTH_UNITS = [
+    ["mm", "Millimeters (mm)"], ["cm", "Centimeters (cm)"], ["m", "Meters (m)"], ["km", "Kilometers (km)"],
+    ["in", "Inches (in)"], ["ft", "Feet (ft)"], ["yd", "Yards (yd)"], ["mi", "Miles (mi)"]
+  ];
+  const LENGTH_TO_M = { mm: 0.001, cm: 0.01, m: 1, km: 1000, in: 0.0254, ft: 0.3048, yd: 0.9144, mi: 1609.344 };
+  const mToFtIn = (meters) => {
+    const totalIn = Math.abs(meters) / 0.0254;
+    let ft = Math.floor(totalIn / 12);
+    let inches = Math.round((totalIn - ft * 12) * 10) / 10;
+    if (inches >= 12) { ft += 1; inches = 0; }
+    return `${meters < 0 ? "−" : ""}${ft}′ ${number.format(inches)}″`;
+  };
+
+  function renderLengthConverter() {
+    root.innerHTML = `${formHtml([
+      { id: "value", label: "Value", type: "number", value: 1, step: "any" },
+      { id: "from", label: "From unit", type: "select", value: "ft", options: LENGTH_UNITS },
+      { id: "to", label: "To unit", type: "select", value: "cm", options: LENGTH_UNITS }
+    ])}${resultPanel()}`;
+    live(() => {
+      const value = num(val("value")), from = val("from"), to = val("to");
+      const meters = value * LENGTH_TO_M[from];
+      const converted = meters / LENGTH_TO_M[to];
+      show(`<h2>${convNum(value)} ${from} = ${convNum(converted)} ${to}</h2>${metricsHtml(
+        LENGTH_UNITS.map(([u, label]) => [label, `${convNum(meters / LENGTH_TO_M[u])} ${u}`])
+      )}<p class="notice">Every row above is the same length, just expressed in a different unit.</p>`);
+    });
+  }
+
+  function renderSquareFootage() {
+    root.innerHTML = `${formHtml([
+      { id: "lval", label: "Length", type: "number", value: 250, min: 0, step: "any" },
+      { id: "lunit", label: "Length unit", type: "select", value: "cm", options: LENGTH_UNITS },
+      { id: "wval", label: "Width", type: "number", value: 3, min: 0, step: "any" },
+      { id: "wunit", label: "Width unit", type: "select", value: "m", options: LENGTH_UNITS }
+    ])}${resultPanel()}`;
+    live(() => {
+      const lengthM = num(val("lval")) * LENGTH_TO_M[val("lunit")];
+      const widthM = num(val("wval")) * LENGTH_TO_M[val("wunit")];
+      if (lengthM <= 0 || widthM <= 0) return show(`<p class="error">Enter a length and width greater than zero.</p>`);
+      const areaM2 = lengthM * widthM;
+      show(`<h2>${convNum(areaM2 / (0.3048 * 0.3048))} sq ft</h2>${metricsHtml([
+        ["Square feet (sq ft)", convNum(areaM2 / (0.3048 * 0.3048))],
+        ["Square inches (sq in)", convNum(areaM2 / (0.0254 * 0.0254))],
+        ["Square yards (sq yd)", convNum(areaM2 / (0.9144 * 0.9144))],
+        ["Square meters (sq m)", convNum(areaM2)],
+        ["Square centimeters (sq cm)", convNum(areaM2 * 10000)],
+        ["Square millimeters (sq mm)", convNum(areaM2 * 1e6)],
+        ["Acres", convNum(areaM2 / 4046.8564224)],
+        ["Hectares", convNum(areaM2 / 10000)]
+      ])}<p class="notice">Length: ${convNum(num(val("lval")))} ${val("lunit")} = ${mToFtIn(lengthM)} (${convNum(lengthM / 0.3048)} ft). Width: ${convNum(num(val("wval")))} ${val("wunit")} = ${mToFtIn(widthM)} (${convNum(widthM / 0.3048)} ft).</p>`);
+    });
+  }
+
   const renderers = {
     "age-calculator": renderAge,
     "date-calculator": renderDate,
     "percentage-calculator": renderPercentage,
+    "square-footage-calculator": renderSquareFootage,
+    "length-unit-converter": renderLengthConverter,
     "tip-calculator": renderTip,
     "bmi-calculator": renderBmi,
     "gpa-calculator": renderGpa,

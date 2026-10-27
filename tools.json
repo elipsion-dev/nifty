@@ -2,8 +2,8 @@
   "name": "Nifty Utilities",
   "url": "https://niftyutilities.com/",
   "description": "Free browser-based utilities for CSV/spreadsheet data, personal finance, documents, home and life decisions, business math, images, and everyday tasks.",
-  "updated": "2026-07-23",
-  "count": 136,
+  "updated": "2026-10-27",
+  "count": 138,
   "privacy": "Every tool runs locally in the visitor's browser. There is no backend, upload endpoint, database, or account — tool inputs are never transmitted to or stored by the site.",
   "license": "Free to use, no sign-up.",
   "categories": [
@@ -29,7 +29,7 @@
       "slug": "calculators",
       "name": "Everyday Calculators",
       "url": "https://niftyutilities.com/calculators/",
-      "count": 10
+      "count": 12
     },
     {
       "slug": "documents",
@@ -344,6 +344,22 @@
       "category": "calculators",
       "categoryName": "Everyday Calculators",
       "url": "https://niftyutilities.com/calculators/percentage-calculator.html"
+    },
+    {
+      "slug": "square-footage-calculator",
+      "name": "Square Footage Calculator",
+      "description": "Calculate area from a length and width, even when each side is measured in a different unit.",
+      "category": "calculators",
+      "categoryName": "Everyday Calculators",
+      "url": "https://niftyutilities.com/calculators/square-footage-calculator.html"
+    },
+    {
+      "slug": "length-unit-converter",
+      "name": "Length Unit Converter",
+      "description": "Convert feet, inches, yards, miles, millimeters, centimeters, meters, and kilometers instantly.",
+      "category": "calculators",
+      "categoryName": "Everyday Calculators",
+      "url": "https://niftyutilities.com/calculators/length-unit-converter.html"
     },
     {
       "slug": "age-calculator",

@@ -1320,9 +1320,11 @@ const categories = [
   {
     slug: "calculators",
     name: "Everyday Calculators",
-    description: "Fast, free calculators for dates, money, health, and school — instant answers, no sign-up.",
+    description: "Fast, free calculators for dates, money, health, school, and measurements — instant answers, no sign-up.",
     tools: [
       ["percentage-calculator", "Percentage Calculator", "Work out X% of Y, what percent one number is of another, and percent change."],
+      ["square-footage-calculator", "Square Footage Calculator", "Calculate area from a length and width, even when each side is measured in a different unit."],
+      ["length-unit-converter", "Length Unit Converter", "Convert feet, inches, yards, miles, millimeters, centimeters, meters, and kilometers instantly."],
       ["age-calculator", "Age Calculator", "Find an exact age in years, months, and days, plus weeks, days, and the next birthday."],
       ["date-calculator", "Date Calculator", "Count days between dates, add or subtract time, or count business days."],
       ["tip-calculator", "Tip Calculator", "Split a bill, set a tip percentage, and get the per-person total with optional rounding."],
@@ -1800,6 +1802,8 @@ const crossLinks = {
   "salary-to-hourly-calculator": ["hourly-rate-calculator", "net-worth-tracker"],
   "tip-calculator": ["roommate-expense-splitter"],
   "percentage-calculator": ["profit-margin-calculator", "sales-commission-calculator"],
+  "square-footage-calculator": ["home-maintenance-budget-calculator", "moving-cost-estimator", "screenshot-measurement-calculator"],
+  "length-unit-converter": ["screenshot-measurement-calculator", "image-resizer"],
   "date-calculator": ["small-claims-deadline-calculator", "naturalization-residency-date-calculator"],
   "age-calculator": ["social-security-claiming-age-calculator", "rmd-calculator"],
   "gpa-calculator": ["iq-test"],

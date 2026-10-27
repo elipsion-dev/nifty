@@ -1,6 +1,6 @@
 # Nifty Utilities: Complete Tool Directory
 
-Nifty Utilities is a free collection of 136 practical web utilities. No account is required. The website has no application backend, upload endpoint, or database capable of receiving tool inputs. Processing happens in the visitor's browser.
+Nifty Utilities is a free collection of 138 practical web utilities. No account is required. The website has no application backend, upload endpoint, or database capable of receiving tool inputs. Processing happens in the visitor's browser.
 
 ## Finance / CSV
 
@@ -51,9 +51,11 @@ Convert images, PDFs, audio, and documents right in your browser — no uploads,
 
 ## Everyday Calculators
 
-Fast, free calculators for dates, money, health, and school — instant answers, no sign-up.
+Fast, free calculators for dates, money, health, school, and measurements — instant answers, no sign-up.
 
 - [Percentage Calculator](https://niftyutilities.com/calculators/percentage-calculator.html): Work out X% of Y, what percent one number is of another, and percent change.
+- [Square Footage Calculator](https://niftyutilities.com/calculators/square-footage-calculator.html): Calculate area from a length and width, even when each side is measured in a different unit.
+- [Length Unit Converter](https://niftyutilities.com/calculators/length-unit-converter.html): Convert feet, inches, yards, miles, millimeters, centimeters, meters, and kilometers instantly.
 - [Age Calculator](https://niftyutilities.com/calculators/age-calculator.html): Find an exact age in years, months, and days, plus weeks, days, and the next birthday.
 - [Date Calculator](https://niftyutilities.com/calculators/date-calculator.html): Count days between dates, add or subtract time, or count business days.
 - [Tip Calculator](https://niftyutilities.com/calculators/tip-calculator.html): Split a bill, set a tip percentage, and get the per-person total with optional rounding.
