@@ -1,7 +1,7 @@
 # Nifty Utilities — tools.txt
 # Machine-readable index of interactive browser tools. Structured data: https://niftyutilities.com/tools.json
 # All tools run locally in the visitor's browser: no uploads, no accounts, no data stored.
-# Updated: 2026-10-27 | 138 tools
+# Updated: 2026-11-11 | 138 tools
 
 ## Finance / CSV
 - Bank Statement Cleaner: Standardize dates, amounts, descriptions, and blank rows in statement CSVs. — https://niftyutilities.com/finance/bank-statement-cleaner.html
@@ -145,7 +145,7 @@
 - Countdown Timer & Stopwatch: Run a countdown, stopwatch, or Pomodoro focus timer with an alert when time is up. — https://niftyutilities.com/text/countdown-timer.html
 
 ## Quizzes & Tests
-- IQ Test: Estimate your reasoning ability with an original, timed test spanning pattern, number, verbal, and spatial puzzles. — https://niftyutilities.com/quizzes/iq-test.html
+- IQ Test: Estimate your reasoning ability with an original timed test in two versions — a 20-question Quick Test or a more accurate 60-question Full Test — spanning pattern, number, verbal, and spatial puzzles. — https://niftyutilities.com/quizzes/iq-test.html
 - Typing Speed Test: Type a passage and measure your live WPM and accuracy in timed, word-count, or quote modes — your keystrokes never leave your browser. — https://niftyutilities.com/quizzes/typing-speed-test.html
 - Reaction Time Test: Click the moment the pad turns green across five rounds to measure your average reaction time in milliseconds. — https://niftyutilities.com/quizzes/reaction-time-test.html
 - Click Speed Test: Click a pad as fast as you can in 5, 10, or 30 seconds to find your clicks-per-second (CPS) score. — https://niftyutilities.com/quizzes/click-speed-test.html

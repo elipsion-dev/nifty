@@ -1460,7 +1460,7 @@ const categories = [
     name: "Quizzes & Tests",
     description: "Free self-assessments, skill tests, and just-for-fun quizzes with instant results: an original reasoning (IQ-style) test, typing and reaction speed tests, a memory test, a personality profiler, a color-blindness screening, and more. No sign-up, no email, nothing stored.",
     tools: [
-      ["iq-test", "IQ Test", "Estimate your reasoning ability with an original, timed test spanning pattern, number, verbal, and spatial puzzles."],
+      ["iq-test", "IQ Test", "Estimate your reasoning ability with an original timed test in two versions — a 20-question Quick Test or a more accurate 60-question Full Test — spanning pattern, number, verbal, and spatial puzzles."],
       ["typing-speed-test", "Typing Speed Test", "Type a passage and measure your live WPM and accuracy in timed, word-count, or quote modes — your keystrokes never leave your browser."],
       ["reaction-time-test", "Reaction Time Test", "Click the moment the pad turns green across five rounds to measure your average reaction time in milliseconds."],
       ["click-speed-test", "Click Speed Test", "Click a pad as fast as you can in 5, 10, or 30 seconds to find your clicks-per-second (CPS) score."],

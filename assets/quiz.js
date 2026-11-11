@@ -1,7 +1,8 @@
 /*
  * quiz.js — interactive apps for the "Quizzes & You" category.
- * Three self-contained modules mount into #tool-root based on data-tool:
- *   iq-test, personality-type-test, zodiac-compatibility.
+ * Self-contained modules mount into #tool-root based on data-tool (iq-test —
+ *   Quick 20-item and Full 60-item versions — personality-type-test,
+ *   zodiac-compatibility, typing/reaction/click/memory/color-blindness tests, love-calculator).
  * Everything runs in the browser. Nothing is sent anywhere or stored on a server.
  * All test items, personality types, and compatibility text are original to this
  * site — no copyrighted instruments are reproduced.
@@ -136,6 +137,7 @@
    *  IQ TEST
    * ===================================================================== */
   function renderIqTest() {
+    /* ---- IQ ITEM BANK START (self-contained: builders + banks; verified by scripts) ---- */
     /* ---- original SVG builders for figural items ---- */
     const SVG = (inner, vb = "0 0 90 90") =>
       `<svg viewBox="${vb}" class="q-svg" role="img" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">${inner}</svg>`;
@@ -153,6 +155,8 @@
       const positions = n === 1 ? [45] : n === 2 ? [31, 59] : [24, 45, 66];
       return SVG(positions.map((x) => oneShape(kind, x, 45, r, fill)).join(""));
     };
+    // a single shape drawn at a given size (for size-progression items).
+    const sizeCell = (kind, r, fill = false) => SVG(oneShape(kind, 45, 45, r, fill));
     // an arrow rotated `rot` degrees about the cell centre.
     const arrowCell = (rot) =>
       SVG(`<g transform="rotate(${rot} 45 45)"><path d="M45 20v50M45 20l-11 12M45 20l11 12"/></g>`);
@@ -160,61 +164,62 @@
     const glyphPath = "M32 20v50h6V46l22 10V26L38 36V20z";
     const glyph = (transform) =>
       SVG(`<g transform="${transform}"><path d="${glyphPath}" fill="currentColor" stroke="currentColor" stroke-width="2"/></g>`);
-    // cell built from line segments (for XOR-rule matrices):
+    // second asymmetric glyph (an "F"-shaped block) so rotation items don't all share one figure.
+    const fPath = "M28 18h36v11H41v10h17v11H41v22H28z";
+    const fglyph = (transform) =>
+      SVG(`<g transform="${transform}"><path d="${fPath}" fill="currentColor" stroke="currentColor" stroke-width="2"/></g>`);
+    const MIRROR = "matrix(-1,0,0,1,90,0)";   // flip left-right
+    const VFLIP = "matrix(1,0,0,-1,0,90)";    // flip top-bottom (also a mirror image)
+    // cell built from line segments (for set-rule matrices):
     // h = horizontal, v = vertical, d = diagonal TL-BR, u = diagonal BL-TR.
     const SEG_PATHS = { h: "M20 45h50", v: "M45 20v50", d: "M24 24l42 42", u: "M24 66l42-42" };
     const segCell = (segs) => SVG(segs.map((s) => `<path d="${SEG_PATHS[s]}"/>`).join(""));
+    // a filled dot at one of five positions inside a faint frame (position-rule matrices).
+    const POS = { tl: [27, 27], tr: [63, 27], bl: [27, 63], br: [63, 63], c: [45, 45] };
+    const posCell = (pos) => SVG(`<rect x="12" y="12" width="66" height="66" rx="6" stroke-opacity=".35"/>` +
+      `<circle cx="${POS[pos][0]}" cy="${POS[pos][1]}" r="7" fill="currentColor"/>`);
 
-    /* ---- item bank (all original) ---- */
-    // Each item: { cat, b, prompt, promptSvg?, options:[{t?/svg?}], correct } where
-    // correct is the index into options BEFORE shuffle.
-    // `b` is the item's difficulty in logits on an adult-population scale
-    // (θ ~ N(0,1)): b = ability level at which ~62% answer correctly under the
-    // 3PL model used in results(). Values are calibrated estimates informed by
-    // published pass-rate patterns for each item family (simple visible-rule
-    // series ≈ 85-90% adult pass rate → b ≈ -1.8; interleaved/second-order
-    // series ≈ 45-60% → b ≈ 0-0.7; belief-bias syllogisms ≈ 35-55% → b ≈ 0.7-1.6;
-    // two-rule and distribution matrices ≈ 25-40% → b ≈ 1.5-2.5).
+    /* ---- item banks (all original) ----
+     * Each item: { cat, b, prompt, promptSvg?, matrix?, seq?, table?, options:[{t}|{svg}], correct }
+     * where `correct` is the index into options BEFORE shuffle.
+     * `b` is the item's difficulty in logits on an adult-population scale
+     * (θ ~ N(0,1)): b = ability level at which ~62% answer correctly under the
+     * 3PL model used in results(). Values are calibrated estimates informed by
+     * published pass-rate patterns for each item family (simple visible-rule
+     * series ≈ 85-90% adult pass rate → b ≈ -1.8; interleaved/second-order
+     * series ≈ 45-60% → b ≈ 0-0.7; belief-bias syllogisms ≈ 35-55% → b ≈ 0.7-1.6;
+     * two-rule and distribution matrices ≈ 25-40% → b ≈ 1.5-2.5).
+     *
+     * QUICK (20 items, 5 per family) and FULL (60 items, 15 per family) share
+     * NO items, so someone who upgrades from the quick test to the full test
+     * never sees a question twice. Both sit on the same difficulty scale, so
+     * their scores are directly comparable. */
     const txt = (t) => ({ t });
-    const items = [
-      /* ---------- Numerical (11) ---------- */
+    const MATRIX_PROMPT = "Complete the pattern. Which figure belongs in the empty cell?";
+
+    const QUICK = [
+      /* ---------- Numerical (5) ---------- */
       { cat: "Numerical", b: -1.8, prompt: "What number continues the series?  2, 4, 8, 16, __", options: [txt("24"), txt("32"), txt("20"), txt("64")], correct: 1 },
-      { cat: "Numerical", b: -1.4, prompt: "What number continues the series?  81, 27, 9, 3, __", options: [txt("0"), txt("1"), txt("2"), txt("3")], correct: 1 },
-      { cat: "Numerical", b: -0.9, prompt: "What number continues the series?  1, 1, 2, 3, 5, 8, __", options: [txt("11"), txt("13"), txt("10"), txt("15")], correct: 1 },
       { cat: "Numerical", b: -0.4, prompt: "Which number does NOT belong with the others?", options: [txt("12"), txt("18"), txt("25"), txt("30")], correct: 2 },
-      { cat: "Numerical", b: 0.1, prompt: "What number continues the series?  3, 5, 8, 10, 13, 15, __", options: [txt("18"), txt("17"), txt("20"), txt("16")], correct: 0 },
       { cat: "Numerical", b: 0.4, prompt: "What number continues the series?  7, 14, 12, 24, 22, __", options: [txt("44"), txt("20"), txt("11"), txt("33")], correct: 0 },
-      { cat: "Numerical", b: 0.6, prompt: "Which number does NOT belong with the others?", options: [txt("16"), txt("27"), txt("36"), txt("49")], correct: 1 },
-      { cat: "Numerical", b: 0.7, prompt: "What number continues the series?  2, 3, 6, 11, 18, 27, __", options: [txt("36"), txt("38"), txt("40"), txt("34")], correct: 1 },
       { cat: "Numerical", b: 1.2, prompt: "What number continues the series?  3, 4, 7, 11, 18, 29, __", options: [txt("40"), txt("47"), txt("43"), txt("52")], correct: 1 },
-      { cat: "Numerical", b: 1.5, prompt: "What number continues the series?  2, 3, 5, 9, 17, 33, __", options: [txt("49"), txt("57"), txt("65"), txt("66")], correct: 2 },
       { cat: "Numerical", b: 2.5, prompt: "What number continues the series?  4, 9, 25, 49, 121, __", options: [txt("144"), txt("169"), txt("143"), txt("225")], correct: 1 },
-      /* ---------- Verbal (11) ---------- */
-      { cat: "Verbal", b: -2.0, prompt: "Hand is to glove as foot is to __", options: [txt("sock"), txt("shoe leather"), txt("toe"), txt("ankle")], correct: 0 },
-      { cat: "Verbal", b: -1.6, prompt: "Water is to thirst as food is to __", options: [txt("plate"), txt("cook"), txt("hunger"), txt("taste")], correct: 2 },
-      { cat: "Verbal", b: -1.2, prompt: "Whisper is to shout as dim is to __", options: [txt("dark"), txt("faint"), txt("bright"), txt("quiet")], correct: 2 },
+      /* ---------- Verbal (5) ---------- */
+      { cat: "Verbal", b: -2.0, prompt: "Hand is to glove as head is to __", options: [txt("hat"), txt("hair"), txt("scarf"), txt("neck")], correct: 0 },
       { cat: "Verbal", b: -0.9, prompt: "Petal is to flower as page is to __", options: [txt("word"), txt("book"), txt("cover"), txt("ink")], correct: 1 },
-      { cat: "Verbal", b: -0.7, prompt: "Which word does NOT belong with the others?", options: [txt("rose"), txt("tulip"), txt("oak"), txt("daisy")], correct: 2 },
-      { cat: "Verbal", b: -0.4, prompt: "Island is to water as oasis is to __", options: [txt("sand"), txt("desert"), txt("palm"), txt("camel")], correct: 1 },
-      { cat: "Verbal", b: 0.5, prompt: "Which instrument does NOT belong with the others?", options: [txt("trumpet"), txt("French horn"), txt("oboe"), txt("tuba")], correct: 2 },
+      { cat: "Verbal", b: -0.4, prompt: "Island is to water as oasis is to __", options: [txt("well"), txt("desert"), txt("palm"), txt("camel")], correct: 1 },
       { cat: "Verbal", b: 0.8, prompt: "Ornithology is to birds as entomology is to __", options: [txt("fossils"), txt("insects"), txt("languages"), txt("weather")], correct: 1 },
-      { cat: "Verbal", b: 1.3, prompt: "Ephemeral is to permanent as scarce is to __", options: [txt("rare"), txt("valuable"), txt("abundant"), txt("empty")], correct: 2 },
       { cat: "Verbal", b: 1.7, prompt: "Mitigate is to aggravate as bolster is to __", options: [txt("support"), txt("undermine"), txt("repair"), txt("strengthen")], correct: 1 },
-      { cat: "Verbal", b: 2.0, prompt: "Candid is to evasive as gregarious is to __", options: [txt("friendly"), txt("talkative"), txt("hostile"), txt("solitary")], correct: 3 },
-      /* ---------- Logical (9) ---------- */
+      /* ---------- Logical (5) ---------- */
       { cat: "Logical", b: -1.4, prompt: "Tom is taller than Sam. Sam is taller than Bo. Who is shortest?", options: [txt("Tom"), txt("Sam"), txt("Bo"), txt("Cannot tell")], correct: 2 },
-      { cat: "Logical", b: -1.0, prompt: "Town A is north of B. C is south of B. Which town is furthest north?", options: [txt("A"), txt("B"), txt("C"), txt("They are level")], correct: 0 },
-      { cat: "Logical", b: -0.2, prompt: "All roses are flowers. Some flowers fade quickly. Does it follow that all roses fade quickly?", options: [txt("Yes, it must"), txt("No, it does not follow"), txt("Only red roses"), txt("Cannot tell at all")], correct: 1 },
-      { cat: "Logical", b: 0.0, prompt: "If it rains, the ground gets wet. The ground is wet. Did it necessarily rain?", options: [txt("Yes, definitely"), txt("No, something else could have wet it"), txt("Only if it is cloudy"), txt("It never rained")], correct: 1 },
-      { cat: "Logical", b: 0.3, prompt: "Every day it is sunny, Mia walks. Today Mia did not walk. What can you conclude?", options: [txt("It was sunny"), txt("It was not sunny"), txt("Mia was ill"), txt("Nothing at all")], correct: 1 },
+      { cat: "Logical", b: 0.0, prompt: "If it rains, the ground gets wet. The ground is wet. Did it necessarily rain?", options: [txt("Yes — it must have rained"), txt("No — something else could have wet it"), txt("Yes — but only if the ground was dry earlier"), txt("No — it definitely did not rain")], correct: 1 },
       { cat: "Logical", b: 0.7, prompt: "All bloops are razzies. No razzies are loppies. Does it follow that no bloops are loppies?", options: [txt("Yes — it must follow"), txt("No — it does not follow"), txt("Only some bloops"), txt("Cannot tell at all")], correct: 0 },
-      { cat: "Logical", b: 1.2, prompt: "No pilots are careless. Some students are careless. Therefore some students are not pilots.", options: [txt("Valid — it follows"), txt("Invalid — it does not follow"), txt("True only for careful students"), txt("Cannot tell at all")], correct: 0 },
       { cat: "Logical", b: 1.5, prompt: "Five runners finish a race. Anna finishes ahead of Ben but behind Carla. Dan finishes ahead of Anna but behind Carla. Erin finishes last. Who comes third?", options: [txt("Anna"), txt("Ben"), txt("Dan"), txt("Cannot tell")], correct: 0 },
       { cat: "Logical", b: 2.3, prompt: "A coin is in box A, B, or C. Exactly ONE of these statements is true: (1) “The coin is in box A.” (2) “The coin is not in box B.” Where is the coin?", options: [txt("Box A"), txt("Box B"), txt("Box C"), txt("Cannot be determined")], correct: 2 },
-      /* ---------- Spatial (9) ---------- */
+      /* ---------- Spatial (5) ---------- */
       // Count progression matrix
       {
-        cat: "Spatial", b: -1.1, prompt: "Complete the pattern. Which figure belongs in the empty cell?",
+        cat: "Spatial", b: -1.1, prompt: MATRIX_PROMPT,
         matrix: [
           shapesCell({ kind: "circle", n: 1 }), shapesCell({ kind: "circle", n: 2 }), shapesCell({ kind: "circle", n: 3 }),
           shapesCell({ kind: "square", n: 1 }), shapesCell({ kind: "square", n: 2 }), shapesCell({ kind: "square", n: 3 }),
@@ -227,24 +232,9 @@
           { svg: shapesCell({ kind: "circle", n: 3 }) }
         ], correct: 0
       },
-      // Fill alternation matrix (columns: circle/square/triangle; rows toggle fill)
-      {
-        cat: "Spatial", b: -0.6, prompt: "Complete the pattern. Which figure belongs in the empty cell?",
-        matrix: [
-          shapesCell({ kind: "circle", fill: false }), shapesCell({ kind: "square", fill: false }), shapesCell({ kind: "triangle", fill: false }),
-          shapesCell({ kind: "circle", fill: true }), shapesCell({ kind: "square", fill: true }), shapesCell({ kind: "triangle", fill: true }),
-          shapesCell({ kind: "circle", fill: false }), shapesCell({ kind: "square", fill: false }), null
-        ],
-        options: [
-          { svg: shapesCell({ kind: "triangle", fill: false }) },
-          { svg: shapesCell({ kind: "triangle", fill: true }) },
-          { svg: shapesCell({ kind: "circle", fill: false }) },
-          { svg: shapesCell({ kind: "square", fill: false }) }
-        ], correct: 0
-      },
       // Rotation matrix (each column +45°, each row +45°)
       {
-        cat: "Spatial", b: 0.2, prompt: "Complete the pattern. Which figure belongs in the empty cell?",
+        cat: "Spatial", b: 0.2, prompt: MATRIX_PROMPT,
         matrix: [
           arrowCell(0), arrowCell(45), arrowCell(90),
           arrowCell(45), arrowCell(90), arrowCell(135),
@@ -260,20 +250,10 @@
         promptSvg: glyph("rotate(0 45 45)"),
         options: [
           { svg: glyph("rotate(90 45 45)") },
-          { svg: glyph("matrix(-1,0,0,1,90,0)") },
-          { svg: glyph("matrix(-1,0,0,1,90,0) rotate(90 45 45)") },
-          { svg: glyph("matrix(-1,0,0,1,90,0) rotate(180 45 45)") }
+          { svg: glyph(MIRROR) },
+          { svg: glyph(`${MIRROR} rotate(90 45 45)`) },
+          { svg: glyph(`${MIRROR} rotate(180 45 45)`) }
         ], correct: 0
-      },
-      {
-        cat: "Spatial", b: 0.9, prompt: "Which option is the SAME figure simply rotated (not flipped/mirrored)?",
-        promptSvg: glyph("rotate(0 45 45)"),
-        options: [
-          { svg: glyph("matrix(-1,0,0,1,90,0)") },
-          { svg: glyph("rotate(180 45 45)") },
-          { svg: glyph("matrix(-1,0,0,1,90,0) rotate(90 45 45)") },
-          { svg: glyph("matrix(1,0,0,-1,0,90)") }
-        ], correct: 1
       },
       // Two simultaneous rules: shape fixed per row, count grows per column,
       // fill alternates on a checkerboard.
@@ -291,22 +271,6 @@
           { svg: shapesCell({ kind: "square", n: 3, fill: false }) }
         ], correct: 0
       },
-      // XOR rule: third column shows the segments that appear in exactly ONE
-      // of the first two cells of the row.
-      {
-        cat: "Spatial", b: 1.5, prompt: "In each row, the third cell keeps only the lines that appear in exactly ONE of the first two cells. Which figure completes the last row?",
-        matrix: [
-          segCell(["h"]), segCell(["v"]), segCell(["h", "v"]),
-          segCell(["h", "v"]), segCell(["v", "d"]), segCell(["h", "d"]),
-          segCell(["d", "u"]), segCell(["u", "v"]), null
-        ],
-        options: [
-          { svg: segCell(["d", "v"]) },
-          { svg: segCell(["d", "u", "v"]) },
-          { svg: segCell(["u"]) },
-          { svg: segCell(["h", "v"]) }
-        ], correct: 0
-      },
       // Distribution of three: every row and column contains each shape once
       // AND each count once (double Latin square).
       {
@@ -322,73 +286,336 @@
           { svg: shapesCell({ kind: "triangle", n: 2 }) },
           { svg: shapesCell({ kind: "square", n: 2 }) }
         ], correct: 0
+      }
+    ];
+
+    const FULL = [
+      /* ---------- Numerical (15) ---------- */
+      { cat: "Numerical", b: -1.6, prompt: "What number continues the series?  1, 4, 9, 16, 25, __", options: [txt("36"), txt("30"), txt("35"), txt("49")], correct: 0 },
+      { cat: "Numerical", b: -1.4, prompt: "What number continues the series?  81, 27, 9, 3, __", options: [txt("0"), txt("1"), txt("2"), txt("3")], correct: 1 },
+      { cat: "Numerical", b: -1.1, prompt: "What number continues the series?  0, 1, 3, 6, 10, 15, __", options: [txt("21"), txt("20"), txt("18"), txt("25")], correct: 0 },
+      { cat: "Numerical", b: -0.9, prompt: "What number continues the series?  1, 1, 2, 3, 5, 8, __", options: [txt("11"), txt("13"), txt("10"), txt("15")], correct: 1 },
+      { cat: "Numerical", b: -0.5, prompt: "What number is missing from the series?  6, 11, 16, __, 26, 31", options: [txt("21"), txt("20"), txt("22"), txt("19")], correct: 0 },
+      { cat: "Numerical", b: 0.0, prompt: "What number continues the series?  100, 98, 94, 88, 80, __", options: [txt("70"), txt("72"), txt("68"), txt("74")], correct: 0 },
+      { cat: "Numerical", b: 0.1, prompt: "What number continues the series?  3, 5, 8, 10, 13, 15, __", options: [txt("18"), txt("17"), txt("20"), txt("16")], correct: 0 },
+      { cat: "Numerical", b: 0.5, prompt: "What number continues the series?  2, 5, 10, 17, 26, __", options: [txt("37"), txt("35"), txt("36"), txt("38")], correct: 0 },
+      { cat: "Numerical", b: 0.6, prompt: "Which number does NOT belong with the others?", options: [txt("16"), txt("27"), txt("36"), txt("49")], correct: 1 },
+      { cat: "Numerical", b: 0.7, prompt: "What number continues the series?  2, 3, 6, 11, 18, 27, __", options: [txt("36"), txt("38"), txt("40"), txt("34")], correct: 1 },
+      { cat: "Numerical", b: 1.0, prompt: "Two series are interleaved. What number comes next?  1, 10, 3, 20, 9, 30, 27, __", options: [txt("40"), txt("81"), txt("50"), txt("36")], correct: 0 },
+      {
+        cat: "Numerical", b: 1.2, prompt: "Every row of this table follows the same rule. What number replaces the question mark?",
+        table: [[2, 3, 7], [4, 5, 21], [6, 2, 13], [3, 6, "?"]],
+        options: [txt("19"), txt("18"), txt("20"), txt("21")], correct: 0
+      },
+      { cat: "Numerical", b: 1.5, prompt: "What number continues the series?  2, 3, 5, 9, 17, 33, __", options: [txt("49"), txt("57"), txt("65"), txt("66")], correct: 2 },
+      { cat: "Numerical", b: 1.8, prompt: "What number continues the series?  3, 7, 16, 35, 74, __", options: [txt("153"), txt("149"), txt("148"), txt("152")], correct: 0 },
+      { cat: "Numerical", b: 2.3, prompt: "What number continues the series?  1, 2, 6, 21, 88, __", options: [txt("445"), txt("440"), txt("352"), txt("450")], correct: 0 },
+      /* ---------- Verbal (15) ---------- */
+      { cat: "Verbal", b: -1.7, prompt: "Bird is to nest as bee is to __", options: [txt("hive"), txt("honey"), txt("flower"), txt("wing")], correct: 0 },
+      { cat: "Verbal", b: -1.6, prompt: "Water is to thirst as food is to __", options: [txt("plate"), txt("cook"), txt("hunger"), txt("taste")], correct: 2 },
+      { cat: "Verbal", b: -1.3, prompt: "Which word does NOT belong with the others?", options: [txt("carrot"), txt("potato"), txt("apple"), txt("onion")], correct: 2 },
+      { cat: "Verbal", b: -1.2, prompt: "Whisper is to shout as dim is to __", options: [txt("dark"), txt("faint"), txt("bright"), txt("quiet")], correct: 2 },
+      { cat: "Verbal", b: -0.7, prompt: "Which word does NOT belong with the others?", options: [txt("rose"), txt("tulip"), txt("oak"), txt("daisy")], correct: 2 },
+      { cat: "Verbal", b: -0.6, prompt: "Author is to novel as composer is to __", options: [txt("symphony"), txt("piano"), txt("orchestra"), txt("concert")], correct: 0 },
+      { cat: "Verbal", b: 0.0, prompt: "Which word does NOT belong with the others?", options: [txt("inch"), txt("gallon"), txt("mile"), txt("yard")], correct: 1 },
+      { cat: "Verbal", b: 0.3, prompt: "Sculptor is to marble as potter is to __", options: [txt("clay"), txt("wheel"), txt("vase"), txt("kiln")], correct: 0 },
+      { cat: "Verbal", b: 0.5, prompt: "Which instrument does NOT belong with the others?", options: [txt("trumpet"), txt("French horn"), txt("oboe"), txt("tuba")], correct: 2 },
+      { cat: "Verbal", b: 0.7, prompt: "Drought is to rain as famine is to __", options: [txt("food"), txt("hunger"), txt("farm"), txt("water")], correct: 0 },
+      { cat: "Verbal", b: 0.9, prompt: "Which word does NOT belong with the others?", options: [txt("symphony"), txt("sonnet"), txt("sonata"), txt("concerto")], correct: 1 },
+      { cat: "Verbal", b: 1.3, prompt: "Ephemeral is to permanent as scarce is to __", options: [txt("rare"), txt("valuable"), txt("abundant"), txt("empty")], correct: 2 },
+      { cat: "Verbal", b: 1.4, prompt: "Archipelago is to islands as constellation is to __", options: [txt("stars"), txt("planets"), txt("sky"), txt("galaxy")], correct: 0 },
+      { cat: "Verbal", b: 1.9, prompt: "Prologue is to epilogue as overture is to __", options: [txt("finale"), txt("encore"), txt("interlude"), txt("crescendo")], correct: 0 },
+      { cat: "Verbal", b: 2.0, prompt: "Candid is to evasive as gregarious is to __", options: [txt("friendly"), txt("talkative"), txt("hostile"), txt("solitary")], correct: 3 },
+      /* ---------- Logical (15) ---------- */
+      { cat: "Logical", b: -1.5, prompt: "Every dog at the shelter has a collar. Biscuit is a dog at the shelter. Which statement must be true?", options: [txt("Biscuit has a collar"), txt("Biscuit is the only dog with a collar"), txt("Every animal with a collar is a dog at the shelter"), txt("Biscuit has more than one collar")], correct: 0 },
+      { cat: "Logical", b: -1.1, prompt: "Four friends sit in a row. Priya is somewhere to the left of Noah. Noah is somewhere to the left of Liam. Ava is to the right of Liam. Who sits at the far left?", options: [txt("Priya"), txt("Noah"), txt("Liam"), txt("Ava")], correct: 0 },
+      { cat: "Logical", b: -1.0, prompt: "Town A is north of B. C is south of B. Which town is furthest north?", options: [txt("A"), txt("B"), txt("C"), txt("They are level")], correct: 0 },
+      { cat: "Logical", b: 0.0, prompt: "No reptiles are warm-blooded. All snakes are reptiles. Which statement must be true?", options: [txt("No snakes are warm-blooded"), txt("Some snakes are warm-blooded"), txt("All cold-blooded animals are reptiles"), txt("No cold-blooded animals are snakes")], correct: 0 },
+      { cat: "Logical", b: 0.2, prompt: "Some painters are poets. All poets are dreamers. Which statement must be true?", options: [txt("Some painters are dreamers"), txt("All painters are dreamers"), txt("Some dreamers are not painters"), txt("No painters are dreamers")], correct: 0 },
+      { cat: "Logical", b: 0.3, prompt: "Every day it is sunny, Mia walks. Today Mia did not walk. What follows?", options: [txt("It was not sunny today"), txt("It was sunny today"), txt("Mia will walk tomorrow"), txt("Nothing follows")], correct: 0 },
+      { cat: "Logical", b: 0.5, prompt: "All roses are flowers. Some flowers fade quickly. Which statement must be true?", options: [txt("All roses fade quickly"), txt("Some roses fade quickly"), txt("No roses fade quickly"), txt("None of these must be true")], correct: 3 },
+      { cat: "Logical", b: 0.5, prompt: "Every bead in the jar is either glass or wood. No wooden bead is blue. Some beads are blue. Which statement must be true?", options: [txt("Some glass beads are blue"), txt("All glass beads are blue"), txt("No wooden bead is red"), txt("Most of the beads are glass")], correct: 0 },
+      { cat: "Logical", b: 0.8, prompt: "In a club, everyone who plays tennis also swims. Nobody who swims plays golf. Max plays golf. Which statement must be true?", options: [txt("Max does not play tennis"), txt("Max swims"), txt("Max plays tennis"), txt("Nothing can be concluded about Max")], correct: 0 },
+      { cat: "Logical", b: 1.1, prompt: "Ann says: “Ben is lying.” Ben says: “Ann and I are both telling the truth.” Who is telling the truth?", options: [txt("Only Ann"), txt("Only Ben"), txt("Both of them"), txt("Neither of them")], correct: 0 },
+      { cat: "Logical", b: 1.2, prompt: "No pilots are careless. Some students are careless. Therefore some students are not pilots.", options: [txt("Valid — it follows"), txt("Invalid — it does not follow"), txt("True only for careful students"), txt("Cannot tell at all")], correct: 0 },
+      { cat: "Logical", b: 1.3, prompt: "A bag holds only red and blue marbles, and there are more red marbles than blue ones. Which statement must be true?", options: [txt("More than half of the marbles are red"), txt("There are at least two red marbles"), txt("There is at least one blue marble"), txt("There is exactly one more red marble than blue")], correct: 0 },
+      { cat: "Logical", b: 1.6, prompt: "Five people — J, K, L, M and N — sit in a row of five seats. K sits in the middle seat. J sits next to K. L sits at one end and is not next to J. M is not next to K. Who sits next to L?", options: [txt("J"), txt("M"), txt("N"), txt("Cannot be determined")], correct: 2 },
+      { cat: "Logical", b: 2.0, prompt: "Three sealed boxes are labelled “apples”, “oranges” and “mixed”, and every label is wrong. You take one fruit from the box labelled “mixed” and it is an apple. What is in the box labelled “oranges”?", options: [txt("Only apples"), txt("Only oranges"), txt("A mix of apples and oranges"), txt("Cannot be determined")], correct: 2 },
+      { cat: "Logical", b: 2.2, prompt: "On an island, knights always tell the truth and knaves always lie. You meet A and B. A says: “At least one of us is a knave.” What are A and B?", options: [txt("A is a knight and B is a knave"), txt("A is a knave and B is a knight"), txt("Both are knights"), txt("Both are knaves")], correct: 0 },
+      /* ---------- Spatial (15) ---------- */
+      // Size progression series
+      {
+        cat: "Spatial", b: -1.2, prompt: "Which figure comes next in the sequence?",
+        seq: [sizeCell("square", 8), sizeCell("square", 12), sizeCell("square", 16), sizeCell("square", 20)],
+        options: [
+          { svg: sizeCell("square", 24) }, { svg: sizeCell("square", 20) }, { svg: sizeCell("square", 28) }, { svg: sizeCell("square", 16) }
+        ], correct: 0
+      },
+      // Matrix: shape fixed per row, size grows per column
+      {
+        cat: "Spatial", b: -0.8, prompt: MATRIX_PROMPT,
+        matrix: [
+          sizeCell("circle", 8), sizeCell("circle", 13), sizeCell("circle", 18),
+          sizeCell("square", 8), sizeCell("square", 13), sizeCell("square", 18),
+          sizeCell("triangle", 8), sizeCell("triangle", 13), null
+        ],
+        options: [
+          { svg: sizeCell("triangle", 18) }, { svg: sizeCell("triangle", 13) }, { svg: sizeCell("triangle", 23) }, { svg: sizeCell("square", 18) }
+        ], correct: 0
+      },
+      // Fill alternation matrix (columns: circle/square/triangle; rows toggle fill)
+      {
+        cat: "Spatial", b: -0.6, prompt: MATRIX_PROMPT,
+        matrix: [
+          shapesCell({ kind: "circle", fill: false }), shapesCell({ kind: "square", fill: false }), shapesCell({ kind: "triangle", fill: false }),
+          shapesCell({ kind: "circle", fill: true }), shapesCell({ kind: "square", fill: true }), shapesCell({ kind: "triangle", fill: true }),
+          shapesCell({ kind: "circle", fill: false }), shapesCell({ kind: "square", fill: false }), null
+        ],
+        options: [
+          { svg: shapesCell({ kind: "triangle", fill: false }) },
+          { svg: shapesCell({ kind: "triangle", fill: true }) },
+          { svg: shapesCell({ kind: "circle", fill: false }) },
+          { svg: shapesCell({ kind: "square", fill: false }) }
+        ], correct: 0
+      },
+      // Figural odd-one-out: three rotations and one mirror image
+      {
+        cat: "Spatial", b: 0.0, prompt: "Three of these figures are the same shape, simply rotated. Which one is a mirror image?",
+        options: [
+          { svg: glyph("rotate(0 45 45)") },
+          { svg: glyph("rotate(120 45 45)") },
+          { svg: glyph(`${MIRROR} rotate(60 45 45)`) },
+          { svg: glyph("rotate(250 45 45)") }
+        ], correct: 2
+      },
+      // Superposition: lay one figure on top of the other
+      {
+        cat: "Spatial", b: 0.2, prompt: "The first figure is laid exactly on top of the second. Which figure is the result?",
+        seq: [segCell(["h", "d"]), segCell(["v", "u"])], seqOp: "+",
+        options: [
+          { svg: segCell(["h", "v", "d", "u"]) }, { svg: segCell(["h", "v"]) }, { svg: segCell(["d", "u"]) }, { svg: segCell(["h", "v", "d"]) }
+        ], correct: 0
+      },
+      // Position matrix: the dot steps clockwise around the corners
+      {
+        cat: "Spatial", b: 0.6, prompt: MATRIX_PROMPT,
+        matrix: [
+          posCell("tl"), posCell("tr"), posCell("br"),
+          posCell("tr"), posCell("br"), posCell("bl"),
+          posCell("br"), posCell("bl"), null
+        ],
+        options: [
+          { svg: posCell("tl") }, { svg: posCell("tr") }, { svg: posCell("c") }, { svg: posCell("bl") }
+        ], correct: 0
+      },
+      // Reflection
+      {
+        cat: "Spatial", b: 0.7, prompt: "Which option shows the figure flipped left-to-right, as it would appear in a mirror?",
+        promptSvg: fglyph("rotate(0 45 45)"),
+        options: [
+          { svg: fglyph(MIRROR) },
+          { svg: fglyph("rotate(180 45 45)") },
+          { svg: fglyph(VFLIP) },
+          { svg: fglyph("rotate(90 45 45)") }
+        ], correct: 0
+      },
+      // Mental rotation (flag glyph)
+      {
+        cat: "Spatial", b: 0.9, prompt: "Which option is the SAME figure simply rotated (not flipped/mirrored)?",
+        promptSvg: glyph("rotate(0 45 45)"),
+        options: [
+          { svg: glyph(MIRROR) },
+          { svg: glyph("rotate(180 45 45)") },
+          { svg: glyph(`${MIRROR} rotate(90 45 45)`) },
+          { svg: glyph(VFLIP) }
+        ], correct: 1
+      },
+      // Subtraction rule (stated): keep lines of the first cell that are NOT in the second
+      {
+        cat: "Spatial", b: 0.9, prompt: "In each row, the third cell keeps only the lines from the first cell that do NOT appear in the second cell. Which figure completes the last row?",
+        matrix: [
+          segCell(["h", "v", "d"]), segCell(["d", "u"]), segCell(["h", "v"]),
+          segCell(["h", "v", "u"]), segCell(["h", "d"]), segCell(["v", "u"]),
+          segCell(["v", "d", "u"]), segCell(["u", "h"]), null
+        ],
+        options: [
+          { svg: segCell(["v", "d"]) }, { svg: segCell(["v", "d", "u"]) }, { svg: segCell(["d"]) }, { svg: segCell(["h", "v", "d"]) }
+        ], correct: 0
+      },
+      // XOR rule (stated): third column shows segments in exactly ONE of the first two cells
+      {
+        cat: "Spatial", b: 1.2, prompt: "In each row, the third cell keeps only the lines that appear in exactly ONE of the first two cells. Which figure completes the last row?",
+        matrix: [
+          segCell(["h"]), segCell(["v"]), segCell(["h", "v"]),
+          segCell(["h", "v"]), segCell(["v", "d"]), segCell(["h", "d"]),
+          segCell(["d", "u"]), segCell(["u", "v"]), null
+        ],
+        options: [
+          { svg: segCell(["d", "v"]) }, { svg: segCell(["d", "u", "v"]) }, { svg: segCell(["u"]) }, { svg: segCell(["h", "v"]) }
+        ], correct: 0
+      },
+      // Three-rule series: shape cycles, count cycles, fill alternates
+      {
+        cat: "Spatial", b: 1.2, prompt: "Which figure comes next in the sequence? (More than one thing changes at each step.)",
+        seq: [
+          shapesCell({ kind: "circle", n: 1, fill: false }), shapesCell({ kind: "square", n: 2, fill: true }), shapesCell({ kind: "triangle", n: 3, fill: false }),
+          shapesCell({ kind: "circle", n: 1, fill: true }), shapesCell({ kind: "square", n: 2, fill: false })
+        ],
+        options: [
+          { svg: shapesCell({ kind: "triangle", n: 3, fill: true }) },
+          { svg: shapesCell({ kind: "triangle", n: 3, fill: false }) },
+          { svg: shapesCell({ kind: "circle", n: 1, fill: true }) },
+          { svg: shapesCell({ kind: "triangle", n: 2, fill: true }) }
+        ], correct: 0
+      },
+      // AND rule (NOT stated): third cell keeps only the lines common to both
+      {
+        cat: "Spatial", b: 1.7, prompt: "Each row follows the same hidden rule. Which figure completes the last row?",
+        matrix: [
+          segCell(["h", "v"]), segCell(["v", "d"]), segCell(["v"]),
+          segCell(["h", "d", "u"]), segCell(["d", "u"]), segCell(["d", "u"]),
+          segCell(["h", "v", "u"]), segCell(["h", "u", "d"]), null
+        ],
+        options: [
+          { svg: segCell(["h", "u"]) }, { svg: segCell(["h", "v", "u", "d"]) }, { svg: segCell(["v", "d"]) }, { svg: segCell(["u"]) }
+        ], correct: 0
+      },
+      // Mental rotation (F glyph), all distractors mirrored
+      {
+        cat: "Spatial", b: 1.8, prompt: "Which option is the SAME figure simply rotated (not flipped/mirrored)?",
+        promptSvg: fglyph("rotate(0 45 45)"),
+        options: [
+          { svg: fglyph(`${MIRROR} rotate(90 45 45)`) },
+          { svg: fglyph("rotate(270 45 45)") },
+          { svg: fglyph(MIRROR) },
+          { svg: fglyph(`${VFLIP} rotate(135 45 45)`) }
+        ], correct: 1
+      },
+      // Double Latin square on shape × size
+      {
+        cat: "Spatial", b: 2.1, prompt: "Complete the pattern. Every row and every column follows the same two rules. Which figure belongs in the empty cell?",
+        matrix: [
+          sizeCell("circle", 7), sizeCell("square", 12), sizeCell("triangle", 17),
+          sizeCell("triangle", 12), sizeCell("circle", 17), sizeCell("square", 7),
+          sizeCell("square", 17), sizeCell("triangle", 7), null
+        ],
+        options: [
+          { svg: sizeCell("circle", 12) }, { svg: sizeCell("circle", 17) }, { svg: sizeCell("triangle", 12) }, { svg: sizeCell("square", 12) }
+        ], correct: 0
       },
       // Hard mental rotation: odd angles, all distractors mirrored.
       {
         cat: "Spatial", b: 2.4, prompt: "Which option is the SAME figure simply rotated (not flipped/mirrored)?",
         promptSvg: glyph("rotate(0 45 45)"),
         options: [
-          { svg: glyph("matrix(-1,0,0,1,90,0) rotate(45 45 45)") },
+          { svg: glyph(`${MIRROR} rotate(45 45 45)`) },
           { svg: glyph("rotate(135 45 45)") },
-          { svg: glyph("matrix(-1,0,0,1,90,0) rotate(225 45 45)") },
-          { svg: glyph("matrix(1,0,0,-1,0,90) rotate(45 45 45)") }
+          { svg: glyph(`${MIRROR} rotate(225 45 45)`) },
+          { svg: glyph(`${VFLIP} rotate(45 45 45)`) }
         ], correct: 1
       }
     ];
+    /* ---- IQ ITEM BANK END ---- */
 
-    const TOTAL = items.length;
-    const TIME_LIMIT = 30 * 60; // seconds, soft cap; auto-submits at 0.
-
-    // Present items easiest-first (standard practice on ability tests) but
-    // shuffle within each difficulty tier so retakes still vary. Options are
-    // always shuffled.
-    const tierOf = (b) => (b < -0.5 ? 0 : b < 0.5 ? 1 : b < 1.5 ? 2 : 3);
-    const ordered = [0, 1, 2, 3].flatMap((t) => shuffle(items.filter((it) => tierOf(it.b) === t)));
-    const run = ordered.map((item) => {
-      const order = shuffle(item.options.map((_, i) => i));
-      return {
-        item,
-        options: order.map((i) => item.options[i]),
-        correctIndex: order.indexOf(item.correct)
-      };
-    });
-    const answers = new Array(TOTAL).fill(null);
-    let current = 0;
-    let remaining = TIME_LIMIT;
-    let timerId = null;
-
+    /* ---- test versions ----
+     * Precision figures are the model's standard error at average ability
+     * (θ = 0; see scripts/verify-iq-bank.mjs), scaled to IQ points. More items
+     * → more Fisher information → a tighter band. */
+    const MODES = {
+      quick: {
+        key: "quick", label: "Quick Test", items: QUICK, timeLimit: 12 * 60,
+        minutes: "8–10 minutes", precision: 11, clampLo: 65, clampHi: 150
+      },
+      full: {
+        key: "full", label: "Full Test", items: FULL, timeLimit: 45 * 60,
+        minutes: "30–35 minutes", precision: 6, clampLo: 60, clampHi: 155
+      }
+    };
     const catLabels = { Numerical: "Number & series", Verbal: "Verbal reasoning", Logical: "Logical reasoning", Spatial: "Pattern & spatial" };
+
+    /* ---- state ---- */
+    let mode = null;
+    let run = [];
+    let answers = [];
+    let current = 0;
+    let remaining = 0;
+    let timerId = null;
 
     /* ---- screens ---- */
     function intro() {
       stopTimer();
+      unbindKeys();
       root.innerHTML = `
         <div class="quiz quiz-intro">
           <div class="quiz-badges">
-            <span class="quiz-badge time">⏱ Estimated time: 25–30 minutes</span>
-            <span class="quiz-badge">${TOTAL} questions</span>
             <span class="quiz-badge ok">✓ 100% free · no sign-up · no email</span>
+            <span class="quiz-badge">Two versions: 20 or 60 questions</span>
+            <span class="quiz-badge">Instant results</span>
           </div>
-          <h2>A free reasoning (IQ-style) test</h2>
+          <h2>Choose your test</h2>
           <p class="quiz-lede"><strong>Completely FREE IQ Test. No signup, no email, no credit card. Instant results, no catch.</strong></p>
-          <p>This test estimates fluid reasoning the way established cognitive assessments do — through <strong>original</strong> puzzles across four proven item families used in real intelligence research. Questions start easy and ramp up to genuinely hard; your score is estimated from <em>which</em> difficulty levels you can solve, not just how many you get right. No question here is copied from any published test.</p>
+          <p>Both versions estimate fluid reasoning with <strong>original</strong> puzzles across four item families used in real intelligence research, and both are scored on the same difficulty scale. The difference is precision: the Full Test asks three times as many questions, so its estimate carries roughly half the statistical uncertainty.</p>
+          <div class="iq-modes">
+            <article class="iq-mode">
+              <p class="iq-mode-eyebrow">Quick Test</p>
+              <h3>20 questions · about ${MODES.quick.minutes}</h3>
+              <p>A fast snapshot. Five questions from each reasoning type, easy to hard, with a ${MODES.quick.timeLimit / 60}-minute soft timer.</p>
+              <ul class="iq-mode-facts">
+                <li>Good for: curiosity, a warm-up, or a first look</li>
+                <li>Precision: about ±${MODES.quick.precision} points</li>
+                <li>Breakdown by reasoning type</li>
+              </ul>
+              <button type="button" class="button" data-mode="quick">Start the Quick Test →</button>
+            </article>
+            <article class="iq-mode iq-mode-featured">
+              <p class="iq-mode-eyebrow">Full Test · recommended</p>
+              <h3>60 questions · about ${MODES.full.minutes}</h3>
+              <p>Our most accurate estimate. Fifteen questions per reasoning type across a wider range of formats and difficulty, with a ${MODES.full.timeLimit / 60}-minute soft timer.</p>
+              <ul class="iq-mode-facts">
+                <li>Good for: a result you actually want to trust</li>
+                <li>Precision: about ±${MODES.full.precision} points</li>
+                <li>No questions shared with the Quick Test</li>
+              </ul>
+              <button type="button" class="button primary" data-mode="full">Start the Full Test →</button>
+            </article>
+          </div>
           <ul class="quiz-facts">
             <li><span>🔢</span><div><strong>Number &amp; series</strong> — spot the numerical rule and continue the pattern.</div></li>
             <li><span>🔤</span><div><strong>Verbal reasoning</strong> — analogies and odd-one-out relationships.</div></li>
-            <li><span>🧩</span><div><strong>Logical reasoning</strong> — short deductions and valid-or-not judgments.</div></li>
-            <li><span>◑</span><div><strong>Pattern &amp; spatial</strong> — matrix completion and mental rotation.</div></li>
+            <li><span>🧩</span><div><strong>Logical reasoning</strong> — short deductions and what-must-be-true judgments.</div></li>
+            <li><span>◑</span><div><strong>Pattern &amp; spatial</strong> — matrix completion, figure series and mental rotation.</div></li>
           </ul>
           <div class="quiz-note">
             <strong>How to get an accurate result</strong>
-            <p>Work somewhere quiet and answer without help or a calculator. There is a gentle 30-minute timer, and every question is multiple-choice with one best answer. Later questions are meant to be hard — most people miss several, and guessing is better than leaving blanks. Your result is an <em>unnormed self-assessment estimate</em> — a useful practice indicator, not a clinical IQ score.</p>
+            <p>Work somewhere quiet and answer without help or a calculator. Every question is multiple-choice with one best answer, and you can press <kbd>A</kbd>–<kbd>D</kbd> to answer. Later questions are meant to be hard — most people miss several, and guessing is better than leaving blanks. Your result is an <em>unnormed self-assessment estimate</em> — a useful practice indicator, not a clinical IQ score.</p>
           </div>
-          <div class="actions"><button class="button primary" id="start">Start the test →</button></div>
         </div>`;
-      root.querySelector("#start").onclick = () => { startTimer(); current = 0; question(); };
+      root.querySelectorAll("[data-mode]").forEach((b) => { b.onclick = () => startMode(b.dataset.mode); });
+    }
+
+    function startMode(key) {
+      mode = MODES[key] || MODES.quick;
+      const items = mode.items;
+      // Present items easiest-first (standard practice on ability tests) but
+      // shuffle within each difficulty tier so retakes still vary. Options are
+      // always shuffled.
+      const tierOf = (b) => (b < -0.5 ? 0 : b < 0.5 ? 1 : b < 1.5 ? 2 : 3);
+      const ordered = [0, 1, 2, 3].flatMap((t) => shuffle(items.filter((it) => tierOf(it.b) === t)));
+      run = ordered.map((item) => {
+        const order = shuffle(item.options.map((_, i) => i));
+        return { item, options: order.map((i) => item.options[i]), correctIndex: order.indexOf(item.correct) };
+      });
+      answers = new Array(run.length).fill(null);
+      current = 0;
+      startTimer();
+      bindKeys();
+      question();
+      root.scrollIntoView({ block: "start", behavior: "smooth" });
     }
 
     function startTimer() {
-      remaining = TIME_LIMIT;
+      stopTimer();
+      remaining = mode.timeLimit;
       timerId = window.setInterval(() => {
         remaining -= 1;
         const t = document.getElementById("quiz-timer");
@@ -402,14 +629,43 @@
     function stopTimer() { if (timerId) { clearInterval(timerId); timerId = null; } }
     const clock = (s) => `${Math.floor(s / 60)}:${String(Math.max(0, s % 60)).padStart(2, "0")}`;
 
+    // Keyboard answering: A–D (or 1–4) select, ←/→ move, Enter advances.
+    function onKey(e) {
+      if (e.altKey || e.ctrlKey || e.metaKey) return;
+      const tag = (e.target && e.target.tagName) || "";
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+      const k = e.key.toLowerCase();
+      const idx = "abcd".indexOf(k) >= 0 ? "abcd".indexOf(k) : "1234".indexOf(k);
+      if (idx >= 0 && idx < run[current].options.length) { e.preventDefault(); choose(idx); }
+      else if (k === "arrowleft" && current > 0) { e.preventDefault(); current -= 1; question(); }
+      else if ((k === "arrowright" || k === "enter") && current < run.length - 1) { e.preventDefault(); current += 1; question(); }
+    }
+    function bindKeys() { document.addEventListener("keydown", onKey); }
+    function unbindKeys() { document.removeEventListener("keydown", onKey); }
+
+    function choose(i) {
+      answers[current] = i;
+      if (current < run.length - 1) current += 1;
+      question();
+    }
+
     function question() {
+      const TOTAL = run.length;
       const q = run[current];
       const it = q.item;
-      const answered = run.filter((_, i) => answers[i] !== null).length;
+      const answered = answers.filter((a) => a !== null).length;
       let stimulus = "";
       if (it.matrix) {
         stimulus = `<div class="q-matrix">${it.matrix.map((c) =>
           `<div class="q-matrix-cell${c === null ? " q-missing" : ""}">${c === null ? "?" : c}</div>`).join("")}</div>`;
+      } else if (it.seq) {
+        const sep = it.seqOp ? `<span class="q-seq-op" aria-hidden="true">${esc(it.seqOp)}</span>` : "";
+        const cells = it.seq.map((c) => `<div class="q-matrix-cell">${c}</div>`).join(sep);
+        const eq = it.seqOp ? `<span class="q-seq-op" aria-hidden="true">=</span>` : "";
+        stimulus = `<div class="q-seq">${cells}${eq}<div class="q-matrix-cell q-missing">?</div></div>`;
+      } else if (it.table) {
+        stimulus = `<div class="q-table" style="grid-template-columns:repeat(${it.table[0].length},1fr)">${it.table.map((row) =>
+          row.map((v) => `<span${v === "?" ? ' class="q-missing"' : ""}>${esc(v)}</span>`).join("")).join("")}</div>`;
       } else if (it.promptSvg) {
         stimulus = `<div class="q-stimulus">${it.promptSvg}</div>`;
       }
@@ -422,10 +678,10 @@
       root.innerHTML = `
         <div class="quiz quiz-question">
           <div class="quiz-topbar">
-            <span class="quiz-cat">${esc(catLabels[it.cat] || it.cat)}</span>
+            <span class="quiz-cat">${esc(mode.label)} · ${esc(catLabels[it.cat] || it.cat)}</span>
             <span class="quiz-timer-wrap">⏱ <span id="quiz-timer"${remaining <= 60 ? ' class="low"' : ""}>${clock(remaining)}</span></span>
           </div>
-          <div class="quiz-progress"><span style="width:${((current) / TOTAL) * 100}%"></span></div>
+          <div class="quiz-progress"><span style="width:${(current / TOTAL) * 100}%"></span></div>
           <p class="quiz-count">Question ${current + 1} of ${TOTAL} · ${answered} answered</p>
           <h2 class="q-prompt">${esc(it.prompt)}</h2>
           ${stimulus}
@@ -438,13 +694,7 @@
             <button class="button" id="review">Review &amp; finish</button>
           </div>
         </div>`;
-      root.querySelectorAll(".q-option").forEach((b) => {
-        b.onclick = () => {
-          answers[current] = Number(b.dataset.i);
-          if (current < TOTAL - 1) { current += 1; question(); }
-          else question();
-        };
-      });
+      root.querySelectorAll(".q-option").forEach((b) => { b.onclick = () => choose(Number(b.dataset.i)); });
       const prev = root.querySelector("#prev");
       if (prev) prev.onclick = () => { if (current > 0) { current -= 1; question(); } };
       const next = root.querySelector("#next");
@@ -462,6 +712,8 @@
     }
 
     function results(timedOut) {
+      unbindKeys();
+      const TOTAL = run.length;
       // Score
       let correct = 0;
       const byCat = {};
@@ -508,8 +760,8 @@
 
       // Convert to the familiar IQ scale (mean 100, SD 15).
       let est = Math.round(100 + 15 * theta);
-      est = Math.max(65, Math.min(150, est));
-      const spread = Math.max(4, Math.min(15, Math.round(15 * se)));
+      est = Math.max(mode.clampLo, Math.min(mode.clampHi, est));
+      const spread = Math.max(3, Math.min(15, Math.round(15 * se)));
       const lo = Math.max(55, est - spread);
       const hi = Math.min(160, est + spread);
       const percentile = Math.max(1, Math.min(99, Math.round(normCdf((est - 100) / 15) * 100)));
@@ -526,41 +778,56 @@
         </div>`;
       }).join("");
 
+      const isQuick = mode.key === "quick";
+      const upgrade = isQuick ? `
+          <div class="quiz-note iq-upgrade">
+            <strong>Want a tighter estimate? Take the Full Test</strong>
+            <p>The Quick Test is a 20-question snapshot, so its margin is about ±${MODES.quick.precision} points. The Full Test asks 60 completely different questions (nothing you just saw is repeated) across more formats and a wider difficulty range, which narrows the margin to about ±${MODES.full.precision} points. It takes about ${MODES.full.minutes}.</p>
+            <div class="actions"><button type="button" class="button primary" id="go-full">Start the Full Test →</button></div>
+          </div>` : "";
+
       root.innerHTML = `
         <div class="quiz quiz-results">
           ${timedOut ? `<p class="quiz-flash">⏱ Time is up — here is your result based on the questions you answered.</p>` : ""}
-          <p class="eyebrow">Your estimated result</p>
+          <p class="eyebrow">Your estimated result · ${esc(mode.label)}</p>
           <div class="score-hero">
             <div class="score-big">≈ ${est}<small>estimated range ${lo}–${hi}</small></div>
             <div class="score-meta">
               <p><strong>${band}</strong> band</p>
               <p>Around the <strong>${percentile}${ordinal(percentile)} percentile</strong> of this test's scale.</p>
-              <p>${correct} of ${TOTAL} correct (${pct(p * 100)}).</p>
+              <p>${correct} of ${TOTAL} correct (${pct(p * 100)}) · margin ±${spread} points.</p>
             </div>
           </div>
           <div class="quiz-note warn">
             <strong>Read this before you share the number</strong>
-            <p>This is an <em>unnormed, self-scored estimate</em> from a short online test, not a professionally administered or normed IQ score. Real IQ tests are given one-to-one by trained psychologists and standardised on large samples. Treat this as a fun practice indicator of pattern-based reasoning — nothing more.</p>
+            <p>This is an <em>unnormed, self-scored estimate</em> from an online test, not a professionally administered or normed IQ score. Real IQ tests are given one-to-one by trained psychologists and standardised on large samples. Treat this as a practice indicator of pattern-based reasoning — nothing more.</p>
           </div>
           <h3>How you did by reasoning type</h3>
           <div class="score-rows">${catRows}</div>
+          ${upgrade}
           <div class="quiz-note">
             <strong>How this score was calculated</strong>
-            <p>Every question carries a difficulty weight, and your estimate comes from an item-response model (the same family of statistics behind professionally normed tests): solving hard items raises the estimate far more than solving easy ones, and a 25% guessing floor is built in because each question has four options. The range shown is the model's own statistical uncertainty, so it widens at extreme scores. <strong>Number &amp; series</strong> and <strong>logical reasoning</strong> lean on sequential, rule-finding thinking; <strong>verbal reasoning</strong> reflects how you map relationships between concepts; <strong>pattern &amp; spatial</strong> is the closest to pure "fluid intelligence."</p>
+            <p>Every question carries a difficulty weight, and your estimate comes from an item-response model (the same family of statistics behind professionally normed tests): solving hard items raises the estimate far more than solving easy ones, and a 25% guessing floor is built in because each question has four options. The range shown is the model's own statistical uncertainty — it shrinks with more questions, which is why the ${isQuick ? "Full Test is more precise than this Quick Test" : "Full Test is more precise than the Quick Test"} — and widens at extreme scores. <strong>Number &amp; series</strong> and <strong>logical reasoning</strong> lean on sequential, rule-finding thinking; <strong>verbal reasoning</strong> reflects how you map relationships between concepts; <strong>pattern &amp; spatial</strong> is the closest to pure "fluid intelligence."</p>
           </div>
           ${shareBar()}
           <div class="actions">
-            <button class="button primary" id="retake">Retake the test</button>
+            <button class="button${isQuick ? "" : " primary"}" id="retake">${isQuick ? "Retake the Quick Test" : "Retake the Full Test"}</button>
+            <button class="button" id="choose">Choose a different version</button>
           </div>
           <p class="quiz-share-note">Nothing was uploaded or saved — refresh and it's gone. Retaking reshuffles the questions and answer order.</p>
         </div>`;
-      wireShare(`I scored an estimated IQ of ${est} (${band.toLowerCase()} band, ~${percentile}${ordinal(percentile)} percentile) on this free ${TOTAL}-question IQ test 🧠 Think you can beat it?`);
-      root.querySelector("#retake").onclick = () => location.reload();
+      wireShare(`I scored an estimated IQ of ${est} (${band.toLowerCase()} band, ~${percentile}${ordinal(percentile)} percentile) on the free ${TOTAL}-question ${mode.label} IQ test 🧠 Think you can beat it?`);
+      root.querySelector("#retake").onclick = () => startMode(mode.key);
+      root.querySelector("#choose").onclick = () => { intro(); root.scrollIntoView({ block: "start", behavior: "smooth" }); };
+      const goFull = root.querySelector("#go-full");
+      if (goFull) goFull.onclick = () => startMode("full");
       root.scrollIntoView({ block: "start", behavior: "smooth" });
     }
     const ordinal = (n) => { const s = ["th", "st", "nd", "rd"], v = n % 100; return s[(v - 20) % 10] || s[v] || s[0]; };
 
-    intro();
+    // Deep links: ?mode=full / ?mode=quick (or #mode=…) start that version directly.
+    const want = (new URLSearchParams(location.search).get("mode") || (location.hash.match(/mode=(quick|full)/) || [])[1] || "").toLowerCase();
+    if (MODES[want]) startMode(want); else intro();
   }
 
   /* =====================================================================

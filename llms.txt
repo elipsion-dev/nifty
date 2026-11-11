@@ -187,7 +187,7 @@ Count, convert, compare, and generate — text utilities, passwords, UUIDs, hash
 
 Free self-assessments, skill tests, and just-for-fun quizzes with instant results: an original reasoning (IQ-style) test, typing and reaction speed tests, a memory test, a personality profiler, a color-blindness screening, and more. No sign-up, no email, nothing stored.
 
-- [IQ Test](https://niftyutilities.com/quizzes/iq-test.html): Estimate your reasoning ability with an original, timed test spanning pattern, number, verbal, and spatial puzzles.
+- [IQ Test](https://niftyutilities.com/quizzes/iq-test.html): Estimate your reasoning ability with an original timed test in two versions — a 20-question Quick Test or a more accurate 60-question Full Test — spanning pattern, number, verbal, and spatial puzzles.
 - [Typing Speed Test](https://niftyutilities.com/quizzes/typing-speed-test.html): Type a passage and measure your live WPM and accuracy in timed, word-count, or quote modes — your keystrokes never leave your browser.
 - [Reaction Time Test](https://niftyutilities.com/quizzes/reaction-time-test.html): Click the moment the pad turns green across five rounds to measure your average reaction time in milliseconds.
 - [Click Speed Test](https://niftyutilities.com/quizzes/click-speed-test.html): Click a pad as fast as you can in 5, 10, or 30 seconds to find your clicks-per-second (CPS) score.

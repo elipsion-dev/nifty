@@ -2,7 +2,7 @@
   "name": "Nifty Utilities",
   "url": "https://niftyutilities.com/",
   "description": "Free browser-based utilities for CSV/spreadsheet data, personal finance, documents, home and life decisions, business math, images, and everyday tasks.",
-  "updated": "2026-10-27",
+  "updated": "2026-11-11",
   "count": 138,
   "privacy": "Every tool runs locally in the visitor's browser. There is no backend, upload endpoint, database, or account — tool inputs are never transmitted to or stored by the site.",
   "license": "Free to use, no sign-up.",
@@ -1052,7 +1052,7 @@
     {
       "slug": "iq-test",
       "name": "IQ Test",
-      "description": "Estimate your reasoning ability with an original, timed test spanning pattern, number, verbal, and spatial puzzles.",
+      "description": "Estimate your reasoning ability with an original timed test in two versions — a 20-question Quick Test or a more accurate 60-question Full Test — spanning pattern, number, verbal, and spatial puzzles.",
       "category": "quizzes",
       "categoryName": "Quizzes & Tests",
       "url": "https://niftyutilities.com/quizzes/iq-test.html"

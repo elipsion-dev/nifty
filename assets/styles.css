@@ -1478,3 +1478,25 @@ th { background: var(--surface-2); font-size: .7rem; text-transform: uppercase; 
 
 /* ---------- Code block (privacy CSP) ---------- */
 .code-block { margin: 1rem 0; padding: 1rem 1.1rem; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; color: var(--ink); font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; font-size: .82rem; line-height: 1.55; white-space: pre-wrap; overflow-x: auto; }
+
+/* IQ test — version chooser, figure sequences, number tables, upgrade prompt */
+.iq-modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin: 1.4rem 0; }
+.iq-mode { display: flex; flex-direction: column; gap: .55rem; padding: 1.25rem 1.3rem; border: 1px solid var(--line); border-radius: 14px; background: var(--surface-2); }
+.iq-mode-featured { border-color: color-mix(in srgb, var(--qa) 55%, var(--line)); background: color-mix(in srgb, var(--qa) 10%, var(--surface)); box-shadow: 0 0 0 1px color-mix(in srgb, var(--qa) 30%, transparent) inset; }
+.iq-mode-eyebrow { margin: 0; font: 700 .72rem/1.2 ui-monospace, "SFMono-Regular", Consolas, monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--qa); }
+.iq-mode h3 { margin: 0; font-size: 1.1rem; color: var(--ink); }
+.iq-mode > p { margin: 0; color: var(--muted); font-size: .92rem; }
+.iq-mode-facts { list-style: none; margin: .2rem 0 .4rem; padding: 0; display: grid; gap: .3rem; color: var(--muted); font-size: .86rem; }
+.iq-mode-facts li { padding-left: 1.2rem; position: relative; }
+.iq-mode-facts li::before { content: "✓"; position: absolute; left: 0; color: var(--qa); font-weight: 700; }
+.iq-mode .button { margin-top: auto; align-self: flex-start; }
+.iq-upgrade { border-color: color-mix(in srgb, var(--qa) 45%, var(--line)); background: color-mix(in srgb, var(--qa) 12%, var(--surface)); }
+.iq-upgrade .actions { margin-top: .8rem; }
+.q-seq { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; margin: 1.2rem auto; }
+.q-seq .q-matrix-cell { width: clamp(44px, 11.5vw, 84px); flex: 0 0 auto; }
+.q-seq .q-svg { width: 100%; height: 100%; }
+.q-seq-op { font-size: 1.6rem; font-weight: 700; color: var(--muted); padding: 0 .1rem; }
+.q-table { display: grid; gap: 6px; max-width: 260px; margin: 1.2rem auto; }
+.q-table span { display: grid; place-items: center; padding: .55rem .4rem; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+.q-table span.q-missing { color: var(--qa); border-style: dashed; }
+.quiz-note kbd { padding: .05rem .35rem; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; background: var(--surface); font: 600 .8em ui-monospace, "SFMono-Regular", Consolas, monospace; }
