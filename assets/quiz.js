@@ -122,6 +122,59 @@
   }
   showSharedResult();
 
+  /* ---------- device detection (typing + reaction tests) ----------
+   * A touch-first device = coarse pointer with no hover capability (phones and
+   * tablets used without a trackpad). The visitor can override per tool with
+   * ?device=touch|keyboard or the switch link in the banner; the choice is
+   * remembered in localStorage so it survives a reload. */
+  function detectDevice(storeKey) {
+    const mq = (q) => !!(window.matchMedia && window.matchMedia(q).matches);
+    const coarse = mq("(pointer: coarse)");
+    const detectedTouch = coarse && (mq("(hover: none)") || window.innerWidth < 900);
+    let override = null;
+    const q = new URLSearchParams(location.search).get("device");
+    if (q === "touch" || q === "keyboard") override = q;
+    else { try { override = localStorage.getItem(storeKey); } catch (_) { override = null; } }
+    if (override !== "touch" && override !== "keyboard") override = null;
+    const setOverride = (value) => {
+      try { if (value) localStorage.setItem(storeKey, value); else localStorage.removeItem(storeKey); } catch (_) { /* storage blocked */ }
+      location.href = location.pathname; // drop any ?device= so the choice sticks
+    };
+    return { touch: override ? override === "touch" : detectedTouch, detectedTouch, override, setOverride };
+  }
+  // Banner shown above a test's setup screen. `copy` supplies the test-specific
+  // wording: { name, mobileName, why (paragraphs for the loud banner), switchStd, switchTouch }.
+  function deviceBanner(dev, copy) {
+    const link = (action, label) => `<button type="button" class="device-link" data-device-set="${action}">${label}</button>`;
+    if (dev.detectedTouch && !dev.override) {
+      return `
+        <div class="device-banner" role="status">
+          <p class="device-banner-head"><span aria-hidden="true">📱</span>Mobile device detected</p>
+          <p class="device-banner-sub">Switching to the ${esc(copy.mobileName)} to ensure accuracy.</p>
+          ${copy.why.map((p) => `<p>${p}</p>`).join("")}
+          <div class="device-switch"><span>Using a physical keyboard or mouse with this device?</span>${link("keyboard", copy.switchStd)}</div>
+        </div>`;
+    }
+    if (dev.override === "keyboard" && dev.detectedTouch) {
+      return `
+        <div class="device-banner calm" role="status">
+          <p class="device-banner-head">⌨️ Standard ${esc(copy.name)} selected on a touch device</p>
+          <p>You chose the keyboard-and-mouse version, so your result is compared against desktop norms. If you are actually using the touchscreen, ${link("touch", copy.switchTouch)}.</p>
+        </div>`;
+    }
+    if (dev.override === "touch" && !dev.detectedTouch) {
+      return `
+        <div class="device-banner calm" role="status">
+          <p class="device-banner-head">📱 ${esc(copy.mobileName)} selected</p>
+          <p>Results are compared against touchscreen norms. On a keyboard or mouse? ${link("keyboard", copy.switchStd)}.</p>
+        </div>`;
+    }
+    return `<p class="device-hint">On a phone or tablet? ${link("touch", copy.switchTouch)} — scores on glass are compared against touch norms instead.</p>`;
+  }
+  function wireDeviceLinks(dev) {
+    root.querySelectorAll("[data-device-set]").forEach((b) => { b.onclick = () => dev.setOverride(b.dataset.deviceSet); });
+  }
+
   if (slug === "iq-test") renderIqTest();
   else if (slug === "personality-type-test") renderPersonalityTest();
   else if (slug === "zodiac-compatibility") renderZodiac();
@@ -1463,8 +1516,19 @@
    *  saved or uploaded. Timer starts on the first keystroke.
    * ===================================================================== */
   function renderTypingTest() {
-    /* ---- device: a coarse pointer on a narrow screen ⇒ treat as a phone ---- */
-    const isMobile = !!(window.matchMedia && window.matchMedia("(pointer: coarse)").matches) && window.innerWidth < 900;
+    /* ---- device: touch-first ⇒ the two-thumb mobile test (see detectDevice) ---- */
+    const device = detectDevice("nu_typing_device");
+    const isMobile = device.touch;
+    const TYPING_BANNER = {
+      name: "typing test",
+      mobileName: "mobile typing test",
+      why: [
+        "Typing with two thumbs on a glass keyboard is a different skill from typing with ten fingers on a physical keyboard, and the numbers are not comparable: a large study of around 37,000 people found phones run roughly 25% slower on average (about 36 WPM versus about 40), with no tactile keys, a smaller target area, and autocorrect doing some of the work.",
+        "So your phone result is <b>not</b> a good indicator of your regular typing speed, and your keyboard result does not predict how fast you text. The mobile version uses shorter, thumb-friendly words, scores you against other phone typists, and keeps a separate personal best for this device."
+      ],
+      switchStd: "switch to the standard keyboard test",
+      switchTouch: "switch to the mobile typing test"
+    };
 
     /* ---- desktop pool of common English words (assembled for this site) ---- */
     const DESKTOP_WORDS = (
@@ -1690,8 +1754,8 @@
 
       const mobileNote = isMobile ? `
           <div class="quiz-note">
-            <strong>📱 This is a mobile typing test</strong>
-            <p>You're on a phone, so this measures <b>two-thumb</b> typing — expect a lower number than a full keyboard, and that's completely normal. Your result is compared against other phone typists, not desktop ones. If your keyboard's autocorrect or predictive text rewrites your words, switch it off for the truest score.</p>
+            <strong>📱 This is the mobile (two-thumb) typing test</strong>
+            <p>Expect a lower number than on a full keyboard — that's completely normal and already accounted for: your result is compared against other phone typists, not desktop ones. If your keyboard's autocorrect or predictive text rewrites your words, switch it off for the truest score.</p>
           </div>` : `
           <div class="quiz-note">
             <strong>How to get an accurate result</strong>
@@ -1700,6 +1764,7 @@
 
       root.innerHTML = `
         <div class="quiz quiz-intro">
+          ${deviceBanner(device, TYPING_BANNER)}
           <div class="quiz-badges">
             <span class="quiz-badge time">⌨️ Live WPM &amp; accuracy</span>
             ${isMobile ? `<span class="quiz-badge">📱 Mobile two-thumb test</span>` : `<span class="quiz-badge">Time · Words · Quote</span>`}
@@ -1726,6 +1791,7 @@
         intro();
       });
       root.querySelector("#start").onclick = () => startTest();
+      wireDeviceLinks(device);
     }
 
     /* ---- typing phase ---- */
@@ -2156,6 +2222,33 @@ function renderReactionTest() {
   const MIN_DELAY = 1500;
   const MAX_DELAY = 4500;
 
+  /* ---- device + input-method model ----
+   * The test measures from the frame in which the pad is painted green to the
+   * pointerdown / keydown event. That chain includes input hardware latency,
+   * which differs by input method. Published latency measurements put a wired
+   * mouse at roughly 5–15 ms from press to event and a modern phone's touch
+   * digitiser at roughly 35–55 ms (plus display pipeline on both), so a touch
+   * result carries ~30 ms more hardware delay than a mouse result for the same
+   * human reaction. TOUCH_OFFSET removes that difference so bands and
+   * percentiles are comparable across devices; the raw number is still shown. */
+  const device = detectDevice("nu_reaction_device");
+  const isTouch = device.touch;
+  const TOUCH_OFFSET = 30; // ms of extra input latency typical of touchscreens vs. a mouse
+  // Mouse-equivalent simple reaction time in healthy adults: roughly normal
+  // around 255 ms with SD ≈ 45 ms (large online samples skew slower than lab
+  // studies because of consumer hardware). Used only for the percentile line.
+  const RT_MEAN = 255, RT_SD = 45;
+  const REACTION_BANNER = {
+    name: "reaction time test",
+    mobileName: "mobile reaction time test",
+    why: [
+      "A tap on a touchscreen reaches the browser later than a mouse click does. The screen's touch digitiser scans at a fixed rate, the operating system filters the touch, and only then is the event delivered — about 30 ms more hardware delay than a wired mouse for the very same human reaction. Phone displays and browsers add their own small delays too.",
+      "So the same reflexes score slower on a phone than on a mouse or trackpad, and comparing a phone result against mouse norms is unfair. The mobile version measures exactly the same way but subtracts a typical touch-latency allowance of " + TOUCH_OFFSET + " ms before judging your band and percentile, and shows you both the raw and the adjusted figure."
+    ],
+    switchStd: "switch to the standard mouse-and-keyboard test",
+    switchTouch: "switch to the mobile reaction time test"
+  };
+
   const times = [];
   let state = "intro";
   let greenAt = 0;
@@ -2192,22 +2285,26 @@ function renderReactionTest() {
     state = "intro";
     root.innerHTML = `
       <div class="quiz quiz-intro">
+        ${deviceBanner(device, REACTION_BANNER)}
         <div class="quiz-badges">
           <span class="quiz-badge time">⏱ About 2 minutes</span>
           <span class="quiz-badge">${ROUNDS} rounds</span>
+          ${isTouch ? `<span class="quiz-badge">📱 Mobile version · touch-adjusted</span>` : ""}
           <span class="quiz-badge ok">✓ 100% free · no sign-up · no email</span>
         </div>
-        <h2>⚡ Reaction Time Test</h2>
+        <h2>⚡ ${isTouch ? "Mobile Reaction Time Test" : "Reaction Time Test"}</h2>
         <p class="quiz-lede"><strong>Completely FREE Reaction Time Test. No signup, no email, no credit card. Instant results, no catch.</strong> Find out how fast your reflexes are with five timed rounds — all in your browser, nothing saved, no installs.</p>
         <ul class="quiz-facts">
           <li><span>🟥</span><div><strong>Wait for red to turn green</strong> — stare at the pad and be ready.</div></li>
-          <li><span>⚡</span><div><strong>Click or tap the moment it goes green</strong> — or press Space bar.</div></li>
+          <li><span>⚡</span><div><strong>${isTouch ? "Tap the moment it goes green" : "Click the moment it goes green — or press Space bar"}</strong> — timed from the instant your finger goes down, not when it lifts.</div></li>
           <li><span>📊</span><div><strong>5 valid rounds recorded</strong> — clicking before green restarts that round.</div></li>
           <li><span>📈</span><div><strong>Average, best, and worst</strong> — plus honest performance bands.</div></li>
         </ul>
         <div class="quiz-note">
           <strong>Get the most accurate result</strong>
-          <p>Use a mouse or trackpad on a desktop for the fastest times. Touchscreens work too but typically add 20–40 ms. Keep your eyes on the pad, don't anticipate — clicking while it's still red voids that round and restarts it.</p>
+          <p>${isTouch
+            ? "Hold the phone steady, keep a thumb hovering just above the pad, and tap the instant it turns green. Tapping while it's still red voids that round and restarts it."
+            : "Rest your hand on the mouse or keep a finger over the Space bar, keep your eyes on the pad, and don't anticipate — clicking while it's still red voids that round and restarts it."}</p>
         </div>
         <div class="actions"><button class="button primary" id="rt-start">Start →</button></div>
       </div>`;
@@ -2215,6 +2312,7 @@ function renderReactionTest() {
       addKeyHandler();
       beginRound();
     };
+    wireDeviceLinks(device);
   }
 
   // ---- round ----
@@ -2228,7 +2326,7 @@ function renderReactionTest() {
       <div class="quiz">
         <div class="quiz-topbar">
           <span class="quiz-cat">Round ${roundNum} of ${ROUNDS}</span>
-          <span class="quiz-count" style="margin:0">Click or tap the pad · Space also works</span>
+          <span class="quiz-count" style="margin:0">${isTouch ? "Tap the pad" : "Click the pad · Space also works"}</span>
         </div>
         <div class="quiz-progress"><span style="width:${((roundNum - 1) / ROUNDS) * 100}%"></span></div>
         <div class="reaction-pad-wrap">
@@ -2240,22 +2338,30 @@ function renderReactionTest() {
       </div>`;
 
     const pad = root.querySelector("#rt-pad");
-    pad.addEventListener("click", onActivate);
-    pad.addEventListener("touchend", (e) => { e.preventDefault(); onActivate(); }, { passive: false });
+    // pointerdown fires the instant the button or finger goes DOWN. The old
+    // "click" / "touchend" events only fire on release, which silently added the
+    // 50–100 ms it takes to let go of a mouse button or lift a finger.
+    pad.addEventListener("pointerdown", (e) => { e.preventDefault(); onActivate(); });
+    pad.addEventListener("contextmenu", (e) => e.preventDefault());
 
     clearPendingTimer();
     timerId = setTimeout(() => {
       timerId = null;
       if (state !== "waiting") return; // already torn down
-      state = "ready";
-      greenAt = performance.now();
       const p = root.querySelector("#rt-pad");
       if (p) {
         p.className = "reaction-pad reaction-ready";
-        p.setAttribute("aria-label", "Reaction pad — click now!");
+        p.setAttribute("aria-label", isTouch ? "Reaction pad — tap now!" : "Reaction pad — click now!");
         const lbl = p.querySelector(".reaction-pad-label");
-        if (lbl) lbl.textContent = "CLICK!";
+        if (lbl) lbl.textContent = isTouch ? "TAP!" : "CLICK!";
       }
+      // Stamp the green moment at the start of the frame that actually paints
+      // it, not when the class was set — that can be most of a frame earlier.
+      requestAnimationFrame(() => {
+        if (state !== "waiting") return;
+        greenAt = performance.now();
+        state = "ready";
+      });
     }, delay);
   }
 
@@ -2271,7 +2377,7 @@ function renderReactionTest() {
         if (lbl) lbl.textContent = "Too soon!";
       }
       const hint = root.querySelector(".reaction-hint");
-      if (hint) hint.textContent = "You clicked before it turned green. Restarting this round…";
+      if (hint) hint.textContent = `You ${isTouch ? "tapped" : "clicked"} before it turned green. Restarting this round…`;
       timerId = setTimeout(() => {
         timerId = null;
         beginRound();
@@ -2295,9 +2401,9 @@ function renderReactionTest() {
     const hint = root.querySelector(".reaction-hint");
     if (hint) {
       if (times.length < ROUNDS) {
-        hint.innerHTML = `Round ${times.length} recorded. <strong>Click or tap the pad to continue.</strong>`;
+        hint.innerHTML = `Round ${times.length} recorded. <strong>${isTouch ? "Tap" : "Click"} the pad to continue.</strong>`;
       } else {
-        hint.innerHTML = `All ${ROUNDS} rounds done! <strong>Click or tap to see your results.</strong>`;
+        hint.innerHTML = `All ${ROUNDS} rounds done! <strong>${isTouch ? "Tap" : "Click"} to see your results.</strong>`;
       }
     }
     // Now clicking/tapping the pad advances to next round or results.
@@ -2312,8 +2418,11 @@ function renderReactionTest() {
           beginRound();
         }
       };
-      pad2.addEventListener("click", advanceFn, { once: true });
-      pad2.addEventListener("touchend", (e) => { e.preventDefault(); advanceFn(); }, { once: true, passive: false });
+      // Advance on the NEXT press: wait for the scoring press to release first,
+      // so one press can't both score the round and skip ahead.
+      const armAdvance = () => pad2.addEventListener("pointerdown", (e) => { e.preventDefault(); advanceFn(); }, { once: true });
+      pad2.addEventListener("pointerup", armAdvance, { once: true });
+      pad2.addEventListener("pointercancel", armAdvance, { once: true });
       // Space also advances from result state
       const spaceAdvance = (e) => {
         if (e.code === "Space" || e.key === " ") {
@@ -2338,13 +2447,18 @@ function renderReactionTest() {
     const avg = Math.round(times.reduce((a, b) => a + b, 0) / times.length);
     const best = Math.min(...times);
     const worst = Math.max(...times);
+    // Bands, percentile and the share text use the mouse-equivalent figure so a
+    // phone result is judged fairly; the raw average is always shown alongside.
+    const offset = isTouch ? TOUCH_OFFSET : 0;
+    const adj = Math.max(1, avg - offset);
+    const percentile = Math.max(1, Math.min(99, Math.round((1 - normCdf((adj - RT_MEAN) / RT_SD)) * 100)));
 
     const band =
-      avg < 200 ? { label: "Excellent", note: "Very fast — top end for human perception." } :
-      avg < 250 ? { label: "Fast", note: "Above average — faster than most people." } :
-      avg < 300 ? { label: "Average", note: "Right in the normal human range (~250 ms)." } :
-      avg < 350 ? { label: "Slower than average", note: "Below average but within the normal range." } :
-                  { label: "Relaxed", note: "On the slower side — may reflect device lag, fatigue, or touch input." };
+      adj < 200 ? { label: "Excellent", note: "Very fast — top end for human perception." } :
+      adj < 250 ? { label: "Fast", note: "Above average — faster than most people." } :
+      adj < 300 ? { label: "Average", note: "Right in the normal human range (~250 ms)." } :
+      adj < 350 ? { label: "Slower than average", note: "Below average but within the normal range." } :
+                  { label: "Relaxed", note: "On the slower side — may reflect fatigue, distraction, or device lag." };
 
     // Bars: width ∝ ms against worst or 500ms ceiling (shorter = faster)
     const ceiling = Math.max(worst, 500);
@@ -2364,11 +2478,11 @@ function renderReactionTest() {
       ["> 350 ms", "Relaxed", "May reflect fatigue or touch lag"],
     ].map(([range, label, desc]) => {
       const isYours = (
-        (range === "< 200 ms" && avg < 200) ||
-        (range === "200–250 ms" && avg >= 200 && avg < 250) ||
-        (range === "250–300 ms" && avg >= 250 && avg < 300) ||
-        (range === "300–350 ms" && avg >= 300 && avg < 350) ||
-        (range === "> 350 ms" && avg >= 350)
+        (range === "< 200 ms" && adj < 200) ||
+        (range === "200–250 ms" && adj >= 200 && adj < 250) ||
+        (range === "250–300 ms" && adj >= 250 && adj < 300) ||
+        (range === "300–350 ms" && adj >= 300 && adj < 350) ||
+        (range === "> 350 ms" && adj >= 350)
       );
       return `<tr class="${isYours ? "reaction-yours" : ""}">
         <td>${esc(range)}</td><td>${esc(label)}</td><td>${esc(desc)}${isYours ? " ← you" : ""}</td>
@@ -2377,20 +2491,31 @@ function renderReactionTest() {
 
     root.innerHTML = `
       <div class="quiz quiz-results">
-        <p class="eyebrow">Your result</p>
+        <p class="eyebrow">Your result${isTouch ? " · mobile version" : ""}</p>
         <div class="score-hero">
-          <div class="score-big">${avg}<small>ms average</small></div>
+          <div class="score-big">${isTouch ? adj : avg}<small>${isTouch ? "ms · mouse-equivalent" : "ms average"}</small></div>
           <div class="score-meta">
             <p><strong>${band.label}</strong></p>
             <p>${band.note}</p>
-            <p>Best: <strong>${best} ms</strong> · Worst: <strong>${worst} ms</strong></p>
+            <p>Faster than about <strong>${percentile}%</strong> of adults on a mouse-equivalent scale.</p>
+            <p>Best: <strong>${best} ms</strong> · Worst: <strong>${worst} ms</strong>${isTouch ? ` · Raw average: <strong>${avg} ms</strong>` : ""}</p>
           </div>
         </div>
+        ${isTouch ? `
+        <div class="rt-adjust">
+          <div><strong>${avg} ms</strong><span>raw average on this touchscreen</span></div>
+          <div><strong>−${TOUCH_OFFSET} ms</strong><span>typical touch input latency allowance</span></div>
+          <div><strong>${adj} ms</strong><span>mouse-equivalent estimate used for your band</span></div>
+        </div>
+        <div class="quiz-note">
+          <strong>Why we adjust phone results</strong>
+          <p>Your finger went down at the same moment either way, but a touchscreen reports it later than a mouse does: the digitiser scans at a fixed rate and the operating system filters the touch before the browser hears about it. We subtract a typical ${TOUCH_OFFSET} ms allowance so your band and percentile are judged against mouse norms rather than penalising you for the hardware. It is an estimate — individual phones vary by ±15 ms or so — which is why the raw figure is shown too.</p>
+        </div>` : ""}
         <h3>Your 5 rounds</h3>
         <p class="reaction-bar-note">Shorter bar = faster reaction.</p>
         <div class="score-rows">${roundRows}</div>
         <h3>How you compare</h3>
-        <p style="color:var(--muted);font-size:.88rem;margin-bottom:.6rem">Honest performance bands — not clinical. Average humans click around 250 ms on a mouse; touchscreen typically adds 20–40 ms.</p>
+        <p style="color:var(--muted);font-size:.88rem;margin-bottom:.6rem">Honest performance bands on a mouse-equivalent scale — not clinical. Average adults react in roughly 250 ms on a mouse${isTouch ? "; your touch result has been adjusted to that scale" : ""}.</p>
         <div class="reaction-table-wrap">
           <table class="reaction-table">
             <thead><tr><th>Average</th><th>Band</th><th>What it means</th></tr></thead>
@@ -2408,7 +2533,7 @@ function renderReactionTest() {
         <p class="quiz-share-note">Nothing was uploaded or saved — refresh and it's gone. Retaking starts fresh rounds.</p>
       </div>`;
 
-    wireShare(`My average reaction time is ${avg} ms (${band.label.toLowerCase()}, best round ${best} ms) ⚡ Test yours free:`);
+    wireShare(`My average reaction time is ${isTouch ? adj : avg} ms (${band.label.toLowerCase()}, best round ${best} ms${isTouch ? ", on a phone" : ""}) ⚡ Test yours free:`);
     root.querySelector("#rt-retake").onclick = () => location.reload();
     root.scrollIntoView({ block: "start", behavior: "smooth" });
   }

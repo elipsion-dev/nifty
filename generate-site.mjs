@@ -1,10 +1,44 @@
 import fs from "node:fs";
 import path from "node:path";
+import { execSync } from "node:child_process";
+import { createHash } from "node:crypto";
 
 const SITE_NAME = "Nifty Utilities";
 const SITE_URL = "https://niftyutilities.com";
 const SUPPORT_EMAIL = "support@niftyutilities.com";
 const BUILD_DATE = new Date().toISOString().slice(0, 10);
+
+// Real last-modified dates for sitemap <lastmod> and schema dateModified.
+// A page is "modified" when its content fragment last changed in git (or is
+// changed in the working tree right now). Stamping every page with the build
+// date on every build would make lastmod meaningless to crawlers.
+const gitDateCache = new Map();
+const lastModified = (file) => {
+  if (gitDateCache.has(file)) return gitDateCache.get(file);
+  let date = BUILD_DATE;
+  try {
+    const dirty = execSync(`git status --porcelain -- "${file}"`, { encoding: "utf8" }).trim();
+    if (!dirty) {
+      const committed = execSync(`git log -1 --format=%cs -- "${file}"`, { encoding: "utf8" }).trim();
+      if (/^\d{4}-\d{2}-\d{2}$/.test(committed)) date = committed;
+    }
+  } catch (_) { /* not a git checkout: fall back to the build date */ }
+  gitDateCache.set(file, date);
+  return date;
+};
+const latestDate = (dates) => dates.reduce((a, b) => (a > b ? a : b), "0000-00-00");
+
+// Meta descriptions longer than ~160 characters get cut off in search results.
+// Trim at the last full sentence that fits, falling back to a word boundary.
+const trimDescription = (text, max = 158) => {
+  const s = String(text || "").replace(/\s+/g, " ").trim();
+  if (s.length <= max) return s;
+  const head = s.slice(0, max);
+  const sentenceEnd = Math.max(head.lastIndexOf(". "), head.lastIndexOf("! "), head.lastIndexOf("? "), head.endsWith(".") ? head.length - 1 : -1);
+  if (sentenceEnd >= 90) return head.slice(0, sentenceEnd + 1);
+  const cut = head.slice(0, head.lastIndexOf(" "));
+  return cut.replace(/[\s,;:–-]+$/, "") + "…";
+};
 
 const mailtoLink = `<a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a>`;
 const toolSupportNote = `<p class="support-note">Problem with this tool or suggestions for improvement? Please email ${mailtoLink}.</p>`;
@@ -1488,26 +1522,27 @@ const categories = [
   }
 ];
 
-// Per-category hero artwork (assets/images/*.png). Every page inside a category —
+// Per-category hero artwork (assets/images/*.jpg — compressed from the PNG masters). Every page inside a category —
 // its index and every tool — uses the category's hero via an inline --hero-img
 // variable. The homepage and prose pages (About/Promise/Privacy/Terms/Contact)
-// keep the default hero.png (the CSS fallback).
+// keep the default hero.jpg (the CSS fallback).
 const CATEGORY_HERO = {
-  finance: "finance.png",
-  spreadsheet: "speadsheets.png",
-  convert: "converters.png",
-  calculators: "calculators.png",
-  documents: "documents.png",
-  homeowner: "homeowner.png",
-  business: "business.png",
-  government: "government.png",
-  useful: "weirdly-useful.png",
-  text: "text-generate.png",
-  quizzes: "quizzes.png",
-  "typing-games": "typing-games.png"
+  finance: "finance.jpg",
+  spreadsheet: "speadsheets.jpg",
+  convert: "converters.jpg",
+  calculators: "calculators.jpg",
+  documents: "documents.jpg",
+  homeowner: "homeowner.jpg",
+  business: "business.jpg",
+  government: "government.jpg",
+  useful: "weirdly-useful.jpg",
+  text: "text-generate.jpg",
+  quizzes: "quizzes.jpg",
+  "typing-games": "typing-games.jpg"
 };
 const heroImgVar = (categorySlug) =>
   CATEGORY_HERO[categorySlug] ? `--hero-img:url('../assets/images/${CATEGORY_HERO[categorySlug]}')` : "";
+const heroImagePath = (categorySlug) => `assets/images/${CATEGORY_HERO[categorySlug] || "hero.jpg"}`;
 
 const allTools = categories.flatMap((category) =>
   category.tools.map(([slug, name, description]) => ({
@@ -1523,16 +1558,25 @@ const escapeHtml = (value) => value.replaceAll("&", "&amp;").replaceAll("<", "&l
 
 // Search-result <title>: lead with FREE + tool name, then as much of the
 // capability as fits in a Google-friendly length, cut on a word boundary.
-const seoTitle = (name, description = "", max = 70) => {
+const seoTitle = (name, description = "", max = 60) => {
   const base = `FREE ${name}`;
-  let cap = String(description).trim().replace(/\.$/, "");
+  const full = String(description).trim().replace(/\.$/, "");
   const room = max - base.length - 3; // " – "
-  if (!cap || room < 24) return base; // long name; keep the title clean
-  if (cap.length > room) {
-    cap = cap.slice(0, room);
-    const lastSpace = cap.lastIndexOf(" ");
-    if (lastSpace > 0) cap = cap.slice(0, lastSpace);
+  const generics = ["No Sign-Up, Runs in Your Browser", "Free Online, No Sign-Up", "No Sign-Up"];
+  if (!full || room < 18) return base; // long name; keep the title clean
+  // Prefer a whole description, then its first clause, then a generic promise,
+  // rather than a mid-sentence chop that reads as broken in search results.
+  const prefixes = [full];
+  const boundary = /\s+[—–-]\s+|[,;:]\s+|\s+(?:and|or|so|then)\s+/g;
+  let m;
+  const listy = (full.match(/,/g) || []).length >= 2; // "a, b, c" lists read as truncated when cut
+  while ((m = boundary.exec(full))) {
+    if (listy && /^[,;]/.test(m[0])) continue;
+    prefixes.push(full.slice(0, m.index).trim());
   }
+  const clauses = prefixes.filter((c) => c.length >= 18 && c.length <= room).sort((a, b) => b.length - a.length);
+  let cap = clauses[0] || generics.find((s) => s.length <= room) || "";
+  if (!cap) return base;
   // Avoid ending on a dangling preposition/conjunction or stray punctuation.
   const trimEnds = (s) => s.replace(/[\s,;:–-]+$/, "");
   cap = trimEnds(cap).replace(/\s+(?:and|or|for|with|of|to|in|on|by|a|an|the|using|from|that)$/i, "");
@@ -1564,8 +1608,9 @@ const footer = (prefix = "") => `
     <div class="footer-links"><a href="${prefix}about.html">About</a><a href="${prefix}promise.html">Our promise</a><a href="${prefix}privacy.html">Privacy</a><a href="${prefix}terms.html">Terms</a><a href="${prefix}contact.html">Contact</a></div>
   </footer>`;
 
-const page = ({ title, description, body, pathname, prefix = "", scripts = "", pageType = "WebPage", extraSchema = [], indexable = true, titleTag, ogImage }) => {
+const page = ({ title, description, body, pathname, prefix = "", scripts = "", pageType = "WebPage", extraSchema = [], indexable = true, titleTag, ogImage, modified = BUILD_DATE, heroImage }) => {
   const canonical = `${SITE_URL}${pathname}`;
+  description = trimDescription(description);
   const socialImage = ogImage || `${SITE_URL}/assets/brand/nifty-utilities-social-card.png`;
   // titleTag, when provided, is the verbatim <title>/social title (no brand suffix appended).
   const metaTitle = titleTag || `${title} | ${SITE_NAME}`;
@@ -1607,7 +1652,7 @@ const page = ({ title, description, body, pathname, prefix = "", scripts = "", p
         isPartOf: { "@id": `${SITE_URL}/#website` },
         about: { "@id": `${SITE_URL}/#organization` },
         inLanguage: "en-US",
-        dateModified: BUILD_DATE
+        dateModified: modified
       },
       ...extraSchema
     ]
@@ -1648,6 +1693,7 @@ const page = ({ title, description, body, pathname, prefix = "", scripts = "", p
   <link rel="mask-icon" href="${prefix}assets/icons/safari-pinned-tab.svg" color="#2dd4bf">
   <link rel="manifest" href="${prefix}site.webmanifest">
   <link rel="stylesheet" href="${prefix}assets/styles.css">
+  <link rel="preload" as="image" href="${prefix}${heroImage || "assets/images/hero.jpg"}" fetchpriority="high">
   <script type="application/ld+json">${JSON.stringify(schema).replaceAll("<", "\\u003c")}</script>${headTags}
 </head>
 <body>
@@ -2037,10 +2083,11 @@ const homeBody = `
 
 fs.writeFileSync("index.html", page({
   title: `${allTools.length} Browser Tools for Everyday Work`,
-  titleTag: `FREE Online Tools – ${allTools.length} Browser Utilities, No Sign-Up | ${SITE_NAME}`,
+  titleTag: `${SITE_NAME} – ${allTools.length} FREE Browser Tools, No Sign-Up`,
   description: "Practical browser tools for CSV files, finance, documents, home costs, and business math, plus a free IQ test and quizzes. No sign-up; data stays on your device.",
   pathname: "/",
   pageType: "CollectionPage",
+  modified: latestDate(allTools.map(({ slug }) => lastModified(`content/${slug}.html`))),
   body: homeBody,
   scripts: `<script>window.PLAINTOOLS=${JSON.stringify(allTools)};</script>`
 }));
@@ -2056,7 +2103,9 @@ for (const category of categories) {
             </li>`).join("");
   fs.writeFileSync(path.join(category.slug, "index.html"), page({
     title: `Free ${category.name} Tools`,
-    titleTag: seoTitle(`${category.name} Tools`, `${category.tools.length} free utilities, no sign-up`),
+    titleTag: `${category.name} – ${category.tools.length} FREE Tools, No Sign-Up`,
+    modified: latestDate(category.tools.map(([slug]) => lastModified(`content/${slug}.html`))),
+    heroImage: heroImagePath(category.slug),
     description: `Browse ${category.tools.length} free ${category.name.toLowerCase()} tools. ${category.description} No sign-up required.`,
     pathname: `/${category.slug}/`,
     pageType: "CollectionPage",
@@ -2144,6 +2193,8 @@ for (const category of categories) {
       pathname: `/${category.slug}/${slug}.html`,
       prefix: "../",
       ogImage,
+      modified: lastModified(`content/${slug}.html`),
+      heroImage: heroImagePath(category.slug),
       extraSchema: [
         {
           "@type": "WebApplication",
@@ -2389,7 +2440,15 @@ const publicPaths = [
   ])
 ];
 
-fs.writeFileSync("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${publicPaths.map((url) => `  <url><loc>${SITE_URL}/${url}</loc><lastmod>${BUILD_DATE}</lastmod></url>`).join("\n")}\n</urlset>\n`);
+const sitemapDate = (url) => {
+  const tool = url.match(/^[a-z-]+\/([a-z0-9-]+)\.html$/);
+  if (tool) return lastModified(`content/${tool[1]}.html`);
+  const cat = categories.find((c) => url === `${c.slug}/`);
+  if (cat) return latestDate(cat.tools.map(([slug]) => lastModified(`content/${slug}.html`)));
+  if (url === "") return latestDate(allTools.map(({ slug }) => lastModified(`content/${slug}.html`)));
+  return lastModified("generate-site.mjs");
+};
+fs.writeFileSync("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${publicPaths.map((url) => `  <url><loc>${SITE_URL}/${url}</loc><lastmod>${sitemapDate(url)}</lastmod></url>`).join("\n")}\n</urlset>\n`);
 
 fs.writeFileSync("robots.txt", `User-agent: *
 Allow: /
@@ -2530,12 +2589,20 @@ ${category.tools.map(([slug, name, description]) => `- ${name}: ${description} �
 `);
 
 // Service worker: makes the site installable and lets visited tools work
-// offline. Cache is versioned by build date so a deploy fully refreshes it.
+// offline. Cache is versioned by build date PLUS a hash of the site's own
+// scripts and styles, so a second deploy on the same day still refreshes it.
+const ASSET_VERSION = (() => {
+  const h = createHash("sha1");
+  for (const f of ["assets/styles.css", "assets/site.js", "assets/tool.js", "assets/quiz.js", "assets/convert.js"]) {
+    if (fs.existsSync(f)) h.update(fs.readFileSync(f));
+  }
+  return `${BUILD_DATE}-${h.digest("hex").slice(0, 8)}`;
+})();
 // Navigations are network-first (fresh content wins; cache is the offline
 // fallback); same-origin assets are stale-while-revalidate. Cross-origin
 // requests (Google ads/analytics, CDN libs) are never intercepted.
 fs.writeFileSync("sw.js", `// Generated by generate-site.mjs — do not edit by hand.
-const VERSION = ${JSON.stringify(BUILD_DATE)};
+const VERSION = ${JSON.stringify(ASSET_VERSION)};
 const CACHE = "nifty-" + VERSION;
 const PRECACHE = ["/", "/offline.html", "/assets/styles.css", "/assets/site.js"];
 
