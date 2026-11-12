@@ -785,6 +785,17 @@ th { background: var(--surface-2); font-size: .7rem; text-transform: uppercase; 
 .game-hint { margin: .7rem 0 .2rem; color: var(--muted); font-size: .85rem; }
 @media (max-width: 640px) { .game-canvas { height: 60vh; } .game-hud-item strong { font-size: 1.15rem; } }
 
+/* on-screen keyboard — touch/tablet devices with no physical keyboard */
+.has-vkb .game-canvas { height: 38vh; }
+@media (max-width: 640px) { .has-vkb .game-canvas { height: 34vh; } }
+.vkb { margin-top: .6rem; padding: .5rem .5rem .65rem; border: 1px solid color-mix(in srgb, var(--tool-accent, var(--accent)) 30%, var(--line)); border-radius: 12px; background: radial-gradient(120% 140% at 50% 0%, #0f1a24, #0a1119); position: sticky; bottom: 0; z-index: 5; }
+.vkb-top { display: flex; justify-content: flex-end; margin-bottom: .3rem; }
+.vkb-row { display: flex; justify-content: center; gap: clamp(2px, 1vw, 5px); margin: clamp(2px, .8vh, 5px) 0; }
+.vkb-key { flex: 0 1 clamp(24px, 8.6vw, 40px); height: clamp(34px, 8.5vh, 46px); display: flex; align-items: center; justify-content: center; border: 1px solid color-mix(in srgb, var(--tool-accent, var(--accent)) 35%, var(--line)); border-radius: 7px; background: var(--surface-2); color: var(--tool-accent, var(--accent)); font: 700 .95rem/1 ui-monospace, Menlo, monospace; text-transform: uppercase; touch-action: manipulation; user-select: none; -webkit-tap-highlight-color: transparent; transition: transform .06s, background .08s, color .08s; }
+.vkb-key.tap { background: var(--tool-accent, var(--accent)); color: #06231f; transform: scale(.92); }
+.vkb-key.vkb-shift { flex-basis: clamp(40px, 13vw, 60px); font-size: 1.1rem; }
+.vkb-key.vkb-shift.on { background: var(--tool-accent, var(--accent)); color: #06231f; box-shadow: 0 0 16px -2px var(--tool-accent, var(--accent)); }
+
 /* musical typing */
 .song-label { margin: 1.2rem 0 .5rem; font-weight: 700; }
 .song-picker { display: flex; flex-wrap: wrap; gap: .55rem; }
@@ -812,7 +823,7 @@ th { background: var(--surface-2); font-size: .7rem; text-transform: uppercase; 
 .kt-row { display: flex; gap: .5rem; }
 .kt-row-1 { padding-left: 1.3rem; }
 .kt-row-2 { padding-left: 3rem; }
-.kt-key { display: inline-flex; align-items: center; justify-content: center; width: clamp(30px, 8vw, 52px); height: clamp(38px, 9vw, 56px); border: 1px solid var(--line); border-radius: 9px; background: var(--surface-2); color: var(--muted); font: 700 1.1rem/1 ui-monospace, Menlo, monospace; text-transform: uppercase; transition: transform .08s, background .12s; }
+.kt-key { display: inline-flex; align-items: center; justify-content: center; width: clamp(30px, 8vw, 52px); height: clamp(38px, 9vw, 56px); border: 1px solid var(--line); border-radius: 9px; background: var(--surface-2); color: var(--muted); font: 700 1.1rem/1 ui-monospace, Menlo, monospace; text-transform: uppercase; transition: transform .08s, background .12s; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-tap-highlight-color: transparent; }
 .kt-key.target { color: #1a1200; background: #fbbf24; border-color: #fde68a; font-weight: 800; transform: translateY(-2px); animation: kt-glow 1s ease-in-out infinite; }
 @keyframes kt-glow { 0%, 100% { box-shadow: 0 0 8px -1px rgba(251,191,36,.55); filter: brightness(.9); } 50% { box-shadow: 0 0 28px 2px rgba(251,191,36,.95); filter: brightness(1.14); } }
 .kt-key.hit { background: #22c55e; border-color: #22c55e; color: #052e16; }
@@ -826,7 +837,7 @@ th { background: var(--surface-2); font-size: .7rem; text-transform: uppercase; 
 
 /* key memory — Simon pads */
 .km-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; max-width: 320px; margin: 1.5rem auto; }
-.km-pad { display: flex; align-items: center; justify-content: center; aspect-ratio: 1; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); color: var(--muted); font: 800 1.6rem/1 "Iowan Old Style", Georgia, serif; text-transform: uppercase; transition: transform .08s, background .12s, box-shadow .12s; }
+.km-pad { display: flex; align-items: center; justify-content: center; aspect-ratio: 1; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); color: var(--muted); font: 800 1.6rem/1 "Iowan Old Style", Georgia, serif; text-transform: uppercase; transition: transform .08s, background .12s, box-shadow .12s; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-tap-highlight-color: transparent; }
 .km-pad.on { color: #06231f; background: var(--qa); border-color: var(--qa); box-shadow: 0 0 28px -4px var(--qa); transform: scale(1.05); }
 
 /* ztype embed */

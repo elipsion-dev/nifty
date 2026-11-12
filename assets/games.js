@@ -72,17 +72,65 @@
         </div>
       </div>`;
   }
-  function canvasStage(quitId, showLives) {
+  function canvasStage(quitId, showLives, vkb) {
+    const touch = vkb && isTouch();
     return `
-      <div class="game-wrap">
+      <div class="game-wrap${touch ? " has-vkb" : ""}">
         <div class="game-hud">
           <div class="game-hud-item"><span>Score</span><strong id="g-score">0</strong></div>
           <div class="game-hud-item"><span>Level</span><strong id="g-level">1</strong></div>
           ${showLives === false ? `<div class="game-hud-item"><span>Time</span><strong id="g-time">–</strong></div>` : `<div class="game-hud-item"><span>Lives</span><strong id="g-lives">❤️❤️❤️</strong></div>`}
         </div>
         <canvas id="g-canvas" class="game-canvas" aria-label="Typing game play area"></canvas>
-        <p class="game-hint">Just type on your keyboard — no clicking needed. <button type="button" class="linklike" id="${quitId}">Quit to menu</button></p>
+        ${touch
+          ? vkbHTML(vkb.shift, quitId)
+          : `<p class="game-hint">Just type on your keyboard — no clicking needed. <button type="button" class="linklike" id="${quitId}">Quit to menu</button></p>`}
       </div>`;
+  }
+
+  /* ---------- on-screen keyboard for touch/tablet devices (no physical keyboard) ---------- */
+  const isTouch = () => window.matchMedia("(pointer: coarse)").matches;
+  function dispatchKey(ch) {
+    try { document.dispatchEvent(new KeyboardEvent("keydown", { key: ch, bubbles: true, cancelable: true })); }
+    catch (_) { /* ignore */ }
+  }
+  function wireTapKeys(container, selector) {
+    if (!container) return;
+    container.addEventListener("pointerdown", (e) => {
+      const el = e.target.closest(selector);
+      if (!el || el.dataset.k === undefined) return;
+      e.preventDefault();
+      dispatchKey(el.dataset.k);
+    });
+  }
+  function vkbHTML(shift, quitId) {
+    const ROWS = ["qwertyuiop", "asdfghjkl", "zxcvbnm"];
+    return `
+      <div class="vkb">
+        <div class="vkb-top"><button type="button" class="linklike" id="${quitId}">Quit to menu</button></div>
+        ${ROWS.map((row, i) => `
+          <div class="vkb-row">
+            ${i === 2 && shift ? `<button type="button" class="vkb-key vkb-shift" data-shift="1" aria-label="Shift for capitals">⇧</button>` : ""}
+            ${row.split("").map((k) => `<button type="button" class="vkb-key" data-k="${k}">${k}</button>`).join("")}
+          </div>`).join("")}
+      </div>`;
+  }
+  function wireVkb(container, { shift = false } = {}) {
+    if (!container) return;
+    let shiftOn = false;
+    container.addEventListener("pointerdown", (e) => {
+      const btn = e.target.closest(".vkb-key");
+      if (!btn) return;
+      e.preventDefault();
+      if (btn.dataset.shift) { shiftOn = !shiftOn; btn.classList.toggle("on", shiftOn); return; }
+      let ch = btn.dataset.k;
+      if (shift && shiftOn) {
+        ch = ch.toUpperCase(); shiftOn = false;
+        const sb = container.querySelector(".vkb-shift"); if (sb) sb.classList.remove("on");
+      }
+      btn.classList.add("tap"); setTimeout(() => btn.classList.remove("tap"), 120);
+      dispatchKey(ch);
+    });
   }
   function fitCanvas(cv) {
     const dpr = window.devicePixelRatio || 1;
@@ -131,7 +179,7 @@
     function start() {
       teardown();
       letters = []; pops = []; score = 0; lives = 3; spawnAcc = 0; last = 0; running = true;
-      root.innerHTML = canvasStage("g-quit");
+      root.innerHTML = canvasStage("g-quit", undefined, { shift: true });
       cv = root.querySelector("#g-canvas");
       ({ ctx, W, H } = fitCanvas(cv));
       resizefn = () => { if (cv) ({ ctx, W, H } = fitCanvas(cv)); };
@@ -141,6 +189,7 @@
         if (e.key && e.key.length === 1 && /[a-z]/i.test(e.key)) { e.preventDefault(); hit(e.key); }
       };
       document.addEventListener("keydown", keyfn);
+      wireVkb(root.querySelector(".vkb"), { shift: true });
       root.querySelector("#g-quit").onclick = intro;
       updateHud();
       raf = requestAnimationFrame(loop);
@@ -251,7 +300,7 @@
     function start() {
       teardown();
       words = []; parts = []; score = 0; lives = 3; spawnAcc = 0; last = 0; active = null; running = true;
-      root.innerHTML = canvasStage("g-quit");
+      root.innerHTML = canvasStage("g-quit", undefined, {});
       cv = root.querySelector("#g-canvas");
       ({ ctx, W, H } = fitCanvas(cv));
       resizefn = () => { if (cv) ({ ctx, W, H } = fitCanvas(cv)); };
@@ -261,6 +310,7 @@
         if (e.key && e.key.length === 1 && /[a-z]/i.test(e.key)) { e.preventDefault(); typeChar(e.key.toLowerCase()); }
       };
       document.addEventListener("keydown", keyfn);
+      wireVkb(root.querySelector(".vkb"));
       root.querySelector("#g-quit").onclick = intro;
       updateHud();
       raf = requestAnimationFrame(loop);
@@ -487,13 +537,17 @@
         html += `<span class="${cls}">${ch}</span>`;
       }
       const pct = total ? Math.round((doneCount / total) * 100) : 0;
+      const touch = isTouch();
       root.innerHTML = `
-        <div class="quiz quiz-question mt-play">
+        <div class="quiz quiz-question mt-play${touch ? " has-vkb" : ""}">
           <div class="quiz-topbar"><span class="quiz-cat">🎵 ${esc(song.name)}</span><span>${doneCount} / ${total}</span></div>
           <div class="mt-passage">${html}</div>
           <div class="score-bar mt-bar"><span style="width:${pct}%"></span></div>
-          <p class="game-hint">Type the highlighted letter — it plays the next note. Keys get harder as you go. <button type="button" class="linklike" id="mt-menu">Pick another tune</button></p>
+          ${touch
+            ? vkbHTML(false, "mt-menu")
+            : `<p class="game-hint">Type the highlighted letter — it plays the next note. Keys get harder as you go. <button type="button" class="linklike" id="mt-menu">Pick another tune</button></p>`}
         </div>`;
+      if (touch) wireVkb(root.querySelector(".vkb"));
       const m = root.querySelector("#mt-menu"); if (m) m.onclick = intro;
     }
     function finish() {
@@ -557,6 +611,7 @@
       score = 0; misses = 0; timeLeft = 30; running = true;
       root.innerHTML = `<div class="game-wrap">${boardHTML()}</div>`;
       root.querySelector("#g-quit").onclick = intro;
+      wireTapKeys(root.querySelector(".kt-board"), ".kt-key");
       next();
       keyfn = (e) => {
         if (!running || e.metaKey || e.ctrlKey || e.altKey) return;
@@ -686,7 +741,7 @@
     function start() {
       teardown();
       balloons = []; pops = []; score = 0; lives = 3; spawnAcc = 0; last = 0; running = true;
-      root.innerHTML = canvasStage("g-quit");
+      root.innerHTML = canvasStage("g-quit", undefined, {});
       cv = root.querySelector("#g-canvas");
       ({ ctx, W, H } = fitCanvas(cv));
       resizefn = () => { if (cv) ({ ctx, W, H } = fitCanvas(cv)); };
@@ -696,6 +751,7 @@
         if (e.key && e.key.length === 1 && /[a-z]/i.test(e.key)) { e.preventDefault(); hit(e.key.toLowerCase()); }
       };
       document.addEventListener("keydown", keyfn);
+      wireVkb(root.querySelector(".vkb"));
       root.querySelector("#g-quit").onclick = intro;
       updateHud();
       raf = requestAnimationFrame(loop);
@@ -792,6 +848,7 @@
         if (e.key && e.key.length === 1) { const ch = e.key.toLowerCase(); if (PADS.includes(ch)) { e.preventDefault(); guess(ch); } }
       };
       document.addEventListener("keydown", keyfn);
+      wireTapKeys(root.querySelector(".km-grid"), ".km-pad");
       nextRound();
     }
     function nextRound() {
